@@ -20,6 +20,8 @@ public class AuthController(AppDbContext db, IWebHostEnvironment env) : Controll
         var user = await db.Users.FirstOrDefaultAsync(u => u.Email == request.Email.Trim().ToLower());
         if (user is null || !user.Active || !Passwords.Verify(user.PasswordHash, request.Password))
             return BadRequest(new { error = "That email and password don't match." });
+        Audit.Add(db, user.Name, "sign-in", $"{user.Name} signed in.");
+        await db.SaveChangesAsync();
 
         var identity = new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())], CookieAuthenticationDefaults.AuthenticationScheme);
         HttpContext.User = new ClaimsPrincipal(identity);

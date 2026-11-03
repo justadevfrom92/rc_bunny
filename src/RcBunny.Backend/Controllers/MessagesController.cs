@@ -5,10 +5,10 @@ using RcBunny.Data;
 
 namespace RcBunny.Controllers;
 
-/// <summary>Messages sent from the website's Contact Us page.</summary>
+/// <summary>Ranger → Web Messages: what people sent from the website's Contact Us page.</summary>
 [ApiController]
 [Route("api/messages")]
-[RequirePermission("messages")]
+[RequirePermission("ranger")]
 public class MessagesController(AppDbContext db) : ControllerBase
 {
     [HttpGet]
@@ -23,5 +23,21 @@ public class MessagesController(AppDbContext db) : ControllerBase
         message.Handled = true;
         await db.SaveChangesAsync();
         return Ok();
+    }
+
+    /// <summary>Turn a message into a ticket, so it can be worked and answered in Ranger.</summary>
+    [HttpPost("{id:int}/ticket")]
+    public async Task<IActionResult> MakeTicket(int id)
+    {
+        var message = await db.ContactMessages.FindAsync(id);
+        if (message is null) return NotFound();
+        var customer = await db.Customers.FirstOrDefaultAsync(c => c.Email == message.Email);
+        var ticket = new SupportTicket { CustomerId = customer?.Id, Name = message.Name, Email = message.Email, Subject = $"{message.Topic} (from the website)", Topic = message.Topic };
+        db.SupportTickets.Add(ticket);
+        await db.SaveChangesAsync();
+        db.TicketMessages.Add(new TicketMessage { TicketId = ticket.Id, Author = message.Name, FromCustomer = true, Body = message.Message, CreatedAt = message.CreatedAt });
+        message.Handled = true;
+        await db.SaveChangesAsync();
+        return Ok(new { ticket.Id });
     }
 }

@@ -41,8 +41,8 @@ Sample employees:
 
 | Email | Role | Can use |
 | --- | --- | --- |
-| admin@example.com | Administrator | everything |
-| csr@example.com | Customer Service | Corral, Web Messages |
+| admin@example.com | Administrator (ticket team manager) | everything |
+| csr@example.com | Customer Service (on the ticket team) | Corral, Ranger |
 | pricing@example.com | Pricing | Plans & Rates |
 | finance@example.com | Finance | Corral, and reversing payments |
 
@@ -53,8 +53,10 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
 **Website**
 - Home page with featured plans and a zip code box.
 - Plans page: prices for your zip code (residential or business), with buttons to filter by contract length.
-- Contact Us form. Messages show up in the admin under Web Messages.
+- Contact Us form. Messages show up in the admin under Ranger → Web Messages.
 - My Account: balance, plan, bills, payments, and paying the bill. No card processor is connected, so a payment is recorded but no card is charged.
+- My Account → Support: open a ticket, read the replies, answer back, and rate it once it's solved.
+- When Sheriff switches the website off, every page shows a "we'll be right back" notice.
 
 **Admin**
 - Corral (customer service and CRM), with the same menu as ebunny's:
@@ -67,12 +69,21 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
   - ERCOT: every request and its answer. There's no ERCOT connection yet, so people record the answer; a rejection puts the account in the "Rejected by ERCOT" queue.
   - Exceptions: queues of accounts that need someone to look at them.
 - Plans & Rates: today's rate for every plan in every market. Add a rate (today or a future date), hide or show a plan.
-- Web Messages: messages from the website.
-- Staff: add people, change their role, turn their sign-in off, and choose what each role can do.
+- Ranger (support tickets):
+  - Dashboard (unassigned, mine, by status, approval) and Tickets (filter by status and by who has them).
+  - A ticket: reply to the customer or add an internal note the customer never sees, change status and priority, pick it up. Ticket team managers can also assign it to anyone or take it over.
+  - Web Messages from the website, with "Make a ticket".
+  - Ticket Team (in-office or 3rd party, managers), Approval Ratings, Employees.
+- Sheriff (settings):
+  - Heartbeat: checks (database, website, jobs) every 5 minutes or on demand, a switch to take the website down for maintenance, and the control log.
+  - Staff Directory (add people, change roles, turn sign-ins off, set passwords) and Roles (tick what each role can do, add roles).
+  - Timeline of sign-ins, access changes, heartbeat switches and job runs.
+  - Crons: the scheduled jobs (heartbeat checks, AutoPay, closing solved tickets) with "Run now", and their runs.
+  - Caches, Markets (delivery charges and zip codes), and Integrations (which outside services have settings; none is connected yet).
 
 ## How access works
 
-- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `plans`, `messages`, `staff`.
+- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `plans`, `ranger`, `sheriff`.
 - The server checks every request with `[RequirePermission("...")]` (`Backend/Auth/Permissions.cs`). It reads the person's current role from the database, cached for 30 seconds. Changing someone's role or turning them off clears that cache, so it takes effect on their next click.
 - The admin app hides menus, pages and buttons you can't use (`ClientApp/src/auth.tsx`). It re-checks who you are every minute, when the tab gets focus, and whenever the server says no.
 
@@ -88,15 +99,18 @@ src/RcBunny.Backend/
   Program.cs              sign-in cookie, controllers, serves the React app
   Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
-  Controllers/            Auth, Plans, Messages, Staff, and Corral's: Customers, Orders, Communications (SMS, calls),
-                          Crm, Products, Ercot, Queues
+  Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
+                          Ranger's: Ranger, Messages; Sheriff's: Staff, Sheriff
+  Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
   ClientApp/src/          main.tsx (menu and routes), api.ts, auth.tsx, pages/*.tsx, styles.css
-                          pages/corral/Corral.tsx is Corral's sidebar and routes; its pages sit next to it
+                          pages/corral, pages/ranger, pages/sheriff: each app's menu and routes (Corral.tsx, Ranger.tsx,
+                          Sheriff.tsx) with its pages next to it; Sidebar.tsx draws the menus
 src/RcBunny.Frontend/
   Program.cs              Razor Pages, page caching, customer sign-in
   Services/Catalog.cs     markets and prices, cached
-  Pages/                  Index, Plans, Contact, MyAccount/*, Shared/_Layout
+  Services/Maintenance.cs the "we'll be right back" page when Sheriff switches the website off
+  Pages/                  Index, Plans, Contact, MyAccount/* (Login, Index, Pay, Support), Shared/_Layout
   ClientIslands/src/      PlanFilter.tsx (the plan filter island)
   wwwroot/css/            ebunny's styles
 ```
@@ -108,5 +122,5 @@ Development uses a SQLite file, so there's nothing to set up. Outside Developmen
 ## Adding a screen
 
 1. Add a controller in `Backend/Controllers` with `[RequirePermission("...")]`.
-2. Add a page in `ClientApp/src/pages`, a route in `main.tsx`, and a menu entry in the `menu` list there.
+2. Add a page in `ClientApp/src/pages/<app>`, then add it to that app's menu and routes (for example `pages/ranger/Ranger.tsx`). A whole new app also needs an entry in the `menu` list and a route in `main.tsx`.
 3. For a new permission, add it to `Permissions.All` and tick it for the roles that need it under Staff.

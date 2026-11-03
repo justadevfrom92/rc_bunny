@@ -28,6 +28,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/error");
 app.UseStaticFiles();
+app.UseMiddleware<Maintenance>(); // Sheriff can switch the website off
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

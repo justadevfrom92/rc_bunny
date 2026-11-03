@@ -24,6 +24,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<ProductOrder> ProductOrders => Set<ProductOrder>();
     public DbSet<ErcotTransaction> ErcotTransactions => Set<ErcotTransaction>();
     public DbSet<WorkItem> WorkItems => Set<WorkItem>();
+    public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
+    public DbSet<TicketMessage> TicketMessages => Set<TicketMessage>();
+    public DbSet<RangerAgent> RangerAgents => Set<RangerAgent>();
+    public DbSet<AuditEntry> AuditEntries => Set<AuditEntry>();
+    public DbSet<HeartbeatControl> HeartbeatControls => Set<HeartbeatControl>();
+    public DbSet<HealthCheck> HealthChecks => Set<HealthCheck>();
+    public DbSet<JobRun> JobRuns => Set<JobRun>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder b)
     {
@@ -39,5 +46,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<Customer>().HasIndex(c => c.Username).IsUnique();
         m.Entity<Customer>().HasIndex(c => c.Esiid);
         m.Entity<Product>().HasIndex(p => p.Sku).IsUnique();
+        m.Entity<RangerAgent>().HasIndex(a => a.UserId).IsUnique();
+        m.Entity<HeartbeatControl>().HasIndex(h => h.Key).IsUnique();
     }
 }

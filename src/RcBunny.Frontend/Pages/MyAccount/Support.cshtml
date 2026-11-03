@@ -1,0 +1,63 @@
+@page "/myaccount/support/{id:int?}"
+@model RcBunny.Frontend.Pages.MyAccount.SupportModel
+@{ ViewData["Title"] = $"Support | My Account | {Site.Name}"; var t = Model.Ticket; }
+<section class="section section-sky">
+    <div class="wrap">
+        <p><a href="/myaccount">← My Account</a></p>
+        <div class="ma-grid">
+            <div class="byop-panel">
+                <h2>Your requests</h2>
+                @if (Model.Tickets.Count == 0) { <p>None yet.</p> }
+                <table class="price-table">
+                    <tbody>
+                        @foreach (var x in Model.Tickets)
+                        {
+                            <tr><td><a href="/myaccount/support/@x.Id">#@x.Id @x.Subject</a></td><td>@(x.Status == "waiting" ? "Waiting on you" : x.Status)</td><td>@x.UpdatedAt.ToLocalTime().ToString("MMM d")</td></tr>
+                        }
+                    </tbody>
+                </table>
+                @if (t != null) { <p><a class="btn btn-outline" href="/myaccount/support">New request</a></p> }
+            </div>
+
+            @if (t is null)
+            {
+                <form class="byop-panel" method="post" asp-page-handler="New">
+                    <h2>Ask us something</h2>
+                    @if (Model.Error is { } error) { <div class="form-msg error">@error</div> }
+                    <div class="field"><label for="s">Subject</label><input id="s" name="subject" maxlength="200" required></div>
+                    <div class="field" style="margin-top:12px"><label for="t">Topic</label><select id="t" name="topic">@foreach (var topic in RcBunny.Frontend.Pages.MyAccount.SupportModel.Topics) { <option>@topic</option> }</select></div>
+                    <div class="field" style="margin-top:12px"><label for="m">Message</label><textarea id="m" name="message" rows="5" required></textarea></div>
+                    <button class="btn" style="margin-top:16px">Send</button>
+                </form>
+            }
+            else
+            {
+                <div class="byop-panel">
+                    <h2>#@t.Id @t.Subject</h2>
+                    @foreach (var m in Model.Messages)
+                    {
+                        <div class="ticket-msg @(m.FromCustomer ? "me" : "")"><small>@(m.FromCustomer ? "You" : m.Author) · @m.CreatedAt.ToLocalTime().ToString("MMM d, h:mm tt")</small><p>@m.Body</p></div>
+                    }
+                    @if (t.Status is "solved" or "closed")
+                    {
+                        if (t.Rating is null)
+                        {
+                            <form method="post" asp-page-handler="Rate" asp-route-id="@t.Id">
+                                <p><strong>How did we do?</strong></p>
+                                <label><input type="radio" name="rating" value="good" required> Good</label>
+                                <label><input type="radio" name="rating" value="bad"> Not good</label>
+                                <div class="field" style="margin-top:8px"><input name="comment" placeholder="Anything to add? (optional)"></div>
+                                <button class="btn btn-outline" style="margin-top:8px">Send rating</button>
+                            </form>
+                        }
+                        else { <p>Thanks for rating us <strong>@t.Rating</strong>.</p> }
+                    }
+                    <form method="post" asp-page-handler="Reply" asp-route-id="@t.Id" style="margin-top:16px">
+                        <div class="field"><label for="r">Reply</label><textarea id="r" name="message" rows="4" required></textarea></div>
+                        <button class="btn" style="margin-top:12px">Send</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+</section>

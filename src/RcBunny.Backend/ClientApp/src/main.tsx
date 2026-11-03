@@ -7,15 +7,15 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Corral from './pages/corral/Corral';
 import Plans from './pages/Plans';
-import Messages from './pages/Messages';
-import Staff from './pages/Staff';
+import Ranger from './pages/ranger/Ranger';
+import Sheriff from './pages/sheriff/Sheriff';
 import './styles.css';
 
 const menu = [
   { to: '/corral', label: 'Corral', permission: 'corral' },
   { to: '/plans', label: 'Plans & Rates', permission: 'plans' },
-  { to: '/messages', label: 'Web Messages', permission: 'messages' },
-  { to: '/staff', label: 'Staff', permission: 'staff' },
+  { to: '/ranger', label: 'Ranger', permission: 'ranger' },
+  { to: '/sheriff', label: 'Sheriff', permission: 'sheriff' },
 ];
 
 function App() {
@@ -41,8 +41,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/corral/*" element={<RequirePermission permission="corral"><Corral /></RequirePermission>} />
           <Route path="/plans" element={<RequirePermission permission="plans"><Plans /></RequirePermission>} />
-          <Route path="/messages" element={<RequirePermission permission="messages"><Messages /></RequirePermission>} />
-          <Route path="/staff" element={<RequirePermission permission="staff"><Staff /></RequirePermission>} />
+          <Route path="/ranger/*" element={<RequirePermission permission="ranger"><Ranger /></RequirePermission>} />
+          <Route path="/sheriff/*" element={<RequirePermission permission="sheriff"><Sheriff /></RequirePermission>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>

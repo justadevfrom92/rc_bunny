@@ -20,6 +20,7 @@
                 <p>Due @(c.DueDate?.ToString("MMM d, yyyy") ?? "—")@(c.Autopay ? " · AutoPay is on" : "")</p>
                 <a class="btn" href="/myaccount/pay">Pay My Bill</a>
             </div>
+            <div class="ma-card"><h3>Need help?</h3><strong>Support</strong><p>Ask us anything and track the answer.</p><a class="btn btn-outline" href="/myaccount/support">Get Support</a></div>
             <div class="ma-card"><h3>Your plan</h3><strong>@(c.Plan?.Name ?? "—")</strong><p>@(c.Plan is { } plan ? Pricing.TermLabel(plan.TermMonths) : "")</p></div>
         </div>
 

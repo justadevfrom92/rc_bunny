@@ -1,4 +1,5 @@
-import { NavLink, Navigate, Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
+import Sidebar, { type Menu } from '../../Sidebar';
 import Customers from './Customers';
 import Customer from './Customer';
 import EsiidLookup from './EsiidLookup';
@@ -16,7 +17,7 @@ import Ercot from './Ercot';
 import Queues from './Queues';
 
 // The Corral menu, in ebunny's order.
-const menu: { heading?: string; links: [string, string][] }[] = [
+const menu: Menu = [
   { links: [['Customer Search', 'customers'], ['ESIID Lookup', 'esiid'], ['Create Order', 'orders/new'], ['Create Order - Biz', 'orders/new-biz'], ['SMS', 'sms'], ['Phone Calls', 'calls']] },
   { heading: 'CRM', links: [['Pipeline', 'crm'], ['Leads', 'crm/leads'], ['Follow-ups', 'crm/follow-ups'], ['Partners & Brokers', 'crm/partners']] },
   { heading: 'Products', links: [['Products', 'products'], ['Product Orders', 'products/orders']] },
@@ -27,14 +28,7 @@ const menu: { heading?: string; links: [string, string][] }[] = [
 export default function Corral() {
   return (
     <div className="with-sidebar">
-      <nav className="sidebar">
-        {menu.map((group, i) => (
-          <div key={i}>
-            {group.heading && <h3>{group.heading}</h3>}
-            {group.links.map(([label, to]) => <NavLink key={to} to={`/corral/${to}`} end>{label}</NavLink>)}
-          </div>
-        ))}
-      </nav>
+      <Sidebar app="corral" menu={menu} />
       <div className="content">
         <Routes>
           <Route index element={<Navigate to="customers" replace />} />

@@ -15,8 +15,8 @@ public static class Permissions
         ["corral"] = "Corral: customers, orders, texts and calls, CRM, products, ERCOT, exception queues",
         ["refunds"] = "Reverse payments",
         ["plans"] = "Change plans and rates",
-        ["messages"] = "Answer website messages",
-        ["staff"] = "Manage staff and roles",
+        ["ranger"] = "Ranger: support tickets and website messages",
+        ["sheriff"] = "Sheriff: staff, roles, heartbeat, crons, markets and integrations",
     };
 
     public record SignedIn(int Id, string Name, string Email, string Role, List<string> Permissions);

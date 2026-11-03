@@ -29,3 +29,8 @@
   .nav-panel .nav { flex-direction: row; flex-wrap: wrap; gap: 14px; }
   .ma-grid { grid-template-columns: 1fr; }
 }
+
+/* Support tickets */
+.ticket-msg { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 0 0 10px; max-width: 90%; }
+.ticket-msg.me { margin-left: auto; background: var(--sky); }
+.ticket-msg small { color: var(--slate); } .ticket-msg p { margin: 4px 0 0; white-space: pre-wrap; }

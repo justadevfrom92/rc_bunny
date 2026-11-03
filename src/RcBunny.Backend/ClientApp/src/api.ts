@@ -29,6 +29,7 @@ export const api = {
   get: <T>(url: string) => request<T>('GET', url),
   post: <T = void>(url: string, body?: unknown) => request<T>('POST', url, body ?? {}),
   put: <T = void>(url: string, body: unknown) => request<T>('PUT', url, body),
+  del: <T = void>(url: string) => request<T>('DELETE', url),
 };
 
 // Remembers the last answer for each URL, so going back to a screen shows it instantly while it refreshes.

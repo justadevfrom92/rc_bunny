@@ -17,7 +17,7 @@ public static class Seeder
 
         // Staff and what each role can do
         var admin = new Role { Name = "Administrator", Permissions = string.Join(",", Permissions.All.Keys) };
-        var service = new Role { Name = "Customer Service", Permissions = "corral,messages" };
+        var service = new Role { Name = "Customer Service", Permissions = "corral,ranger" };
         var pricing = new Role { Name = "Pricing", Permissions = "plans" };
         var finance = new Role { Name = "Finance", Permissions = "corral,refunds" };
         db.Roles.AddRange(admin, service, pricing, finance);
@@ -142,6 +142,35 @@ public static class Seeder
             var qty = 1 + i % 2;
             db.ProductOrders.Add(new ProductOrder { Number = $"PO-{1001 + i}", CustomerId = someCustomers[i].Id, ProductId = product.Id, Quantity = qty, Total = product.Price * qty, Status = statuses[i % statuses.Length], CreatedAt = DateTime.UtcNow.AddDays(-i * 3) });
         }
+
+        // Ranger: the ticket team and some tickets
+        var csrUser = db.Users.Local.First(u => u.Email == "csr@example.com");
+        db.RangerAgents.AddRange(new RangerAgent { User = adminUser, IsManager = true }, new RangerAgent { User = csrUser });
+        var ticketCustomers = await db.Customers.OrderBy(c => c.Id).Take(8).ToListAsync();
+        var subjects = new[] { ("Billing", "Why is my bill higher this month?"), ("My plan", "When does my contract end?"), ("Moving", "Moving next month"), ("Billing", "Double charged?"),
+            ("Something else", "Can I add my spouse to the account?"), ("Billing", "AutoPay didn't run"), ("My plan", "Renewal options"), ("Moving", "Stop service at old address") };
+        var ticketStatuses = new[] { "new", "new", "open", "waiting", "open", "solved", "solved", "closed" };
+        for (var i = 0; i < ticketCustomers.Count; i++)
+        {
+            var c = ticketCustomers[i];
+            var status = ticketStatuses[i];
+            var created = DateTime.UtcNow.AddDays(-10 + i);
+            var ticket = new SupportTicket
+            {
+                CustomerId = c.Id, Name = c.Name, Email = c.Email ?? "", Topic = subjects[i].Item1, Subject = subjects[i].Item2, Status = status,
+                Priority = i == 3 ? "high" : "normal", AssignedTo = status == "new" ? null : i % 2 == 0 ? csrUser : adminUser, CreatedAt = created, UpdatedAt = created.AddHours(5),
+                FirstResponseAt = status == "new" ? null : created.AddHours(2), SolvedAt = status is "solved" or "closed" ? created.AddDays(1) : null,
+                Rating = status is "solved" or "closed" ? (i == 6 ? "bad" : "good") : null, RatingComment = i == 6 ? "Took too long." : null,
+            };
+            db.SupportTickets.Add(ticket);
+            await db.SaveChangesAsync();
+            db.TicketMessages.Add(new TicketMessage { TicketId = ticket.Id, Author = c.Name, FromCustomer = true, Body = subjects[i].Item2 + " Thanks for your help.", CreatedAt = created });
+            if (status != "new")
+                db.TicketMessages.Add(new TicketMessage { TicketId = ticket.Id, Author = ticket.AssignedTo!.Name, Body = "Thanks for reaching out! Let me take a look and get back to you.", CreatedAt = created.AddHours(2) });
+        }
+
+        // Sheriff: the website's maintenance switch
+        db.HeartbeatControls.Add(new HeartbeatControl { Key = "website", Name = "Website" });
 
         db.ContactMessages.AddRange(
             new ContactMessage { Name = "Jordan Lee", Email = "jordan@example.com", Topic = "Billing", Message = "Can I change my due date?" },

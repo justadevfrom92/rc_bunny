@@ -53,3 +53,10 @@ dt { color: var(--muted); } dd { margin: 0; }
 .stats .card { margin: 0; min-width: 140px; } .stats strong { display: block; font-size: 1.6rem; color: var(--navy); }
 .overdue { color: var(--red); font-weight: 600; }
 @media (max-width: 800px) { .with-sidebar { grid-template-columns: 1fr; } .sidebar { position: static; } }
+.ticket-msg small { color: var(--muted); } .ticket-msg p { margin: 4px 0 0; white-space: pre-wrap; }
+.ticket-msg.customer { border-left: 4px solid var(--cyan); }
+.ticket-msg.internal { background: #fff8e1; border-color: #f2d27a; }
+.tag.high { background: #fde7e8; color: var(--red); }
+.stats .card.ok { border-left: 4px solid #137a3a; } .stats .card.bad { border-left: 4px solid var(--red); }
+.stats a.card { text-decoration: none; color: inherit; }
+button.link { border: 0; background: none; padding: 0 2px; color: var(--muted); }
