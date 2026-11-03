@@ -1,0 +1,13 @@
+@page "/error"
+@using Microsoft.AspNetCore.Mvc
+@attribute [IgnoreAntiforgeryToken]
+@attribute [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+@inject Brand B
+@{ ViewData["Title"] = $"Something went wrong | {B.Name}"; Response.StatusCode = 500; }
+<section class="section section-sky"><div class="wrap" style="max-width:640px">
+    <div class="byop-panel">
+        <h1 style="font-size:1.6rem">Well, that didn't go as planned.</h1>
+        <p>Something went wrong on our end. Please try again, or call us at <a href="@B.PhoneHref">@B.Phone</a>.</p>
+        <a class="btn" href="/">Back to the home page</a>
+    </div>
+</div></section>

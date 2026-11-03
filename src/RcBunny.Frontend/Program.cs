@@ -79,9 +79,11 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/error");
     app.UseHsts();
 }
+// Not found: the "404" page built in Lando (falls back to a plain 404 if it's missing)
+app.UseStatusCodePagesWithReExecute("/404");
 
 app.UseResponseCompression();
 app.UseStaticFiles(new StaticFileOptions

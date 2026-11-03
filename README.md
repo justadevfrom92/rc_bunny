@@ -23,7 +23,7 @@ dotnet run --project src/RcBunny.Frontend
 
 Start the Backend first: it creates the database and loads the sample data. In Development both use a local SQLite file (`rcbunny-dev.db` in the repo root), so there's nothing to set up. The first build runs `npm install` and `npm run build` for each client.
 
-- Website: http://localhost:5100 — My Account sign-in `demo.customer` / `password`
+- Website: http://localhost:5100 — My Account sign-in `demo.customer` / `password`. In Development, Forgot Password shows the reset link on the page instead of emailing it.
 - Admin: http://localhost:5200 — the sign-in page lists every sample employee for one-click sign-in (Development only). All passwords are `password`.
 
 | Email | Role | Can open |
@@ -79,7 +79,7 @@ Pages are complete HTML from the server. Visitors never wait on a spinner to see
 - **Server-rendered with the data.** Razor Pages read plans, rates, TDSP fees and products from the database through `Services/Catalog.cs`, which keeps one in-memory snapshot (refreshed every 5 minutes, `Website:CatalogCacheSeconds`).
 - **Whole-page output cache.** Public pages are cached for 60 seconds (`Website:PageCacheSeconds`), varied by `zip`, `filter`, `topic` and `plan`. A cached page comes back in a few milliseconds. My Account pages are never cached.
 - **Brotli/gzip** compression. Hashed island bundles and `?v=` versioned CSS and images are cached by browsers for a year.
-- **React islands** (`ClientIslands/src/islands`) only where interactivity helps: `ZipCheck` (home page zip box), `PlanBrowser` (instant plan filters, URL kept in sync), `ByopBuilder` (Build Your Own Plan with live price), `ContactForm` (sends without a reload), `UsageChart` (My Account).
+- **React islands** (`ClientIslands/src/islands`) only where interactivity helps: `ZipCheck` (home page zip box), `PlanBrowser` (instant plan filters, URL kept in sync), `ByopBuilder` (Build Your Own Plan with live price), `ContactForm` (sends without a reload), `UsageChart` (My Account), `ChatBubble` (My Account chat), `CookieBanner`.
   - `<island name="…" props="…">server HTML</island>` renders the full HTML version inside, plus the island's data as inline JSON. The page works and reads correctly before any JavaScript runs.
   - When the island's code arrives, it renders straight from that JSON: no API call and no loading state.
   - The page script is about 1 KB. React (~70 KB gzipped) is only downloaded on pages that have an island, and each island is its own chunk.
@@ -110,43 +110,67 @@ Pages are complete HTML from the server. Visitors never wait on a spinner to see
 
 `HybridCache` is in-memory by default. On more than one server, add a Redis distributed cache (`AddStackExchangeRedisCache`); it becomes the second level automatically, and tag removals then reach every server. Sheriff → Caches explains the layers and can clear server caches by tag.
 
-## What's ported so far
+## What's ported
 
-This first pass is the foundation plus a core slice. Everything else from ebunny already appears in the launcher and menus, with its route and permission in place, and shows a "not ported yet" page.
+Everything in ebunny: all 98 tables, every admin app and menu, the whole website, checkout, shop, surveys, CMS pages and every My Account feature. Outside services (card processing, Utilibill, ERCOT/EDI, Experian, mail and SMS providers, Ollama/hosted AI) are wired at the same points ebunny calls them: with their keys unset the app records what would have been sent and says so, rather than failing.
 
-| Area | Status |
+### Database
+
+- **All 98 ebunny tables**, column for column (snake_case names kept), generated from ebunny's Laravel migrations by `tools/schema` into `Data/Entities/Generated.cs` and `Data/AppDbContext.Generated.cs`. JSON columns are `JsonNode` / `List<string>`.
+- ebunny's PHP config files (`config/*.php`: shop, cms, walker, items, history, deputy, corral, myaccount, records, admin, brand) are JSON in `Data/Config`, read through `AppConfig`.
+- **Sample data for every table** (`Data/Seed`), including ebunny's plans, rates, pages, content blocks and email templates.
+- **SQL Server**: one `Initial` migration in `Data/Migrations`. MySQL lets deletes cascade along several routes to the same table; SQL Server doesn't, so for SQL Server `AppDbContext.LimitCascadesForSqlServer` keeps every database cascade it can (customers' and users' first) and makes the rest client-side cascades.
+- **SQLite** for local development (created straight from the model, no migrations).
+
+Regenerate the entities after changing ebunny's migrations:
+
+```bash
+cd tools/schema && python3 parse.py ../../../ebunny/database/migrations && python3 gen.py
+```
+
+```bash
+mv tools/schema/Generated.cs src/RcBunny.Backend/Data/Entities/ && mv tools/schema/AppDbContext.Generated.cs src/RcBunny.Backend/Data/
+```
+
+### Admin apps (Backend)
+
+| App | What's there |
 | --- | --- |
-| Database: users/roles/access, catalog (markets, zip ranges, TDSP fees, plans, plan groups, rates, term discounts, ETFs, BYOP products), customers, payments, bills, notes, contact messages, audit timeline | ✅ EF Core, SQL Server migration + SQLite for dev, ebunny's sample data |
-| Website: Home, Plans (+ zip pricing, filters), plan pages, Business, Build Your Own Plan, Contact Us | ✅ |
-| My Account: sign-in, dashboard (balance, plan, rewards, usage chart), bills & payments, sign-out | ✅ (paying a bill, profile, rewards, support tickets: not yet) |
-| Admin shell: sign-in, launcher, app switcher, per-app menus, log in as | ✅ |
-| Corral: Customer Search (filters, paging, stats, bookmarks), account page (service, account, payments with **Reverse** for the refunds right, bills, notes with categories, status change), ESIID Lookup, Exception accounts | ✅ (orders, CRM, SMS, calls, products, queues: not yet) |
-| Sheriff: Staff Directory (filter by employer/3rd party, department, role, "who can use…"), profiles, add/edit with the per-person access matrix, enable/disable, Roles matrix, Timeline, Caches | ✅ (crons, APIs, heartbeat: not yet) |
-| Ranger → Web Messages; Astro → View Plans (current rate per market) | ✅ read/mark handled; read-only |
-| Lando, Walker, Caboose, Bounty, Rodeo, Deputy; rest of Ranger and Astro; sign-up/checkout, shop, surveys, CMS pages | ⏳ not ported |
+| **Corral** | Customer search, account pages (service, plan terms, payments with reverse/refund, bills, ledger, notes, products, ERCOT, history, contact log, queue log, documents), create order (resi and biz), ESIID lookup, exception queues and work items, SMS, phone calls, CRM pipeline (leads, follow-ups, partners), shop products and product orders |
+| **Ranger** | Ticket dashboard, ticket queue with replies, internal notes, attachments, take over / join in, the ticket team (in-office and 3rd party), approval ratings, web messages |
+| **Lando** | Site dashboard and health, visitors, blocked areas and IPs, cookie consents, pages, page templates, content blocks and categories, sitemap, style guide |
+| **Astro** | Plans, plan groups, rates (view, update, upload, history, future-dated rates), TDSP fees, term discounts, ETFs, Build Your Own Plan products |
+| **Walker** | Report status, run reports (queued and run by the scheduler, downloads as CSV/TSV/JSON/XLSX), saved reports, files, ETL feeds, legal documents, customer templates |
+| **Caboose** | Money: dashboard, payments, credits and debits, refunds, deposits, receivables aging, journal, MSIDs, promo codes |
+| **Bounty** | Rewards: dashboard, offers, earning rules, redemptions, members, the monthly drawing |
+| **Rodeo** | Campaigns and sent emails, email templates with headers/footers and categories, suppression list, test sends, PDF templates and PDFs made, surveys (question bank, answer sets, categories, responses, survey emails) |
+| **Deputy** | AI dashboard, conversations (and the ones waiting for a person: take over and reply), agents, models with a connection check, automation runs |
+| **Sheriff** | Heartbeat (checks, controls such as taking the website down, control log), staff directory, add a person, roles matrix, per-person access, log in as, custom admin apps, timeline, crons, cron automations and job runs, sitemap, cached tables and caches, audit log, history, reference data and markets, integrations, connection tests and API calls |
+| **+ New Admin App** | Custom apps made in Sheriff (`admin_apps`): their own menus and permission keys |
 
-## Layout
+Most list/edit screens come from one metadata-driven engine: `Resources/ResourceRegistry*.cs` describes each table's columns, filters, forms and **record actions** (workflow buttons such as "Approve", "Send", "Reverse"), served by `/api/r/{key}` and drawn by the generic React screens in `ClientApp/src/resource`. Dashboards and special workflows are their own pages in `ClientApp/src/pages`.
 
-```
-RcBunny.slnx
-src/
-  RcBunny.Backend/
-    Program.cs                 cookie auth, permission policies, HybridCache, ETags, rate limits, SPA hosting
-    Access/                    AdminApps (every app + menu = permission keys), AccessService (cached snapshots), policies
-    Api/                       Auth, Meta, Corral, Sheriff, Ranger messages, Astro plans
-    Data/                      AppDbContext + Entities (also compiled into the Frontend), Migrations, Seed (+ ebunny JSON)
-    Infrastructure/            ETag + CSRF-header middleware, HybridCache JSON serializer
-    ClientApp/                 React + TypeScript admin (Vite, React Router, TanStack Query)
-  RcBunny.Frontend/
-    Program.cs                 output cache, compression, customer cookie auth, ebunny URL aliases
-    Services/                  Catalog snapshot, <island> tag helper + Vite manifest, Brand settings
-    Pages/                     Razor Pages: Index, Plans, Plans/Detail, Business, BuildYourOwnPlan, ContactUs, MyAccount/*
-    ClientIslands/             React + TypeScript islands (Vite)
-    wwwroot/css                ebunny's site.css + tokens.css, plus rcbunny.css
-```
+**Scheduler** (`Domain/Jobs.cs`): a background service that runs ebunny's `et:*` commands on their cron schedules (send orders, ERCOT responses, AutoPay, scheduled payments, campaigns, survey emails, welcome packets, reward stars, rate export, sitemap), queued Walker reports, Deputy automations and heartbeat pulses. Every run is recorded in Sheriff → Crons.
+
+### Website and My Account (Frontend)
+
+| Area | What's there |
+| --- | --- |
+| Marketing | Home, Plans (zip pricing and filters), plan pages, Business, Build Your Own Plan, Contact Us |
+| CMS | Every page built in Lando, with its template, content blocks, zones, `[[block\|slug\|name=value]]` includes and `{{name\|default}}` variables; the "404" page for anything not found; redirects; `sitemap.xml` and `robots.txt` |
+| Sign-up | `/checkout`: address and ESIID, plan, about you (credit check, optional My Account login), review, save and finish later (resume link), frozen credit, deposit and alternatives |
+| Shop | Products by category, product pages, cart (encrypted cookie, no sign-in needed), checkout in My Account paying by card or on the electricity bill, earning stars |
+| Surveys | `/survey/{slug}` with categories; signed links from emails tie answers to the account |
+| My Account | Dashboard, bills (PDF), pay now or schedule (and cancel), payment methods and AutoPay, products, usage, plan and renewal, moving (transfer of service), rewards (redeem, monthly drawing), refer a friend, messages, support tickets with files and ratings, shop orders, profile (contact, password, authorized users, linked accounts and switching), chat with the virtual assistant (hands over to a person) |
+| Without signing in | QuickPay, create a login, forgot password or username, password reset |
+| Site rules | Blocked IPs/areas and maintenance mode (Sheriff → Heartbeat) checked on every page from a 30-second cache; visits logged in the background for Lando → Visitors; cookie banner answers recorded in Lando → Cookie Consents |
+
+The cookie banner and chat bubble are islands too: the banner's code only downloads for visitors who haven't answered yet, and the chat only talks to the server while it's open.
 
 ## Adding the next screen
 
 1. **API**: add a controller in `src/RcBunny.Backend/Api/` with `[RequirePerm("<app>")]`. Cache reads with `HybridCache` and a tag, and remove the tag when you save.
 2. **Client**: add a page in `ClientApp/src/pages/<app>/` and a lazy route under that app's `<Guard perm>` in `main.tsx`. Use query keys that start with the app key.
-3. **Menu**: mark the menu item `P(...)` (ported) in `Access/AdminApps.cs`.
+3. **Menu**: add the item to the app's menu in `Access/AdminApps.cs` (`P(...)` for a page, `R(...)` for a generic resource screen).
+
+A new table usually needs no page at all: add it to ebunny's migrations, regenerate the entities, add a `ResourceDef` in `Resources/ResourceRegistry*.cs`, and link it with `R(...)`.
