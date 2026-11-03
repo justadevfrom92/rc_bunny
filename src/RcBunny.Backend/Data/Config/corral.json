@@ -1,0 +1,636 @@
+{
+ "flags": [
+  "VIP - PUC Complaint",
+  "VIP - Critical Care",
+  "VIP - Payment Arrangement",
+  "VIP - Deferred Payment Plan",
+  "VIP - Inadvertent Gain",
+  "VIP - Inadvertent Loss",
+  "VIP - Billing Error",
+  "VIP - Friends & Family",
+  "VIP - Other",
+  "SOLAR CUSTOMER",
+  "Returned Mail",
+  "Fraudulent Order",
+  "Multiple Enrollments",
+  "Order has been cancelled manually"
+ ],
+ "flag_banners": {
+  "SOLAR CUSTOMER": [
+   "SOLAR CUSTOMER",
+   "Handle with care!"
+  ],
+  "VIP - Friends & Family": [
+   "Friends and Family",
+   "This customer is a Friends and Family customer. Please escalate to the back office!"
+  ],
+  "VIP - PUC Complaint": [
+   "PUC Complaint",
+   "Open PUC complaint. Escalate to a supervisor before making changes."
+  ],
+  "VIP - Critical Care": [
+   "Critical Care",
+   "Critical care customer. Do not disconnect."
+  ],
+  "Fraudulent Order": [
+   "Fraudulent Order",
+   "Verify identity before discussing the account."
+  ]
+ },
+ "actions": {
+  "status": {
+   "credit-run": [
+    "Credit - Run Credit",
+    []
+   ],
+   "credit-max-deposit": [
+    "Credit - Give Max Deposit",
+    []
+   ],
+   "credit-waive-deposit": [
+    "Credit - Waive Deposit",
+    {
+     "reason": [
+      "Reason",
+      "text"
+     ]
+    }
+   ],
+   "send-to-market": [
+    "Status - Send to Market",
+    {
+     "date": [
+      "Requested start",
+      "date"
+     ]
+    }
+   ],
+   "temp-disconnect": [
+    "Status - Temp Disconnect",
+    {
+     "date": [
+      "Disconnect date",
+      "date"
+     ]
+    }
+   ],
+   "disconnect": [
+    "Status - Disconnect",
+    {
+     "date": [
+      "Disconnect date",
+      "date"
+     ]
+    }
+   ],
+   "reconnect": [
+    "Status - Reconnect",
+    []
+   ],
+   "move-out": [
+    "Status - Move Out",
+    {
+     "date": [
+      "Move-out date",
+      "date"
+     ]
+    }
+   ],
+   "cancel-order": [
+    "Status - Cancel Order",
+    {
+     "reason": [
+      "Reason",
+      "text"
+     ]
+    }
+   ],
+   "delete-order": [
+    "Status - Delete Order",
+    [],
+    "delete"
+   ],
+   "winback": [
+    "Status - Winback",
+    []
+   ],
+   "clear-exceptions": [
+    "Misc - Clear Current Exceptions",
+    []
+   ],
+   "repair-plan": [
+    "Misc - Repair Plan",
+    []
+   ],
+   "undo-last-plan": [
+    "Misc - Undo Last Plan",
+    []
+   ],
+   "add-order": [
+    "Misc - Add Order",
+    []
+   ]
+  },
+  "service": {
+   "make-payment": [
+    "Billing - Make Payment",
+    {
+     "amount": [
+      "Amount ($)",
+      "money"
+     ],
+     "method": [
+      "Payment method",
+      "method"
+     ]
+    }
+   ],
+   "add-bill-credit": [
+    "Billing - Add Bill Credit",
+    {
+     "amount": [
+      "Amount ($)",
+      "money"
+     ],
+     "description": [
+      "Description",
+      "text"
+     ]
+    }
+   ],
+   "balance-adjustment": [
+    "Billing - Add Balance Adjustment Payment",
+    {
+     "amount": [
+      "Amount ($)",
+      "money"
+     ],
+     "description": [
+      "Reason",
+      "text"
+     ]
+    }
+   ],
+   "payment-arrangement": [
+    "Billing - Payment Arrangement",
+    {
+     "installments": [
+      "Installments",
+      "number"
+     ],
+     "date": [
+      "First due date",
+      "date"
+     ]
+    }
+   ],
+   "deferred-payment-plan": [
+    "Billing - Deferred Payment Plan",
+    {
+     "installments": [
+      "Installments",
+      "number"
+     ],
+     "date": [
+      "First due date",
+      "date"
+     ]
+    }
+   ],
+   "transfer-payments": [
+    "Billing - Transfer Payments",
+    {
+     "payment": [
+      "Payment",
+      "payment"
+     ],
+     "account": [
+      "To account #",
+      "text"
+     ]
+    }
+   ],
+   "transfer-stars": [
+    "Billing - Transfer Stars",
+    {
+     "stars": [
+      "Stars",
+      "number"
+     ],
+     "account": [
+      "To account #",
+      "text"
+     ]
+    }
+   ],
+   "balanced-billing": [
+    "Billing - Balanced Billing",
+    []
+   ],
+   "transfer-service": [
+    "Plan - Transfer Service",
+    {
+     "street": [
+      "New street",
+      "text"
+     ],
+     "city": [
+      "City",
+      "text"
+     ],
+     "zip": [
+      "Zip",
+      "text"
+     ],
+     "esiid": [
+      "New ESIID",
+      "text"
+     ],
+     "date": [
+      "Move-in date",
+      "date"
+     ]
+    }
+   ],
+   "change-plan": [
+    "Plan - Change Plan",
+    []
+   ],
+   "spend-stars": [
+    "MyAccount - Spend Stars",
+    []
+   ],
+   "reset-login": [
+    "MyAccount - Reset Login",
+    []
+   ],
+   "add-authorized-user": [
+    "MyAccount - Add Authorized User",
+    {
+     "name": [
+      "Name",
+      "text"
+     ],
+     "phone": [
+      "Phone",
+      "text"
+     ]
+    }
+   ],
+   "send-email": [
+    "Contact - Send Email",
+    {
+     "template": [
+      "Template",
+      "template"
+     ],
+     "message": [
+      "Message",
+      "textarea"
+     ]
+    }
+   ],
+   "send-text": [
+    "Contact - Send Text",
+    {
+     "message": [
+      "Message",
+      "textarea"
+     ]
+    }
+   ],
+   "test-meter": [
+    "Meter - Test Meter",
+    []
+   ],
+   "reread": [
+    "Meter - ReRead",
+    []
+   ],
+   "request-usage": [
+    "Meter - Request Usage",
+    []
+   ]
+  }
+ },
+ "products": {
+  "AutoPay": "ItemProductAutopay_model",
+  "Paperless Billing": "ItemProductPaperless_model",
+  "Rangler Rewards": "ItemProductReward_model",
+  "Peak Perks": "ItemProductPeakPerk_model",
+  "Peak Perks+": "ItemProductPeakPerksPlus_model",
+  "Giddyup Guarantee": "ItemProductGiddyup_model",
+  "Freedom Flex": "ItemProductFreedomFix_model",
+  "Solar Buyback": "ItemProductSolar_model",
+  "Solar Lead Referral": "ItemProductLeadSolar_model",
+  "Deposit Alternatives": "ItemProductDepositAlt_model",
+  "Payment Arrangement": "ItemProductPaymentArrangement_model",
+  "Deferred Payment Plan": "ItemProductDeferredPayment_model",
+  "Balanced Billing": "ItemProductBalancedBilling_model",
+  "Combined Billing": "ItemProductCombinedBilling_model",
+  "AIG Home Warranty": "ItemProductWarrantyHome_model",
+  "Electric System Protection Program": "ItemProductWarrantyLine_model",
+  "Surge Protection Program": "ItemProductWarrantySurge_model",
+  "Air Conditioning Protection Program": "ItemProductWarrantyAc_model",
+  "Electric Vehicle Charger Protection Program": "ItemProductWarrantyCharger_model",
+  "ecobee": "ItemProductThermostat_model",
+  "Pick Your Due Date": "ItemProductDueDate_model",
+  "Refer-A-Friend": "ItemProductReferral_model",
+  "ADT Security": "ItemProductAdt_model"
+ },
+ "product_fields": {
+  "AutoPay": "autopay",
+  "Paperless Billing": "paperless",
+  "Peak Perks": "peak_perks"
+ },
+ "note_categories": {
+  "Agent Issue": [
+   "Audio Issue",
+   "Customer Disconnect/Hang up",
+   "Customer Not Authorized",
+   "Internal Transfer",
+   "Problem with System",
+   "Test",
+   "Wrong Number"
+  ],
+  "Billing": [
+   "Balance Inquiry",
+   "Balanced Billing Inquiry",
+   "Balanced Billing Set up",
+   "Bill Not Received",
+   "Billing Dispute",
+   "DNP/RNP",
+   "Fees",
+   "PYDD/Due Date Change",
+   "Rate",
+   "Resend Bill",
+   "Usage",
+   "Waive Deposit/Fee"
+  ],
+  "Complaint": [
+   "Billing",
+   "Customer Service",
+   "Deposit Refund",
+   "Disconnection",
+   "PA/DPP",
+   "Provision of Service",
+   "Rates",
+   "Sales Misinformation",
+   "Slamming",
+   "Solar Buy Back"
+  ],
+  "Inquiry": [
+   "Contract Inquiry",
+   "Outage",
+   "Update Contact Info"
+  ],
+  "MVO/Cancel/Rescission": [
+   "Cancel - Changed Mind",
+   "Cancel - Contract",
+   "Cancel - Not Moving to Address",
+   "Cancel - Price",
+   "MVO",
+   "Rescission"
+  ],
+  "Order": [
+   "Change Plan",
+   "Date Change",
+   "Deposit Waiver Docs",
+   "General Inquiry",
+   "Link Accounts",
+   "Meter/ESI Inquiry",
+   "Military/First Responder",
+   "MT Request/Status",
+   "New Enrollment",
+   "Re-run Credit",
+   "Reject/Rejection",
+   "Renewal",
+   "Status Inquiry",
+   "Switch Hold",
+   "Transfer of Service",
+   "Verify ID"
+  ],
+  "Payment": [
+   "AutoPay Set Up",
+   "Deposit Refund Request",
+   "DPP Set Up",
+   "Duplicate Payment/Refund",
+   "Missing Payment",
+   "PA/DPP/Extension Inquiry",
+   "Pay Deposit",
+   "Payment Arrangement Set up",
+   "Payment Dispute",
+   "Payment Made",
+   "Pledge Inquiry",
+   "Remove Autopay"
+  ],
+  "Ticket": [
+   "Internal Note",
+   "Manager Request",
+   "Follow-up",
+   "Call Note"
+  ],
+  "Products": [
+   "Add ecobee",
+   "Add Freedom Flex",
+   "Add Home Warranty",
+   "Add Peak Perks/Plus",
+   "Add Solar Buy Back",
+   "Ecobee Inquiry",
+   "Refer A Friend (RAF)",
+   "Remove ecobee",
+   "Remove Freedom Flex",
+   "Remove Home Warranty",
+   "Remove Paperless Billing",
+   "Remove Peak Perks/Plus",
+   "Remove Solar Buy Back",
+   "Solar BuyBack Inquiry"
+  ],
+  "Rewards": [
+   "Gift Card",
+   "Promo Code",
+   "Redeem Stars"
+  ],
+  "Website/Mobile": [
+   "Cannot Log in",
+   "Online Issue",
+   "Reset Username/Password"
+  ]
+ },
+ "priorities": [
+  "Low",
+  "Medium",
+  "High"
+ ],
+ "resolutions": {
+  "Resolved": "ok",
+  "Incomplete": "warn",
+  "Follow-up Needed": "info",
+  "Escalated": "bad",
+  "No Answer": ""
+ },
+ "contact_channels": {
+  "call": "Phone Call",
+  "email": "Email",
+  "sms": "Text",
+  "chat": "Chat"
+ },
+ "queues": [
+  "QueueBillComplete",
+  "QueueBillException",
+  "QueueBillReady",
+  "QueueBillUnprocessed",
+  "QueueBill",
+  "QueueCallStart",
+  "QueueCall",
+  "QueueCartAbandon",
+  "QueueCartAccepted",
+  "QueueCartActive",
+  "QueueCartAddOrder",
+  "QueueCartArchive",
+  "QueueCartAutopayRequired",
+  "QueueCartBalancedBilling",
+  "QueueCartBalancedue",
+  "QueueCartBillReady",
+  "QueueCartBlendExtend",
+  "QueueCartCancel",
+  "QueueCartCollection",
+  "QueueCartDead",
+  "QueueCartDeposit",
+  "QueueCartDisconnectComplete",
+  "QueueCartDisconnectNotice",
+  "QueueCartDisconnectRejected",
+  "QueueCartDisconnectSent",
+  "QueueCartDisconnect",
+  "QueueCartDropped",
+  "QueueCartDropping",
+  "QueueCartDualfuel",
+  "QueueCartExceptionBalance",
+  "QueueCartExceptionCancelled",
+  "QueueCartExceptionChangeRenew",
+  "QueueCartExceptionCommercialMatrix",
+  "QueueCartExceptionCommercial",
+  "QueueCartExceptionDuplicate",
+  "QueueCartExceptionEmailDropped",
+  "QueueCartExceptionErcotCancel",
+  "QueueCartExceptionErcotDatechange",
+  "QueueCartExceptionErcotDisconnect",
+  "QueueCartExceptionErcotEnrollment",
+  "QueueCartExceptionErcotMoveout",
+  "QueueCartExceptionErcotOther",
+  "QueueCartExceptionErcotReconnect",
+  "QueueCartExceptionErcot",
+  "QueueCartExceptionEsiid",
+  "QueueCartExceptionFraud",
+  "QueueCartExceptionMultiple",
+  "QueueCartExceptionOther",
+  "QueueCartExceptionPermitRequired",
+  "QueueCartExceptionPlan",
+  "QueueCartExceptionProvisional",
+  "QueueCartExceptionSuspect",
+  "QueueCartExceptionSwitchHold",
+  "QueueCartExceptionTest",
+  "QueueCartExceptionTransfer",
+  "QueueCartExceptionUnprocessed",
+  "QueueCartException",
+  "QueueCartFulfilledAccepted",
+  "QueueCartFulfilledCancelledDropped",
+  "QueueCartFulfilledCancelled",
+  "QueueCartFulfilledChurned",
+  "QueueCartFulfilledDepositPaid",
+  "QueueCartFulfilledDeposit",
+  "QueueCartFulfilledDocusign",
+  "QueueCartFulfilledFlowing",
+  "QueueCartFulfilledHold",
+  "QueueCartFulfilledImport",
+  "QueueCartFulfilledOutboxHold",
+  "QueueCartFulfilledOutbox",
+  "QueueCartFulfilledPending",
+  "QueueCartFulfilledRejectedAutopay",
+  "QueueCartFulfilledRejectedCredit",
+  "QueueCartFulfilledRejectedError",
+  "QueueCartFulfilledRejectedExisting",
+  "QueueCartFulfilledRejectedFrozen",
+  "QueueCartFulfilledRejectedPermitRequired",
+  "QueueCartFulfilledRejectedPlan",
+  "QueueCartFulfilledRejectedSwitchhold",
+  "QueueCartFulfilledRejectedTransfer",
+  "QueueCartFulfilledRejectedUan",
+  "QueueCartFulfilledRejected",
+  "QueueCartFulfilledRequested",
+  "QueueCartFulfilled",
+  "QueueCartMeterMvo",
+  "QueueCartMeterRead",
+  "QueueCartMeterReconnect",
+  "QueueCartMeterTest",
+  "QueueCartMeter",
+  "QueueCartMvo",
+  "QueueCartPassthru",
+  "QueueCartPaymentArrangementDefaulted",
+  "QueueCartPromoApplied",
+  "QueueCartReconnectComplete",
+  "QueueCartReconnectRejected",
+  "QueueCartReconnectSent",
+  "QueueCartReconnect",
+  "QueueCartReturnedmail",
+  "QueueCartStart",
+  "QueueCartSubmit",
+  "QueueCartSwitchhold",
+  "QueueCartSystemdown",
+  "QueueCartTextCancelled",
+  "QueueCartText",
+  "QueueCartTransition",
+  "QueueCartUsagerequest",
+  "QueueCartVipBilling",
+  "QueueCartVipCriticalcare",
+  "QueueCartVipDeferredpayment",
+  "QueueCartVipFriendsandfamily",
+  "QueueCartVipIag",
+  "QueueCartVipIal",
+  "QueueCartVipOther",
+  "QueueCartVipPaymentarrangement",
+  "QueueCartVipPuc",
+  "QueueCartVip",
+  "QueueCartWinbackComplete",
+  "QueueCartWinbackSent",
+  "QueueCartWinback",
+  "QueueCartWriteoff",
+  "QueueCart",
+  "QueueForecastComplete",
+  "QueueForecastProcessing",
+  "QueueForecastStart",
+  "QueueForecast",
+  "QueueLedgerPending",
+  "QueueLedgerSent",
+  "QueueLedgerSkipped",
+  "QueueLedger",
+  "QueueMyaccountHidden",
+  "QueueMyaccountPlanChanged",
+  "QueueMyaccountPlanRenewed",
+  "QueueMyaccountTransferred",
+  "QueueMyaccount",
+  "QueueOfferRateAccepted",
+  "QueueOfferRatePending",
+  "QueueOfferRate",
+  "QueueOffer",
+  "QueuePartnerDeposit",
+  "QueuePartnerProvisional",
+  "QueuePartnerSherpa",
+  "QueuePartnerWhitelisted",
+  "QueuePartner",
+  "QueueProductCombinedBilling",
+  "QueueProductDepositAlt",
+  "QueueProductFreedomFixComplete",
+  "QueueProductFreedomFixReady",
+  "QueueProductFreedomFix",
+  "QueueProductGiddyupAccepted",
+  "QueueProductGiddyupExpired",
+  "QueueProductGiddyupPending",
+  "QueueProductGiddyupReady",
+  "QueueProductGiddyupRejected",
+  "QueueProductGiddyup",
+  "QueueProductSolar",
+  "QueueProduct",
+  "Queue"
+ ]
+}

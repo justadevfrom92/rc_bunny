@@ -1,0 +1,177 @@
+{
+ "reports": {
+  "orders": {
+   "title": "Orders",
+   "class": "OrdersReport",
+   "model": "TicketCustomer_model",
+   "category": "Customers",
+   "description": "New orders (accounts) by order date and status."
+  },
+  "notes": {
+   "title": "Notes",
+   "class": "NotesReport",
+   "model": "ItemNote_model",
+   "category": "Customers",
+   "description": "Account notes by agent, date, text and priority."
+  },
+  "phonecalls": {
+   "title": "Phonecalls",
+   "class": "PhonecallsReport",
+   "model": "ItemCall_model",
+   "category": "Customers",
+   "description": "Calls by date, account, agent id or phone number."
+  },
+  "contacts": {
+   "title": "Emails & Texts",
+   "class": "ContactsReport",
+   "model": "ItemEmailSalesforce_model",
+   "category": "Customers",
+   "description": "Emails and texts sent to customers, with opens and clicks."
+  },
+  "exceptions": {
+   "title": "Exception Queues",
+   "class": "ExceptionsReport",
+   "model": "TicketQueue_model",
+   "category": "Customers",
+   "description": "Work items in the exception queues and how long they have been open."
+  },
+  "payments": {
+   "title": "Payments",
+   "class": "PaymentsReport",
+   "model": "ItemPayment_model",
+   "category": "Billing",
+   "description": "Payments by date, status and source."
+  },
+  "bills": {
+   "title": "Bills",
+   "class": "BillsReport",
+   "model": "ItemFileBill_model",
+   "category": "Billing",
+   "description": "Bills issued, with usage and amounts."
+  },
+  "receivables": {
+   "title": "Accounts Receivable Aging",
+   "class": "ReceivablesReport",
+   "model": "TicketCustomer_model",
+   "category": "Billing",
+   "description": "Open balances aged Current, 1-30, 31-60, 61-90 and 90+ days past due."
+  },
+  "ercot": {
+   "title": "ERCOT Transactions",
+   "class": "ErcotReport",
+   "model": "ItemErcot81405_model",
+   "category": "Market",
+   "description": "Market transactions (814s, 867s) by date, type and status."
+  },
+  "stars": {
+   "title": "Rewards Stars",
+   "class": "StarsReport",
+   "model": "ItemProductReward_model",
+   "category": "Rewards",
+   "description": "Stars earned and redeemed."
+  }
+ },
+ "timeout_minutes": 60,
+ "upload_categories": [
+  "ETL",
+  "Legal Documents",
+  "Customer Templates",
+  "Finance",
+  "Utility / ERCOT",
+  "Vendor",
+  "Marketing",
+  "Operations",
+  "Regulatory",
+  "Other"
+ ],
+ "folders": {
+  "etl": "ETL",
+  "legal": "Legal Documents",
+  "templates": "Customer Templates",
+  "finance": "Finance",
+  "ercot": "Utility / ERCOT",
+  "vendor": "Vendor"
+ },
+ "etl": {
+  "ercot-867": {
+   "name": "ERCOT 867_03 Usage Import",
+   "direction": "In",
+   "party": "ERCOT (via market gateway)",
+   "schedule": "Hourly",
+   "cron": "0 * * * *",
+   "format": "EDI X12 → CSV",
+   "file": "ercot_867_03_{date}_{hour}.csv",
+   "target": "Usage reads on each account"
+  },
+  "ercot-814": {
+   "name": "ERCOT 814 Enrollment Responses",
+   "direction": "In",
+   "party": "ERCOT (via market gateway)",
+   "schedule": "Every 10 minutes",
+   "cron": "*/10 * * * *",
+   "format": "EDI X12",
+   "file": "ercot_814_{date}_{time}.edi",
+   "target": "Orders (accepted, rejected, switch dates)"
+  },
+  "utilibill-bills": {
+   "name": "Utilibill Bill Export",
+   "direction": "In",
+   "party": "Utilibill",
+   "schedule": "Daily 4:00 AM",
+   "cron": "0 4 * * *",
+   "format": "CSV + PDF zip",
+   "file": "bills_{date}.zip",
+   "target": "Bills and bill PDFs (S3 bills/)"
+  },
+  "lockbox": {
+   "name": "Bank Lockbox Payments",
+   "direction": "In",
+   "party": "Sample Bank lockbox",
+   "schedule": "Weekdays 7:30 AM",
+   "cron": "30 7 * * 1-5",
+   "format": "BAI2",
+   "file": "lockbox_{date}.bai",
+   "target": "Payments (check and money order)"
+  },
+  "stripe-settlement": {
+   "name": "Card Settlement Report",
+   "direction": "In",
+   "party": "Card processor",
+   "schedule": "Daily 6:15 AM",
+   "cron": "15 6 * * *",
+   "format": "CSV",
+   "file": "settlement_{date}.csv",
+   "target": "Payment status and fees"
+  },
+  "quickbooks-journal": {
+   "name": "Journal Export",
+   "direction": "Out",
+   "party": "QuickBooks",
+   "schedule": "Daily 11:30 PM",
+   "cron": "30 23 * * *",
+   "format": "IIF",
+   "file": "journal_{date}.iif",
+   "target": "Ledger entries for the day"
+  },
+  "monthly-payment-letters": {
+   "name": "Monthly Payment Letters",
+   "direction": "Out",
+   "party": "Print & mail vendor",
+   "schedule": "1st of the month 5:00 AM",
+   "cron": "0 5 1 * *",
+   "format": "PDF batch + CSV manifest",
+   "file": "payment_letters_{month}.zip",
+   "target": "Customer Templates → Monthly Payment Reminder"
+  },
+  "collections": {
+   "name": "Collections Placement",
+   "direction": "Out",
+   "party": "Collections agency",
+   "schedule": "Mondays 8:00 AM",
+   "cron": "0 8 * * 1",
+   "format": "Fixed-width text",
+   "file": "placements_{date}.txt",
+   "target": "Accounts 90+ days past due"
+  }
+ }
+}

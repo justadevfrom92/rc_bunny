@@ -1,0 +1,34 @@
+{
+ "REPORT_STATUSES": [
+  "Exception",
+  "Submitted",
+  "Rejected",
+  "Deposit Due",
+  "Deposit Paid",
+  "Pending - Ready to send to Utility",
+  "Requested - Waiting for Utility Response",
+  "Accepted - Accepted by Utility",
+  "Flowing - On Flow",
+  "Churned"
+ ],
+ "CUSTOMER_STATUSES": [
+  "Submitted",
+  "Pending - Credit",
+  "Pending - Deposit Due",
+  "Pending - No Deposit Due",
+  "Pending - Utility Not Answered",
+  "Good - On Flow",
+  "Rejected - By Utility",
+  "Dropped - Churned"
+ ],
+ "EXCEPTIONS": [
+  "Not sent to UtiliBill",
+  "Not sent to Utility",
+  "No ESIID",
+  "Non-Resi Meter",
+  "Permit Required",
+  "Switch Hold",
+  "Possible Duplicate",
+  "Other Exception"
+ ]
+}

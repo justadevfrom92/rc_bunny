@@ -61,6 +61,8 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
     await scope.ServiceProvider.GetRequiredService<DbSeeder>().InitializeAsync();
+// `dotnet run -- --seed-only`: create/migrate the database and load the sample data, then exit.
+if (args.Contains("--seed-only")) return;
 
 if (!app.Environment.IsDevelopment())
 {

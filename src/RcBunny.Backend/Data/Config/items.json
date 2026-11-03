@@ -1,0 +1,1546 @@
+{
+ "tickets": {
+  "TicketCart_model": [
+   "Account",
+   null
+  ],
+  "TicketContactLog_model": [
+   "Logs",
+   "Email/SMS/Notes"
+  ],
+  "TicketProductLog_model": [
+   "Logs",
+   "Products"
+  ],
+  "TicketErcotLog_model": [
+   "Logs",
+   "EDI Transactions"
+  ],
+  "TicketAttributeLog_model": [
+   "Logs",
+   "Account Attributes"
+  ],
+  "TicketContentLog_model": [
+   "Logs",
+   "ItemContents"
+  ],
+  "TicketBillUsageTx_model": [
+   "Bill Details",
+   null
+  ]
+ },
+ "secret": [
+  "ssn",
+  "ter_password",
+  "password_hash",
+  "reset_code",
+  "reset_code_mobile",
+  "cc_acct",
+  "cc_token",
+  "cvv",
+  "app_hash",
+  "dl_number",
+  "authnet_profile_id",
+  "stripe_profile_id",
+  "plaid_profile_id"
+ ],
+ "actions": {
+  "edit": "Edit",
+  "resend": "Resend",
+  "check_status": "Check Status",
+  "duplicate": "Duplicate",
+  "mark_deposit": "Mark as Deposit",
+  "regenerate": "Regenerate",
+  "check_account": "Check Current Account",
+  "cancel_rebill": "Cancel & Rebill",
+  "link_accounts": "Link to All Accounts",
+  "recalculate": "Recalculate",
+  "welcome_packet": "Regen Welcome Packet",
+  "delete": "Delete (Permanent!)"
+ },
+ "models": {
+  "TicketAttributeLog_model": {
+   "label": "Logs",
+   "source": "ticket",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log"
+   ]
+  },
+  "TicketContentLog_model": {
+   "label": "Logs",
+   "source": "ticket",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log"
+   ]
+  },
+  "TicketErcotLog_model": {
+   "label": "Logs",
+   "source": "ticket",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log"
+   ]
+  },
+  "TicketProductLog_model": {
+   "label": "Logs",
+   "source": "ticket",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log"
+   ]
+  },
+  "ticket_cart_model": {
+   "label": "Account",
+   "source": "ticket",
+   "parents": [],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "order_id_seq",
+    "customer_type"
+   ]
+  },
+  "ItemAttribute_model": {
+   "label": "Attribute",
+   "source": "stored",
+   "parents": [
+    "TicketAttributeLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "value_text",
+    "value_int",
+    "value_decimal",
+    "value_date",
+    "start_unix",
+    "end_unix"
+   ]
+  },
+  "ItemBucketUsage_model": {
+   "label": "Usage",
+   "source": "stored",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "uan1",
+    "uan2",
+    "uan3",
+    "market_id",
+    "season",
+    "he01_he06",
+    "he07_he12",
+    "he13_he18",
+    "he19_he24",
+    "onpeak",
+    "offpeak",
+    "he01",
+    "he02",
+    "he03",
+    "he04",
+    "he05",
+    "he06",
+    "he07",
+    "he08",
+    "he09",
+    "he10",
+    "he11",
+    "he12",
+    "he13",
+    "he14",
+    "he15",
+    "he16",
+    "he17",
+    "he18",
+    "he19",
+    "he20",
+    "he21",
+    "he22",
+    "he23",
+    "he24",
+    "total",
+    "days",
+    "bucket_name",
+    "crunch_date",
+    "locked"
+   ]
+  },
+  "ItemContentViewed_model": {
+   "label": "Item Content Viewed",
+   "source": "stored",
+   "parents": [
+    "TicketContentLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "content_id",
+    "times_shown",
+    "last_shown",
+    "times_clicked",
+    "last_clicked"
+   ]
+  },
+  "ItemCredit_model": {
+   "label": "Credit",
+   "source": "credit",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "code",
+    "amount",
+    "taxable",
+    "description",
+    "processed",
+    "pending",
+    "invoice_number",
+    "ub_id",
+    "note_id",
+    "source_id"
+   ]
+  },
+  "ItemDebit_model": {
+   "label": "Debit",
+   "source": "debit",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "code",
+    "amount",
+    "taxable",
+    "description",
+    "processed",
+    "pending",
+    "invoice_number",
+    "source_id"
+   ]
+  },
+  "ItemDevice_model": {
+   "label": "Device",
+   "source": "stored",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "type",
+    "uuid",
+    "logins",
+    "login_date",
+    "logout_date",
+    "valid",
+    "allow_notifications",
+    "app_version"
+   ]
+  },
+  "ItemElectricityPartnerEnergytexasBrandEnergytexasTx_model": {
+   "label": "Plan",
+   "source": "plan",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "welcome_packet",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "original_click_data",
+    "rep_id",
+    "market_id",
+    "plan_market_id",
+    "plan_click_id",
+    "move_switch",
+    "move_switch_date",
+    "move_switch_expedite",
+    "plan_id",
+    "plan_name",
+    "plan_energy_charge",
+    "plan_rate",
+    "plan_rate_elec_500",
+    "plan_rate_elec_1000",
+    "plan_rate_elec_2000",
+    "plan_etf",
+    "plan_etf_per_month",
+    "plan_term",
+    "plan_partner_product_id",
+    "plan_partner_plan_id",
+    "plan_partner_rate_id",
+    "plan_yrac_url",
+    "plan_efl_url",
+    "plan_toc_url",
+    "partner_order_status",
+    "partner_order_id",
+    "partner_account_id",
+    "deposit_amt",
+    "payment_amt",
+    "balance_amt",
+    "commodity",
+    "mills",
+    "up_front",
+    "hold_order",
+    "promo_code",
+    "annual_usage",
+    "contract_start_date",
+    "contract_end_date",
+    "plan_index",
+    "custom",
+    "byop_ready",
+    "budget_billing_amount",
+    "dnis",
+    "agent_id",
+    "meter_id"
+   ]
+  },
+  "ItemEmailEnergytexasAccepted_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "Order Accepted",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailEnergytexasAutopayRemoved_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "AutoPay Removed",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailEnergytexasCustom_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "Custom Email",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailEnergytexasPaymentMade_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "Billing - Resi - Payment Made",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailEnergytexasRenewed_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "Renewal Offer",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailEnergytexasRewardsInitial_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "Rewards - Welcome",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailEnergytexasStarsEarned_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "Rewards - Stars Earned",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailEnergytexasWelcome_model": {
+   "label": "Email",
+   "source": "email",
+   "template": "Welcome Letter",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason"
+   ]
+  },
+  "ItemEmailSalesforce_model": {
+   "label": "Email",
+   "source": "email",
+   "parents": [
+    "TicketCart_model",
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "resend",
+    "check_status",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "cmd",
+    "send_with_us_key",
+    "fingerprint",
+    "sent",
+    "opened",
+    "clicked",
+    "dropped",
+    "last_updated",
+    "template_name",
+    "template_key",
+    "fail_reason",
+    "definition_id",
+    "definition_key",
+    "send_id",
+    "composite_id",
+    "contact_key",
+    "email"
+   ]
+  },
+  "ItemErcot81405_model": {
+   "label": "ERCOT",
+   "source": "ercot",
+   "types": [
+    "814_05",
+    "814_04"
+   ],
+   "parents": [
+    "TicketErcotLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "outbound",
+    "processed",
+    "document_set",
+    "document_type",
+    "document_purpose",
+    "document_subpurpose",
+    "document_tracking_number",
+    "sub_document_tracking_number",
+    "transaction_date",
+    "marketer_duns",
+    "marketer_name",
+    "utility_duns",
+    "utility_name",
+    "ercot_duns",
+    "ercot_name",
+    "esi_id",
+    "original_document_number",
+    "original_document_id",
+    "original_tracking_number",
+    "commodity",
+    "membership_id",
+    "action",
+    "service_start_date",
+    "customer_name_service_address",
+    "customer_service_address_line_1",
+    "customer_service_address_line_2",
+    "customer_service_city",
+    "customer_service_state",
+    "customer_service_zip_code",
+    "rejection_reason_code",
+    "rejection_reason_code_description",
+    "rejection_reason_clarification",
+    "special_read_date_off_cycle_switch",
+    "historical_report",
+    "distribution_loss_factor",
+    "premise_type",
+    "station_id",
+    "critical_care_customer",
+    "status_reason_code",
+    "status_reason_code_description",
+    "status_reason_code_clarification",
+    "meter_number",
+    "meter_multiplier",
+    "meter_multiplier_description_code",
+    "time_of_use_code_meter_multiplier",
+    "time_of_use_code_description_meter_multiplier",
+    "number_of_dials",
+    "load_profile",
+    "meter_type",
+    "utility_rate_class",
+    "utility_rate_subclass",
+    "unmetered_service_type_code",
+    "unmetered_service_type_description",
+    "unmetered_service_type_comments",
+    "number_of_unmetered_devices",
+    "meter_reading_billing_cycle2",
+    "meter_cycle_day",
+    "ams_indicator",
+    "critical_care_status_code",
+    "critical_care_status_description",
+    "critical_care_expiration_date",
+    "critical_care_emergency_contact_name",
+    "critical_care_emergency_contact_mailing_address_1",
+    "critical_care_emergency_contact_mailing_address_2",
+    "critical_care_emergency_contact_city",
+    "critical_care_emergency_contact_state",
+    "critical_care_emergency_contact_zip",
+    "critical_care_emergency_contact_country",
+    "critical_care_emergency_contact_phone_number_1",
+    "critical_care_emergency_contact_phone_number_2"
+   ]
+  },
+  "ItemErcot81416_model": {
+   "label": "ERCOT",
+   "source": "ercot",
+   "types": [
+    "814_16",
+    "814_01"
+   ],
+   "parents": [
+    "TicketErcotLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "outbound",
+    "processed",
+    "document_set",
+    "document_type",
+    "document_purpose",
+    "document_subpurpose",
+    "document_tracking_number",
+    "sub_document_tracking_number",
+    "transaction_date",
+    "marketer_duns",
+    "marketer_name",
+    "utility_duns",
+    "utility_name",
+    "ercot_duns",
+    "ercot_name",
+    "esi_id",
+    "original_document_number",
+    "original_document_id",
+    "original_tracking_number",
+    "commodity",
+    "membership_id",
+    "customer_name",
+    "service_address_zip_code",
+    "customer_contact_name",
+    "customer_phone_number_1",
+    "customer_phone_number_2",
+    "permit_name",
+    "customer_notification_name_line_1",
+    "customer_notification_name_line_2",
+    "customer_notification_name_line_3",
+    "customer_notification_address_line_1",
+    "customer_notification_address_line_2",
+    "customer_notification_city",
+    "customer_notification_state",
+    "customer_notification_zip_code",
+    "customer_notification_country_code",
+    "billing_name_line_1",
+    "billing_name_line_2",
+    "billing_name_line_3",
+    "billing_address_line_1",
+    "billing_address_line_2",
+    "billing_city",
+    "billing_state",
+    "billing_zip_code",
+    "billing_country_code",
+    "move_in_date",
+    "historical_report",
+    "special_needs_indicator",
+    "billing_party",
+    "bill_calculator",
+    "priority_code",
+    "location_instructions"
+   ]
+  },
+  "ItemFileBill_model": {
+   "label": "Bill",
+   "source": "bill",
+   "parents": [
+    "TicketCart_model",
+    "TicketBillUsageTx_model"
+   ],
+   "actions": [
+    "edit",
+    "cancel_rebill",
+    "check_account",
+    "regenerate",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "file_name",
+    "file_path",
+    "file_type",
+    "file_size",
+    "status",
+    "amazon_path",
+    "invoice_number",
+    "invoice_date",
+    "due_date",
+    "uan1",
+    "start_date",
+    "end_date",
+    "usage_amt",
+    "uom",
+    "billed_rate",
+    "billed_amount",
+    "email_id",
+    "pdf_hash",
+    "previous_balance",
+    "previous_payments",
+    "current_balance",
+    "amount_due",
+    "paid_date",
+    "processed",
+    "ontime",
+    "unpaid_amount",
+    "disconnect_date",
+    "source",
+    "bill_type",
+    "invoice_id",
+    "combined_bill_id"
+   ]
+  },
+  "ItemFileEfl_model": {
+   "label": "EFL",
+   "source": "file",
+   "kind": "efl",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "regenerate",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "file_name",
+    "file_path",
+    "file_type",
+    "file_size",
+    "status",
+    "amazon_path",
+    "plan_id"
+   ]
+  },
+  "ItemFileWelcomePacket_model": {
+   "label": "Welcome Packet",
+   "source": "file",
+   "kind": "welcome",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "regenerate",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "file_name",
+    "file_path",
+    "file_type",
+    "file_size",
+    "status",
+    "amazon_path",
+    "plan_id"
+   ]
+  },
+  "ItemForecastModel_model": {
+   "label": "Forecast Model",
+   "source": "stored",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "uan1",
+    "zip",
+    "station",
+    "profile",
+    "model",
+    "scalar",
+    "adjustments",
+    "detail_level",
+    "last_calculated"
+   ]
+  },
+  "ItemLocationPostalUsa_model": {
+   "label": "Billing Address",
+   "source": "postal",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "address_1",
+    "address_2",
+    "city",
+    "state",
+    "zip",
+    "zip_4",
+    "county",
+    "location_code"
+   ]
+  },
+  "ItemLocationUtilityTexas_model": {
+   "label": "Service Address",
+   "source": "address",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "address_1",
+    "address_2",
+    "city",
+    "state",
+    "zip",
+    "zip_4",
+    "county",
+    "location_code",
+    "market_id",
+    "uan1",
+    "uan2",
+    "uan3",
+    "uan4",
+    "uan5",
+    "start_date",
+    "service_start",
+    "service_end",
+    "billing_same",
+    "census_tract",
+    "geocode",
+    "load_zone",
+    "esiid",
+    "esiids"
+   ]
+  },
+  "ItemMyaccountLogin_model": {
+   "label": "MyAccount",
+   "source": "login",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "username",
+    "password_hash",
+    "reset_code",
+    "reset_code_mobile",
+    "reset_time",
+    "valid",
+    "app_hash",
+    "logins",
+    "login_date"
+   ]
+  },
+  "ItemNote_model": {
+   "label": "Note",
+   "source": "note",
+   "parents": [
+    "TicketContactLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "user_id",
+    "username",
+    "note",
+    "priority",
+    "category",
+    "action"
+   ]
+  },
+  "ItemPayaccountCredit_model": {
+   "label": "Payment Method",
+   "source": "paymethod",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "link_accounts",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "address_1",
+    "address_2",
+    "city",
+    "state",
+    "zip",
+    "authnet_profile_id",
+    "stripe_profile_id",
+    "plaid_profile_id",
+    "last_4",
+    "method_name",
+    "autopay",
+    "status",
+    "cc_amount",
+    "cc_acct",
+    "cc_exp_month",
+    "cc_exp_year",
+    "cc_token",
+    "cvv",
+    "card_type",
+    "confirmation_number",
+    "name_on_card"
+   ]
+  },
+  "ItemPayment_model": {
+   "label": "Payment",
+   "source": "payment",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "duplicate",
+    "mark_deposit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "amount",
+    "status",
+    "confirmation_number",
+    "confirmation_number_stripe",
+    "confirmation_reverse",
+    "card_id",
+    "reversed_timestamp",
+    "comment",
+    "source",
+    "payment_date",
+    "ub_id",
+    "error",
+    "note_id",
+    "transaction_id_seq",
+    "journal_entry_id",
+    "customer_type"
+   ]
+  },
+  "ItemPersonShopper_model": {
+   "label": "Customer",
+   "source": "person",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "first_name",
+    "last_name",
+    "email",
+    "phone_1",
+    "phone_2",
+    "sms",
+    "lang",
+    "ssn",
+    "communication_method",
+    "customer_name",
+    "ter_username",
+    "ter_password",
+    "lando_session",
+    "visitor_session_id",
+    "partner_person_id",
+    "credit_level",
+    "birthdate",
+    "birthdate_day",
+    "birthdate_month",
+    "birthdate_year",
+    "dl_number",
+    "dl_state",
+    "timezone_offset",
+    "ip",
+    "ip_state",
+    "ip_country",
+    "site_id",
+    "fax",
+    "allow_marketing",
+    "authnet_profile_id",
+    "stripe_profile_id",
+    "plaid_profile_id",
+    "person_id",
+    "salesforce_id",
+    "phone_carrier",
+    "phone_type",
+    "cobrowse"
+   ]
+  },
+  "ItemProductAutopay_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date"
+   ]
+  },
+  "ItemProductDueDate_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "day_of_month"
+   ]
+  },
+  "ItemProductFreedomFix_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date"
+   ]
+  },
+  "ItemProductGiddyup_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "recalculate",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "discount",
+    "bucket_name",
+    "crunched",
+    "last_crunched",
+    "valid",
+    "accepted",
+    "expires"
+   ]
+  },
+  "ItemProductLeadSolar_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date"
+   ]
+  },
+  "ItemProductPaperless_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date"
+   ]
+  },
+  "ItemProductPeakPerk_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "total_credits"
+   ]
+  },
+  "ItemProductPeakPerksPlus_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "total_credits"
+   ]
+  },
+  "ItemProductReward_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date"
+   ]
+  },
+  "ItemProductSolar_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "last_read",
+    "last_read_meter",
+    "paid_amount",
+    "paid_kwh"
+   ]
+  },
+  "ItemProductThermostat_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "tracking_number",
+    "serial_number",
+    "ship_date",
+    "sent",
+    "connected"
+   ]
+  },
+  "ItemProductWarrantyAc_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "aig_code",
+    "aig_contract_id",
+    "aig_contract_number",
+    "status",
+    "item_location_id",
+    "warranty_contract_id",
+    "coverage_start"
+   ]
+  },
+  "ItemProductWarrantyCharger_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "aig_code",
+    "aig_contract_id",
+    "aig_contract_number",
+    "status",
+    "item_location_id",
+    "warranty_contract_id",
+    "coverage_start"
+   ]
+  },
+  "ItemProductWarrantyLine_model": {
+   "label": "Product",
+   "source": "product",
+   "parents": [
+    "TicketProductLog_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "name",
+    "code",
+    "source",
+    "agent",
+    "description",
+    "price",
+    "total_price",
+    "total_paid",
+    "active_date",
+    "inactive_date",
+    "aig_code",
+    "aig_contract_id",
+    "aig_contract_number",
+    "status",
+    "item_location_id",
+    "warranty_contract_id",
+    "coverage_start"
+   ]
+  },
+  "ItemReview_model": {
+   "label": "Review",
+   "source": "stored",
+   "parents": [
+    "TicketCart_model"
+   ],
+   "actions": [
+    "edit",
+    "delete"
+   ],
+   "fields": [
+    "id",
+    "error_log",
+    "campaign_id",
+    "email",
+    "source",
+    "sent"
+   ]
+  }
+ }
+}

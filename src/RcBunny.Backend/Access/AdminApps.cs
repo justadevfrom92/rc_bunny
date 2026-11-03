@@ -5,7 +5,7 @@ public record MenuItem(string Label, string Path, bool Ported = false);
 
 public record MenuGroup(string? Heading, IReadOnlyList<MenuItem> Items);
 
-public record AdminApp(string Key, string Name, string Description, string Icon, string Home, IReadOnlyList<MenuGroup> Menu);
+public record AppDef(string Key, string Name, string Description, string Icon, string Home, IReadOnlyList<MenuGroup> Menu);
 
 /// <summary>
 /// Every admin app (ebunny's config/admin.php). The launcher, sidebar, app switcher, the Roles matrix
@@ -17,7 +17,7 @@ public static class AdminApps
     private static MenuItem P(string label, string path) => new(label, path, true);
     private static MenuItem T(string label, string path) => new(label, path);
 
-    public static readonly IReadOnlyList<AdminApp> All =
+    public static readonly IReadOnlyList<AppDef> All =
     [
         new("corral", "Corral", "Customer service and CRM: search accounts, create orders, work exception queues, the sales pipeline of leads, follow-ups and partners.", "users", "/corral/customers",
         [

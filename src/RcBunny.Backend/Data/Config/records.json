@@ -1,0 +1,102 @@
+{
+ "api_log": [
+  "ApiLog",
+  "API Call"
+ ],
+ "automation_run": [
+  "AiAutomationRun",
+  "Automation Run"
+ ],
+ "bill": [
+  "Bill",
+  "Bill"
+ ],
+ "contact_log": [
+  "ContactLog",
+  "Email / Text Sent"
+ ],
+ "crm_activity": [
+  "CrmActivity",
+  "CRM Activity"
+ ],
+ "customer_flag": [
+  "CustomerFlag",
+  "Account Flag"
+ ],
+ "email_test": [
+  "EmailTestSend",
+  "Template Test Send"
+ ],
+ "ercot_transaction": [
+  "ErcotTransaction",
+  "ERCOT Transaction"
+ ],
+ "failed_job": [
+  "table:failed_jobs",
+  "Failed Job"
+ ],
+ "heartbeat": [
+  "Heartbeat",
+  "Heartbeat Check"
+ ],
+ "heartbeat_action": [
+  "HeartbeatAction",
+  "Heartbeat Control"
+ ],
+ "history_item": [
+  "HistoryItem",
+  "History Entry"
+ ],
+ "integration_test": [
+  "IntegrationTest",
+  "Connection Test"
+ ],
+ "job_run": [
+  "JobRun",
+  "Job Run"
+ ],
+ "ledger_entry": [
+  "LedgerEntry",
+  "Credit / Debit"
+ ],
+ "note": [
+  "Note",
+  "Note"
+ ],
+ "payment": [
+  "Payment",
+  "Payment"
+ ],
+ "pdf_test": [
+  "PdfTestSend",
+  "PDF Test Send"
+ ],
+ "phonecall": [
+  "Phonecall",
+  "Phone Call"
+ ],
+ "plan_term": [
+  "PlanTerm",
+  "Plan Term"
+ ],
+ "queue_log": [
+  "QueueLog",
+  "Queue Log"
+ ],
+ "reference_row": [
+  "ReferenceRow",
+  "Table Row"
+ ],
+ "service_address": [
+  "ServiceAddress",
+  "Service Address"
+ ],
+ "site_visit": [
+  "SiteVisit",
+  "Site Visit"
+ ],
+ "star_entry": [
+  "StarEntry",
+  "Star Entry"
+ ]
+}

@@ -1,0 +1,7535 @@
+{
+ "order": [
+  "roles",
+  "users",
+  "password_reset_tokens",
+  "sessions",
+  "cache",
+  "cache_locks",
+  "jobs",
+  "job_batches",
+  "failed_jobs",
+  "markets",
+  "zip_ranges",
+  "tdsp_fees",
+  "plans",
+  "plan_groups",
+  "plan_group_plan",
+  "rates",
+  "term_discounts",
+  "term_etfs",
+  "byop_products",
+  "templates",
+  "pages",
+  "content_blocks",
+  "customers",
+  "bookmarks",
+  "payments",
+  "bills",
+  "notes",
+  "work_items",
+  "contact_messages",
+  "reference_rows",
+  "job_runs",
+  "history_items",
+  "admin_apps",
+  "customer_flags",
+  "customer_products",
+  "ledger_entries",
+  "payment_methods",
+  "plan_terms",
+  "service_addresses",
+  "ercot_transactions",
+  "queue_logs",
+  "customer_files",
+  "contact_logs",
+  "star_entries",
+  "api_logs",
+  "phonecalls",
+  "report_runs",
+  "sites",
+  "block_categories",
+  "page_components",
+  "signups",
+  "customer_password_resets",
+  "report_uploads",
+  "refunds",
+  "reward_offers",
+  "reward_rules",
+  "email_templates",
+  "campaigns",
+  "surveys",
+  "survey_questions",
+  "survey_responses",
+  "marketing_channels",
+  "promo_codes",
+  "email_test_sends",
+  "survey_categories",
+  "survey_answer_sets",
+  "survey_bank_questions",
+  "data_items",
+  "email_categories",
+  "email_suppressions",
+  "site_visits",
+  "site_blocks",
+  "integration_tests",
+  "ai_models",
+  "ai_agents",
+  "ai_conversations",
+  "table_snapshots",
+  "ai_automation_runs",
+  "scheduled_payments",
+  "cookie_consents",
+  "shop_orders",
+  "crm_partners",
+  "crm_leads",
+  "crm_activities",
+  "report_columns",
+  "link_clicks",
+  "ranger_agents",
+  "support_tickets",
+  "support_ticket_messages",
+  "support_ticket_watchers",
+  "email_parts",
+  "support_ticket_attachments",
+  "admin_notifications",
+  "heartbeat_pulses",
+  "heartbeats",
+  "heartbeat_controls",
+  "heartbeat_actions",
+  "pdf_templates",
+  "pdf_generations",
+  "rate_imports",
+  "shop_products",
+  "saved_reports",
+  "pdf_parts",
+  "pdf_test_sends"
+ ],
+ "tables": {
+  "roles": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "perms": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "0001_01_01_000000_create_users_table.php"
+  },
+  "users": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "role_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "roles",
+     "onDelete": "setnull"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "last_login_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "email": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "email_verified_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "password": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "remember_token": {
+     "type": "string",
+     "nullable": true
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "employee_id": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 20
+    },
+    "title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "department": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "manager_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "phone_ext": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 10
+    },
+    "location": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "hired_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "extra_perms": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "denied_perms": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "access_note": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "company": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 120
+    },
+    "access_ends_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "notification_prefs": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "email"
+    ],
+    [
+     "employee_id"
+    ]
+   ],
+   "file": "0001_01_01_000000_create_users_table.php"
+  },
+  "password_reset_tokens": {
+   "cols": {
+    "email": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "token": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "email"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "0001_01_01_000000_create_users_table.php"
+  },
+  "sessions": {
+   "cols": {
+    "id": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId"
+    },
+    "ip_address": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 45
+    },
+    "user_agent": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "payload": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "last_activity": {
+     "type": "int",
+     "nullable": false,
+     "php": "integer"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "user_id"
+    ],
+    [
+     "last_activity"
+    ]
+   ],
+   "uniques": [],
+   "file": "0001_01_01_000000_create_users_table.php"
+  },
+  "cache": {
+   "cols": {
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "value": {
+     "type": "text",
+     "nullable": false,
+     "php": "mediumText"
+    },
+    "expiration": {
+     "type": "long",
+     "nullable": false,
+     "php": "bigInteger"
+    }
+   },
+   "pk": [
+    "key"
+   ],
+   "indexes": [
+    [
+     "expiration"
+    ]
+   ],
+   "uniques": [],
+   "file": "0001_01_01_000001_create_cache_table.php"
+  },
+  "cache_locks": {
+   "cols": {
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "owner": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "expiration": {
+     "type": "long",
+     "nullable": false,
+     "php": "bigInteger"
+    }
+   },
+   "pk": [
+    "key"
+   ],
+   "indexes": [
+    [
+     "expiration"
+    ]
+   ],
+   "uniques": [],
+   "file": "0001_01_01_000001_create_cache_table.php"
+  },
+  "jobs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "queue": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "payload": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "attempts": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger"
+    },
+    "reserved_at": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "available_at": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    },
+    "created_at": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "queue"
+    ]
+   ],
+   "uniques": [],
+   "file": "0001_01_01_000002_create_jobs_table.php"
+  },
+  "job_batches": {
+   "cols": {
+    "id": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "total_jobs": {
+     "type": "int",
+     "nullable": false,
+     "php": "integer"
+    },
+    "pending_jobs": {
+     "type": "int",
+     "nullable": false,
+     "php": "integer"
+    },
+    "failed_jobs": {
+     "type": "int",
+     "nullable": false,
+     "php": "integer"
+    },
+    "failed_job_ids": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "options": {
+     "type": "text",
+     "nullable": true,
+     "php": "mediumText"
+    },
+    "cancelled_at": {
+     "type": "int",
+     "nullable": true,
+     "php": "integer"
+    },
+    "created_at": {
+     "type": "int",
+     "nullable": false,
+     "php": "integer"
+    },
+    "finished_at": {
+     "type": "int",
+     "nullable": true,
+     "php": "integer"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "0001_01_01_000002_create_jobs_table.php"
+  },
+  "failed_jobs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "uuid": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "connection": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "queue": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "payload": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "exception": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "failed_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "connection",
+     "queue",
+     "failed_at"
+    ]
+   ],
+   "uniques": [
+    [
+     "uuid"
+    ]
+   ],
+   "file": "0001_01_01_000002_create_jobs_table.php"
+  },
+  "markets": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "short": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "region": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'TDSP'"
+    },
+    "state": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 2,
+     "default": "'TX'"
+    },
+    "commodity": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Electric'"
+    },
+    "units": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'kWh'"
+    },
+    "duns_number": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "edi_name": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Active'"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "zip_ranges": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "zip_from": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    },
+    "zip_to": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    },
+    "market_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "markets",
+     "onDelete": "cascade"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "tdsp_fees": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "market_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "markets",
+     "onDelete": "cascade"
+    },
+    "per_kwh": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      4
+     ]
+    },
+    "per_bill": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      2
+     ]
+    },
+    "effective_on": {
+     "type": "date",
+     "nullable": false,
+     "php": "date"
+    },
+    "created_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "market_id",
+     "effective_on"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "plans": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 8
+    },
+    "term": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "internal": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "slug": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "rolloff": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'None'"
+    },
+    "etf": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'-'"
+    },
+    "mrc": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      2
+     ],
+     "default": "0"
+    },
+    "green": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedTinyInteger",
+     "default": "100"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "tags": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "perks": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "internal"
+    ]
+   ],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "plan_groups": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "slug": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "slug"
+    ]
+   ],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "plan_group_plan": {
+   "cols": {
+    "plan_group_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "plan_groups",
+     "onDelete": "cascade"
+    },
+    "plan_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "plans",
+     "onDelete": "cascade"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    }
+   },
+   "pk": [
+    "plan_group_id",
+    "plan_id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "rates": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "plan_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "plans",
+     "onDelete": "cascade"
+    },
+    "market_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "markets",
+     "onDelete": "cascade"
+    },
+    "energy": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      3
+     ]
+    },
+    "effective_on": {
+     "type": "date",
+     "nullable": false,
+     "php": "date"
+    },
+    "created_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "plan_id",
+     "market_id",
+     "effective_on"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "term_discounts": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "term": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger"
+    },
+    "region": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "discount": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      6,
+      2
+     ]
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "term",
+     "region"
+    ]
+   ],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "term_etfs": {
+   "cols": {
+    "term": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger"
+    },
+    "amount": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    }
+   },
+   "pk": [
+    "term"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "byop_products": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "model": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "step": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "rate_adj": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      6,
+      2
+     ],
+     "default": "0"
+    },
+    "monthly": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      2
+     ],
+     "default": "0"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "min_discount": {
+     "type": "decimal",
+     "nullable": true,
+     "php": "decimal",
+     "prec": [
+      6,
+      2
+     ]
+    },
+    "max_discount": {
+     "type": "decimal",
+     "nullable": true,
+     "php": "decimal",
+     "prec": [
+      6,
+      2
+     ]
+    },
+    "description": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 300
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "key"
+    ]
+   ],
+   "file": "2026_10_03_000001_create_catalog_tables.php"
+  },
+  "templates": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "file": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_03_000002_create_cms_tables.php"
+  },
+  "pages": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "path": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "title": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "template_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "templates",
+     "onDelete": "setnull"
+    },
+    "redirect": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Draft'"
+    },
+    "meta_description": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "html_title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "meta_keywords": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "promo_code": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "no_index": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "site_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "sites",
+     "onDelete": "cascade"
+    },
+    "file": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "page_title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "head_content": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "canonical": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "market_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "markets",
+     "onDelete": "setnull"
+    },
+    "pricegrid_type": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "pricegrid_header": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "pricegrid_group_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "plan_groups",
+     "onDelete": "setnull"
+    },
+    "rating_formula": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "copy_from_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "pages",
+     "onDelete": "setnull"
+    },
+    "hard_cache": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "rep_id": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedSmallInteger"
+    },
+    "market_label": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "address_box_title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "content_primary_id": {
+     "type": "fk",
+     "nullable": true,
+     "ref": "content_blocks",
+     "onDelete": "setnull",
+     "php": "foreignId"
+    },
+    "content_secondary_id": {
+     "type": "fk",
+     "nullable": true,
+     "ref": "content_blocks",
+     "onDelete": "setnull",
+     "php": "foreignId"
+    },
+    "content_parent_id": {
+     "type": "fk",
+     "nullable": true,
+     "ref": "content_blocks",
+     "onDelete": "setnull",
+     "php": "foreignId"
+    },
+    "content_auxiliary_id": {
+     "type": "fk",
+     "nullable": true,
+     "ref": "content_blocks",
+     "onDelete": "setnull",
+     "php": "foreignId"
+    },
+    "content_amp_id": {
+     "type": "fk",
+     "nullable": true,
+     "ref": "content_blocks",
+     "onDelete": "setnull",
+     "php": "foreignId"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "path"
+    ],
+    [
+     "site_id",
+     "path"
+    ]
+   ],
+   "file": "2026_10_03_000002_create_cms_tables.php"
+  },
+  "content_blocks": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "html": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "updated_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "slug": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "site_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "sites",
+     "onDelete": "setnull"
+    },
+    "category_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "block_categories",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "slug"
+    ]
+   ],
+   "file": "2026_10_03_000002_create_cms_tables.php"
+  },
+  "customers": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "account": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "ticket": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "email": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "address": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "city": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "zip": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10
+    },
+    "market_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "markets",
+     "onDelete": "setnull"
+    },
+    "esiid": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "plan_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "plans",
+     "onDelete": "setnull"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "exception": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "source": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "enrollment_type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Switch'"
+    },
+    "start_date": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "balance": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ],
+     "default": "0"
+    },
+    "autopay": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "paperless": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "peak_perks": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "stars": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "first_name": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "last_name": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "phone_type": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "language": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'English'"
+    },
+    "username": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "tec_score": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedSmallInteger"
+    },
+    "ssn_last4": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 4
+    },
+    "ip": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 45
+    },
+    "ip_location": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "unit": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "meter_number": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "load_profile": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "load_zone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "meter_type": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "billing_street": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "billing_unit": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "billing_city": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "billing_state": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 2
+    },
+    "billing_zip": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 10
+    },
+    "move_switch": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'switch'"
+    },
+    "requested_start": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "actual_start": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "status_info": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "rate_class": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "channel": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'1 - Organic (default)'"
+    },
+    "msid": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'1001 - Organic'"
+    },
+    "promo_code": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "due_date": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "marketing_opt_in": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "authorized_users": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "linked_accounts": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "password": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "remember_token": {
+     "type": "string",
+     "nullable": true
+    },
+    "deposit_due": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ],
+     "default": "0"
+    },
+    "referral_code": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "referred_by": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "deposit_held": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ],
+     "default": "0"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "esiid"
+    ],
+    [
+     "status"
+    ],
+    [
+     "exception"
+    ]
+   ],
+   "uniques": [
+    [
+     "account"
+    ],
+    [
+     "ticket"
+    ],
+    [
+     "referral_code"
+    ]
+   ],
+   "file": "2026_10_03_000003_create_customer_tables.php"
+  },
+  "bookmarks": {
+   "cols": {
+    "user_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "cascade"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "user_id",
+    "customer_id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_03_000003_create_customer_tables.php"
+  },
+  "payments": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "reference": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "paid_on": {
+     "type": "date",
+     "nullable": false,
+     "php": "date"
+    },
+    "amount": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "method": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "source": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "reversed_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "reversed_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "paid_time": {
+     "type": "time",
+     "nullable": true,
+     "php": "time"
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Balance Payment'"
+    },
+    "payment_method_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId"
+    },
+    "confirmation": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "reference"
+    ]
+   ],
+   "file": "2026_10_03_000003_create_customer_tables.php"
+  },
+  "bills": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "reference": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "billed_on": {
+     "type": "date",
+     "nullable": false,
+     "php": "date"
+    },
+    "kwh": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    },
+    "amount": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "bill_type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'original'"
+    },
+    "period_start": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "period_end": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "due_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "paid_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "amount_paid": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ],
+     "default": "0"
+    },
+    "balance_after": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ],
+     "default": "0"
+    },
+    "invoice": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "ontime": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "reference"
+    ]
+   ],
+   "file": "2026_10_03_000003_create_customer_tables.php"
+  },
+  "notes": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "author": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "disposition": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "body": {
+     "type": "text",
+     "nullable": false,
+     "php": "text"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "category": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "action": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "priority": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "support_ticket_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "support_tickets",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_03_000003_create_customer_tables.php"
+  },
+  "work_items": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "queue": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "summary": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "resolved_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "resolved_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "queue"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_03_000003_create_customer_tables.php"
+  },
+  "contact_messages": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "first_name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "last_name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "email": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "topic": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "message": {
+     "type": "text",
+     "nullable": false,
+     "php": "text"
+    },
+    "ip": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "handled_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "handled_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "reply": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "replied_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "replied_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_03_000003_create_customer_tables.php"
+  },
+  "reference_rows": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "table_key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "cells": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "table_key"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_03_000004_create_system_tables.php"
+  },
+  "job_runs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "command": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "message": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "started_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "finished_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "duration_ms": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "triggered_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "command"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_03_000004_create_system_tables.php"
+  },
+  "history_items": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "model": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 80
+    },
+    "group": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "record_id": {
+     "type": "long",
+     "nullable": true,
+     "php": "unsignedBigInteger"
+    },
+    "action": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20
+    },
+    "summary": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "data": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "changes": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "ip": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 45
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "model"
+    ],
+    [
+     "group"
+    ],
+    [
+     "created_at"
+    ],
+    [
+     "customer_id",
+     "created_at"
+    ],
+    [
+     "user_id",
+     "created_at"
+    ],
+    [
+     "model",
+     "record_id"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_04_000001_create_history_items_table.php"
+  },
+  "admin_apps": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 60
+    },
+    "description": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 200
+    },
+    "icon": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'folder'"
+    },
+    "menu": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "created_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "key"
+    ]
+   ],
+   "file": "2026_10_04_000002_create_admin_apps_table.php"
+  },
+  "customer_flags": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "flag": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "author": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "removed_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "customer_products": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "product": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "data": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "removed_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "ledger_entries": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "amount": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "description": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'pending'"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "decided_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "decided_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "decision_note": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 250
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "payment_methods": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "last4": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 4
+    },
+    "expires": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "nickname": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "vendor": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "autopay": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "removed_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "plan_terms": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "plan_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "plans",
+     "onDelete": "setnull"
+    },
+    "rate_class": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "energy_charge": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      8
+     ]
+    },
+    "rate_2000": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      3
+     ]
+    },
+    "ordered_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "contract_start": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "contract_end": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'not started'"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "service_addresses": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "esiid": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "street": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "city": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "zip": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10
+    },
+    "ordered_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "service_start": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "service_end": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "ercot_transactions": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "esiid": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "trans_date": {
+     "type": "date",
+     "nullable": false,
+     "php": "date"
+    },
+    "purpose": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "scheduled_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "trans_type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "label": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "tracking": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'linked'"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "queue_logs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "queue": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "entered_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "exited_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "note": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "customer_files": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "path": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "generated_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "size": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "regenerated": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "contact_logs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "channel": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "template": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "body": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'sent'"
+    },
+    "sent_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "dropped_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "opened_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "clicked_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "direction": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'out'"
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "campaign_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "campaigns",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "star_entries": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "reason": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "stars": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      1
+     ]
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "reward_offer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "reward_offers",
+     "onDelete": "setnull"
+    },
+    "fulfillment": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "api_logs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "api": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "action": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "response_ms": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "method": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 10
+    },
+    "endpoint": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    },
+    "request": {
+     "type": "text",
+     "nullable": true,
+     "php": "longText"
+    },
+    "response": {
+     "type": "text",
+     "nullable": true,
+     "php": "longText"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "phonecalls": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "agent_id": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "phone": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "direction": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "started_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "duration_sec": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "disposition": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "transcript": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000003_expand_customer_accounts.php"
+  },
+  "report_runs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "cascade"
+    },
+    "report": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "params": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "rows": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'done'"
+    },
+    "file": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "app": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'corral'"
+    },
+    "title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "model": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "started_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "finished_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "duration_ms": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "error": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "preview": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "rerun_of": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "report_runs",
+     "onDelete": "setnull"
+    },
+    "format": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 8,
+     "default": "'xlsx'"
+    },
+    "summary": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "file_size": {
+     "type": "long",
+     "nullable": true,
+     "php": "unsignedBigInteger"
+    },
+    "seen_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "saved_report_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "saved_reports",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000004_create_report_runs_and_sms.php"
+  },
+  "sites": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "domain": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Active'"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "address_box_title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "domain"
+    ]
+   ],
+   "file": "2026_10_04_000006_create_sites_and_page_components.php"
+  },
+  "block_categories": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_04_000006_create_sites_and_page_components.php"
+  },
+  "page_components": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "page_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "pages",
+     "onDelete": "cascade"
+    },
+    "content_block_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "content_blocks",
+     "onDelete": "cascade"
+    },
+    "zone": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "vars": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_04_000006_create_sites_and_page_components.php"
+  },
+  "signups": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "token": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 64
+    },
+    "step": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "data": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "email": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "token"
+    ]
+   ],
+   "file": "2026_10_05_000003_create_signup_and_my_account_tables.php"
+  },
+  "customer_password_resets": {
+   "cols": {
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "token": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "customer_id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_05_000003_create_signup_and_my_account_tables.php"
+  },
+  "report_uploads": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "title": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "category": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "path": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "original_name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "size": {
+     "type": "long",
+     "nullable": false,
+     "php": "unsignedBigInteger"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_06_000001_create_walker_tables.php"
+  },
+  "refunds": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "amount": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "reason": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'balance'"
+    },
+    "method": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'requested'"
+    },
+    "requested_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "decided_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "decided_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "paid_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "decision_note": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 250
+    },
+    "check_number": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 30
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "reward_offers": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "stars": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    },
+    "effect": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "value": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "reward_rules": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "label": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "stars": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      2
+     ]
+    },
+    "per_dollar": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "key"
+    ]
+   ],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "email_templates": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "subject": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "body": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "email_category_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "email_categories",
+     "onDelete": "setnull"
+    },
+    "email_header_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "email_parts",
+     "onDelete": "setnull"
+    },
+    "email_footer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "email_parts",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "campaigns": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "channel": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "email_template_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "email_templates",
+     "onDelete": "setnull"
+    },
+    "message": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "audience": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'draft'"
+    },
+    "sent_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "recipients": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "created_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "goal": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'announcement'"
+    },
+    "description": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    },
+    "product": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "msid": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "promo_code": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "scheduled_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "cap_days": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "7"
+    },
+    "skipped": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "surveys": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "title": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "slug": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "intro": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'active'"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "thank_you": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "opens_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "closes_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "slug"
+    ]
+   ],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "survey_questions": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "survey_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "surveys",
+     "onDelete": "cascade"
+    },
+    "question": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "options": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "survey_category_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "survey_categories",
+     "onDelete": "setnull"
+    },
+    "survey_answer_set_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "survey_answer_sets",
+     "onDelete": "setnull"
+    },
+    "survey_bank_question_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "survey_bank_questions",
+     "onDelete": "setnull"
+    },
+    "required": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "help": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "survey_responses": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "survey_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "surveys",
+     "onDelete": "cascade"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "answers": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "source": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "marketing_channels": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "msid": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "msid"
+    ]
+   ],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "promo_codes": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "code": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "credit": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      8,
+      2
+     ],
+     "default": "0"
+    },
+    "starts_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "ends_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "code"
+    ]
+   ],
+   "file": "2026_10_06_000002_create_finance_rewards_marketing_tables.php"
+  },
+  "email_test_sends": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "email_template_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "email_templates",
+     "onDelete": "cascade"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "mode": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "target": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "recipients": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "subject": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "note": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "params": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_07_000001_create_email_test_sends_table.php"
+  },
+  "survey_categories": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "color": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 7,
+     "default": "'#00AEEF'"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_07_000004_build_out_surveys.php"
+  },
+  "survey_answer_sets": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "group": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "options": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_07_000004_build_out_surveys.php"
+  },
+  "survey_bank_questions": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "survey_category_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "survey_categories",
+     "onDelete": "setnull"
+    },
+    "question": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "survey_answer_set_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "survey_answer_sets",
+     "onDelete": "setnull"
+    },
+    "help": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_07_000004_build_out_surveys.php"
+  },
+  "data_items": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "model": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "record_id": {
+     "type": "long",
+     "nullable": true,
+     "php": "unsignedBigInteger"
+    },
+    "summary": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "data": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "model",
+     "record_id"
+    ],
+    [
+     "customer_id",
+     "model"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_07_000005_create_data_items_table.php"
+  },
+  "email_categories": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "color": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 7,
+     "default": "'#00AEEF'"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_07_000007_create_email_categories_and_suppressions.php"
+  },
+  "email_suppressions": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "email": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "reason": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "note": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "email"
+    ]
+   ],
+   "file": "2026_10_07_000007_create_email_categories_and_suppressions.php"
+  },
+  "site_visits": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "visitor": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "ip": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 45
+    },
+    "path": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "page_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "pages",
+     "onDelete": "setnull"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "referrer": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "agent": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "blocked": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "seen_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "visitor"
+    ],
+    [
+     "ip"
+    ],
+    [
+     "path"
+    ],
+    [
+     "created_at"
+    ],
+    [
+     "seen_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_07_000008_create_site_visits_and_blocks.php"
+  },
+  "site_blocks": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "value": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "reason": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "message": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "expires_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "hits": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "last_hit_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "type",
+     "value"
+    ]
+   ],
+   "file": "2026_10_07_000008_create_site_visits_and_blocks.php"
+  },
+  "integration_tests": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "integration": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "ok": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean"
+    },
+    "message": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 500
+    },
+    "response_ms": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "integration",
+     "created_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_08_000001_create_integration_tests.php"
+  },
+  "ai_models": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "provider": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "model_id": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "source": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "size_gb": {
+     "type": "decimal",
+     "nullable": true,
+     "php": "decimal",
+     "prec": [
+      6,
+      2
+     ]
+    },
+    "quantization": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "context_window": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'available'"
+    },
+    "checked_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "notes": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "provider",
+     "model_id"
+    ]
+   ],
+   "file": "2026_10_08_000002_create_deputy_tables.php"
+  },
+  "ai_agents": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "activity": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "description": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "ai_model_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "ai_models",
+     "onDelete": "restrict"
+    },
+    "fallback_model_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "ai_models",
+     "onDelete": "setnull"
+    },
+    "max_tokens": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "4000"
+    },
+    "system_prompt": {
+     "type": "text",
+     "nullable": false,
+     "php": "text"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "temperature": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      3,
+      2
+     ],
+     "default": "0.3"
+    },
+    "schedule": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_08_000002_create_deputy_tables.php"
+  },
+  "ai_conversations": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "ai_agent_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "ai_agents",
+     "onDelete": "cascade"
+    },
+    "ai_model_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "ai_models",
+     "onDelete": "setnull"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "channel": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "topic": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "outcome": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "handed_to_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "transcript": {
+     "type": "text",
+     "nullable": false,
+     "php": "text"
+    },
+    "duration_sec": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "input_tokens": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "output_tokens": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "started_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'closed'"
+    },
+    "last_message_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "started_at"
+    ],
+    [
+     "status"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_08_000002_create_deputy_tables.php"
+  },
+  "table_snapshots": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "title": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "app": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "html": {
+     "type": "text",
+     "nullable": true,
+     "php": "longText"
+    },
+    "columns": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "rows": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "record_id": {
+     "type": "long",
+     "nullable": true,
+     "php": "unsignedBigInteger"
+    },
+    "row_count": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "hash": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "key"
+    ],
+    [
+     "created_at"
+    ],
+    [
+     "kind",
+     "key",
+     "id"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_08_000003_create_table_snapshots.php"
+  },
+  "ai_automation_runs": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "ai_agent_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "ai_agents",
+     "onDelete": "cascade"
+    },
+    "ai_model_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "ai_models",
+     "onDelete": "setnull"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "checked": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "fixed": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "flagged": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "summary": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "duration_sec": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "input_tokens": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "output_tokens": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "started_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "started_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_12_000002_deputy_live_conversations_and_automations.php"
+  },
+  "scheduled_payments": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "payment_method_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "payment_methods",
+     "onDelete": "cascade"
+    },
+    "amount": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "pay_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'scheduled'"
+    },
+    "payment_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "payments",
+     "onDelete": "setnull"
+    },
+    "note": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "pay_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_12_000003_create_scheduled_payments.php"
+  },
+  "cookie_consents": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "visitor": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "choice": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "analytics": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "marketing": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "policy_version": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20
+    },
+    "ip": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 45
+    },
+    "user_agent": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 250
+    },
+    "page": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 250
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "cookie_jar": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "cookies_seen_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "visitor"
+    ],
+    [
+     "created_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_12_000004_create_cookie_consents.php"
+  },
+  "shop_orders": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "number": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "cascade"
+    },
+    "items": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "subtotal": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "tax": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "shipping": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ],
+     "default": "0"
+    },
+    "total": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "monthly": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ],
+     "default": "0"
+    },
+    "stars": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "pay_with": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "payment_method_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "payment_methods",
+     "onDelete": "setnull"
+    },
+    "ship_to": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Placed'"
+    },
+    "payment_status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Pending'"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "placed_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "number"
+    ]
+   ],
+   "file": "2026_10_13_000001_create_shop_orders.php"
+  },
+  "crm_partners": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 150
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "contact_name": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 120
+    },
+    "email": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 200
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 30
+    },
+    "city": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 80
+    },
+    "commission_rate": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      6,
+      4
+     ],
+     "default": "0"
+    },
+    "commission_basis": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10,
+     "default": "'kwh'"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'Active'"
+    },
+    "owner_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "agreement_ends_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "notes": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_14_000001_create_crm_tables.php"
+  },
+  "crm_leads": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 150
+    },
+    "company": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 150
+    },
+    "title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 100
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 30
+    },
+    "email": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 200
+    },
+    "phone": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 30
+    },
+    "city": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 80
+    },
+    "market_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "markets",
+     "onDelete": "setnull"
+    },
+    "source": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 30
+    },
+    "partner_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "crm_partners",
+     "onDelete": "setnull"
+    },
+    "stage": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'new'"
+    },
+    "annual_kwh": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "est_value": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      12,
+      2
+     ],
+     "default": "0"
+    },
+    "sites": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "1"
+    },
+    "current_provider": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 80
+    },
+    "contract_ends_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "owner_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "next_follow_up_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "lost_reason": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 200
+    },
+    "stage_changed_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "closed_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "notes": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "stage",
+     "owner_id"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_14_000001_create_crm_tables.php"
+  },
+  "crm_activities": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "lead_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "crm_leads",
+     "onDelete": "cascade"
+    },
+    "partner_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "crm_partners",
+     "onDelete": "cascade"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "type": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20
+    },
+    "subject": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 200
+    },
+    "body": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "due_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "done_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "type",
+     "due_on",
+     "done_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_14_000001_create_crm_tables.php"
+  },
+  "report_columns": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "report": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 60
+    },
+    "columns": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "report"
+    ]
+   ],
+   "file": "2026_10_19_000001_report_formats_columns_notifications.php"
+  },
+  "link_clicks": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "contact_log_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "contact_logs",
+     "onDelete": "cascade"
+    },
+    "campaign_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "campaigns",
+     "onDelete": "setnull"
+    },
+    "email_template_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "email_templates",
+     "onDelete": "setnull"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "link": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "url": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    },
+    "device": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 20
+    },
+    "clicked_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "clicked_at"
+    ],
+    [
+     "email_template_id",
+     "link"
+    ],
+    [
+     "campaign_id",
+     "link"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_19_000003_create_link_clicks.php"
+  },
+  "ranger_agents": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "cascade"
+    },
+    "team": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20
+    },
+    "level": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'agent'"
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "added_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "user_id"
+    ]
+   ],
+   "file": "2026_10_20_000001_create_ranger_tables.php"
+  },
+  "support_tickets": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 150
+    },
+    "email": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 200
+    },
+    "subject": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 200
+    },
+    "topic": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "channel": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 30,
+     "default": "'My Account'"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'new'"
+    },
+    "priority": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'normal'"
+    },
+    "assigned_to": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "first_response_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "solved_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "rating": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 10
+    },
+    "rating_comment": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 1000
+    },
+    "rated_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "last_activity_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "manager_requested_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "manager_requested_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "manager_request_note": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "status"
+    ],
+    [
+     "last_activity_at"
+    ],
+    [
+     "manager_requested_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_20_000001_create_ranger_tables.php"
+  },
+  "support_ticket_messages": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "support_ticket_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "support_tickets",
+     "onDelete": "cascade"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "author": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20
+    },
+    "body": {
+     "type": "text",
+     "nullable": false,
+     "php": "text"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "via": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10,
+     "default": "'portal'"
+    },
+    "direction": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 3
+    },
+    "duration": {
+     "type": "int",
+     "nullable": true,
+     "php": "unsignedInteger"
+    },
+    "contact": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 200
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_20_000001_create_ranger_tables.php"
+  },
+  "support_ticket_watchers": {
+   "cols": {
+    "support_ticket_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "support_tickets",
+     "onDelete": "cascade"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "cascade"
+    },
+    "joined_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "support_ticket_id",
+    "user_id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_20_000001_create_ranger_tables.php"
+  },
+  "email_parts": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 100
+    },
+    "html": {
+     "type": "text",
+     "nullable": false,
+     "php": "text"
+    },
+    "is_default": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "kind",
+     "name"
+    ]
+   ],
+   "file": "2026_10_20_000002_create_email_parts.php"
+  },
+  "support_ticket_attachments": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "support_ticket_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "support_tickets",
+     "onDelete": "cascade"
+    },
+    "support_ticket_message_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "support_ticket_messages",
+     "onDelete": "setnull"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "from_customer": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 200
+    },
+    "path": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 300
+    },
+    "mime": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 100
+    },
+    "size": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_22_000001_ranger_channels_and_attachments.php"
+  },
+  "admin_notifications": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "cascade"
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 30
+    },
+    "title": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 200
+    },
+    "body": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    },
+    "url": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    },
+    "read_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "user_id",
+     "read_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_26_000001_create_admin_notifications.php"
+  },
+  "heartbeat_pulses": {
+   "cols": {
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "beat_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "meta": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    }
+   },
+   "pk": [
+    "key"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_27_000001_create_heartbeats.php"
+  },
+  "heartbeats": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "checked_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10
+    },
+    "results": {
+     "type": "json",
+     "nullable": false,
+     "php": "json"
+    },
+    "duration_ms": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "checked_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_27_000001_create_heartbeats.php"
+  },
+  "heartbeat_controls": {
+   "cols": {
+    "key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "state": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10,
+     "default": "'up'"
+    },
+    "reason": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "changed_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "key"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_28_000002_create_heartbeat_controls.php"
+  },
+  "heartbeat_actions": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "check_key": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "action": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 40
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "ok": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "output": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "duration_ms": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "check_key"
+    ],
+    [
+     "created_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_28_000002_create_heartbeat_controls.php"
+  },
+  "pdf_templates": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "category": {
+     "type": "string",
+     "nullable": true,
+     "php": "string"
+    },
+    "title": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "body": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "footer": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "show_address": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "default": "'Active'"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "pdf_header_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "pdf_parts",
+     "onDelete": "setnull"
+    },
+    "pdf_footer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "pdf_parts",
+     "onDelete": "setnull"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "name"
+    ]
+   ],
+   "file": "2026_10_28_000004_create_pdf_templates.php"
+  },
+  "pdf_generations": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "pdf_template_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "pdf_templates",
+     "onDelete": "cascade"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "file_name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "pages": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "1"
+    },
+    "size": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "title": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "body": {
+     "type": "text",
+     "nullable": false,
+     "php": "longText"
+    },
+    "footer": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "show_address": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    },
+    "header": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "created_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_10_28_000004_create_pdf_templates.php"
+  },
+  "rate_imports": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "file_name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "path": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'queued'"
+    },
+    "rows": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "unchanged": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "changes": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "problems": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "error": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "effective_on": {
+     "type": "date",
+     "nullable": true,
+     "php": "date"
+    },
+    "applied_by": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "applied_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "finished_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_10_28_000006_create_rate_imports.php"
+  },
+  "shop_products": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "sku": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string"
+    },
+    "cat": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 30
+    },
+    "price": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "was": {
+     "type": "decimal",
+     "nullable": true,
+     "php": "decimal",
+     "prec": [
+      10,
+      2
+     ]
+    },
+    "rating": {
+     "type": "decimal",
+     "nullable": false,
+     "php": "decimal",
+     "prec": [
+      2,
+      1
+     ],
+     "default": "0"
+    },
+    "reviews": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "stars": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedInteger",
+     "default": "0"
+    },
+    "stock": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "badge": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 40
+    },
+    "icon": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 20,
+     "default": "'plug'"
+    },
+    "blurb": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 300
+    },
+    "active": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "true"
+    },
+    "position": {
+     "type": "int",
+     "nullable": false,
+     "php": "unsignedSmallInteger",
+     "default": "0"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [
+    [
+     "sku"
+    ]
+   ],
+   "file": "2026_10_28_000007_create_shop_products.php"
+  },
+  "saved_reports": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "cascade"
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 120
+    },
+    "report": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 60
+    },
+    "params": {
+     "type": "json",
+     "nullable": true,
+     "php": "json"
+    },
+    "format": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10,
+     "default": "'xlsx'"
+    },
+    "summary": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "shared": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "last_run_at": {
+     "type": "datetime",
+     "nullable": true,
+     "php": "timestamp"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_11_02_000001_create_saved_reports.php"
+  },
+  "pdf_parts": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "kind": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10
+    },
+    "name": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 100
+    },
+    "title": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 120
+    },
+    "subtitle": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 160
+    },
+    "color": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10,
+     "default": "'navy'"
+    },
+    "body": {
+     "type": "text",
+     "nullable": true,
+     "php": "text"
+    },
+    "is_default": {
+     "type": "bool",
+     "nullable": false,
+     "php": "boolean",
+     "default": "false"
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": true
+    },
+    "updated_at": {
+     "type": "datetime",
+     "nullable": true
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [],
+   "uniques": [],
+   "file": "2026_11_02_000002_create_pdf_parts_and_test_sends.php"
+  },
+  "pdf_test_sends": {
+   "cols": {
+    "id": {
+     "type": "pk",
+     "nullable": false
+    },
+    "pdf_template_id": {
+     "type": "fk",
+     "nullable": false,
+     "php": "foreignId",
+     "ref": "pdf_templates",
+     "onDelete": "cascade"
+    },
+    "user_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "users",
+     "onDelete": "setnull"
+    },
+    "customer_id": {
+     "type": "fk",
+     "nullable": true,
+     "php": "foreignId",
+     "ref": "customers",
+     "onDelete": "setnull"
+    },
+    "recipients": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 600
+    },
+    "status": {
+     "type": "string",
+     "nullable": false,
+     "php": "string",
+     "len": 10
+    },
+    "error": {
+     "type": "string",
+     "nullable": true,
+     "php": "string",
+     "len": 500
+    },
+    "created_at": {
+     "type": "datetime",
+     "nullable": false,
+     "php": "timestamp"
+    }
+   },
+   "pk": [
+    "id"
+   ],
+   "indexes": [
+    [
+     "created_at"
+    ]
+   ],
+   "uniques": [],
+   "file": "2026_11_02_000002_create_pdf_parts_and_test_sends.php"
+  }
+ }
+}

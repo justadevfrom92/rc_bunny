@@ -16,6 +16,8 @@
   <ItemGroup>
     <Compile Include="../RcBunny.Backend/Data/*.cs" Link="Data/%(Filename)%(Extension)" />
     <Compile Include="../RcBunny.Backend/Data/Entities/**/*.cs" Link="Data/Entities/%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- ebunny's config (shop products, CMS, My Account products…) as JSON, shared with the Backend -->
+    <None Include="../RcBunny.Backend/Data/Config/*.json" Link="Data/Config/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

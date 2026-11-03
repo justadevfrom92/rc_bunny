@@ -1,0 +1,26 @@
+[
+ {
+  "key": "corral",
+  "name": "Corral",
+  "desc": "Customer service: search accounts, create orders, work exception queues.",
+  "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20a6.5 6.5 0 0113 0M16 4.5a3.5 3.5 0 010 7M18 14a5.5 5.5 0 013.5 6\"/></svg>"
+ },
+ {
+  "key": "lando",
+  "name": "Lando",
+  "desc": "Website CMS: pages, content blocks, plans, rates and TDSP fees.",
+  "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M3 9h18M8 13h8M8 16h5\"/></svg>"
+ },
+ {
+  "key": "astro",
+  "name": "Astro",
+  "desc": "Pricing: term discounts, ETFs and Build Your Own Plan products.",
+  "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 20V10M10 20V4M16 20v-7M22 20H2\"/></svg>"
+ },
+ {
+  "key": "sheriff",
+  "name": "Sheriff",
+  "desc": "Settings: users, roles, API integrations, crons and reference data.",
+  "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"><path d=\"M12 2l2.4 5 5.6.6-4.2 3.8 1.2 5.5L12 14l-5 2.9 1.2-5.5L4 7.6 9.6 7z\"/><path d=\"M12 14v8\"/></svg>"
+ }
+]

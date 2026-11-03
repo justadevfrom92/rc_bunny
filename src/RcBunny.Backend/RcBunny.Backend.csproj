@@ -12,6 +12,8 @@
   <ItemGroup>
     <None Include="Data/Seed/data/*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Remove="Data/Seed/data/*.json" />
+    <None Include="Data/Config/*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Remove="Data/Config/*.json" />
   </ItemGroup>
 
   <!-- The React client lives in ClientApp and is built into wwwroot (npm run build). -->

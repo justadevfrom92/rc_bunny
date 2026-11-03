@@ -1,0 +1,37 @@
+{
+ "providers": {
+  "local": "Local server (Ollama)",
+  "hosted": "Hosted (OpenAI-compatible)"
+ },
+ "activities": {
+  "sms": "Replies to texts",
+  "chat": "My Account chat",
+  "queues": "Triages exception queues",
+  "enrollments": "Fixes stuck enrollments",
+  "payments": "Matches unapplied payments",
+  "surveys": "Tags survey comments",
+  "reports": "Summarizes reports"
+ },
+ "conversation_activities": [
+  "sms",
+  "chat"
+ ],
+ "channels": {
+  "sms": "Text",
+  "chat": "My Account Chat",
+  "test": "Test"
+ },
+ "outcomes": {
+  "resolved": "Resolved",
+  "handed_off": "Handed to a person",
+  "abandoned": "Customer left",
+  "failed": "Model error"
+ },
+ "statuses": {
+  "bot": "Bot answering",
+  "waiting": "Waiting for a person",
+  "agent": "Person answering",
+  "closed": "Closed"
+ },
+ "chat_idle_minutes": 30
+}

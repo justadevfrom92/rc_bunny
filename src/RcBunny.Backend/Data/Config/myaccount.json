@@ -1,0 +1,336 @@
+{
+ "products": {
+  "autopay": [
+   "AutoPay",
+   "Pay your bill automatically on the due date with your default payment method.",
+   "Free",
+   "self"
+  ],
+  "paperless-billing": [
+   "Paperless Billing",
+   "Get your bill by email instead of by mail.",
+   "Free",
+   "self"
+  ],
+  "giddy-up": [
+   "Pick Your Due Date",
+   "Choose the day of the month your bill is due.",
+   "Free",
+   "self"
+  ],
+  "balanced-billing": [
+   "Balanced Billing",
+   "Pay about the same amount every month, averaged over your last 12 months of use.",
+   "Free",
+   "self"
+  ],
+  "combined-billing": [
+   "Combined Billing",
+   "One bill for all of your accounts, with one due date.",
+   "Free, for customers with more than one account",
+   "call"
+  ],
+  "rangler-rewards": [
+   "Rangler Rewards",
+   "Earn stars for paying on time, AutoPay and referrals, and spend them on bill credits and gift cards.",
+   "Free",
+   "myaccount.rewards"
+  ],
+  "refer-a-friend": [
+   "Refer-A-Friend",
+   "Share your link; you both get a bill credit when your friend signs up.",
+   "$50 credit each",
+   "myaccount.refer"
+  ],
+  "peak-perks": [
+   "Peak Perks",
+   "Earn bill credits for using less electricity during peak demand events.",
+   "Free; credits each summer",
+   "self"
+  ],
+  "peak-perks-plus": [
+   "Peak Perks+",
+   "Peak Perks with a smart thermostat that adjusts itself during events, for bigger credits.",
+   "Free with a qualifying thermostat",
+   "self"
+  ],
+  "ecobee": [
+   "ecobee",
+   "A smart thermostat, shipped to you and set up for Peak Perks+.",
+   "$0 down, $5.99/mo for 24 months",
+   "call"
+  ],
+  "freedom-flex": [
+   "Freedom Flex",
+   "Change plans once a year without a cancellation fee.",
+   "Included on select plans",
+   "call"
+  ],
+  "giddyup-guarantee": [
+   "Giddyup Guarantee",
+   "Your rate is locked for your whole contract, guaranteed.",
+   "Included on fixed-rate plans",
+   "call"
+  ],
+  "solar-buyback": [
+   "Solar Buyback",
+   "Get credit on your bill for the solar power your panels send to the grid.",
+   "For homes with solar panels",
+   "call"
+  ],
+  "solar-lead-referral": [
+   "Solar Lead Referral",
+   "Get a free quote from our solar partner.",
+   "Free quote",
+   "self"
+  ],
+  "deposit-alternatives": [
+   "Deposit Alternatives",
+   "Lower or skip a deposit with AutoPay and paperless billing, or a letter of credit.",
+   "Free",
+   "call"
+  ],
+  "payment-arrangement": [
+   "Payment Arrangement",
+   "Split a past-due balance over your next few bills.",
+   "Free; must be current on new charges",
+   "call"
+  ],
+  "deferred-payment-plan": [
+   "Deferred Payment Plan",
+   "Spread a high bill from extreme weather over up to 6 months.",
+   "Free",
+   "call"
+  ],
+  "home-warranty": [
+   "AIG Home Warranty",
+   "Repairs for major home systems and appliances.",
+   "$34.99/mo",
+   "self"
+  ],
+  "electric-line-protection": [
+   "Electric System Protection Program",
+   "Covers repairs to the wiring and electric panel in your home.",
+   "$5.99/mo",
+   "self"
+  ],
+  "surge-protection": [
+   "Surge Protection Program",
+   "Covers appliances damaged by a power surge.",
+   "$6.99/mo",
+   "self"
+  ],
+  "ac-protection": [
+   "Air Conditioning Protection Program",
+   "Covers repairs to your central air conditioner and heat pump.",
+   "$14.99/mo",
+   "self"
+  ],
+  "ev-charger-protection": [
+   "Electric Vehicle Charger Protection Program",
+   "Covers repairs to your home EV charger.",
+   "$7.99/mo",
+   "self"
+  ],
+  "adt-security": [
+   "ADT Security",
+   "Home security monitoring with a discount for our customers.",
+   "From $29.99/mo through ADT",
+   "call"
+  ]
+ },
+ "messages": {
+  "Bill Ready": {
+   "label": "Bill",
+   "about": "bill",
+   "why": "Your new bill is ready. It shows your usage for the billing period, the charges and when payment is due.",
+   "actions": [
+    [
+     "View PDF",
+     "pdf"
+    ],
+    [
+     "Pay Bill",
+     "myaccount.pay"
+    ],
+    [
+     "Set up AutoPay",
+     "products",
+     "autopay"
+    ]
+   ]
+  },
+  "Billing - Resi - Payment Made": {
+   "label": "Payment",
+   "about": "payment",
+   "why": "We received your payment. It can take up to one business day to show on your balance.",
+   "actions": [
+    [
+     "See Payments",
+     "myaccount.bills"
+    ],
+    [
+     "Payment Methods",
+     "myaccount.methods"
+    ]
+   ]
+  },
+  "Payment Made": {
+   "label": "Payment",
+   "about": "payment",
+   "why": "We received your payment. It can take up to one business day to show on your balance.",
+   "actions": [
+    [
+     "See Payments",
+     "myaccount.bills"
+    ]
+   ]
+  },
+  "Welcome Letter": {
+   "label": "Welcome",
+   "about": "plan",
+   "why": "Welcome! Your welcome packet has your plan, your Electricity Facts Label, Terms of Service and Your Rights as a Customer.",
+   "actions": [
+    [
+     "Current Plan",
+     "myaccount.plan"
+    ],
+    [
+     "Products & Protections",
+     "myaccount.products"
+    ]
+   ]
+  },
+  "Welcome Letter - Renewed": {
+   "label": "Renewal",
+   "about": "plan",
+   "why": "Thanks for renewing. Your new plan starts when your current contract ends.",
+   "actions": [
+    [
+     "Current Plan",
+     "myaccount.plan"
+    ]
+   ]
+  },
+  "Renewal Offer": {
+   "label": "Renewal",
+   "about": "plan",
+   "why": "Your contract is ending soon. Renew now to lock in a new rate; if you do nothing you move to a month-to-month rate.",
+   "actions": [
+    [
+     "See Renewal Plans",
+     "myaccount.plan"
+    ]
+   ]
+  },
+  "Renewal - Confirmation": {
+   "label": "Renewal",
+   "about": "plan",
+   "why": "Your renewal is confirmed.",
+   "actions": [
+    [
+     "Current Plan",
+     "myaccount.plan"
+    ]
+   ]
+  },
+  "Order Accepted": {
+   "label": "Order",
+   "about": "plan",
+   "why": "Your utility accepted your order. Service starts on your start date; there is nothing else you need to do.",
+   "actions": [
+    [
+     "Current Plan",
+     "myaccount.plan"
+    ]
+   ]
+  },
+  "Rewards - Stars Earned": {
+   "label": "Rewards",
+   "about": "rewards",
+   "why": "You earned Power Rewards stars. Spend them on bill credits and gift cards.",
+   "actions": [
+    [
+     "My Rewards",
+     "myaccount.rewards"
+    ]
+   ]
+  },
+  "Rewards - Welcome": {
+   "label": "Rewards",
+   "about": "rewards",
+   "why": "You are in Power Rewards: earn stars for paying on time, AutoPay and referrals.",
+   "actions": [
+    [
+     "My Rewards",
+     "myaccount.rewards"
+    ],
+    [
+     "Refer a Friend",
+     "myaccount.refer"
+    ]
+   ]
+  },
+  "AutoPay Removed": {
+   "label": "AutoPay",
+   "about": "account",
+   "why": "AutoPay is off, so your next bill will not be paid automatically.",
+   "actions": [
+    [
+     "Turn AutoPay back on",
+     "products",
+     "autopay"
+    ],
+    [
+     "Pay Bill",
+     "myaccount.pay"
+    ]
+   ]
+  },
+  "Disconnect Notice": {
+   "label": "Important",
+   "about": "bill",
+   "why": "Your account is past due. Pay the past-due amount by the date shown to keep your service on, or ask about a payment arrangement.",
+   "actions": [
+    [
+     "Pay Bill",
+     "myaccount.pay"
+    ],
+    [
+     "Payment Arrangement",
+     "products",
+     "payment-arrangement"
+    ]
+   ]
+  },
+  "Agent text": {
+   "label": "Text",
+   "about": "account",
+   "why": "A text from our customer service team. Reply to the text, or chat with us here.",
+   "actions": []
+  },
+  "Bot text": {
+   "label": "Text",
+   "about": "account",
+   "why": "A text from our virtual assistant. Reply to the text to keep the conversation going.",
+   "actions": []
+  },
+  "Reply": {
+   "label": "Your text",
+   "about": "account",
+   "why": "A text you sent us. Our team or assistant replies by text.",
+   "actions": []
+  },
+  "_default": {
+   "label": "Message",
+   "about": "account",
+   "why": "A message from us about your account.",
+   "actions": [
+    [
+     "Dashboard",
+     "myaccount.dashboard"
+    ]
+   ]
+  }
+ }
+}

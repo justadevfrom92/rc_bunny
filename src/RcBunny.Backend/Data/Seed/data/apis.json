@@ -1,0 +1,111 @@
+[
+ {
+  "name": "AIG",
+  "purpose": "Home protection products",
+  "fields": [
+   "endpoint",
+   "partner_id",
+   "api_key"
+  ]
+ },
+ {
+  "name": "Amazon",
+  "purpose": "S3 document storage & SES email",
+  "fields": [
+   "region",
+   "bucket",
+   "access_key_id",
+   "secret_access_key"
+  ]
+ },
+ {
+  "name": "Apple",
+  "purpose": "Push notifications (APNs)",
+  "fields": [
+   "team_id",
+   "key_id",
+   "bundle_id",
+   "private_key"
+  ]
+ },
+ {
+  "name": "Auth.net",
+  "purpose": "Card processing (legacy)",
+  "fields": [
+   "login_id",
+   "transaction_key"
+  ]
+ },
+ {
+  "name": "IBM",
+  "purpose": "Weather data for forecasting",
+  "fields": [
+   "endpoint",
+   "api_key"
+  ]
+ },
+ {
+  "name": "Innowatts",
+  "purpose": "Load forecasting",
+  "fields": [
+   "endpoint",
+   "client_id",
+   "client_secret"
+  ]
+ },
+ {
+  "name": "Experian",
+  "purpose": "Credit checks",
+  "fields": [
+   "endpoint",
+   "subscriber_code",
+   "username",
+   "password"
+  ]
+ },
+ {
+  "name": "Plaid",
+  "purpose": "Bank account linking",
+  "fields": [
+   "environment",
+   "client_id",
+   "secret"
+  ]
+ },
+ {
+  "name": "QuickBooks",
+  "purpose": "Accounting journal entries",
+  "fields": [
+   "realm_id",
+   "client_id",
+   "client_secret"
+  ]
+ },
+ {
+  "name": "SalesForce",
+  "purpose": "Marketing Cloud email",
+  "fields": [
+   "subdomain",
+   "client_id",
+   "client_secret"
+  ]
+ },
+ {
+  "name": "Stripe",
+  "purpose": "Card & ACH payments",
+  "fields": [
+   "publishable_key",
+   "secret_key",
+   "webhook_secret"
+  ]
+ },
+ {
+  "name": "Utilibill",
+  "purpose": "Billing system (UB)",
+  "fields": [
+   "endpoint",
+   "username",
+   "password"
+  ]
+ }
+]

@@ -1,0 +1,3950 @@
+[
+ {
+  "account": "1219000000",
+  "payments": [
+   {
+    "id": "PAY-00000",
+    "date": "2026-03-26",
+    "amount": 161.88,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-00001",
+    "date": "2026-04-26",
+    "amount": 121.2,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-00002",
+    "date": "2026-05-26",
+    "amount": 183.6,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-00003",
+    "date": "2026-06-26",
+    "amount": 155.65,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-00004",
+    "date": "2026-07-26",
+    "amount": 185.52,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-00000",
+    "date": "2026-03-26",
+    "kwh": 1577,
+    "amount": 223.93
+   },
+   {
+    "id": "BILL-00001",
+    "date": "2026-04-26",
+    "kwh": 1510,
+    "amount": 214.42
+   },
+   {
+    "id": "BILL-00002",
+    "date": "2026-05-26",
+    "kwh": 1418,
+    "amount": 201.36
+   },
+   {
+    "id": "BILL-00003",
+    "date": "2026-06-26",
+    "kwh": 1835,
+    "amount": 260.57
+   },
+   {
+    "id": "BILL-00004",
+    "date": "2026-07-26",
+    "kwh": 1209,
+    "amount": 171.68
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-02-26 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-02-26 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-02-26 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219001373",
+  "payments": [
+   {
+    "id": "PAY-13730",
+    "date": "2026-10-23",
+    "amount": 83.93,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-13731",
+    "date": "2026-11-23",
+    "amount": 115.52,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-13732",
+    "date": "2026-12-23",
+    "amount": 149.46,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-13733",
+    "date": "2027-01-23",
+    "amount": 198.21,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-13734",
+    "date": "2027-02-23",
+    "amount": 83.89,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-13730",
+    "date": "2026-10-23",
+    "kwh": 742,
+    "amount": 105.36
+   },
+   {
+    "id": "BILL-13731",
+    "date": "2026-11-23",
+    "kwh": 1966,
+    "amount": 279.17
+   },
+   {
+    "id": "BILL-13732",
+    "date": "2026-12-23",
+    "kwh": 1710,
+    "amount": 242.82
+   },
+   {
+    "id": "BILL-13733",
+    "date": "2027-01-23",
+    "kwh": 961,
+    "amount": 136.46
+   },
+   {
+    "id": "BILL-13734",
+    "date": "2027-02-23",
+    "kwh": 1134,
+    "amount": 161.03
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-09-23 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-09-23 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-09-23 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219002746",
+  "payments": [
+   {
+    "id": "PAY-27460",
+    "date": "2026-08-26",
+    "amount": 206.87,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-27461",
+    "date": "2026-09-26",
+    "amount": 182.32,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-27462",
+    "date": "2026-10-26",
+    "amount": 195.14,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-27463",
+    "date": "2026-11-26",
+    "amount": 127.13,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-27464",
+    "date": "2026-12-26",
+    "amount": 133.3,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-27460",
+    "date": "2026-08-26",
+    "kwh": 2059,
+    "amount": 292.38
+   },
+   {
+    "id": "BILL-27461",
+    "date": "2026-09-26",
+    "kwh": 1205,
+    "amount": 171.11
+   },
+   {
+    "id": "BILL-27462",
+    "date": "2026-10-26",
+    "kwh": 1160,
+    "amount": 164.72
+   },
+   {
+    "id": "BILL-27463",
+    "date": "2026-11-26",
+    "kwh": 2097,
+    "amount": 297.77
+   },
+   {
+    "id": "BILL-27464",
+    "date": "2026-12-26",
+    "kwh": 1267,
+    "amount": 179.91
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-07-26 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-07-26 09:15",
+    "text": "Credit check complete. Deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-07-26 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219004119",
+  "payments": [
+   {
+    "id": "PAY-41190",
+    "date": "2026-09-19",
+    "amount": 118.46,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-41191",
+    "date": "2026-10-19",
+    "amount": 166.16,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-41192",
+    "date": "2026-11-19",
+    "amount": 99.47,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-41193",
+    "date": "2026-12-19",
+    "amount": 136.89,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-41194",
+    "date": "2027-01-19",
+    "amount": 175.51,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-41190",
+    "date": "2026-09-19",
+    "kwh": 1112,
+    "amount": 157.9
+   },
+   {
+    "id": "BILL-41191",
+    "date": "2026-10-19",
+    "kwh": 1310,
+    "amount": 186.02
+   },
+   {
+    "id": "BILL-41192",
+    "date": "2026-11-19",
+    "kwh": 987,
+    "amount": 140.15
+   },
+   {
+    "id": "BILL-41193",
+    "date": "2026-12-19",
+    "kwh": 2099,
+    "amount": 298.06
+   },
+   {
+    "id": "BILL-41194",
+    "date": "2027-01-19",
+    "kwh": 1239,
+    "amount": 175.94
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-08-19 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-08-19 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-08-19 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219005492",
+  "payments": [
+   {
+    "id": "PAY-54920",
+    "date": "2026-09-24",
+    "amount": 179.44,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-54921",
+    "date": "2026-10-24",
+    "amount": 186.41,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-54922",
+    "date": "2026-11-24",
+    "amount": 162.47,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-54923",
+    "date": "2026-12-24",
+    "amount": 123.38,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-54924",
+    "date": "2027-01-24",
+    "amount": 127.73,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-54920",
+    "date": "2026-09-24",
+    "kwh": 1765,
+    "amount": 250.63
+   },
+   {
+    "id": "BILL-54921",
+    "date": "2026-10-24",
+    "kwh": 1165,
+    "amount": 165.43
+   },
+   {
+    "id": "BILL-54922",
+    "date": "2026-11-24",
+    "kwh": 1561,
+    "amount": 221.66
+   },
+   {
+    "id": "BILL-54923",
+    "date": "2026-12-24",
+    "kwh": 1638,
+    "amount": 232.6
+   },
+   {
+    "id": "BILL-54924",
+    "date": "2027-01-24",
+    "kwh": 1726,
+    "amount": 245.09
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-08-24 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-08-24 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-08-24 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219006865",
+  "payments": [
+   {
+    "id": "PAY-68650",
+    "date": "2026-07-09",
+    "amount": 85.74,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-68651",
+    "date": "2026-08-09",
+    "amount": 82.9,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-68652",
+    "date": "2026-09-09",
+    "amount": 209.71,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-68653",
+    "date": "2026-10-09",
+    "amount": 93.46,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-68654",
+    "date": "2026-11-09",
+    "amount": 204.52,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-68650",
+    "date": "2026-07-09",
+    "kwh": 761,
+    "amount": 108.06
+   },
+   {
+    "id": "BILL-68651",
+    "date": "2026-08-09",
+    "kwh": 844,
+    "amount": 119.85
+   },
+   {
+    "id": "BILL-68652",
+    "date": "2026-09-09",
+    "kwh": 1457,
+    "amount": 206.89
+   },
+   {
+    "id": "BILL-68653",
+    "date": "2026-10-09",
+    "kwh": 1273,
+    "amount": 180.77
+   },
+   {
+    "id": "BILL-68654",
+    "date": "2026-11-09",
+    "kwh": 1709,
+    "amount": 242.68
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-06-09 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-06-09 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-06-09 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219008238",
+  "payments": [
+   {
+    "id": "PAY-82380",
+    "date": "2026-03-21",
+    "amount": 120.88,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-82381",
+    "date": "2026-04-21",
+    "amount": 138.17,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-82382",
+    "date": "2026-05-21",
+    "amount": 187.61,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-82383",
+    "date": "2026-06-21",
+    "amount": 214.69,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-82384",
+    "date": "2026-07-21",
+    "amount": 113.81,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-82380",
+    "date": "2026-03-21",
+    "kwh": 1138,
+    "amount": 161.6
+   },
+   {
+    "id": "BILL-82381",
+    "date": "2026-04-21",
+    "kwh": 2143,
+    "amount": 304.31
+   },
+   {
+    "id": "BILL-82382",
+    "date": "2026-05-21",
+    "kwh": 1377,
+    "amount": 195.53
+   },
+   {
+    "id": "BILL-82383",
+    "date": "2026-06-21",
+    "kwh": 2021,
+    "amount": 286.98
+   },
+   {
+    "id": "BILL-82384",
+    "date": "2026-07-21",
+    "kwh": 1900,
+    "amount": 269.8
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-02-21 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-02-21 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-02-21 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219009611",
+  "payments": [
+   {
+    "id": "PAY-96110",
+    "date": "2026-09-04",
+    "amount": 192.86,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-96111",
+    "date": "2026-10-04",
+    "amount": 93.62,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-96112",
+    "date": "2026-11-04",
+    "amount": 107.79,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-96113",
+    "date": "2026-12-04",
+    "amount": 172.89,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-96114",
+    "date": "2027-01-04",
+    "amount": 202.55,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-96110",
+    "date": "2026-09-04",
+    "kwh": 1909,
+    "amount": 271.08
+   },
+   {
+    "id": "BILL-96111",
+    "date": "2026-10-04",
+    "kwh": 1695,
+    "amount": 240.69
+   },
+   {
+    "id": "BILL-96112",
+    "date": "2026-11-04",
+    "kwh": 1945,
+    "amount": 276.19
+   },
+   {
+    "id": "BILL-96113",
+    "date": "2026-12-04",
+    "kwh": 1841,
+    "amount": 261.42
+   },
+   {
+    "id": "BILL-96114",
+    "date": "2027-01-04",
+    "kwh": 1392,
+    "amount": 197.66
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-08-04 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-08-04 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-08-04 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219010984",
+  "payments": [
+   {
+    "id": "PAY-09840",
+    "date": "2026-03-01",
+    "amount": 190.7,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-09841",
+    "date": "2026-03-29",
+    "amount": 215.64,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-09842",
+    "date": "2026-04-29",
+    "amount": 114.43,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-09843",
+    "date": "2026-05-29",
+    "amount": 109.29,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-09844",
+    "date": "2026-06-29",
+    "amount": 181,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-09840",
+    "date": "2026-03-01",
+    "kwh": 1886,
+    "amount": 267.81
+   },
+   {
+    "id": "BILL-09841",
+    "date": "2026-03-29",
+    "kwh": 1014,
+    "amount": 143.99
+   },
+   {
+    "id": "BILL-09842",
+    "date": "2026-04-29",
+    "kwh": 887,
+    "amount": 125.95
+   },
+   {
+    "id": "BILL-09843",
+    "date": "2026-05-29",
+    "kwh": 1682,
+    "amount": 238.84
+   },
+   {
+    "id": "BILL-09844",
+    "date": "2026-06-29",
+    "kwh": 711,
+    "amount": 100.96
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-01-29 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-01-29 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-01-29 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219012357",
+  "payments": [
+   {
+    "id": "PAY-23570",
+    "date": "2026-04-17",
+    "amount": 99.13,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-23571",
+    "date": "2026-05-17",
+    "amount": 207.62,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-23572",
+    "date": "2026-06-17",
+    "amount": 166.35,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-23573",
+    "date": "2026-07-17",
+    "amount": 203.25,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-23574",
+    "date": "2026-08-17",
+    "amount": 173.27,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-23570",
+    "date": "2026-04-17",
+    "kwh": 905,
+    "amount": 128.51
+   },
+   {
+    "id": "BILL-23571",
+    "date": "2026-05-17",
+    "kwh": 2021,
+    "amount": 286.98
+   },
+   {
+    "id": "BILL-23572",
+    "date": "2026-06-17",
+    "kwh": 1500,
+    "amount": 213
+   },
+   {
+    "id": "BILL-23573",
+    "date": "2026-07-17",
+    "kwh": 1709,
+    "amount": 242.68
+   },
+   {
+    "id": "BILL-23574",
+    "date": "2026-08-17",
+    "kwh": 1367,
+    "amount": 194.11
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-03-17 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-03-17 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-03-17 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219013730",
+  "payments": [
+   {
+    "id": "PAY-37300",
+    "date": "2026-08-02",
+    "amount": 205.55,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-37301",
+    "date": "2026-09-02",
+    "amount": 213.24,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-37302",
+    "date": "2026-10-02",
+    "amount": 211.97,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-37303",
+    "date": "2026-11-02",
+    "amount": 213.93,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-37304",
+    "date": "2026-12-02",
+    "amount": 129.54,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-37300",
+    "date": "2026-08-02",
+    "kwh": 2045,
+    "amount": 290.39
+   },
+   {
+    "id": "BILL-37301",
+    "date": "2026-09-02",
+    "kwh": 2135,
+    "amount": 303.17
+   },
+   {
+    "id": "BILL-37302",
+    "date": "2026-10-02",
+    "kwh": 2186,
+    "amount": 310.41
+   },
+   {
+    "id": "BILL-37303",
+    "date": "2026-11-02",
+    "kwh": 1862,
+    "amount": 264.4
+   },
+   {
+    "id": "BILL-37304",
+    "date": "2026-12-02",
+    "kwh": 1158,
+    "amount": 164.44
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-07-02 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-07-02 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-07-02 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219015103",
+  "payments": [
+   {
+    "id": "PAY-51030",
+    "date": "2026-02-22",
+    "amount": 196.88,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-51031",
+    "date": "2026-03-22",
+    "amount": 115.53,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-51032",
+    "date": "2026-04-22",
+    "amount": 175,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-51033",
+    "date": "2026-05-22",
+    "amount": 92.03,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-51034",
+    "date": "2026-06-22",
+    "amount": 80.42,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-51030",
+    "date": "2026-02-22",
+    "kwh": 1952,
+    "amount": 277.18
+   },
+   {
+    "id": "BILL-51031",
+    "date": "2026-03-22",
+    "kwh": 829,
+    "amount": 117.72
+   },
+   {
+    "id": "BILL-51032",
+    "date": "2026-04-22",
+    "kwh": 1991,
+    "amount": 282.72
+   },
+   {
+    "id": "BILL-51033",
+    "date": "2026-05-22",
+    "kwh": 899,
+    "amount": 127.66
+   },
+   {
+    "id": "BILL-51034",
+    "date": "2026-06-22",
+    "kwh": 2094,
+    "amount": 297.35
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-01-22 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-01-22 09:15",
+    "text": "Credit check complete. Deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-01-22 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219016476",
+  "payments": [
+   {
+    "id": "PAY-64760",
+    "date": "2026-09-28",
+    "amount": 198.97,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-64761",
+    "date": "2026-10-28",
+    "amount": 142.37,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-64762",
+    "date": "2026-11-28",
+    "amount": 188.9,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-64763",
+    "date": "2026-12-28",
+    "amount": 137.52,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-64764",
+    "date": "2027-01-28",
+    "amount": 83.07,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-64760",
+    "date": "2026-09-28",
+    "kwh": 1975,
+    "amount": 280.45
+   },
+   {
+    "id": "BILL-64761",
+    "date": "2026-10-28",
+    "kwh": 1316,
+    "amount": 186.87
+   },
+   {
+    "id": "BILL-64762",
+    "date": "2026-11-28",
+    "kwh": 763,
+    "amount": 108.35
+   },
+   {
+    "id": "BILL-64763",
+    "date": "2026-12-28",
+    "kwh": 1947,
+    "amount": 276.47
+   },
+   {
+    "id": "BILL-64764",
+    "date": "2027-01-28",
+    "kwh": 1174,
+    "amount": 166.71
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-08-28 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-08-28 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-08-28 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219017849",
+  "payments": [
+   {
+    "id": "PAY-78490",
+    "date": "2026-10-21",
+    "amount": 193.29,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-78491",
+    "date": "2026-11-21",
+    "amount": 205.81,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-78492",
+    "date": "2026-12-21",
+    "amount": 136.49,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-78493",
+    "date": "2027-01-21",
+    "amount": 83.19,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-78494",
+    "date": "2027-02-21",
+    "amount": 158.05,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-78490",
+    "date": "2026-10-21",
+    "kwh": 1914,
+    "amount": 271.79
+   },
+   {
+    "id": "BILL-78491",
+    "date": "2026-11-21",
+    "kwh": 734,
+    "amount": 104.23
+   },
+   {
+    "id": "BILL-78492",
+    "date": "2026-12-21",
+    "kwh": 1318,
+    "amount": 187.16
+   },
+   {
+    "id": "BILL-78493",
+    "date": "2027-01-21",
+    "kwh": 1882,
+    "amount": 267.24
+   },
+   {
+    "id": "BILL-78494",
+    "date": "2027-02-21",
+    "kwh": 1977,
+    "amount": 280.73
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-09-21 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-09-21 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-09-21 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219019222",
+  "payments": [
+   {
+    "id": "PAY-92220",
+    "date": "2026-02-09",
+    "amount": 173.39,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-92221",
+    "date": "2026-03-09",
+    "amount": 98.86,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-92222",
+    "date": "2026-04-09",
+    "amount": 111.06,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-92223",
+    "date": "2026-05-09",
+    "amount": 95.17,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-92224",
+    "date": "2026-06-09",
+    "amount": 113.01,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-92220",
+    "date": "2026-02-09",
+    "kwh": 1701,
+    "amount": 241.54
+   },
+   {
+    "id": "BILL-92221",
+    "date": "2026-03-09",
+    "kwh": 863,
+    "amount": 122.55
+   },
+   {
+    "id": "BILL-92222",
+    "date": "2026-04-09",
+    "kwh": 1509,
+    "amount": 214.28
+   },
+   {
+    "id": "BILL-92223",
+    "date": "2026-05-09",
+    "kwh": 1913,
+    "amount": 271.65
+   },
+   {
+    "id": "BILL-92224",
+    "date": "2026-06-09",
+    "kwh": 1222,
+    "amount": 173.52
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-01-09 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-01-09 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-01-09 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219020595",
+  "payments": [
+   {
+    "id": "PAY-05950",
+    "date": "2026-03-06",
+    "amount": 191.41,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-05951",
+    "date": "2026-04-06",
+    "amount": 133.02,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-05952",
+    "date": "2026-05-06",
+    "amount": 169.71,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-05953",
+    "date": "2026-06-06",
+    "amount": 207.74,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-05954",
+    "date": "2026-07-06",
+    "amount": 212.9,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-05950",
+    "date": "2026-03-06",
+    "kwh": 1894,
+    "amount": 268.95
+   },
+   {
+    "id": "BILL-05951",
+    "date": "2026-04-06",
+    "kwh": 2069,
+    "amount": 293.8
+   },
+   {
+    "id": "BILL-05952",
+    "date": "2026-05-06",
+    "kwh": 1197,
+    "amount": 169.97
+   },
+   {
+    "id": "BILL-05953",
+    "date": "2026-06-06",
+    "kwh": 1351,
+    "amount": 191.84
+   },
+   {
+    "id": "BILL-05954",
+    "date": "2026-07-06",
+    "kwh": 1558,
+    "amount": 221.24
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-02-06 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-02-06 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-02-06 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219021968",
+  "payments": [
+   {
+    "id": "PAY-19680",
+    "date": "2026-08-30",
+    "amount": 136.86,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-19681",
+    "date": "2026-09-30",
+    "amount": 159.34,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-19682",
+    "date": "2026-10-30",
+    "amount": 85.67,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-19683",
+    "date": "2026-11-30",
+    "amount": 189.57,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-19684",
+    "date": "2026-12-30",
+    "amount": 209,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-19680",
+    "date": "2026-08-30",
+    "kwh": 1309,
+    "amount": 185.88
+   },
+   {
+    "id": "BILL-19681",
+    "date": "2026-09-30",
+    "kwh": 1874,
+    "amount": 266.11
+   },
+   {
+    "id": "BILL-19682",
+    "date": "2026-10-30",
+    "kwh": 2102,
+    "amount": 298.48
+   },
+   {
+    "id": "BILL-19683",
+    "date": "2026-11-30",
+    "kwh": 1357,
+    "amount": 192.69
+   },
+   {
+    "id": "BILL-19684",
+    "date": "2026-12-30",
+    "kwh": 1813,
+    "amount": 257.45
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-07-30 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-07-30 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-07-30 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219023341",
+  "payments": [
+   {
+    "id": "PAY-33410",
+    "date": "2026-06-05",
+    "amount": 107.08,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-33411",
+    "date": "2026-07-05",
+    "amount": 196.54,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-33412",
+    "date": "2026-08-05",
+    "amount": 128.35,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-33413",
+    "date": "2026-09-05",
+    "amount": 161.6,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-33414",
+    "date": "2026-10-05",
+    "amount": 81.35,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-33410",
+    "date": "2026-06-05",
+    "kwh": 990,
+    "amount": 140.58
+   },
+   {
+    "id": "BILL-33411",
+    "date": "2026-07-05",
+    "kwh": 1574,
+    "amount": 223.51
+   },
+   {
+    "id": "BILL-33412",
+    "date": "2026-08-05",
+    "kwh": 1179,
+    "amount": 167.42
+   },
+   {
+    "id": "BILL-33413",
+    "date": "2026-09-05",
+    "kwh": 1867,
+    "amount": 265.11
+   },
+   {
+    "id": "BILL-33414",
+    "date": "2026-10-05",
+    "kwh": 1285,
+    "amount": 182.47
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-05-05 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-05-05 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-05-05 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219024714",
+  "payments": [
+   {
+    "id": "PAY-47140",
+    "date": "2026-07-02",
+    "amount": 99.29,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-47141",
+    "date": "2026-08-02",
+    "amount": 87.57,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-47142",
+    "date": "2026-09-02",
+    "amount": 211.8,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-47143",
+    "date": "2026-10-02",
+    "amount": 125.03,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-47144",
+    "date": "2026-11-02",
+    "amount": 114.32,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-47140",
+    "date": "2026-07-02",
+    "kwh": 907,
+    "amount": 128.79
+   },
+   {
+    "id": "BILL-47141",
+    "date": "2026-08-02",
+    "kwh": 1182,
+    "amount": 167.84
+   },
+   {
+    "id": "BILL-47142",
+    "date": "2026-09-02",
+    "kwh": 1992,
+    "amount": 282.86
+   },
+   {
+    "id": "BILL-47143",
+    "date": "2026-10-02",
+    "kwh": 1236,
+    "amount": 175.51
+   },
+   {
+    "id": "BILL-47144",
+    "date": "2026-11-02",
+    "kwh": 1429,
+    "amount": 202.92
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-06-02 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-06-02 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-06-02 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219026087",
+  "payments": [
+   {
+    "id": "PAY-60870",
+    "date": "2026-06-14",
+    "amount": 134.5,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-60871",
+    "date": "2026-07-14",
+    "amount": 148.49,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-60872",
+    "date": "2026-08-14",
+    "amount": 87.08,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-60873",
+    "date": "2026-09-14",
+    "amount": 126.62,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-60874",
+    "date": "2026-10-14",
+    "amount": 181.82,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-60870",
+    "date": "2026-06-14",
+    "kwh": 1284,
+    "amount": 182.33
+   },
+   {
+    "id": "BILL-60871",
+    "date": "2026-07-14",
+    "kwh": 1199,
+    "amount": 170.26
+   },
+   {
+    "id": "BILL-60872",
+    "date": "2026-08-14",
+    "kwh": 1771,
+    "amount": 251.48
+   },
+   {
+    "id": "BILL-60873",
+    "date": "2026-09-14",
+    "kwh": 1137,
+    "amount": 161.45
+   },
+   {
+    "id": "BILL-60874",
+    "date": "2026-10-14",
+    "kwh": 1976,
+    "amount": 280.59
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-05-14 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-05-14 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-05-14 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219027460",
+  "payments": [
+   {
+    "id": "PAY-74600",
+    "date": "2026-09-05",
+    "amount": 108.54,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-74601",
+    "date": "2026-10-05",
+    "amount": 174.07,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-74602",
+    "date": "2026-11-05",
+    "amount": 214.22,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-74603",
+    "date": "2026-12-05",
+    "amount": 106.02,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-74604",
+    "date": "2027-01-05",
+    "amount": 84.98,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-74600",
+    "date": "2026-09-05",
+    "kwh": 1006,
+    "amount": 142.85
+   },
+   {
+    "id": "BILL-74601",
+    "date": "2026-10-05",
+    "kwh": 979,
+    "amount": 139.02
+   },
+   {
+    "id": "BILL-74602",
+    "date": "2026-11-05",
+    "kwh": 2030,
+    "amount": 288.26
+   },
+   {
+    "id": "BILL-74603",
+    "date": "2026-12-05",
+    "kwh": 1177,
+    "amount": 167.13
+   },
+   {
+    "id": "BILL-74604",
+    "date": "2027-01-05",
+    "kwh": 2087,
+    "amount": 296.35
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-08-05 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-08-05 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-08-05 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219028833",
+  "payments": [
+   {
+    "id": "PAY-88330",
+    "date": "2026-04-02",
+    "amount": 86.27,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-88331",
+    "date": "2026-05-02",
+    "amount": 123.62,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-88332",
+    "date": "2026-06-02",
+    "amount": 168.37,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-88333",
+    "date": "2026-07-02",
+    "amount": 96.17,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-88334",
+    "date": "2026-08-02",
+    "amount": 125.85,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-88330",
+    "date": "2026-04-02",
+    "kwh": 767,
+    "amount": 108.91
+   },
+   {
+    "id": "BILL-88331",
+    "date": "2026-05-02",
+    "kwh": 873,
+    "amount": 123.97
+   },
+   {
+    "id": "BILL-88332",
+    "date": "2026-06-02",
+    "kwh": 709,
+    "amount": 100.68
+   },
+   {
+    "id": "BILL-88333",
+    "date": "2026-07-02",
+    "kwh": 1981,
+    "amount": 281.3
+   },
+   {
+    "id": "BILL-88334",
+    "date": "2026-08-02",
+    "kwh": 821,
+    "amount": 116.58
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-03-02 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-03-02 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-03-02 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219030206",
+  "payments": [
+   {
+    "id": "PAY-02060",
+    "date": "2026-06-13",
+    "amount": 115.51,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-02061",
+    "date": "2026-07-13",
+    "amount": 200.89,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-02062",
+    "date": "2026-08-13",
+    "amount": 157.6,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-02063",
+    "date": "2026-09-13",
+    "amount": 185.15,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-02064",
+    "date": "2026-10-13",
+    "amount": 125.88,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-02060",
+    "date": "2026-06-13",
+    "kwh": 1080,
+    "amount": 153.36
+   },
+   {
+    "id": "BILL-02061",
+    "date": "2026-07-13",
+    "kwh": 1827,
+    "amount": 259.43
+   },
+   {
+    "id": "BILL-02062",
+    "date": "2026-08-13",
+    "kwh": 1632,
+    "amount": 231.74
+   },
+   {
+    "id": "BILL-02063",
+    "date": "2026-09-13",
+    "kwh": 1894,
+    "amount": 268.95
+   },
+   {
+    "id": "BILL-02064",
+    "date": "2026-10-13",
+    "kwh": 1130,
+    "amount": 160.46
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-05-13 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-05-13 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-05-13 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219031579",
+  "payments": [
+   {
+    "id": "PAY-15790",
+    "date": "2026-07-09",
+    "amount": 202.55,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-15791",
+    "date": "2026-08-09",
+    "amount": 114.2,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-15792",
+    "date": "2026-09-09",
+    "amount": 123.37,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-15793",
+    "date": "2026-10-09",
+    "amount": 155.02,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-15794",
+    "date": "2026-11-09",
+    "amount": 218.59,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-15790",
+    "date": "2026-07-09",
+    "kwh": 2013,
+    "amount": 285.85
+   },
+   {
+    "id": "BILL-15791",
+    "date": "2026-08-09",
+    "kwh": 1504,
+    "amount": 213.57
+   },
+   {
+    "id": "BILL-15792",
+    "date": "2026-09-09",
+    "kwh": 1059,
+    "amount": 150.38
+   },
+   {
+    "id": "BILL-15793",
+    "date": "2026-10-09",
+    "kwh": 1862,
+    "amount": 264.4
+   },
+   {
+    "id": "BILL-15794",
+    "date": "2026-11-09",
+    "kwh": 1451,
+    "amount": 206.04
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-06-09 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-06-09 09:15",
+    "text": "Credit check complete. Deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-06-09 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219032952",
+  "payments": [
+   {
+    "id": "PAY-29520",
+    "date": "2026-08-27",
+    "amount": 150.92,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-29521",
+    "date": "2026-09-27",
+    "amount": 114.61,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-29522",
+    "date": "2026-10-27",
+    "amount": 156.96,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-29523",
+    "date": "2026-11-27",
+    "amount": 94.75,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-29524",
+    "date": "2026-12-27",
+    "amount": 148,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-29520",
+    "date": "2026-08-27",
+    "kwh": 1460,
+    "amount": 207.32
+   },
+   {
+    "id": "BILL-29521",
+    "date": "2026-09-27",
+    "kwh": 858,
+    "amount": 121.84
+   },
+   {
+    "id": "BILL-29522",
+    "date": "2026-10-27",
+    "kwh": 1708,
+    "amount": 242.54
+   },
+   {
+    "id": "BILL-29523",
+    "date": "2026-11-27",
+    "kwh": 1385,
+    "amount": 196.67
+   },
+   {
+    "id": "BILL-29524",
+    "date": "2026-12-27",
+    "kwh": 1646,
+    "amount": 233.73
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-07-27 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-07-27 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-07-27 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219034325",
+  "payments": [
+   {
+    "id": "PAY-43250",
+    "date": "2026-02-18",
+    "amount": 148.26,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-43251",
+    "date": "2026-03-18",
+    "amount": 139.34,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-43252",
+    "date": "2026-04-18",
+    "amount": 181.19,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-43253",
+    "date": "2026-05-18",
+    "amount": 96.47,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-43254",
+    "date": "2026-06-18",
+    "amount": 191.33,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-43250",
+    "date": "2026-02-18",
+    "kwh": 1431,
+    "amount": 203.2
+   },
+   {
+    "id": "BILL-43251",
+    "date": "2026-03-18",
+    "kwh": 877,
+    "amount": 124.53
+   },
+   {
+    "id": "BILL-43252",
+    "date": "2026-04-18",
+    "kwh": 1941,
+    "amount": 275.62
+   },
+   {
+    "id": "BILL-43253",
+    "date": "2026-05-18",
+    "kwh": 1770,
+    "amount": 251.34
+   },
+   {
+    "id": "BILL-43254",
+    "date": "2026-06-18",
+    "kwh": 1225,
+    "amount": 173.95
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-01-18 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-01-18 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-01-18 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219035698",
+  "payments": [
+   {
+    "id": "PAY-56980",
+    "date": "2026-07-30",
+    "amount": 174.37,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-56981",
+    "date": "2026-08-30",
+    "amount": 126.65,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-56982",
+    "date": "2026-09-30",
+    "amount": 99.62,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-56983",
+    "date": "2026-10-30",
+    "amount": 200.92,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-56984",
+    "date": "2026-11-30",
+    "amount": 116.92,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-56980",
+    "date": "2026-07-30",
+    "kwh": 1711,
+    "amount": 242.96
+   },
+   {
+    "id": "BILL-56981",
+    "date": "2026-08-30",
+    "kwh": 1996,
+    "amount": 283.43
+   },
+   {
+    "id": "BILL-56982",
+    "date": "2026-09-30",
+    "kwh": 2070,
+    "amount": 293.94
+   },
+   {
+    "id": "BILL-56983",
+    "date": "2026-10-30",
+    "kwh": 2191,
+    "amount": 311.12
+   },
+   {
+    "id": "BILL-56984",
+    "date": "2026-11-30",
+    "kwh": 1766,
+    "amount": 250.77
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-06-30 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-06-30 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-06-30 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219037071",
+  "payments": [
+   {
+    "id": "PAY-70710",
+    "date": "2026-08-06",
+    "amount": 196.99,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-70711",
+    "date": "2026-09-06",
+    "amount": 160.97,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-70712",
+    "date": "2026-10-06",
+    "amount": 183.01,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-70713",
+    "date": "2026-11-06",
+    "amount": 117.38,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-70714",
+    "date": "2026-12-06",
+    "amount": 163.46,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-70710",
+    "date": "2026-08-06",
+    "kwh": 1953,
+    "amount": 277.33
+   },
+   {
+    "id": "BILL-70711",
+    "date": "2026-09-06",
+    "kwh": 1100,
+    "amount": 156.2
+   },
+   {
+    "id": "BILL-70712",
+    "date": "2026-10-06",
+    "kwh": 1227,
+    "amount": 174.23
+   },
+   {
+    "id": "BILL-70713",
+    "date": "2026-11-06",
+    "kwh": 2106,
+    "amount": 299.05
+   },
+   {
+    "id": "BILL-70714",
+    "date": "2026-12-06",
+    "kwh": 1535,
+    "amount": 217.97
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-07-06 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-07-06 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-07-06 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219038444",
+  "payments": [
+   {
+    "id": "PAY-84440",
+    "date": "2026-07-20",
+    "amount": 219.18,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-84441",
+    "date": "2026-08-20",
+    "amount": 217.45,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-84442",
+    "date": "2026-09-20",
+    "amount": 129.64,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-84443",
+    "date": "2026-10-20",
+    "amount": 158.76,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-84444",
+    "date": "2026-11-20",
+    "amount": 86.46,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-84440",
+    "date": "2026-07-20",
+    "kwh": 2191,
+    "amount": 311.12
+   },
+   {
+    "id": "BILL-84441",
+    "date": "2026-08-20",
+    "kwh": 1544,
+    "amount": 219.25
+   },
+   {
+    "id": "BILL-84442",
+    "date": "2026-09-20",
+    "kwh": 1429,
+    "amount": 202.92
+   },
+   {
+    "id": "BILL-84443",
+    "date": "2026-10-20",
+    "kwh": 2064,
+    "amount": 293.09
+   },
+   {
+    "id": "BILL-84444",
+    "date": "2026-11-20",
+    "kwh": 1053,
+    "amount": 149.53
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-06-20 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-06-20 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-06-20 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219039817",
+  "payments": [
+   {
+    "id": "PAY-98170",
+    "date": "2026-04-16",
+    "amount": 194.64,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-98171",
+    "date": "2026-05-16",
+    "amount": 180.52,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-98172",
+    "date": "2026-06-16",
+    "amount": 162.77,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-98173",
+    "date": "2026-07-16",
+    "amount": 134.17,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-98174",
+    "date": "2026-08-16",
+    "amount": 169.42,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-98170",
+    "date": "2026-04-16",
+    "kwh": 1928,
+    "amount": 273.78
+   },
+   {
+    "id": "BILL-98171",
+    "date": "2026-05-16",
+    "kwh": 1280,
+    "amount": 181.76
+   },
+   {
+    "id": "BILL-98172",
+    "date": "2026-06-16",
+    "kwh": 2036,
+    "amount": 289.11
+   },
+   {
+    "id": "BILL-98173",
+    "date": "2026-07-16",
+    "kwh": 1248,
+    "amount": 177.22
+   },
+   {
+    "id": "BILL-98174",
+    "date": "2026-08-16",
+    "kwh": 1447,
+    "amount": 205.47
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-03-16 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-03-16 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-03-16 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219041190",
+  "payments": [
+   {
+    "id": "PAY-11900",
+    "date": "2026-03-04",
+    "amount": 204.28,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-11901",
+    "date": "2026-04-04",
+    "amount": 160.58,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-11902",
+    "date": "2026-05-04",
+    "amount": 139.49,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-11903",
+    "date": "2026-06-04",
+    "amount": 102.47,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-11904",
+    "date": "2026-07-04",
+    "amount": 132.5,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-11900",
+    "date": "2026-03-04",
+    "kwh": 2032,
+    "amount": 288.54
+   },
+   {
+    "id": "BILL-11901",
+    "date": "2026-04-04",
+    "kwh": 941,
+    "amount": 133.62
+   },
+   {
+    "id": "BILL-11902",
+    "date": "2026-05-04",
+    "kwh": 2188,
+    "amount": 310.7
+   },
+   {
+    "id": "BILL-11903",
+    "date": "2026-06-04",
+    "kwh": 1884,
+    "amount": 267.53
+   },
+   {
+    "id": "BILL-11904",
+    "date": "2026-07-04",
+    "kwh": 2113,
+    "amount": 300.05
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-02-04 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-02-04 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-02-04 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219042563",
+  "payments": [
+   {
+    "id": "PAY-25630",
+    "date": "2026-09-14",
+    "amount": 146.34,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-25631",
+    "date": "2026-10-14",
+    "amount": 90.01,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-25632",
+    "date": "2026-11-14",
+    "amount": 204.62,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-25633",
+    "date": "2026-12-14",
+    "amount": 170.48,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-25634",
+    "date": "2027-01-14",
+    "amount": 205.25,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-25630",
+    "date": "2026-09-14",
+    "kwh": 1411,
+    "amount": 200.36
+   },
+   {
+    "id": "BILL-25631",
+    "date": "2026-10-14",
+    "kwh": 1669,
+    "amount": 237
+   },
+   {
+    "id": "BILL-25632",
+    "date": "2026-11-14",
+    "kwh": 1350,
+    "amount": 191.7
+   },
+   {
+    "id": "BILL-25633",
+    "date": "2026-12-14",
+    "kwh": 1951,
+    "amount": 277.04
+   },
+   {
+    "id": "BILL-25634",
+    "date": "2027-01-14",
+    "kwh": 1043,
+    "amount": 148.11
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-08-14 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-08-14 09:15",
+    "text": "Credit check complete. Deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-08-14 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219043936",
+  "payments": [
+   {
+    "id": "PAY-39360",
+    "date": "2026-03-18",
+    "amount": 196.03,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-39361",
+    "date": "2026-04-18",
+    "amount": 82.57,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-39362",
+    "date": "2026-05-18",
+    "amount": 162.87,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-39363",
+    "date": "2026-06-18",
+    "amount": 94.63,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-39364",
+    "date": "2026-07-18",
+    "amount": 182.46,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-39360",
+    "date": "2026-03-18",
+    "kwh": 1943,
+    "amount": 275.91
+   },
+   {
+    "id": "BILL-39361",
+    "date": "2026-04-18",
+    "kwh": 857,
+    "amount": 121.69
+   },
+   {
+    "id": "BILL-39362",
+    "date": "2026-05-18",
+    "kwh": 1262,
+    "amount": 179.2
+   },
+   {
+    "id": "BILL-39363",
+    "date": "2026-06-18",
+    "kwh": 1631,
+    "amount": 231.6
+   },
+   {
+    "id": "BILL-39364",
+    "date": "2026-07-18",
+    "kwh": 2105,
+    "amount": 298.91
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-02-18 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-02-18 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-02-18 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219045309",
+  "payments": [
+   {
+    "id": "PAY-53090",
+    "date": "2026-04-01",
+    "amount": 96.35,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-53091",
+    "date": "2026-05-01",
+    "amount": 92.71,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-53092",
+    "date": "2026-06-01",
+    "amount": 200.06,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-53093",
+    "date": "2026-07-01",
+    "amount": 218.26,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-53094",
+    "date": "2026-08-01",
+    "amount": 109.09,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-53090",
+    "date": "2026-04-01",
+    "kwh": 875,
+    "amount": 124.25
+   },
+   {
+    "id": "BILL-53091",
+    "date": "2026-05-01",
+    "kwh": 2181,
+    "amount": 309.7
+   },
+   {
+    "id": "BILL-53092",
+    "date": "2026-06-01",
+    "kwh": 1927,
+    "amount": 273.63
+   },
+   {
+    "id": "BILL-53093",
+    "date": "2026-07-01",
+    "kwh": 826,
+    "amount": 117.29
+   },
+   {
+    "id": "BILL-53094",
+    "date": "2026-08-01",
+    "kwh": 1753,
+    "amount": 248.93
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-03-01 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-03-01 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-03-01 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219046682",
+  "payments": [
+   {
+    "id": "PAY-66820",
+    "date": "2026-07-19",
+    "amount": 98.29,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-66821",
+    "date": "2026-08-19",
+    "amount": 192.66,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-66822",
+    "date": "2026-09-19",
+    "amount": 207.46,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-66823",
+    "date": "2026-10-19",
+    "amount": 125.45,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-66824",
+    "date": "2026-11-19",
+    "amount": 136.61,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-66820",
+    "date": "2026-07-19",
+    "kwh": 896,
+    "amount": 127.23
+   },
+   {
+    "id": "BILL-66821",
+    "date": "2026-08-19",
+    "kwh": 1187,
+    "amount": 168.55
+   },
+   {
+    "id": "BILL-66822",
+    "date": "2026-09-19",
+    "kwh": 788,
+    "amount": 111.9
+   },
+   {
+    "id": "BILL-66823",
+    "date": "2026-10-19",
+    "kwh": 1614,
+    "amount": 229.19
+   },
+   {
+    "id": "BILL-66824",
+    "date": "2026-11-19",
+    "kwh": 1879,
+    "amount": 266.82
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-06-19 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-06-19 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-06-19 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219048055",
+  "payments": [
+   {
+    "id": "PAY-80550",
+    "date": "2026-08-07",
+    "amount": 174.01,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-80551",
+    "date": "2026-09-07",
+    "amount": 110.27,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-80552",
+    "date": "2026-10-07",
+    "amount": 125.54,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-80553",
+    "date": "2026-11-07",
+    "amount": 89.5,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-80554",
+    "date": "2026-12-07",
+    "amount": 148.51,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-80550",
+    "date": "2026-08-07",
+    "kwh": 1707,
+    "amount": 242.39
+   },
+   {
+    "id": "BILL-80551",
+    "date": "2026-09-07",
+    "kwh": 802,
+    "amount": 113.88
+   },
+   {
+    "id": "BILL-80552",
+    "date": "2026-10-07",
+    "kwh": 1566,
+    "amount": 222.37
+   },
+   {
+    "id": "BILL-80553",
+    "date": "2026-11-07",
+    "kwh": 760,
+    "amount": 107.92
+   },
+   {
+    "id": "BILL-80554",
+    "date": "2026-12-07",
+    "kwh": 1409,
+    "amount": 200.08
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-07-07 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-07-07 09:15",
+    "text": "Credit check complete. Deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-07-07 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219049428",
+  "payments": [
+   {
+    "id": "PAY-94280",
+    "date": "2026-10-17",
+    "amount": 146.84,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-94281",
+    "date": "2026-11-17",
+    "amount": 153.25,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-94282",
+    "date": "2026-12-17",
+    "amount": 166.37,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-94283",
+    "date": "2027-01-17",
+    "amount": 136.32,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-94284",
+    "date": "2027-02-17",
+    "amount": 99.52,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-94280",
+    "date": "2026-10-17",
+    "kwh": 1416,
+    "amount": 201.07
+   },
+   {
+    "id": "BILL-94281",
+    "date": "2026-11-17",
+    "kwh": 1303,
+    "amount": 185.03
+   },
+   {
+    "id": "BILL-94282",
+    "date": "2026-12-17",
+    "kwh": 774,
+    "amount": 109.91
+   },
+   {
+    "id": "BILL-94283",
+    "date": "2027-01-17",
+    "kwh": 2027,
+    "amount": 287.83
+   },
+   {
+    "id": "BILL-94284",
+    "date": "2027-02-17",
+    "kwh": 2096,
+    "amount": 297.63
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-09-17 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-09-17 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-09-17 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219050801",
+  "payments": [
+   {
+    "id": "PAY-08010",
+    "date": "2026-03-07",
+    "amount": 120.1,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-08011",
+    "date": "2026-04-07",
+    "amount": 218.53,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-08012",
+    "date": "2026-05-07",
+    "amount": 203.36,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-08013",
+    "date": "2026-06-07",
+    "amount": 213.46,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-08014",
+    "date": "2026-07-07",
+    "amount": 124.58,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-08010",
+    "date": "2026-03-07",
+    "kwh": 1130,
+    "amount": 160.46
+   },
+   {
+    "id": "BILL-08011",
+    "date": "2026-04-07",
+    "kwh": 2130,
+    "amount": 302.46
+   },
+   {
+    "id": "BILL-08012",
+    "date": "2026-05-07",
+    "kwh": 2132,
+    "amount": 302.74
+   },
+   {
+    "id": "BILL-08013",
+    "date": "2026-06-07",
+    "kwh": 789,
+    "amount": 112.04
+   },
+   {
+    "id": "BILL-08014",
+    "date": "2026-07-07",
+    "kwh": 1080,
+    "amount": 153.36
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-02-07 09:14",
+    "text": "Enrollment submitted via Texas Electricity Ratings (API)."
+   },
+   {
+    "by": "System",
+    "at": "2026-02-07 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-02-07 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219052174",
+  "payments": [
+   {
+    "id": "PAY-21740",
+    "date": "2026-08-30",
+    "amount": 103.61,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-21741",
+    "date": "2026-09-30",
+    "amount": 115.35,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-21742",
+    "date": "2026-10-30",
+    "amount": 162.27,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Failed"
+   },
+   {
+    "id": "PAY-21743",
+    "date": "2026-11-30",
+    "amount": 83.38,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-21744",
+    "date": "2026-12-30",
+    "amount": 104.61,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-21740",
+    "date": "2026-08-30",
+    "kwh": 953,
+    "amount": 135.33
+   },
+   {
+    "id": "BILL-21741",
+    "date": "2026-09-30",
+    "kwh": 736,
+    "amount": 104.51
+   },
+   {
+    "id": "BILL-21742",
+    "date": "2026-10-30",
+    "kwh": 1879,
+    "amount": 266.82
+   },
+   {
+    "id": "BILL-21743",
+    "date": "2026-11-30",
+    "kwh": 1224,
+    "amount": 173.81
+   },
+   {
+    "id": "BILL-21744",
+    "date": "2026-12-30",
+    "kwh": 825,
+    "amount": 117.15
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-07-30 09:14",
+    "text": "Enrollment submitted via Power to Choose."
+   },
+   {
+    "by": "System",
+    "at": "2026-07-30 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-07-30 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219053547",
+  "payments": [
+   {
+    "id": "PAY-35470",
+    "date": "2026-09-02",
+    "amount": 108.22,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-35471",
+    "date": "2026-10-02",
+    "amount": 82.34,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-35472",
+    "date": "2026-11-02",
+    "amount": 176.36,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-35473",
+    "date": "2026-12-02",
+    "amount": 153.33,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-35474",
+    "date": "2027-01-02",
+    "amount": 135.96,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-35470",
+    "date": "2026-09-02",
+    "kwh": 1002,
+    "amount": 142.28
+   },
+   {
+    "id": "BILL-35471",
+    "date": "2026-10-02",
+    "kwh": 1486,
+    "amount": 211.01
+   },
+   {
+    "id": "BILL-35472",
+    "date": "2026-11-02",
+    "kwh": 980,
+    "amount": 139.16
+   },
+   {
+    "id": "BILL-35473",
+    "date": "2026-12-02",
+    "kwh": 2121,
+    "amount": 301.18
+   },
+   {
+    "id": "BILL-35474",
+    "date": "2027-01-02",
+    "kwh": 1613,
+    "amount": 229.05
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-08-02 09:14",
+    "text": "Enrollment submitted via Referral."
+   },
+   {
+    "by": "System",
+    "at": "2026-08-02 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-08-02 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219054920",
+  "payments": [
+   {
+    "id": "PAY-49200",
+    "date": "2026-04-12",
+    "amount": 105.79,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-49201",
+    "date": "2026-05-12",
+    "amount": 132.73,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-49202",
+    "date": "2026-06-12",
+    "amount": 128.77,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-49203",
+    "date": "2026-07-12",
+    "amount": 177.19,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-49204",
+    "date": "2026-08-12",
+    "amount": 103.04,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-49200",
+    "date": "2026-04-12",
+    "kwh": 976,
+    "amount": 138.59
+   },
+   {
+    "id": "BILL-49201",
+    "date": "2026-05-12",
+    "kwh": 1741,
+    "amount": 247.22
+   },
+   {
+    "id": "BILL-49202",
+    "date": "2026-06-12",
+    "kwh": 1765,
+    "amount": 250.63
+   },
+   {
+    "id": "BILL-49203",
+    "date": "2026-07-12",
+    "kwh": 1911,
+    "amount": 271.36
+   },
+   {
+    "id": "BILL-49204",
+    "date": "2026-08-12",
+    "kwh": 1316,
+    "amount": 186.87
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-03-12 09:14",
+    "text": "Enrollment submitted via Website."
+   },
+   {
+    "by": "System",
+    "at": "2026-03-12 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-03-12 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ },
+ {
+  "account": "1219056293",
+  "payments": [
+   {
+    "id": "PAY-62930",
+    "date": "2026-02-08",
+    "amount": 176.78,
+    "method": "ACH",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-62931",
+    "date": "2026-03-08",
+    "amount": 112.68,
+    "method": "Card",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-62932",
+    "date": "2026-04-08",
+    "amount": 157.54,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-62933",
+    "date": "2026-05-08",
+    "amount": 176,
+    "method": "Card",
+    "source": "AutoPay",
+    "status": "Success"
+   },
+   {
+    "id": "PAY-62934",
+    "date": "2026-06-08",
+    "amount": 136.23,
+    "method": "ACH",
+    "source": "MyAccount",
+    "status": "Success"
+   }
+  ],
+  "bills": [
+   {
+    "id": "BILL-62930",
+    "date": "2026-02-08",
+    "kwh": 1737,
+    "amount": 246.65
+   },
+   {
+    "id": "BILL-62931",
+    "date": "2026-03-08",
+    "kwh": 1729,
+    "amount": 245.52
+   },
+   {
+    "id": "BILL-62932",
+    "date": "2026-04-08",
+    "kwh": 800,
+    "amount": 113.6
+   },
+   {
+    "id": "BILL-62933",
+    "date": "2026-05-08",
+    "kwh": 1733,
+    "amount": 246.09
+   },
+   {
+    "id": "BILL-62934",
+    "date": "2026-06-08",
+    "kwh": 2078,
+    "amount": 295.08
+   }
+  ],
+  "notes": [
+   {
+    "by": "System",
+    "at": "2026-01-08 09:14",
+    "text": "Enrollment submitted via Phone."
+   },
+   {
+    "by": "System",
+    "at": "2026-01-08 09:15",
+    "text": "Credit check complete. No deposit required."
+   },
+   {
+    "by": "CSR Demo",
+    "at": "2026-01-08 14:02",
+    "text": "Customer called to confirm start date. Explained EFL and Rangler Rewards."
+   }
+  ]
+ }
+]

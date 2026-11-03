@@ -1,0 +1,32 @@
+[
+ {
+  "id": 1,
+  "name": "default",
+  "desc": "Standard marketing page with header, banner and footer",
+  "pages": 28
+ },
+ {
+  "id": 2,
+  "name": "article",
+  "desc": "Get to Learnin' article layout with sidebar",
+  "pages": 4
+ },
+ {
+  "id": 3,
+  "name": "checkout",
+  "desc": "Enrollment flow with progress steps",
+  "pages": 8
+ },
+ {
+  "id": 4,
+  "name": "myaccount",
+  "desc": "Logged-in customer portal shell",
+  "pages": 9
+ },
+ {
+  "id": 5,
+  "name": "landing",
+  "desc": "Promo landing page, no main navigation",
+  "pages": 0
+ }
+]

@@ -1,0 +1,444 @@
+{
+ "categories": {
+  "thermostats": "Smart Thermostats",
+  "ev": "EV Charging",
+  "lighting": "Lighting",
+  "plugs": "Smart Plugs & Power",
+  "protection": "Protection Plans",
+  "solar": "Solar & Backup",
+  "gear": "Rewards Gear"
+ },
+ "details": {
+  "thermostats": {
+   "features": [
+    "Works with most 24V heating and cooling systems",
+    "Free app for iPhone and Android",
+    "Enroll in Peak Rewards+ for seasonal bill credits",
+    "Energy reports in My Account"
+   ],
+   "warranty": "3-year limited warranty",
+   "delivery": "Ships free in 2–4 business days"
+  },
+  "ev": {
+   "features": [
+    "Works with every EV sold in North America (J1772, Tesla with adapter)",
+    "Wi-Fi scheduling so you charge in off-peak hours",
+    "UL listed for indoor and outdoor use",
+    "Charging history in the app"
+   ],
+   "warranty": "3-year limited warranty",
+   "delivery": "Ships free in 3–5 business days; install visits booked by phone"
+  },
+  "lighting": {
+   "features": [
+    "Uses up to 85% less electricity than incandescent bulbs",
+    "Instant on, no warm-up",
+    "Rated for about 15,000 hours"
+   ],
+   "warranty": "3-year replacement guarantee",
+   "delivery": "Ships free on orders over $25"
+  },
+  "plugs": {
+   "features": [
+    "Schedules and timers from your phone",
+    "Works with Alexa and Google Home",
+    "See usage in kWh for what is plugged in"
+   ],
+   "warranty": "2-year limited warranty",
+   "delivery": "Ships free in 2–4 business days"
+  },
+  "protection": {
+   "features": [
+    "Added to your monthly electricity bill",
+    "Cancel any time from My Account or by phone",
+    "Licensed, insured technicians",
+    "24/7 claims line"
+   ],
+   "warranty": "Coverage starts 30 days after enrollment",
+   "delivery": "No shipping: coverage is added to your account"
+  },
+  "solar": {
+   "features": [
+    "Quiet, no fumes: safe indoors",
+    "Charges from a wall outlet, car or solar panel",
+    "Pure sine wave output for electronics"
+   ],
+   "warranty": "5-year limited warranty",
+   "delivery": "Ships free in 3–5 business days"
+  },
+  "gear": {
+   "features": [
+    "Embroidered or printed star logo",
+    "Earn it free with Power Rewards stars, or buy it here"
+   ],
+   "warranty": "30-day returns",
+   "delivery": "Ships in 3–5 business days"
+  }
+ },
+ "products": [
+  [
+   "TH-100",
+   "ecobee Smart Thermostat Premium",
+   "thermostats",
+   249.0,
+   279.0,
+   4.7,
+   1284,
+   500,
+   true,
+   "Peak Perks+ ready",
+   "thermo",
+   "Room sensor included; adjusts itself during Peak Perks events."
+  ],
+  [
+   "TH-110",
+   "ecobee Smart Thermostat Enhanced",
+   "thermostats",
+   189.0,
+   null,
+   4.6,
+   902,
+   380,
+   true,
+   null,
+   "thermo",
+   "Voice control and an energy report every month."
+  ],
+  [
+   "TH-120",
+   "Nest Learning Thermostat",
+   "thermostats",
+   279.0,
+   null,
+   4.5,
+   2210,
+   400,
+   true,
+   null,
+   "thermo",
+   "Learns your schedule in about a week."
+  ],
+  [
+   "TH-130",
+   "Honeywell T9 Smart Thermostat",
+   "thermostats",
+   169.0,
+   199.0,
+   4.3,
+   640,
+   300,
+   false,
+   "Sale",
+   "thermo",
+   "Room-by-room sensors keep every room comfortable."
+  ],
+  [
+   "TH-140",
+   "Smart Room Sensor (2-pack)",
+   "thermostats",
+   79.0,
+   null,
+   4.4,
+   311,
+   120,
+   true,
+   null,
+   "sensor",
+   "Adds rooms to your ecobee or T9."
+  ],
+  [
+   "EV-200",
+   "Level 2 Home EV Charger 48A",
+   "ev",
+   649.0,
+   699.0,
+   4.8,
+   517,
+   1200,
+   true,
+   "Best seller",
+   "ev",
+   "Charges most cars overnight; Wi-Fi scheduling for off-peak hours."
+  ],
+  [
+   "EV-210",
+   "Level 2 Home EV Charger 32A",
+   "ev",
+   499.0,
+   null,
+   4.6,
+   388,
+   900,
+   true,
+   null,
+   "ev",
+   "Plug-in install on a 240V outlet."
+  ],
+  [
+   "EV-220",
+   "EV Charger Cable Organizer",
+   "ev",
+   34.0,
+   null,
+   4.2,
+   96,
+   40,
+   true,
+   null,
+   "cable",
+   "Wall-mounted hook and holster."
+  ],
+  [
+   "EV-230",
+   "EV Charger Install Visit",
+   "ev",
+   299.0,
+   null,
+   4.9,
+   142,
+   500,
+   true,
+   "Licensed electrician",
+   "tools",
+   "A licensed electrician installs your charger and pulls the permit."
+  ],
+  [
+   "LT-300",
+   "LED A19 Bulbs, 60W equivalent (12-pack)",
+   "lighting",
+   24.0,
+   29.0,
+   4.6,
+   3410,
+   30,
+   true,
+   "Sale",
+   "bulb",
+   "Uses 8.5 watts each; lasts about 13 years."
+  ],
+  [
+   "LT-310",
+   "Smart Color Bulbs (4-pack)",
+   "lighting",
+   49.0,
+   null,
+   4.3,
+   812,
+   60,
+   true,
+   null,
+   "bulb",
+   "Schedules and scenes from your phone."
+  ],
+  [
+   "LT-320",
+   "LED Floodlights BR30 (6-pack)",
+   "lighting",
+   32.0,
+   null,
+   4.5,
+   690,
+   40,
+   false,
+   null,
+   "bulb",
+   "For recessed cans; dimmable."
+  ],
+  [
+   "LT-330",
+   "Solar Path Lights (8-pack)",
+   "lighting",
+   39.0,
+   null,
+   4.0,
+   1210,
+   50,
+   true,
+   null,
+   "sun",
+   "No wiring; charges by day, lights by night."
+  ],
+  [
+   "PL-400",
+   "Smart Plug Mini (4-pack)",
+   "plugs",
+   29.0,
+   null,
+   4.6,
+   5120,
+   40,
+   true,
+   "Best seller",
+   "plug",
+   "Put lamps and window units on a schedule."
+  ],
+  [
+   "PL-410",
+   "Smart Power Strip with Energy Monitor",
+   "plugs",
+   44.0,
+   null,
+   4.4,
+   730,
+   60,
+   true,
+   null,
+   "plug",
+   "See what each outlet uses in kWh."
+  ],
+  [
+   "PL-420",
+   "Whole-Home Energy Monitor",
+   "plugs",
+   299.0,
+   329.0,
+   4.5,
+   402,
+   450,
+   true,
+   "Sale",
+   "meter",
+   "Clamps in your panel and shows live usage by appliance."
+  ],
+  [
+   "PR-500",
+   "Surge Protection Program (1 year)",
+   "protection",
+   83.88,
+   null,
+   4.2,
+   210,
+   100,
+   true,
+   null,
+   "shield",
+   "Covers appliances damaged by a power surge."
+  ],
+  [
+   "PR-510",
+   "Air Conditioning Protection Program (1 year)",
+   "protection",
+   179.88,
+   null,
+   4.4,
+   356,
+   200,
+   true,
+   "Popular in Texas",
+   "shield",
+   "Covers repairs to central A/C and heat pumps."
+  ],
+  [
+   "PR-520",
+   "Electric System Protection Program (1 year)",
+   "protection",
+   71.88,
+   null,
+   4.1,
+   120,
+   80,
+   true,
+   null,
+   "shield",
+   "Covers home wiring and the electric panel."
+  ],
+  [
+   "PR-530",
+   "EV Charger Protection Program (1 year)",
+   "protection",
+   95.88,
+   null,
+   4.3,
+   64,
+   100,
+   true,
+   "New",
+   "shield",
+   "Covers repairs to your home EV charger."
+  ],
+  [
+   "SO-600",
+   "Portable Power Station 1,000Wh",
+   "solar",
+   799.0,
+   899.0,
+   4.7,
+   288,
+   1000,
+   true,
+   "Sale",
+   "battery",
+   "Runs a fridge for about a day in an outage."
+  ],
+  [
+   "SO-610",
+   "Folding Solar Panel 200W",
+   "solar",
+   399.0,
+   null,
+   4.5,
+   175,
+   500,
+   false,
+   null,
+   "sun",
+   "Recharges the power station off-grid."
+  ],
+  [
+   "SO-620",
+   "Home Solar Consultation",
+   "solar",
+   0.0,
+   null,
+   4.8,
+   96,
+   250,
+   true,
+   "Free",
+   "house",
+   "A free quote and roof check from our solar partner."
+  ],
+  [
+   "GR-700",
+   "Rangler Rewards Cap",
+   "gear",
+   22.0,
+   null,
+   4.6,
+   214,
+   0,
+   true,
+   null,
+   "cap",
+   "Embroidered star logo; one size."
+  ],
+  [
+   "GR-710",
+   "Insulated Tumbler 30oz",
+   "gear",
+   28.0,
+   null,
+   4.8,
+   431,
+   0,
+   true,
+   "New",
+   "cup",
+   "Keeps ice through a Texas afternoon."
+  ],
+  [
+   "GR-720",
+   "Canvas Tote",
+   "gear",
+   18.0,
+   22.0,
+   4.4,
+   99,
+   0,
+   true,
+   "Sale",
+   "bag",
+   "Heavy canvas with a leather strap."
+  ]
+ ]
+}

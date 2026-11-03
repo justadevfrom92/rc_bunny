@@ -1,0 +1,98 @@
+[
+ {
+  "name": "Monthly Drawing",
+  "description": "Enter this month's drawing.",
+  "stars": 0,
+  "effect": "drawing",
+  "value": null,
+  "position": 0
+ },
+ {
+  "name": "$10 Bill Credit",
+  "description": "Redeem 50 stars for $10 off the next bill.",
+  "stars": 50,
+  "effect": "credit",
+  "value": "10",
+  "position": 1
+ },
+ {
+  "name": "$25 Bill Credit",
+  "description": "Redeem 100 stars for a $25 bill credit.",
+  "stars": 100,
+  "effect": "credit",
+  "value": "25",
+  "position": 2
+ },
+ {
+  "name": "$25 Starbucks Gift Card",
+  "description": "Redeem 100 stars for a $25 Starbucks e-gift card.",
+  "stars": 100,
+  "effect": "gift",
+  "value": null,
+  "position": 3
+ },
+ {
+  "name": "$25 Amazon Gift Card",
+  "description": "Redeem 100 stars for a $25 Amazon e-gift card.",
+  "stars": 100,
+  "effect": "gift",
+  "value": null,
+  "position": 4
+ },
+ {
+  "name": "$25 Target Gift Card",
+  "description": "Redeem 100 stars for a $25 Target e-gift card.",
+  "stars": 100,
+  "effect": "gift",
+  "value": null,
+  "position": 5
+ },
+ {
+  "name": "$50 Bill Credit",
+  "description": "Redeem 150 stars for a $50 bill credit.",
+  "stars": 150,
+  "effect": "credit",
+  "value": "50",
+  "position": 6
+ },
+ {
+  "name": "$50 Starbucks Gift Card",
+  "description": "Redeem 150 stars for a $50 Starbucks e-gift card.",
+  "stars": 150,
+  "effect": "gift",
+  "value": null,
+  "position": 7
+ },
+ {
+  "name": "$50 Amazon Gift Card",
+  "description": "Redeem 150 stars for a $50 Amazon e-gift card.",
+  "stars": 150,
+  "effect": "gift",
+  "value": null,
+  "position": 8
+ },
+ {
+  "name": "$50 Target Gift Card",
+  "description": "Redeem 150 stars for a $50 Target e-gift card.",
+  "stars": 150,
+  "effect": "gift",
+  "value": null,
+  "position": 9
+ },
+ {
+  "name": "Free Month of Electricity",
+  "description": "450 stars for a bill credit of up to $150.",
+  "stars": 450,
+  "effect": "credit",
+  "value": "150",
+  "position": 10
+ },
+ {
+  "name": "ecobee Smart Thermostat",
+  "description": "Redeem 600 stars for an ecobee smart thermostat.",
+  "stars": 600,
+  "effect": "product",
+  "value": "ecobee",
+  "position": 11
+ }
+]

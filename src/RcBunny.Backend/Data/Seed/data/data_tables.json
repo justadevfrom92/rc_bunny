@@ -1,0 +1,287 @@
+{
+ "Deposit Thresholds": {
+  "cols": [
+   "Credit Score From",
+   "Credit Score To",
+   "Deposit"
+  ],
+  "rows": [
+   [
+    0,
+    549,
+    "$300"
+   ],
+   [
+    550,
+    599,
+    "$200"
+   ],
+   [
+    600,
+    649,
+    "$100"
+   ],
+   [
+    650,
+    900,
+    "$0"
+   ]
+  ]
+ },
+ "Max Deposits": {
+  "cols": [
+   "Customer Type",
+   "Max Deposit"
+  ],
+  "rows": [
+   [
+    "Residential",
+    "$400"
+   ],
+   [
+    "Small Business",
+    "$1,500"
+   ]
+  ]
+ },
+ "Blackout Days": {
+  "cols": [
+   "Date",
+   "Reason"
+  ],
+  "rows": [
+   [
+    "2026-11-26",
+    "Thanksgiving"
+   ],
+   [
+    "2026-12-25",
+    "Christmas"
+   ],
+   [
+    "2027-01-01",
+    "New Year's Day"
+   ]
+  ]
+ },
+ "Tax Rates": {
+  "cols": [
+   "City",
+   "Sales Tax",
+   "Gross Receipts",
+   "PUC Assessment"
+  ],
+  "rows": [
+   [
+    "Houston",
+    "0.00%",
+    "1.997%",
+    "0.167%"
+   ],
+   [
+    "Dallas",
+    "0.00%",
+    "1.997%",
+    "0.167%"
+   ],
+   [
+    "Corpus Christi",
+    "0.00%",
+    "1.997%",
+    "0.167%"
+   ],
+   [
+    "Abilene",
+    "0.00%",
+    "1.581%",
+    "0.167%"
+   ]
+  ]
+ },
+ "Interest Rates": {
+  "cols": [
+   "Year",
+   "Deposit Interest"
+  ],
+  "rows": [
+   [
+    "2026",
+    "3.99%"
+   ],
+   [
+    "2025",
+    "4.15%"
+   ]
+  ]
+ },
+ "Bill Credits & Promos": {
+  "cols": [
+   "Code",
+   "Description",
+   "Amount"
+  ],
+  "rows": [
+   [
+    "REFER50",
+    "Refer a Friend credit",
+    "$50.00"
+   ],
+   [
+    "MOVE25",
+    "Moving Made Easy credit",
+    "$25.00"
+   ],
+   [
+    "MIL10",
+    "Military & First Responders monthly credit",
+    "$10.00"
+   ]
+  ]
+ },
+ "Fraud Indicators": {
+  "cols": [
+   "Rule",
+   "Action"
+  ],
+  "rows": [
+   [
+    "3+ orders from one IP in 24h",
+    "Flag for review"
+   ],
+   [
+    "Prepaid card on deposit",
+    "Require ACH"
+   ],
+   [
+    "Address mismatch with ESIID",
+    "Hold order"
+   ]
+  ]
+ },
+ "CIS Note Dispositions": {
+  "cols": [
+   "Code",
+   "Label"
+  ],
+  "rows": [
+   [
+    "BILLQ",
+    "Billing question"
+   ],
+   [
+    "PAYX",
+    "Payment arrangement"
+   ],
+   [
+    "MOVE",
+    "Move in / move out"
+   ],
+   [
+    "CANC",
+    "Cancellation request"
+   ]
+  ]
+ },
+ "Charge Codes": {
+  "cols": [
+   "Code",
+   "Description"
+  ],
+  "rows": [
+   [
+    "ENG",
+    "Energy charge"
+   ],
+   [
+    "TDU",
+    "TDU delivery charge"
+   ],
+   [
+    "MRC",
+    "Base charge"
+   ],
+   [
+    "ETF",
+    "Early termination fee"
+   ],
+   [
+    "LATE",
+    "Late fee"
+   ]
+  ]
+ },
+ "IPs": {
+  "cols": [
+   "IP Address",
+   "Action",
+   "Note"
+  ],
+  "rows": [
+   [
+    "203.0.113.45",
+    "Block orders",
+    "Repeated fraudulent orders"
+   ],
+   [
+    "198.51.100.0/24",
+    "Review orders",
+    "Reseller test range"
+   ],
+   [
+    "192.0.2.10",
+    "Allow",
+    "Office network"
+   ]
+  ]
+ },
+ "Monthly Drawing": {
+  "cols": [
+   "Month",
+   "Prize",
+   "Winner Account",
+   "Drawn On"
+  ],
+  "rows": [
+   [
+    "2026-07",
+    "$100 Bill Credit",
+    "1219001373",
+    "2026-08-01"
+   ],
+   [
+    "2026-08",
+    "$100 Bill Credit",
+    "1219049428",
+    "2026-09-01"
+   ],
+   [
+    "2026-09",
+    "ecobee Smart Thermostat",
+    "",
+    ""
+   ]
+  ]
+ },
+ "Rate Exports": {
+  "cols": [
+   "Email",
+   "Customer Type",
+   "Markets",
+   "Frequency"
+  ],
+  "rows": [
+   [
+    "broker-desk@example.com",
+    "Small Business",
+    "All",
+    "Daily"
+   ],
+   [
+    "partner-rates@example.com",
+    "Residential",
+    "TX-E-ONCOR, TX-E-CENTERPOINT",
+    "Weekly"
+   ]
+  ]
+ }
+}
