@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { date, money, useLoad } from '../../api';
-import AccountLink from './AccountLink';
+import AccountLink from '../AccountLink';
 
 interface Account { id: number; account: string; name: string; status: string; balance: number; dueDate: string | null; daysPastDue: number; bucket: string }
 interface Bucket { bucket: string; accounts: number; total: number }

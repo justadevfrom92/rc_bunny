@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router';
 import { api, date, money, useLoad } from '../../api';
-import AccountLink from './AccountLink';
+import AccountLink from '../AccountLink';
 
 interface Row { id: number; paidOn: string; amount: number; method: string; kind: string; source: string; status: string; customerId: number; account: string; customer: string }
 

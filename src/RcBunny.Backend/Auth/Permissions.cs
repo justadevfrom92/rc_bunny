@@ -16,6 +16,7 @@ public static class Permissions
         ["refunds"] = "Approve refunds, credits and debits, and reverse payments",
         ["plans"] = "Change plans and rates",
         ["caboose"] = "Caboose: payments, credits and debits, refunds, deposits, aging, the journal, MSIDs and promo codes",
+        ["bounty"] = "Bounty: reward offers, earning rules, redemptions, members and the monthly drawing",
         ["ranger"] = "Ranger: support tickets and website messages",
         ["sheriff"] = "Sheriff: staff, roles, heartbeat, crons, markets and integrations",
     };

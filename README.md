@@ -42,7 +42,7 @@ Sample employees:
 | Email | Role | Can use |
 | --- | --- | --- |
 | admin@example.com | Administrator (ticket team manager) | everything |
-| csr@example.com | Customer Service (on the ticket team) | Corral, Ranger |
+| csr@example.com | Customer Service (on the ticket team) | Corral, Ranger, Bounty |
 | pricing@example.com | Pricing | Plans & Rates |
 | finance@example.com | Finance | Corral, Caboose, and approving refunds, credits and debits |
 
@@ -55,6 +55,7 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
 - Plans page: prices for your zip code (residential or business), with buttons to filter by contract length.
 - Contact Us form. Messages show up in the admin under Ranger → Web Messages.
 - My Account: balance, plan, bills, payments, and paying the bill. No card processor is connected, so a payment is recorded but no card is charged.
+- My Account → Rewards: the star balance, offers to redeem (a bill credit, a gift card, a product, or an entry in the monthly drawing) and the history.
 - My Account → Support: open a ticket, read the replies, answer back, and rate it once it's solved.
 - When Sheriff switches the website off, every page shows a "we'll be right back" notice.
 
@@ -80,16 +81,22 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
   - Credits & Debits and Refunds: anyone with Caboose can ask; someone with the `refunds` permission approves, and nobody can approve their own request. A refund goes requested → approved → paid, and can't be more than the credit balance (or the deposit held).
   - Deposits (due and held), Receivables Aging (by days past due), and the Journal: the double-entry lines for the accounting system, on screen or as CSV.
   - MSIDs & Promo Codes, with how many customers used each.
+- Bounty (rewards):
+  - Dashboard: members, stars earned and spent, rewards waiting to be sent, this month's drawing.
+  - Offers (what stars buy) and Earning Rules. "Pay a bill" is given out every night by the Reward stars job; staff give the others from a member's page.
+  - Redemptions: gift cards and products waiting to be sent, with "Mark sent".
+  - Members: look someone up, see their history, give or take stars, redeem for them on the phone.
+  - Monthly Drawing (draw a random winner from this month's entries, one per month) and Drawing Winners.
 - Sheriff (settings):
   - Heartbeat: checks (database, website, jobs) every 5 minutes or on demand, a switch to take the website down for maintenance, and the control log.
   - Staff Directory (add people, change roles, turn sign-ins off, set passwords) and Roles (tick what each role can do, add roles).
   - Timeline of sign-ins, access changes, heartbeat switches and job runs.
-  - Crons: the scheduled jobs (heartbeat checks, AutoPay, closing solved tickets) with "Run now", and their runs.
+  - Crons: the scheduled jobs (heartbeat checks, AutoPay, closing solved tickets, reward stars) with "Run now", and their runs.
   - Caches, Markets (delivery charges and zip codes), and Integrations (which outside services have settings; none is connected yet).
 
 ## How access works
 
-- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `plans`, `caboose`, `ranger`, `sheriff`.
+- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `plans`, `caboose`, `bounty`, `ranger`, `sheriff`.
 - The server checks every request with `[RequirePermission("...")]` (`Backend/Auth/Permissions.cs`). It reads the person's current role from the database, cached for 30 seconds. Changing someone's role or turning them off clears that cache, so it takes effect on their next click.
 - The admin app hides menus, pages and buttons you can't use (`ClientApp/src/auth.tsx`). It re-checks who you are every minute, when the tab gets focus, and whenever the server says no.
 
@@ -103,20 +110,20 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
 ```
 src/RcBunny.Backend/
   Program.cs              sign-in cookie, controllers, serves the React app
-  Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords (the website uses these files too)
+  Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords, Rewards (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
   Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
-                          Ranger's: Ranger, Messages; Caboose; Sheriff's: Staff, Sheriff
+                          Ranger's: Ranger, Messages; Caboose; Bounty; Sheriff's: Staff, Sheriff
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
   ClientApp/src/          main.tsx (menu and routes), api.ts, auth.tsx, pages/*.tsx, styles.css
-                          pages/corral, pages/ranger, pages/caboose, pages/sheriff: each app's menu and routes (Corral.tsx, Ranger.tsx,
-                          Caboose.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx draws the menus
+                          pages/corral, pages/ranger, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes (Corral.tsx, Ranger.tsx,
+                          Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx draws the menus
 src/RcBunny.Frontend/
   Program.cs              Razor Pages, page caching, customer sign-in
   Services/Catalog.cs     markets and prices, cached
   Services/Maintenance.cs the "we'll be right back" page when Sheriff switches the website off
-  Pages/                  Index, Plans, Contact, MyAccount/* (Login, Index, Pay, Support), Shared/_Layout
+  Pages/                  Index, Plans, Contact, MyAccount/* (Login, Index, Pay, Rewards, Support), Shared/_Layout
   ClientIslands/src/      PlanFilter.tsx (the plan filter island)
   wwwroot/css/            ebunny's styles
 ```

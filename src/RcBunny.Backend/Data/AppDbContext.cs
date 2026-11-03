@@ -35,6 +35,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Refund> Refunds => Set<Refund>();
     public DbSet<Msid> Msids => Set<Msid>();
     public DbSet<PromoCode> PromoCodes => Set<PromoCode>();
+    public DbSet<RewardOffer> RewardOffers => Set<RewardOffer>();
+    public DbSet<RewardRule> RewardRules => Set<RewardRule>();
+    public DbSet<StarEntry> StarEntries => Set<StarEntry>();
+    public DbSet<DrawingEntry> DrawingEntries => Set<DrawingEntry>();
+    public DbSet<DrawingWinner> DrawingWinners => Set<DrawingWinner>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder b)
     {
@@ -54,5 +59,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<HeartbeatControl>().HasIndex(h => h.Key).IsUnique();
         m.Entity<Msid>().HasIndex(x => x.Code).IsUnique();
         m.Entity<PromoCode>().HasIndex(x => x.Code).IsUnique();
+        m.Entity<StarEntry>().HasIndex(x => x.PaymentId);
+        m.Entity<DrawingEntry>().HasIndex(x => new { x.Month, x.CustomerId }).IsUnique(); // one entry per person per month
+        m.Entity<DrawingWinner>().HasIndex(x => x.Month).IsUnique();                     // one winner per month
     }
 }

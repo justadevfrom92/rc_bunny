@@ -10,6 +10,7 @@ import Plans from './pages/Plans';
 import Ranger from './pages/ranger/Ranger';
 import Sheriff from './pages/sheriff/Sheriff';
 import Caboose from './pages/caboose/Caboose';
+import Bounty from './pages/bounty/Bounty';
 import './styles.css';
 
 const menu = [
@@ -17,6 +18,7 @@ const menu = [
   { to: '/plans', label: 'Plans & Rates', permission: 'plans' },
   { to: '/ranger', label: 'Ranger', permission: 'ranger' },
   { to: '/caboose', label: 'Caboose', permission: 'caboose' },
+  { to: '/bounty', label: 'Bounty', permission: 'bounty' },
   { to: '/sheriff', label: 'Sheriff', permission: 'sheriff' },
 ];
 
@@ -45,6 +47,7 @@ function App() {
           <Route path="/plans" element={<RequirePermission permission="plans"><Plans /></RequirePermission>} />
           <Route path="/ranger/*" element={<RequirePermission permission="ranger"><Ranger /></RequirePermission>} />
           <Route path="/caboose/*" element={<RequirePermission permission="caboose"><Caboose /></RequirePermission>} />
+          <Route path="/bounty/*" element={<RequirePermission permission="bounty"><Bounty /></RequirePermission>} />
           <Route path="/sheriff/*" element={<RequirePermission permission="sheriff"><Sheriff /></RequirePermission>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -1,5 +1,5 @@
 import { money, useLoad } from '../../api';
-import AccountLink from './AccountLink';
+import AccountLink from '../AccountLink';
 
 interface Row { id: number; account: string; name: string; status: string; amount: number }
 

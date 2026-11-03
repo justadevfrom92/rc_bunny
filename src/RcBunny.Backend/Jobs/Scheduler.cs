@@ -18,6 +18,7 @@ public class Scheduler(IServiceScopeFactory scopes, ILogger<Scheduler> log) : Ba
         new("Heartbeat checks", "Every 5 minutes", TimeSpan.FromMinutes(5), Heartbeat.RunChecksAsync),
         new("AutoPay", "Every day", TimeSpan.FromDays(1), AutoPayAsync),
         new("Close solved tickets", "Every day", TimeSpan.FromDays(1), CloseSolvedTicketsAsync),
+        new("Reward stars", "Every day", TimeSpan.FromDays(1), RewardStarsAsync),
     ];
 
     protected override async Task ExecuteAsync(CancellationToken stop)
@@ -65,6 +66,24 @@ public class Scheduler(IServiceScopeFactory scopes, ILogger<Scheduler> log) : Ba
         }
         await db.SaveChangesAsync();
         return due.Count == 0 ? "Nobody due today." : $"Paid {due.Count} bills.";
+    }
+
+    /// <summary>Bounty: stars for every bill paid in the last week that hasn't earned them yet (the "Pay a bill" rule).</summary>
+    private static async Task<string> RewardStarsAsync(IServiceProvider _, AppDbContext db)
+    {
+        var rule = await db.RewardRules.FirstOrDefaultAsync(r => r.Event == "bill_paid" && r.Active);
+        if (rule is null) return "The \"Pay a bill\" rule is turned off.";
+        var since = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
+        var payments = await db.Payments
+            .Where(p => p.Status == "Paid" && p.Kind == "Balance Payment" && p.PaidOn >= since && !db.StarEntries.Any(e => e.PaymentId == p.Id))
+            .ToListAsync();
+        foreach (var p in payments)
+        {
+            db.StarEntries.Add(new StarEntry { CustomerId = p.CustomerId, Stars = rule.Stars, Reason = rule.Name, PaymentId = p.Id, By = "Reward stars job" });
+            await db.Customers.Where(c => c.Id == p.CustomerId).ExecuteUpdateAsync(s => s.SetProperty(c => c.Stars, c => c.Stars + rule.Stars));
+        }
+        await db.SaveChangesAsync();
+        return $"Gave {rule.Stars} stars for {payments.Count} payments.";
     }
 
     /// <summary>Solved tickets close after 7 days without a reply.</summary>

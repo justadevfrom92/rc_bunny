@@ -17,7 +17,7 @@ public static class Seeder
 
         // Staff and what each role can do
         var admin = new Role { Name = "Administrator", Permissions = string.Join(",", Permissions.All.Keys) };
-        var service = new Role { Name = "Customer Service", Permissions = "corral,ranger" };
+        var service = new Role { Name = "Customer Service", Permissions = "corral,ranger,bounty" };
         var pricing = new Role { Name = "Pricing", Permissions = "plans" };
         var finance = new Role { Name = "Finance", Permissions = "corral,refunds,caboose" };
         db.Roles.AddRange(admin, service, pricing, finance);
@@ -65,7 +65,7 @@ public static class Seeder
                 Address = S(c, "address"), City = S(c, "city"), Zip = S(c, "zip"), Type = S(c, "type"), Esiid = S(c, "esiid") is { Length: > 0 } e ? e : null,
                 MarketId = markets.TryGetValue(S(c, "market"), out var m) ? m.Id : null,
                 PlanId = plans.TryGetValue(S(c, "planCode"), out var p) ? p.Id : null,
-                Status = S(c, "status"), Balance = D(c, "balance"), Autopay = c["autopay"]?.GetValue<bool>() ?? false,
+                Status = S(c, "status"), Balance = D(c, "balance"), Stars = c["stars"]?.GetValue<int>() ?? 0, Autopay = c["autopay"]?.GetValue<bool>() ?? false,
                 DueDate = today.AddDays(20), CreatedAt = DateTime.Parse(S(c, "created")),
             };
             if (first) { customer.Username = "demo.customer"; customer.PasswordHash = password; first = false; }
@@ -198,6 +198,34 @@ public static class Seeder
             new LedgerEntry { CustomerId = money[0].Id, Kind = "credit", Amount = 25, Reason = "Goodwill credit for the outage", RequestedBy = "Casey Service" },
             new LedgerEntry { CustomerId = money[1].Id, Kind = "debit", Amount = 15, Reason = "Returned payment fee", RequestedBy = "Casey Service" });
         db.Refunds.Add(new Refund { CustomerId = money[6].Id, Kind = "balance", Amount = 42.17m, Reason = "Moved out, closing the account", RequestedBy = "Casey Service" });
+
+        // Bounty: offers, earning rules, star history, a couple of redemptions to send, and the monthly drawing
+        var offers = new[]
+        {
+            new RewardOffer { Name = "$10 bill credit", Description = "Takes $10 off your next bill.", Stars = 1000, Effect = "credit", Value = "10", Position = 1 },
+            new RewardOffer { Name = "$25 e-gift card", Description = "Emailed to you within a week.", Stars = 2500, Effect = "gift", Value = "$25 e-gift card", Position = 2 },
+            new RewardOffer { Name = "Monthly drawing entry", Description = "One entry in this month's drawing for a $500 bill credit.", Stars = 100, Effect = "drawing", Position = 3 },
+            new RewardOffer { Name = "LED bulb 6-pack", Description = "Shipped to your service address.", Stars = 800, Effect = "product", Value = "LED-6", Position = 4 },
+        };
+        db.RewardOffers.AddRange(offers);
+        db.RewardRules.AddRange(
+            new RewardRule { Event = "bill_paid", Name = "Pay a bill", Stars = 100 },
+            new RewardRule { Name = "Refer a friend", Stars = 1000 },
+            new RewardRule { Name = "Account anniversary", Stars = 500 },
+            new RewardRule { Name = "Go paperless", Stars = 250 });
+        await db.SaveChangesAsync();
+        var members = await db.Customers.Where(c => c.Stars > 0).OrderByDescending(c => c.Stars).Take(10).ToListAsync();
+        var month = DateTime.UtcNow.ToString("yyyy-MM");
+        for (var i = 0; i < members.Count; i++)
+        {
+            var c = members[i];
+            db.StarEntries.Add(new StarEntry { CustomerId = c.Id, Stars = c.Stars, Reason = "Stars carried over from ebunny", By = "System", CreatedAt = c.CreatedAt });
+            if (i < 6) db.DrawingEntries.Add(new DrawingEntry { CustomerId = c.Id, Month = month });
+        }
+        db.StarEntries.Add(new StarEntry { CustomerId = members[0].Id, Stars = -2500, Reason = "Redeemed: $25 e-gift card", Offer = offers[1], Fulfillment = "pending", By = "My Account" });
+        db.StarEntries.Add(new StarEntry { CustomerId = members[1].Id, Stars = -800, Reason = "Redeemed: LED bulb 6-pack", Offer = offers[3], Fulfillment = "pending", By = "My Account" });
+        members[0].Stars -= 2500; members[1].Stars -= 800;
+        db.DrawingWinners.Add(new DrawingWinner { Month = DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM"), CustomerId = members[2].Id, Prize = "$500 bill credit", DrawnBy = "Admin Demo", DrawnAt = DateTime.UtcNow.AddDays(-20) });
 
         db.ContactMessages.AddRange(
             new ContactMessage { Name = "Jordan Lee", Email = "jordan@example.com", Topic = "Billing", Message = "Can I change my due date?" },

@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { api, date, money, useLoad } from '../../api';
 import { useAuth } from '../../auth';
-import AccountLink from './AccountLink';
+import AccountLink from '../AccountLink';
 
 interface Entry { id: number; customerId: number; account: string; customer: string; kind: string; amount: number; reason: string; status: string; requestedBy: string; decidedBy: string | null; decidedAt: string | null; decisionNote: string | null; createdAt: string }
 

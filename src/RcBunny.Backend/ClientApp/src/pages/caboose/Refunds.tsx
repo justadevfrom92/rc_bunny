@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { api, date, money, useLoad } from '../../api';
 import { useAuth } from '../../auth';
-import AccountLink from './AccountLink';
+import AccountLink from '../AccountLink';
 
 interface Refund { id: number; customerId: number; account: string; customer: string; kind: string; amount: number; reason: string; status: string; requestedBy: string; decidedBy: string | null; decisionNote: string | null; checkNumber: string | null; paidAt: string | null; createdAt: string }
 interface Credit { id: number; account: string; name: string; balance: number; status: string }
