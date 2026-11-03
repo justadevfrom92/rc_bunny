@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { useAuth } from '../auth';
 
 const tiles = [
-  { to: '/customers', title: 'Customers', text: 'Search accounts, see bills and payments, add notes.', permission: 'customers' },
+  { to: '/corral', title: 'Corral', text: 'Customers, orders, texts and calls, CRM, products, ERCOT and exception queues.', permission: 'corral' },
   { to: '/plans', title: 'Plans & Rates', text: 'Current rates by market. Add new rates.', permission: 'plans' },
   { to: '/messages', title: 'Web Messages', text: 'Messages from the Contact Us page.', permission: 'messages' },
   { to: '/staff', title: 'Staff', text: 'Who can sign in and what each role can do.', permission: 'staff' },

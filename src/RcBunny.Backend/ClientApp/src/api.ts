@@ -34,11 +34,13 @@ export const api = {
 // Remembers the last answer for each URL, so going back to a screen shows it instantly while it refreshes.
 const cache = new Map<string, unknown>();
 
-export function useLoad<T>(url: string) {
-  const [data, setData] = useState<T | undefined>(cache.get(url) as T | undefined);
+/** Loads JSON from url (pass null to load nothing yet). */
+export function useLoad<T>(url: string | null) {
+  const [data, setData] = useState<T | undefined>(url ? (cache.get(url) as T | undefined) : undefined);
   const [error, setError] = useState<string | null>(null);
 
   const reload = useCallback(() => {
+    if (!url) return;
     setError(null);
     api.get<T>(url).then(
       (result) => { cache.set(url, result); setData(result); },
@@ -47,7 +49,7 @@ export function useLoad<T>(url: string) {
   }, [url]);
 
   useEffect(() => {
-    setData(cache.get(url) as T | undefined);
+    setData(url ? (cache.get(url) as T | undefined) : undefined);
     reload();
   }, [url, reload]);
 

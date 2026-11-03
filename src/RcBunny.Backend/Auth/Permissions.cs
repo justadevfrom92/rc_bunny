@@ -12,7 +12,7 @@ public static class Permissions
     /// <summary>Every permission a role can have. The admin's menus and buttons use the same keys.</summary>
     public static readonly Dictionary<string, string> All = new()
     {
-        ["customers"] = "Look up and work customer accounts",
+        ["corral"] = "Corral: customers, orders, texts and calls, CRM, products, ERCOT, exception queues",
         ["refunds"] = "Reverse payments",
         ["plans"] = "Change plans and rates",
         ["messages"] = "Answer website messages",

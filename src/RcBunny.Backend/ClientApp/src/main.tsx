@@ -5,15 +5,14 @@ import { api } from './api';
 import { AuthProvider, RequirePermission, useAuth } from './auth';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Customers from './pages/Customers';
-import Customer from './pages/Customer';
+import Corral from './pages/corral/Corral';
 import Plans from './pages/Plans';
 import Messages from './pages/Messages';
 import Staff from './pages/Staff';
 import './styles.css';
 
 const menu = [
-  { to: '/customers', label: 'Customers', permission: 'customers' },
+  { to: '/corral', label: 'Corral', permission: 'corral' },
   { to: '/plans', label: 'Plans & Rates', permission: 'plans' },
   { to: '/messages', label: 'Web Messages', permission: 'messages' },
   { to: '/staff', label: 'Staff', permission: 'staff' },
@@ -40,8 +39,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/customers" element={<RequirePermission permission="customers"><Customers /></RequirePermission>} />
-          <Route path="/customers/:id" element={<RequirePermission permission="customers"><Customer /></RequirePermission>} />
+          <Route path="/corral/*" element={<RequirePermission permission="corral"><Corral /></RequirePermission>} />
           <Route path="/plans" element={<RequirePermission permission="plans"><Plans /></RequirePermission>} />
           <Route path="/messages" element={<RequirePermission permission="messages"><Messages /></RequirePermission>} />
           <Route path="/staff" element={<RequirePermission permission="staff"><Staff /></RequirePermission>} />

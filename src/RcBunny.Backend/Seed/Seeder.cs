@@ -17,9 +17,9 @@ public static class Seeder
 
         // Staff and what each role can do
         var admin = new Role { Name = "Administrator", Permissions = string.Join(",", Permissions.All.Keys) };
-        var service = new Role { Name = "Customer Service", Permissions = "customers,messages" };
+        var service = new Role { Name = "Customer Service", Permissions = "corral,messages" };
         var pricing = new Role { Name = "Pricing", Permissions = "plans" };
-        var finance = new Role { Name = "Finance", Permissions = "customers,refunds" };
+        var finance = new Role { Name = "Finance", Permissions = "corral,refunds" };
         db.Roles.AddRange(admin, service, pricing, finance);
         db.Users.AddRange(
             new User { Name = "Admin Demo", Email = "admin@example.com", PasswordHash = password, Role = admin },
@@ -62,7 +62,7 @@ public static class Seeder
             var customer = new Customer
             {
                 Account = S(c, "account"), Name = S(c, "name"), Email = S(c, "email"), Phone = S(c, "phone"),
-                Address = S(c, "address"), City = S(c, "city"), Zip = S(c, "zip"),
+                Address = S(c, "address"), City = S(c, "city"), Zip = S(c, "zip"), Type = S(c, "type"), Esiid = S(c, "esiid") is { Length: > 0 } e ? e : null,
                 MarketId = markets.TryGetValue(S(c, "market"), out var m) ? m.Id : null,
                 PlanId = plans.TryGetValue(S(c, "planCode"), out var p) ? p.Id : null,
                 Status = S(c, "status"), Balance = D(c, "balance"), Autopay = c["autopay"]?.GetValue<bool>() ?? false,
@@ -81,6 +81,66 @@ public static class Seeder
                 if (i > 1) db.Payments.Add(new Payment { CustomerId = customer.Id, PaidOn = billed.AddDays(15), Amount = amount, Method = customer.Autopay ? "AutoPay" : "Card", Source = customer.Autopay ? "AutoPay" : "My Account" });
             }
             db.Notes.Add(new Note { CustomerId = customer.Id, Author = "System", Body = $"Account opened via {S(c, "source")}.", CreatedAt = customer.CreatedAt });
+
+            // Corral: the ERCOT switch request, an exception if the account has one, and a text and a call
+            if (customer.Esiid != null)
+                db.ErcotTransactions.Add(new ErcotTransaction { CustomerId = customer.Id, Esiid = customer.Esiid, Type = "Switch", Status = customer.Status.StartsWith("Good") ? "Completed" : "Sent", SentAt = customer.CreatedAt });
+            if (S(c, "exception") is { Length: > 0 } queue)
+                db.WorkItems.Add(new WorkItem { CustomerId = customer.Id, Queue = queue, Summary = $"{queue}: {customer.Name}", CreatedAt = customer.CreatedAt });
+            if (customer.Phone is { Length: > 0 } phone && random.Next(3) == 0)
+            {
+                db.TextMessages.Add(new TextMessage { CustomerId = customer.Id, Phone = phone, Body = $"Energy Texas: your bill of {customer.Balance:C} is ready.", Author = "System", CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 20)) });
+                db.PhoneCalls.Add(new PhoneCall { CustomerId = customer.Id, Phone = phone, Direction = "in", Minutes = random.Next(2, 15), Outcome = "Resolved", Notes = "Asked about their bill.", Author = "Casey Service", CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 20)) });
+            }
+        }
+
+        // CRM
+        var partners = new[]
+        {
+            new Partner { Name = "Lone Star Brokers", Kind = "Broker", Contact = "Dana Ruiz", Email = "dana@lonestarbrokers.example", Phone = "(555) 555-0141", CommissionPercent = 3 },
+            new Partner { Name = "Gulf Coast Energy Advisors", Kind = "Broker", Contact = "Lee Park", Email = "lee@gcea.example", Phone = "(555) 555-0142", CommissionPercent = 2.5m },
+            new Partner { Name = "Hill Country Realty", Kind = "Partner", Contact = "Morgan Hale", Email = "morgan@hcrealty.example", Phone = "(555) 555-0143" },
+        };
+        db.Partners.AddRange(partners);
+        var adminUser = db.Users.Local.First(u => u.Email == "admin@example.com");
+        var stages = new[] { "new", "contacted", "qualified", "proposal", "won", "lost" };
+        var kinds = new[] { "Residential", "Small Business", "Commercial", "Multi-site" };
+        var sources = new[] { "Website", "Referral", "Broker", "Partner", "Event", "Outbound" };
+        var names = new[] { ("Riley Grant", "Grant Dental"), ("Jesse Moreno", "Moreno Tacos"), ("Taylor Kim", null), ("Avery Brooks", "Brooks Storage"), ("Quinn Patel", "Patel Motels"), ("Drew Larson", null), ("Sky Nguyen", "Nguyen Nails"), ("Rowan Diaz", "Diaz Machine Shop"), ("Emerson Cole", null), ("Parker Shaw", "Shaw Offices") };
+        for (var i = 0; i < names.Length; i++)
+        {
+            var stage = stages[i % stages.Length];
+            var lead = new Lead
+            {
+                Name = names[i].Item1, Company = names[i].Item2, Email = names[i].Item1.ToLower().Replace(' ', '.') + "@example.com", Phone = $"(555) 555-02{i:00}",
+                Kind = names[i].Item2 is null ? "Residential" : kinds[1 + i % 3], Source = sources[i % sources.Length], Stage = stage,
+                MonthlyKwh = names[i].Item2 is null ? 1200 : 4000 + i * 1500, Partner = i % 3 == 0 ? partners[i % 2] : null, Owner = adminUser,
+                LostReason = stage == "lost" ? "Price" : null, CreatedAt = DateTime.UtcNow.AddDays(-30 + i), ClosedAt = stage is "won" or "lost" ? DateTime.UtcNow.AddDays(-i) : null,
+            };
+            db.Leads.Add(lead);
+            if (stage is not ("won" or "lost"))
+                db.FollowUps.Add(new FollowUp { Lead = lead, DueOn = today.AddDays(i - 3), Task = stage == "proposal" ? "Check if they got the proposal" : "Call to follow up" });
+        }
+
+        // Products and product orders
+        var products = new[]
+        {
+            new Product { Sku = "ECO-T1", Name = "ecobee Smart Thermostat", Category = "Thermostats", Price = 189.99m, Stock = 40, Description = "Wi-Fi thermostat that works with Peak Perks." },
+            new Product { Sku = "LED-6", Name = "LED Bulb 6-Pack", Category = "Lighting", Price = 14.99m, Stock = 300 },
+            new Product { Sku = "PLUG-2", Name = "Smart Plug 2-Pack", Category = "Smart Home", Price = 24.99m, Stock = 120 },
+            new Product { Sku = "SURGE-1", Name = "Whole-Home Surge Protector", Category = "Protection", Price = 249.00m, Stock = 15 },
+            new Product { Sku = "FAN-1", Name = "Ceiling Fan, Energy Star", Category = "Cooling", Price = 129.00m, Stock = 25 },
+            new Product { Sku = "STRIP-1", Name = "Smart Power Strip", Category = "Smart Home", Price = 34.99m, Stock = 0, Active = false },
+        };
+        db.Products.AddRange(products);
+        await db.SaveChangesAsync();
+        var someCustomers = await db.Customers.OrderBy(c => c.Id).Take(8).ToListAsync();
+        var statuses = new[] { "New", "Shipped", "Delivered", "Delivered", "Cancelled" };
+        for (var i = 0; i < someCustomers.Count; i++)
+        {
+            var product = products[i % 5];
+            var qty = 1 + i % 2;
+            db.ProductOrders.Add(new ProductOrder { Number = $"PO-{1001 + i}", CustomerId = someCustomers[i].Id, ProductId = product.Id, Quantity = qty, Total = product.Price * qty, Status = statuses[i % statuses.Length], CreatedAt = DateTime.UtcNow.AddDays(-i * 3) });
         }
 
         db.ContactMessages.AddRange(

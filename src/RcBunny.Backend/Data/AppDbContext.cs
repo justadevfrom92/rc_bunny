@@ -15,6 +15,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Payment> Payments => Set<Payment>();
     public DbSet<Note> Notes => Set<Note>();
     public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
+    public DbSet<TextMessage> TextMessages => Set<TextMessage>();
+    public DbSet<PhoneCall> PhoneCalls => Set<PhoneCall>();
+    public DbSet<Partner> Partners => Set<Partner>();
+    public DbSet<Lead> Leads => Set<Lead>();
+    public DbSet<FollowUp> FollowUps => Set<FollowUp>();
+    public DbSet<Product> Products => Set<Product>();
+    public DbSet<ProductOrder> ProductOrders => Set<ProductOrder>();
+    public DbSet<ErcotTransaction> ErcotTransactions => Set<ErcotTransaction>();
+    public DbSet<WorkItem> WorkItems => Set<WorkItem>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder b)
     {
@@ -28,5 +37,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<User>().HasIndex(u => u.Email).IsUnique();
         m.Entity<Customer>().HasIndex(c => c.Account).IsUnique();
         m.Entity<Customer>().HasIndex(c => c.Username).IsUnique();
+        m.Entity<Customer>().HasIndex(c => c.Esiid);
+        m.Entity<Product>().HasIndex(p => p.Sku).IsUnique();
     }
 }
