@@ -15,20 +15,21 @@ public static class Database
 
     public static bool IsSqlServer(IConfiguration config) => Provider(config).Equals("SqlServer", StringComparison.OrdinalIgnoreCase);
 
-    public static IServiceCollection AddRcBunnyDatabase(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddRcBunnyDatabase(this IServiceCollection services, IConfiguration config, Action<IServiceProvider, DbContextOptionsBuilder>? extra = null)
     {
         var cs = config.GetConnectionString("Default")
             ?? throw new InvalidOperationException("ConnectionStrings:Default is not set.");
         var sqlServer = IsSqlServer(config);
 
         // Pooled contexts: cheaper per request, which matters on busy admin screens.
-        services.AddDbContextPool<AppDbContext>(o =>
+        services.AddDbContextPool<AppDbContext>((sp, o) =>
         {
             if (sqlServer)
                 o.UseSqlServer(cs, s => s.EnableRetryOnFailure(3));
             else
                 o.UseSqlite(cs);
             o.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            extra?.Invoke(sp, o);
         });
         return services;
     }

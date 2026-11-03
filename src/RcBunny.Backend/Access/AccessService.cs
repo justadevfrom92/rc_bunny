@@ -49,6 +49,7 @@ public class AccessService(AppDbContext db, HybridCache cache)
     private async Task<AccessSnapshot?> LoadAsync(int userId, CancellationToken ct)
     {
         var user = await db.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == userId, ct);
+        AdminApps.CustomKeys = (await db.AdminApps.Select(a => a.Key).ToListAsync(ct)).ToArray();
         return user is null ? null : Build(user);
     }
 
@@ -60,8 +61,9 @@ public class AccessService(AppDbContext db, HybridCache cache)
     public static List<string> EffectivePerms(User user)
     {
         var role = user.Role?.Perms ?? [];
+        var admin = user.Role?.IsAdministrator == true;   // Administrator always has every app and right
         return AdminApps.AllPerms
-            .Where(p => !user.DeniedPerms.Contains(p) && (role.Contains(p) || user.ExtraPerms.Contains(p)))
+            .Where(p => !user.DeniedPerms.Contains(p) && (admin || role.Contains(p) || user.ExtraPerms.Contains(p)))
             .ToList();
     }
 

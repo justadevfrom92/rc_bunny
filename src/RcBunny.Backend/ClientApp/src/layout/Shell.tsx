@@ -15,11 +15,12 @@ export function Shell() {
   const app = meta?.apps.find((a) => a.key === appKey);
   const myApps = meta?.apps.filter((a) => me.apps.includes(a.key)) ?? [];
 
-  const isOn = (item: MenuItem) => {
-    const [p, q] = item.path.split('?');
-    if (q) return pathname === p && search === `?${q}`;
-    return (pathname === p || pathname.startsWith(p + '/')) && !(search.includes('exception=*') && p === '/corral/customers');
-  };
+  // The menu item for this page: an exact match (address and query) first, otherwise the longest path that contains it.
+  const items = app?.menu.flatMap((g) => g.items) ?? [];
+  const here = pathname + search;
+  const active = items.find((i) => i.path === here)
+    ?? items.filter((i) => !i.path.includes('?') && (pathname === i.path || pathname.startsWith(i.path + '/'))).sort((a, b) => b.path.length - a.path.length)[0];
+  const isOn = (item: MenuItem) => item === active;
 
   return (
     <div className={`shell ${menuOpen ? 'menu-open' : ''}`}>

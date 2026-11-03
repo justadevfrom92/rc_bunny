@@ -9,6 +9,8 @@ import { Login } from './pages/Login';
 import { Launcher } from './pages/Launcher';
 import { NotPorted } from './pages/NotPorted';
 import { Skeleton } from './ui';
+import { useParams } from 'react-router-dom';
+import { ResourceDetail, ResourceForm, ResourceList } from './resource/pages';
 import './tokens.css';
 import './admin.css';
 
@@ -36,12 +38,24 @@ function Guard({ perm }: { perm: string }) {
   );
 }
 
+/** /:app/r/... — the generic screens, guarded by the app in the address (the server checks the screen's own app too). */
+function AppGuard() {
+  const { app = '' } = useParams();
+  return <Guard perm={app} />;
+}
+
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<MeProvider><Shell /></MeProvider>}>
         <Route index element={<Launcher />} />
+        <Route path=":app/r" element={<AppGuard />}>
+          <Route path=":key" element={<ResourceList />} />
+          <Route path=":key/new" element={<ResourceForm />} />
+          <Route path=":key/:id" element={<ResourceDetail />} />
+          <Route path=":key/:id/edit" element={<ResourceForm />} />
+        </Route>
 
         <Route path="corral" element={<Guard perm="corral" />}>
           <Route index element={<Navigate to="customers" replace />} />

@@ -9,7 +9,8 @@ using RcBunny.Data.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRcBunnyDatabase(builder.Configuration);
+builder.Services.AddSingleton<TableCacheInvalidator>();
+builder.Services.AddRcBunnyDatabase(builder.Configuration, (sp, o) => o.AddInterceptors(sp.GetRequiredService<TableCacheInvalidator>()));
 builder.Services.AddScoped<DbSeeder>();
 
 // ---- Caching -------------------------------------------------------------------------------------------
@@ -61,6 +62,8 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
     await scope.ServiceProvider.GetRequiredService<DbSeeder>().InitializeAsync();
+if (RcBunny.Backend.Resources.ResourceRegistry.Validate().ToList() is { Count: > 0 } problems)
+    throw new InvalidOperationException("Screen definitions don't match the database:\n" + string.Join("\n", problems));
 // `dotnet run -- --seed-only`: create/migrate the database and load the sample data, then exit.
 if (args.Contains("--seed-only")) return;
 

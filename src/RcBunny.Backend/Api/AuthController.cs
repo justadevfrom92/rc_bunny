@@ -65,7 +65,7 @@ public class AuthController(AppDbContext db, AccessService access, IWebHostEnvir
             company = me.Company, external = me.IsExternal, accessEndsOn = me.AccessEndsOn,
             accessVersion = me.AccessVersion, perms = me.Perms,
             impersonatedBy = User.ImpersonatorId(),
-            apps = AdminApps.All.Where(a => me.Has(a.Key)).Select(a => a.Key),
+            apps = me.Perms.Where(p => !AdminApps.Rights.ContainsKey(p)),
         });
     }
 

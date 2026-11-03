@@ -5,13 +5,16 @@ namespace RcBunny.Backend.Api;
 
 /// <summary>Configuration the client needs once per session: apps and menus, rights, lookups. Browser-cacheable.</summary>
 [Route("api/meta")]
-public class MetaController : ApiControllerBase
+public class MetaController(RcBunny.Data.AppDbContext db) : ApiControllerBase
 {
-    [HttpGet, ResponseCache(Duration = 300, Location = ResponseCacheLocation.Client)]
-    public IActionResult Get() => Ok(new
+    [HttpGet, ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)]
+    public async Task<IActionResult> Get() => Ok(new
     {
-        apps = AdminApps.All,
+        apps = AdminApps.Builtin.Concat(await CustomApps()),
+        account = AdminApps.Account,
         rights = AdminApps.Rights,
+        referenceTables = RcBunny.Data.AppConfig.Get("admin")["reference_tables"]!.AsObject().ToDictionary(kv => kv.Key, kv => new { name = kv.Value![0]!.ToString(), columns = kv.Value[1]!.AsArray().Select(c => c!.ToString()), app = kv.Value[2]!.ToString() }),
+        queues = RcBunny.Data.AppConfig.Get("admin")["queues"]!.AsObject().ToDictionary(kv => kv.Key, kv => new { name = kv.Value![0]!.ToString(), description = kv.Value[1]!.ToString() }),
         departments = AdminApps.Departments,
         corral = new
         {
@@ -21,6 +24,18 @@ public class MetaController : ApiControllerBase
             priorities = CorralConfig.Priorities,
         },
     });
+
+    /// <summary>Apps made with "+ New Admin App": menu JSON is [{heading, items: [{label, path}]}].</summary>
+    private async Task<IEnumerable<AppDef>> CustomApps()
+    {
+        var apps = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync(db.AdminApps.OrderBy(a => a.Position));
+        return apps.Select(a =>
+        {
+            var groups = ((a.Menu as System.Text.Json.Nodes.JsonArray) ?? []).Select(g => new MenuGroup(g?["heading"]?.ToString(),
+                (g?["items"]?.AsArray() ?? []).Select(i => new MenuItem(i?["label"]?.ToString() ?? "", i?["path"]?.ToString() ?? "/")).ToList())).ToList();
+            return new AppDef(a.Key, a.Name, a.Description, a.Icon, groups.SelectMany(g => g.Items).FirstOrDefault()?.Path ?? "/", groups, true);
+        });
+    }
 }
 
 /// <summary>ebunny's config/admin.php customer_statuses/exceptions and config/corral.php note categories.</summary>
