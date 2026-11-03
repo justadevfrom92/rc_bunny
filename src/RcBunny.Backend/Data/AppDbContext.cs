@@ -31,6 +31,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<HeartbeatControl> HeartbeatControls => Set<HeartbeatControl>();
     public DbSet<HealthCheck> HealthChecks => Set<HealthCheck>();
     public DbSet<JobRun> JobRuns => Set<JobRun>();
+    public DbSet<LedgerEntry> LedgerEntries => Set<LedgerEntry>();
+    public DbSet<Refund> Refunds => Set<Refund>();
+    public DbSet<Msid> Msids => Set<Msid>();
+    public DbSet<PromoCode> PromoCodes => Set<PromoCode>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder b)
     {
@@ -48,5 +52,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<Product>().HasIndex(p => p.Sku).IsUnique();
         m.Entity<RangerAgent>().HasIndex(a => a.UserId).IsUnique();
         m.Entity<HeartbeatControl>().HasIndex(h => h.Key).IsUnique();
+        m.Entity<Msid>().HasIndex(x => x.Code).IsUnique();
+        m.Entity<PromoCode>().HasIndex(x => x.Code).IsUnique();
     }
 }

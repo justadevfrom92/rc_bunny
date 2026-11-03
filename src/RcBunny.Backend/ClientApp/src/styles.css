@@ -60,3 +60,5 @@ dt { color: var(--muted); } dd { margin: 0; }
 .stats .card.ok { border-left: 4px solid #137a3a; } .stats .card.bad { border-left: 4px solid var(--red); }
 .stats a.card { text-decoration: none; color: inherit; }
 button.link { border: 0; background: none; padding: 0 2px; color: var(--muted); }
+a.button { display: inline-block; padding: 7px 14px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: inherit; text-decoration: none; }
+tfoot th { color: inherit; font-size: .9rem; text-transform: none; }

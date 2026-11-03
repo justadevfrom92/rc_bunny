@@ -13,8 +13,9 @@ public static class Permissions
     public static readonly Dictionary<string, string> All = new()
     {
         ["corral"] = "Corral: customers, orders, texts and calls, CRM, products, ERCOT, exception queues",
-        ["refunds"] = "Reverse payments",
+        ["refunds"] = "Approve refunds, credits and debits, and reverse payments",
         ["plans"] = "Change plans and rates",
+        ["caboose"] = "Caboose: payments, credits and debits, refunds, deposits, aging, the journal, MSIDs and promo codes",
         ["ranger"] = "Ranger: support tickets and website messages",
         ["sheriff"] = "Sheriff: staff, roles, heartbeat, crons, markets and integrations",
     };

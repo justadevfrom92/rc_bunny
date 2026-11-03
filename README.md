@@ -44,7 +44,7 @@ Sample employees:
 | admin@example.com | Administrator (ticket team manager) | everything |
 | csr@example.com | Customer Service (on the ticket team) | Corral, Ranger |
 | pricing@example.com | Pricing | Plans & Rates |
-| finance@example.com | Finance | Corral, and reversing payments |
+| finance@example.com | Finance | Corral, Caboose, and approving refunds, credits and debits |
 
 To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db` in the repo root. Do this after pulling changes that add tables, too: the database is created once, on first start.
 
@@ -74,6 +74,12 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
   - A ticket: reply to the customer or add an internal note the customer never sees, change status and priority, pick it up. Ticket team managers can also assign it to anyone or take it over.
   - Web Messages from the website, with "Make a ticket".
   - Ticket Team (in-office or 3rd party, managers), Approval Ratings, Employees.
+- Caboose (finance):
+  - Dashboard: money in over the last 30 days, what's waiting for approval, deposits, aging.
+  - Payments: everything paid, by date, status or account. Record a payment taken by check, money order, cash or card; a "Deposit" payment goes toward the deposit instead of the balance.
+  - Credits & Debits and Refunds: anyone with Caboose can ask; someone with the `refunds` permission approves, and nobody can approve their own request. A refund goes requested → approved → paid, and can't be more than the credit balance (or the deposit held).
+  - Deposits (due and held), Receivables Aging (by days past due), and the Journal: the double-entry lines for the accounting system, on screen or as CSV.
+  - MSIDs & Promo Codes, with how many customers used each.
 - Sheriff (settings):
   - Heartbeat: checks (database, website, jobs) every 5 minutes or on demand, a switch to take the website down for maintenance, and the control log.
   - Staff Directory (add people, change roles, turn sign-ins off, set passwords) and Roles (tick what each role can do, add roles).
@@ -83,7 +89,7 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
 
 ## How access works
 
-- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `plans`, `ranger`, `sheriff`.
+- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `plans`, `caboose`, `ranger`, `sheriff`.
 - The server checks every request with `[RequirePermission("...")]` (`Backend/Auth/Permissions.cs`). It reads the person's current role from the database, cached for 30 seconds. Changing someone's role or turning them off clears that cache, so it takes effect on their next click.
 - The admin app hides menus, pages and buttons you can't use (`ClientApp/src/auth.tsx`). It re-checks who you are every minute, when the tab gets focus, and whenever the server says no.
 
@@ -100,12 +106,12 @@ src/RcBunny.Backend/
   Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
   Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
-                          Ranger's: Ranger, Messages; Sheriff's: Staff, Sheriff
+                          Ranger's: Ranger, Messages; Caboose; Sheriff's: Staff, Sheriff
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
   ClientApp/src/          main.tsx (menu and routes), api.ts, auth.tsx, pages/*.tsx, styles.css
-                          pages/corral, pages/ranger, pages/sheriff: each app's menu and routes (Corral.tsx, Ranger.tsx,
-                          Sheriff.tsx) with its pages next to it; Sidebar.tsx draws the menus
+                          pages/corral, pages/ranger, pages/caboose, pages/sheriff: each app's menu and routes (Corral.tsx, Ranger.tsx,
+                          Caboose.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx draws the menus
 src/RcBunny.Frontend/
   Program.cs              Razor Pages, page caching, customer sign-in
   Services/Catalog.cs     markets and prices, cached

@@ -5,6 +5,7 @@ const tiles = [
   { to: '/corral', title: 'Corral', text: 'Customers, orders, texts and calls, CRM, products, ERCOT and exception queues.', permission: 'corral' },
   { to: '/plans', title: 'Plans & Rates', text: 'Current rates by market. Add new rates.', permission: 'plans' },
   { to: '/ranger', title: 'Ranger', text: 'Support tickets from My Account, and messages from the Contact Us page.', permission: 'ranger' },
+  { to: '/caboose', title: 'Caboose', text: 'Finance: payments, credits and debits, refunds, deposits, aging and the journal.', permission: 'caboose' },
   { to: '/sheriff', title: 'Sheriff', text: 'Staff, roles, heartbeat, crons, the timeline, markets and integrations.', permission: 'sheriff' },
 ];
 

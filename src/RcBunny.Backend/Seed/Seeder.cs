@@ -19,7 +19,7 @@ public static class Seeder
         var admin = new Role { Name = "Administrator", Permissions = string.Join(",", Permissions.All.Keys) };
         var service = new Role { Name = "Customer Service", Permissions = "corral,ranger" };
         var pricing = new Role { Name = "Pricing", Permissions = "plans" };
-        var finance = new Role { Name = "Finance", Permissions = "corral,refunds" };
+        var finance = new Role { Name = "Finance", Permissions = "corral,refunds,caboose" };
         db.Roles.AddRange(admin, service, pricing, finance);
         db.Users.AddRange(
             new User { Name = "Admin Demo", Email = "admin@example.com", PasswordHash = password, Role = admin },
@@ -171,6 +171,33 @@ public static class Seeder
 
         // Sheriff: the website's maintenance switch
         db.HeartbeatControls.Add(new HeartbeatControl { Key = "website", Name = "Website" });
+
+        // Caboose: MSIDs, promo codes, deposits, credit balances, and some requests waiting for approval
+        db.Msids.AddRange(
+            new Msid { Code = "1001", Name = "Organic", Channel = "Web" },
+            new Msid { Code = "130001", Name = "Epicenter mailer", Channel = "Direct mail" },
+            new Msid { Code = "2050", Name = "Lone Star Brokers", Channel = "Broker" },
+            new Msid { Code = "3100", Name = "Spring search ads", Channel = "Paid search" });
+        db.PromoCodes.AddRange(
+            new PromoCode { Code = "HOWDY50", Description = "$50 bill credit for new customers", Credit = 50, StartsOn = today.AddMonths(-3), EndsOn = today.AddMonths(3) },
+            new PromoCode { Code = "REFER25", Description = "$25 for referring a friend", Credit = 25 },
+            new PromoCode { Code = "SUMMER24", Description = "Last summer's offer", Credit = 30, EndsOn = today.AddMonths(-4), Active = false });
+        var money = await db.Customers.OrderBy(c => c.Id).Skip(10).Take(12).ToListAsync();
+        var msidCodes = new[] { "1001", "130001", "2050", "3100" };
+        for (var i = 0; i < money.Count; i++)
+        {
+            var c = money[i];
+            c.Msid = msidCodes[i % 4];
+            if (i % 3 == 0) c.PromoCode = "HOWDY50";
+            if (i < 3) c.DepositDue = 100 + 50 * i;
+            if (i is >= 3 and < 6) c.DepositHeld = 150;
+            if (i is 6 or 7) c.Balance = -42.17m * (i - 5);                 // credit balances, ready to refund
+            if (i is 8 or 9) { c.Balance = 180 + i * 20; c.DueDate = today.AddDays(-25 * (i - 7)); } // past due
+        }
+        db.LedgerEntries.AddRange(
+            new LedgerEntry { CustomerId = money[0].Id, Kind = "credit", Amount = 25, Reason = "Goodwill credit for the outage", RequestedBy = "Casey Service" },
+            new LedgerEntry { CustomerId = money[1].Id, Kind = "debit", Amount = 15, Reason = "Returned payment fee", RequestedBy = "Casey Service" });
+        db.Refunds.Add(new Refund { CustomerId = money[6].Id, Kind = "balance", Amount = 42.17m, Reason = "Moved out, closing the account", RequestedBy = "Casey Service" });
 
         db.ContactMessages.AddRange(
             new ContactMessage { Name = "Jordan Lee", Email = "jordan@example.com", Topic = "Billing", Message = "Can I change my due date?" },
