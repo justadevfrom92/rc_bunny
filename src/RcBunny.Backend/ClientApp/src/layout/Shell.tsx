@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../api';
 import { NavLink, Outlet, useLocation, Link } from 'react-router-dom';
 import { returnToSelf, signOut, useMe } from '../auth';
 import { useMeta } from '../queries';
@@ -12,7 +14,9 @@ export function Shell() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const appKey = pathname.split('/')[1];
-  const app = meta?.apps.find((a) => a.key === appKey);
+  const app = meta?.apps.find((a) => a.key === appKey) ?? (appKey === 'account' ? meta?.account : undefined);
+  // The bell: unread notifications, checked every minute (reports finishing, tickets assigned…)
+  const unread = useQuery({ queryKey: ['account', 'unread'], queryFn: () => api<{ unread: number }>('/api/account/notifications?unread=true'), refetchInterval: 60_000 });
   const myApps = meta?.apps.filter((a) => me.apps.includes(a.key)) ?? [];
 
   // The menu item for this page: an exact match (address and query) first, otherwise the longest path that contains it.
@@ -72,6 +76,9 @@ export function Shell() {
               <NavLink key={a.key} to={a.home} className={() => (a.key === appKey ? 'active' : '')}>{a.name}</NavLink>
             ))}
           </nav>
+          <Link to="/account/notifications" className="bell" aria-label={`Notifications${unread.data?.unread ? ` (${unread.data.unread} unread)` : ''}`}>
+            🔔{!!unread.data?.unread && <span className="badge">{unread.data.unread}</span>}
+          </Link>
           <details className="person">
             <summary>
               <span className="avatar">{me.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}</span>
@@ -84,6 +91,8 @@ export function Shell() {
               <p className="muted small">{me.email}</p>
               {me.accessEndsOn && <p className="small">Access ends {me.accessEndsOn}</p>}
               <p className="small">Access: {me.perms.join(', ') || 'none'}</p>
+              <Link to="/account/files">My Files</Link>
+              <Link to="/account/settings">Settings</Link>
               <button className="btn outline small" onClick={() => void signOut()}>Sign out</button>
             </div>
           </details>

@@ -12,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<TableCacheInvalidator>();
 builder.Services.AddRcBunnyDatabase(builder.Configuration, (sp, o) => o.AddInterceptors(sp.GetRequiredService<TableCacheInvalidator>()));
 builder.Services.AddScoped<DbSeeder>();
+builder.Services.AddSingleton<RcBunny.Backend.FileStore>();
+// Laravel's scheduler + queue worker: jobs on their cron, queued reports, Deputy automations (Scheduler:Enabled=false to turn off)
+builder.Services.AddHostedService<RcBunny.Backend.Scheduler>();
+RcBunny.Backend.SurveyLinks.Secret = builder.Configuration["Survey:LinkSecret"] ?? RcBunny.Backend.SurveyLinks.Secret;
 
 // ---- Caching -------------------------------------------------------------------------------------------
 // HybridCache = in-memory (L1) + optional distributed (L2) with tag invalidation and stampede protection.

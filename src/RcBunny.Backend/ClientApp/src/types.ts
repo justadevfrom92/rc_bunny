@@ -33,6 +33,7 @@ export interface AdminApp {
 
 export interface Meta {
   apps: AdminApp[];
+  account: AdminApp;
   rights: Record<string, string>;
   departments: string[];
   corral: {

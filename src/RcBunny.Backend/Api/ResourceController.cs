@@ -145,12 +145,12 @@ public class ResourceController(AppDbContext db, HybridCache cache, IServiceProv
         return NoContent();
     }
 
-    [HttpPost("{key}/{id}/actions/{action}")]
-    public async Task<IActionResult> Act(string key, string id, string action, [FromBody] JsonObject? input, CancellationToken ct)
+    [HttpPost("{key}/{id}/actions/{actionKey}")]
+    public async Task<IActionResult> Act(string key, string id, string actionKey, [FromBody] JsonObject? input, CancellationToken ct)
     {
         var def = Def(key, out var err);
         if (def is null) return err!;
-        var a = def.Actions.FirstOrDefault(x => x.Key == action);
+        var a = def.Actions.FirstOrDefault(x => x.Key == actionKey);
         if (a is null) return NotFound();
         if (a.Perm is { } p && !Can(p)) return Forbidden(p);
         var row = await ResourceEngine.FindObjectAsync(db, def, id, true, ct);
@@ -159,7 +159,7 @@ public class ResourceController(AppDbContext db, HybridCache cache, IServiceProv
         string message;
         try { message = await a.Run(new Resources.ActionContext(db, row, input ?? [], Me, services)); }
         catch (ActionError e) { return Problem422(e.Message); }
-        Audit(db, action.Replace('-', '_'), $"{def.Name}: {ResourceEngine.Label(row)}", message);
+        Audit(db, actionKey.Replace('-', '_'), $"{def.Name}: {ResourceEngine.Label(row)}", message);
         await db.SaveChangesAsync(ct);
         return Ok(new { message });
     }

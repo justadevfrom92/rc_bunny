@@ -242,7 +242,7 @@ public partial class DbSeeder
         // A custom admin app made with "+ New Admin App" on the launcher
         db.AdminApps.Add(new AdminApp { Key = "ops", Name = "Ops Desk", Description = "Shortcuts for the operations team: exception queues, ERCOT, reports and crons.", Icon = "bolt", Position = 1, CreatedBy = admin,
             Menu = new JsonArray(new JsonObject { ["heading"] = "Daily", ["items"] = new JsonArray(
-                new JsonObject { ["label"] = "Exception Queues", ["path"] = "/corral/queues" }, new JsonObject { ["label"] = "ERCOT", ["path"] = "/corral/ercot" },
+                new JsonObject { ["label"] = "Exception Queues", ["path"] = "/corral/queues" }, new JsonObject { ["label"] = "ERCOT", ["path"] = "/corral/r/ercot-transactions" },
                 new JsonObject { ["label"] = "Report Status", ["path"] = "/walker" }, new JsonObject { ["label"] = "Crons", ["path"] = "/sheriff/jobs" }) }) });
         await Save();
     }

@@ -13,6 +13,20 @@ import { FullValue, Input, Value } from './fields';
 */
 
 const base = (app: string, key: string) => `/${app}/r/${key}`;
+
+/** Records that also have a dedicated page: links shown at the top of the record. */
+const EXTRA: Record<string, (id: string) => { label: string; to: string; external?: boolean }[]> = {
+  customers: (id) => [{ label: 'Account Page', to: `/corral/customers/${id}` }],
+  members: (id) => [{ label: 'Account Page', to: `/corral/customers/${id}` }],
+  'support-tickets': (id) => [{ label: 'Open Conversation', to: `/ranger/tickets/${id}` }],
+  surveys: (id) => [{ label: 'Results', to: `/rodeo/surveys/${id}/results` }],
+  'email-templates': (id) => [{ label: 'Preview & Send Test', to: `/rodeo/templates/${id}/test` }],
+  'pdf-templates': (id) => [{ label: 'Preview PDF', to: `/api/rodeo/pdfs/${id}/preview`, external: true }],
+  'pdf-generations': (id) => [{ label: 'Open PDF', to: `/api/rodeo/pdfs/made/${id}/pdf`, external: true }],
+  'report-runs': (id) => [{ label: 'Run Page', to: `/walker/runs/${id}` }],
+  'report-uploads': (id) => [{ label: 'Download', to: `/api/walker/uploads/${id}/download`, external: true }],
+  'saved-reports': () => [{ label: 'Run a Report', to: '/walker/reports' }],
+};
 const invalidateApp = (app: string) => queryClient.invalidateQueries({ queryKey: [app] });
 
 export function ResourceList() {
@@ -165,6 +179,7 @@ export function ResourceDetail() {
       <div className="page-head">
         <h1>{r._label}</h1>
         <div className="row">
+          {(EXTRA[key]?.(id) ?? []).map((l) => (l.external ? <a key={l.to} className="btn outline" href={l.to} target="_blank" rel="noreferrer">{l.label}</a> : <Link key={l.to} className="btn outline" to={l.to}>{l.label}</Link>))}
           {actions.map((a) => <ActionButton key={a.key} app={app} resource={key} id={id} action={a} />)}
           {m.edit && <Link className="btn" to={`${base(app, key)}/${encodeURIComponent(id)}/edit`}>Edit</Link>}
           {m.delete && <button className="btn outline danger" disabled={del.isPending} onClick={() => confirm(`Delete this ${m.name.toLowerCase()}? This can't be undone.`) && del.mutate()}>Delete</button>}

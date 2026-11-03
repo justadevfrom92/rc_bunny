@@ -56,3 +56,50 @@ export function Panel({ title, actions, children, id }: { title?: ReactNode; act
 export function Refreshing({ on }: { on: boolean }) {
   return on ? <span className="refreshing" aria-live="polite">updating…</span> : null;
 }
+
+/** A big number with a label. */
+export function Stat({ label, value, to, tone }: { label: string; value: ReactNode; to?: string; tone?: string }) {
+  const body = (<><strong className={tone ? `${tone}-text` : ''}>{value}</strong><span>{label}</span></>);
+  return to ? <a className="stat" href={to}>{body}</a> : <div className="stat">{body}</div>;
+}
+
+export function Stats({ children }: { children: ReactNode }) {
+  return <div className="stats">{children}</div>;
+}
+
+/** Horizontal bars: label, bar, value. */
+export function Bars({ rows, format = (n: number) => n.toLocaleString('en-US') }: { rows: { label: string; value: number; hint?: string }[]; format?: (n: number) => string }) {
+  const max = Math.max(1, ...rows.map((r) => r.value));
+  return (
+    <table className="table compact bars">
+      <tbody>
+        {rows.map((r) => (
+          <tr key={r.label}>
+            <td>{r.label}{r.hint && <div className="muted small">{r.hint}</div>}</td>
+            <td style={{ width: '50%' }}><div className="bar"><span style={{ width: `${(100 * r.value) / max}%` }} /></div></td>
+            <td className="num">{format(r.value)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+/** Vertical columns over time (days/weeks). */
+export function Columns({ rows, format = (n: number) => n.toLocaleString('en-US') }: { rows: { label: string; value: number }[]; format?: (n: number) => string }) {
+  const max = Math.max(1, ...rows.map((r) => r.value));
+  return (
+    <div className="columns" role="img" aria-label="Chart">
+      {rows.map((r) => (
+        <div key={r.label} className="col" title={`${r.label}: ${format(r.value)}`}>
+          <span style={{ height: `${Math.max(2, (100 * r.value) / max)}%` }} />
+          <small>{r.label}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function pct(n: number | null | undefined) {
+  return n == null ? '—' : `${n}%`;
+}
