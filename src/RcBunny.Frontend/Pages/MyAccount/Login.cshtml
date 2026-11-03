@@ -1,32 +1,16 @@
 @page "/myaccount/login"
 @model RcBunny.Frontend.Pages.MyAccount.LoginModel
-@inject Brand B
-@{
-    ViewData["Title"] = $"Sign In | My Account | {B.Name}";
-}
+@inject IWebHostEnvironment Env
+@{ ViewData["Title"] = $"Sign In | My Account | {Site.Name}"; }
 <section class="section section-sky">
-    <div class="wrap" style="max-width:480px">
-        <form method="post" class="byop-panel">
+    <div class="wrap" style="max-width:460px">
+        <form class="byop-panel" method="post">
             <h1 style="font-size:1.6rem">Sign in to My Account</h1>
-            @if (Model.Error is { } err)
-            {
-                <div class="form-msg error" role="alert">@err</div>
-            }
-            <div class="field">
-                <label for="username">Username or email</label>
-                <input id="username" name="Username" value="@Model.Username" autocomplete="username" required autofocus>
-            </div>
-            <div class="field" style="margin-top:16px">
-                <label for="password">Password</label>
-                <input id="password" name="Password" type="password" autocomplete="current-password" required>
-            </div>
-            <button class="btn btn-block" type="submit" style="margin-top:20px">Sign In</button>
-            @if (Model.TestLogin)
-            {
-                <p class="ma-note">Development sample: <code>demo.customer</code> / <code>password</code></p>
-            }
+            @if (Model.Error is { } error) { <div class="form-msg error">@error</div> }
+            <div class="field"><label for="u">Username or email</label><input id="u" asp-for="Username" autocomplete="username" required autofocus></div>
+            <div class="field" style="margin-top:12px"><label for="p">Password</label><input id="p" asp-for="Password" type="password" autocomplete="current-password" required></div>
+            <button class="btn btn-block" style="margin-top:16px">Sign In</button>
+            @if (Env.IsDevelopment()) { <p class="ma-note">Sample: <code>demo.customer</code> / <code>password</code></p> }
         </form>
-        <p class="ma-links"><a href="/myaccount/forgot-password">Forgot password?</a> · <a href="/myaccount/forgot-username">Forgot username?</a> · <a href="/myaccount/register">Create a login</a> · <a href="/quickpay">QuickPay</a></p>
-        @if (TempData["flash"] is string f) { <div class="form-msg ok" role="status">@f</div> }
     </div>
 </section>

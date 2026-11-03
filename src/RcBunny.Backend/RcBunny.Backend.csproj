@@ -4,53 +4,30 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>RcBunny.Backend</RootNamespace>
-    <SpaRoot>ClientApp/</SpaRoot>
+    <RootNamespace>RcBunny</RootNamespace>
   </PropertyGroup>
 
-  <!-- Sample data copied next to the app so the seeder can read it -->
   <ItemGroup>
-    <None Include="Data/Seed/data/*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <Content Remove="Data/Seed/data/*.json" />
-    <None Include="Data/Config/*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <Content Remove="Data/Config/*.json" />
-  </ItemGroup>
-
-  <!-- The React client lives in ClientApp and is built into wwwroot (npm run build). -->
-  <ItemGroup>
-    <Content Remove="$(SpaRoot)**" />
-    <None Remove="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules/**" />
-  </ItemGroup>
-
-  <!-- First build on a fresh clone: install and build the React client once (afterwards use `npm run dev` / `npm run build`). -->
-  <Target Name="BuildClient" BeforeTargets="Build" Condition="!Exists('wwwroot/index.html') And '$(SkipClientBuild)' != 'true'">
-    <Exec Command="npm install" WorkingDirectory="$(SpaRoot)" Condition="!Exists('$(SpaRoot)node_modules')" />
-    <Exec Command="npm run build" WorkingDirectory="$(SpaRoot)" />
-  </Target>
-
-  <!-- dotnet publish builds the client first, so wwwroot always matches the server. -->
-  <Target Name="PublishClient" AfterTargets="ComputeFilesToPublish" Condition="'$(SkipClientBuild)' != 'true'">
-    <Exec Command="npm ci" WorkingDirectory="$(SpaRoot)" />
-    <Exec Command="npm run build" WorkingDirectory="$(SpaRoot)" />
-    <ItemGroup>
-      <DistFiles Include="wwwroot/**" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-        <RelativePath>%(DistFiles.Identity)</RelativePath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </ResolvedFileToPublish>
-    </ItemGroup>
-  </Target>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.14">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="10.11.0" />
+    <!-- Newer than the version SqlServer pulls in, which has a known vulnerability -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
+
+  <!-- Sample data the seeder reads on first start -->
+  <ItemGroup>
+    <None Include="Seed/data/*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Remove="Seed/data/*.json" />
+  </ItemGroup>
+
+  <!-- The React admin lives in ClientApp. The first build installs and builds it into wwwroot. -->
+  <ItemGroup>
+    <Content Remove="ClientApp/**" />
+    <None Remove="ClientApp/**" />
+  </ItemGroup>
+  <Target Name="BuildClientApp" BeforeTargets="Build" Condition="!Exists('wwwroot/index.html')">
+    <Exec Command="npm install" WorkingDirectory="ClientApp" />
+    <Exec Command="npm run build" WorkingDirectory="ClientApp" />
+  </Target>
 
 </Project>

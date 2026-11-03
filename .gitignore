@@ -11,9 +11,9 @@ obj/
 node_modules/
 *.tsbuildinfo
 
-# Built client bundles (made by `npm run build`, dotnet build on a fresh clone, or dotnet publish)
+# Built React files (made by npm run build, which the first dotnet build runs)
 src/RcBunny.Backend/wwwroot/
-src/RcBunny.Frontend/wwwroot/islands/
+src/RcBunny.Frontend/wwwroot/js/
 
 # Local databases and secrets
 *.db
@@ -22,5 +22,3 @@ src/RcBunny.Frontend/wwwroot/islands/
 appsettings.Local.json
 .env
 
-# Uploaded files (support attachments, site files)
-/storage/

@@ -3,59 +3,28 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using RcBunny.Data;
-using RcBunny.Data.Entities;
 
 namespace RcBunny.Frontend.Pages.MyAccount;
 
-/// <summary>My Account pages: the signed-in customer, loaded once per request. Never cached (personal data).</summary>
-[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-public abstract class MyAccountPage(AppDbContext db) : PageModel
+public class LoginModel(AppDbContext db) : PageModel
 {
-    protected AppDbContext Db => db;
-    public Customer Customer { get; private set; } = null!;
-
-    protected async Task<bool> LoadCustomerAsync()
-    {
-        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id)) return false;
-        var c = await db.Customers.Include(x => x.Plan).Include(x => x.Market).FirstOrDefaultAsync(x => x.Id == id);
-        if (c is null) return false;
-        Customer = c;
-        return true;
-    }
-
-    protected async Task<IActionResult> SignedOut()
-    {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToPage("/MyAccount/Login");
-    }
-}
-
-[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-public class LoginModel(AppDbContext db, IWebHostEnvironment env) : PageModel
-{
-    [BindProperty] public string? Username { get; set; }
-    [BindProperty] public string? Password { get; set; }
+    [BindProperty] public string Username { get; set; } = "";
+    [BindProperty] public string Password { get; set; } = "";
     public string? Error { get; private set; }
-    public bool TestLogin => env.IsDevelopment();
 
-    public IActionResult OnGet() => User.Identity?.IsAuthenticated == true ? Redirect("/myaccount") : Page();
-
-    [EnableRateLimiting("forms")]
     public async Task<IActionResult> OnPostAsync(string? returnUrl)
     {
-        var name = Username?.Trim().ToLowerInvariant() ?? "";
-        var c = name.Length == 0 ? null : await db.Customers.FirstOrDefaultAsync(x => x.Username == name || x.Email == name);
-        if (c is null || !Passwords.Verify(c.Password, Password ?? ""))
+        var name = Username.Trim().ToLower();
+        var customer = await db.Customers.FirstOrDefaultAsync(c => c.Username == name || c.Email == name);
+        if (customer is null || !Passwords.Verify(customer.PasswordHash, Password))
         {
             Error = "That username and password don't match.";
             return Page();
         }
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(new ClaimsIdentity(
-            [new Claim(ClaimTypes.NameIdentifier, c.Id.ToString()), new Claim(ClaimTypes.Name, c.FirstName ?? c.Name)],
-            CookieAuthenticationDefaults.AuthenticationScheme)));
+        var identity = new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, customer.Id.ToString())], CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignInAsync(new ClaimsPrincipal(identity));
         return LocalRedirect(Url.IsLocalUrl(returnUrl) ? returnUrl! : "/myaccount");
     }
 }
@@ -64,40 +33,64 @@ public class LogoutModel : PageModel
 {
     public async Task<IActionResult> OnPostAsync()
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync();
         return Redirect("/");
     }
 }
 
-public class DashboardModel(AppDbContext db) : MyAccountPage(db)
+/// <summary>The signed-in customer's page: balance, plan, bills and payments.</summary>
+public class IndexModel(AppDbContext db) : PageModel
 {
-    public IReadOnlyList<Bill> Bills { get; private set; } = [];
-    public Payment? LastPayment { get; private set; }
-    public object UsageProps { get; private set; } = new { };
+    public Customer Customer { get; private set; } = null!;
+    public List<Bill> Bills { get; private set; } = [];
+    public List<Payment> Payments { get; private set; } = [];
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (!await LoadCustomerAsync()) return await SignedOut();
-        Bills = await Db.Bills.Where(b => b.CustomerId == Customer.Id).OrderByDescending(b => b.BilledOn).Take(12).ToListAsync();
-        LastPayment = await Db.Payments.Where(p => p.CustomerId == Customer.Id && p.Status == "Success").OrderByDescending(p => p.PaidOn).FirstOrDefaultAsync();
-        UsageProps = new
-        {
-            months = Bills.OrderBy(b => b.BilledOn).Select(b => new { label = b.BilledOn.AddMonths(-1).ToString("MMM yy"), kwh = b.Kwh, amount = b.Amount }),
-        };
+        var id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var customer = await db.Customers.Include(c => c.Plan).FirstOrDefaultAsync(c => c.Id == id);
+        if (customer is null) return Redirect("/myaccount/login");
+        Customer = customer;
+        Bills = await db.Bills.Where(b => b.CustomerId == id).OrderByDescending(b => b.BilledOn).ToListAsync();
+        Payments = await db.Payments.Where(p => p.CustomerId == id).OrderByDescending(p => p.PaidOn).ToListAsync();
         return Page();
     }
 }
 
-public class BillsModel(AppDbContext db) : MyAccountPage(db)
+/// <summary>Pay the bill. There's no card processor connected yet, so this records the payment only.</summary>
+public class PayModel(AppDbContext db) : PageModel
 {
-    public IReadOnlyList<Bill> Bills { get; private set; } = [];
-    public IReadOnlyList<Payment> Payments { get; private set; } = [];
+    public Customer Customer { get; private set; } = null!;
+    [BindProperty] public decimal Amount { get; set; }
+    [BindProperty] public string CardNumber { get; set; } = "";
+    public string? Error { get; private set; }
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (!await LoadCustomerAsync()) return await SignedOut();
-        Bills = await Db.Bills.Where(b => b.CustomerId == Customer.Id).OrderByDescending(b => b.BilledOn).ToListAsync();
-        Payments = await Db.Payments.Where(p => p.CustomerId == Customer.Id).OrderByDescending(p => p.PaidOn).ToListAsync();
+        Customer = await Load();
+        Amount = Math.Max(Customer.Balance, 0);
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        Customer = await Load();
+        var digits = new string(CardNumber.Where(char.IsDigit).ToArray());
+        if (Amount <= 0 || Amount > 5000) Error = "Enter an amount between $0.01 and $5,000.";
+        else if (digits.Length < 12) Error = "Enter your full card number.";
+        if (Error != null) return Page();
+
+        db.Payments.Add(new Payment { CustomerId = Customer.Id, PaidOn = DateOnly.FromDateTime(DateTime.Today), Amount = Amount, Method = $"Card ending {digits[^4..]}", Source = "My Account" });
+        Customer.Balance -= Amount;
+        db.Notes.Add(new Note { CustomerId = Customer.Id, Author = "My Account", Body = $"Paid {Amount:C} online." });
+        await db.SaveChangesAsync();
+        TempData["paid"] = $"Thanks! Your {Amount:C} payment is in.";
+        return Redirect("/myaccount");
+    }
+
+    private async Task<Customer> Load()
+    {
+        var id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        return await db.Customers.FirstAsync(c => c.Id == id);
     }
 }

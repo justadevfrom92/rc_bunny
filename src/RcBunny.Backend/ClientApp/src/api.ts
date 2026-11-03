@@ -1,108 +1,58 @@
-import { QueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
 
-/** An error from the API, with the server's machine-readable code (missing_perm, invalid, signed_out…). */
+// Small helpers for calling the backend. Errors come back as { error: "..." }.
+
 export class ApiError extends Error {
-  constructor(
-    public status: number,
-    public code: string,
-    message: string,
-    public perm?: string,
-    public field?: string,
-  ) {
+  constructor(public status: number, message: string) {
     super(message);
   }
 }
 
-/**
- * One cache for the whole client. Defaults favour showing cached data instantly and refreshing quietly:
- *  - staleTime 30s: moving between screens within half a minute makes no request at all
- *  - gcTime 10 min: going back to a screen you saw recently paints immediately from cache, then refetches
- *  - every refetch is a conditional GET (the server sends ETags), so unchanged data costs a 304
- * Individual queries override these (reference data is cached far longer, see queries.ts).
- */
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 30_000,
-      gcTime: 10 * 60_000,
-      refetchOnWindowFocus: true,
-      retry: (count, err) => !(err instanceof ApiError && err.status < 500) && count < 2,
-    },
-    mutations: { retry: false },
-  },
-});
-
-/** The access version the client's copy of "me" was built from. Set by auth.tsx. */
-let knownAccessVersion: number | null = null;
-export const setKnownAccessVersion = (v: number | null) => {
-  knownAccessVersion = v;
-};
-
-/**
- * The session ended under us (disabled, password changed, access ended, cookie expired): forget every cached
- * response and go to sign-in with a full page load, so nothing from this person stays in memory.
- */
-let leaving = false;
-function signedOut() {
-  if (leaving) return;
-  leaving = true;
-  knownAccessVersion = null;
-  queryClient.clear();
-  const here = window.location.pathname + window.location.search;
-  window.location.assign(`/login?next=${encodeURIComponent(here)}`);
-}
-
-/**
- * fetch() for the admin API. Adds the CSRF header and cookie, turns error bodies into ApiError, and watches two
- * response headers the server sets on every signed-in request:
- *  - X-Access-Version: if it differs from the version our "me" came from, someone changed this person's
- *    access (role, allow/deny, company, end date) — refetch "me" right away so menus and guards update.
- *  - X-Signed-Out: the sign-in was ended (disabled, password changed, access ended) — drop all cached data.
- */
-export async function api<T>(path: string, init: RequestInit & { json?: unknown } = {}): Promise<T> {
-  const { json, headers, ...rest } = init;
-  const res = await fetch(path, {
-    credentials: 'same-origin',
-    ...rest,
-    headers: {
-      Accept: 'application/json',
-      'X-RCB': '1',
-      ...(json !== undefined ? { 'Content-Type': 'application/json' } : {}),
-      ...headers,
-    },
-    body: json !== undefined ? JSON.stringify(json) : rest.body,
+async function request<T>(method: string, url: string, body?: unknown): Promise<T> {
+  const res = await fetch(url, {
+    method,
+    headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
   });
-
-  const version = res.headers.get('X-Access-Version');
-  if (version && knownAccessVersion !== null && Number(version) !== knownAccessVersion) {
-    knownAccessVersion = Number(version);
-    void queryClient.invalidateQueries({ queryKey: ['me'] });
-  }
-  // /api/auth/* answers its own 401s (the sign-in form, and "me" on first load, which MeProvider turns into a redirect).
-  if (!path.startsWith('/api/auth/') && (res.headers.get('X-Signed-Out') || res.status === 401)) {
-    signedOut();
-  }
-
-  if (res.status === 204) return undefined as T;
-  const body = res.headers.get('content-type')?.includes('json') ? await res.json() : null;
   if (!res.ok) {
-    throw new ApiError(
-      res.status,
-      body?.code ?? 'error',
-      body?.message ?? (res.status === 429 ? 'Too many tries. Wait a minute and try again.' : `Something went wrong (${res.status}).`),
-      body?.perm,
-      body?.field,
-    );
+    const data = await res.json().catch(() => null);
+    const message = data?.error ?? (res.status === 403 ? "You don't have access to that." : 'Something went wrong.');
+    // Signed out, or access changed: let the app re-check who we are.
+    if (res.status === 401 || res.status === 403) window.dispatchEvent(new Event('access-changed'));
+    throw new ApiError(res.status, message);
   }
-  return body as T;
+  const text = await res.text();
+  return (text ? JSON.parse(text) : undefined) as T;
 }
 
-export const post = <T>(path: string, json?: unknown) => api<T>(path, { method: 'POST', json: json ?? {} });
-export const put = <T>(path: string, json: unknown) => api<T>(path, { method: 'PUT', json });
-
-export const qs = (params: Record<string, string | number | boolean | undefined | null>) => {
-  const p = new URLSearchParams();
-  for (const [k, v] of Object.entries(params)) if (v !== undefined && v !== null && v !== '') p.set(k, String(v));
-  const s = p.toString();
-  return s ? `?${s}` : '';
+export const api = {
+  get: <T>(url: string) => request<T>('GET', url),
+  post: <T = void>(url: string, body?: unknown) => request<T>('POST', url, body ?? {}),
+  put: <T = void>(url: string, body: unknown) => request<T>('PUT', url, body),
 };
+
+// Remembers the last answer for each URL, so going back to a screen shows it instantly while it refreshes.
+const cache = new Map<string, unknown>();
+
+export function useLoad<T>(url: string) {
+  const [data, setData] = useState<T | undefined>(cache.get(url) as T | undefined);
+  const [error, setError] = useState<string | null>(null);
+
+  const reload = useCallback(() => {
+    setError(null);
+    api.get<T>(url).then(
+      (result) => { cache.set(url, result); setData(result); },
+      (err: Error) => setError(err.message),
+    );
+  }, [url]);
+
+  useEffect(() => {
+    setData(cache.get(url) as T | undefined);
+    reload();
+  }, [url, reload]);
+
+  return { data, error, reload };
+}
+
+export const money = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+export const date = (s: string) => new Date(s.length === 10 ? s + 'T00:00' : s).toLocaleDateString('en-US');

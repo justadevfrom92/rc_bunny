@@ -1,35 +1,16 @@
 @page "/myaccount/pay"
-@model PayModel
-@inject Brand B
-@{ ViewData["Title"] = $"Pay My Bill | {B.Name}"; var c = Model.Customer; }
-<section class="section section-sky"><div class="wrap">
-    <partial name="_Frame" model="Model" />
-    <partial name="_Flash" model="Model" />
-    <div class="ma-grid">
-        <div class="byop-panel">
-            <h2>Pay my bill</h2>
-            <p>Balance <strong>@c.Balance.ToString("C")</strong>, due @(c.DueDate?.ToString("MMMM d") ?? "—").</p>
-            @if (Model.Methods.Count == 0)
-            {
-                <p>Add a <a href="/myaccount/payment-methods">payment method</a> first, or use <a href="/quickpay">QuickPay</a>.</p>
-            }
-            else
-            {
-                <form method="post" class="stack-form">
-                    <div class="field"><label for="amt">Amount</label><input id="amt" name="amount" type="number" step="0.01" min="0.01" max="5000" value="@(c.Balance > 0 ? c.Balance.ToString("0.00") : "")" required></div>
-                    <div class="field"><label for="pm">Pay with</label><select id="pm" name="methodId">@foreach (var m in Model.Methods) { <option value="@m.Id">@m.Type ending @m.Last4 @m.Nickname</option> }</select></div>
-                    <div class="field"><label for="on">Pay on (leave empty for today)</label><input id="on" name="payOn" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")"></div>
-                    <button class="btn">Pay</button>
-                </form>
-            }
-        </div>
-        <div class="byop-panel">
-            <h2>Scheduled payments</h2>
-            @if (Model.Scheduled.Count == 0) { <p>None scheduled.</p> }
-            @foreach (var s in Model.Scheduled)
-            {
-                <form method="post" asp-page-handler="Cancel" class="row-form"><input type="hidden" name="id" value="@s.Id"><span>@s.Amount.ToString("C") on @s.PayAt.ToString("MMM d, yyyy")</span> <button class="btn btn-outline btn-sm">Cancel</button></form>
-            }
-        </div>
+@model RcBunny.Frontend.Pages.MyAccount.PayModel
+@{ ViewData["Title"] = $"Pay My Bill | {Site.Name}"; }
+<section class="section section-sky">
+    <div class="wrap" style="max-width:520px">
+        <form class="byop-panel" method="post" autocomplete="off">
+            <h1 style="font-size:1.6rem">Pay my bill</h1>
+            <p>Your balance is <strong>@Model.Customer.Balance.ToString("C")</strong>.</p>
+            @if (Model.Error is { } error) { <div class="form-msg error">@error</div> }
+            <div class="field"><label for="a">Amount</label><input id="a" asp-for="Amount" type="number" step="0.01" min="0.01" required></div>
+            <div class="field" style="margin-top:12px"><label for="n">Card number</label><input id="n" asp-for="CardNumber" inputmode="numeric" required></div>
+            <button class="btn btn-block" style="margin-top:16px">Pay</button>
+            <p><a href="/myaccount">← Back</a></p>
+        </form>
     </div>
-</div></section>
+</section>

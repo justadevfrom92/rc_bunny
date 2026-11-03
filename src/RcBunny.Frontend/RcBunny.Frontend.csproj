@@ -5,49 +5,28 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>RcBunny.Frontend</RootNamespace>
-    <IslandsRoot>ClientIslands/</IslandsRoot>
   </PropertyGroup>
 
-  <!--
-    Two projects only: the Backend owns the EF Core model (entities + AppDbContext). The website compiles the same
-    source files in, so both always agree on the schema without a third shared library. Migrations and seeding stay
-    in the Backend (it creates/updates the database; the website only reads and writes rows).
-  -->
+  <!-- The database model lives in the Backend; the website compiles the same files so both always match. -->
   <ItemGroup>
     <Compile Include="../RcBunny.Backend/Data/*.cs" Link="Data/%(Filename)%(Extension)" />
-    <Compile Include="../RcBunny.Backend/Data/Entities/**/*.cs" Link="Data/Entities/%(RecursiveDir)%(Filename)%(Extension)" />
-    <!-- ebunny's config (shop products, CMS, My Account products…) as JSON, shared with the Backend -->
-    <None Include="../RcBunny.Backend/Data/Config/*.json" Link="Data/Config/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
+    <!-- Newer than the version SqlServer pulls in, which has a known vulnerability -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
 
-  <!-- React island sources: built by Vite into wwwroot/islands (npm run build in ClientIslands). -->
+  <!-- The React islands live in ClientIslands. The first build installs and builds them into wwwroot/js. -->
   <ItemGroup>
-    <Content Remove="$(IslandsRoot)**" />
-    <None Remove="$(IslandsRoot)**" />
-    <None Include="$(IslandsRoot)**" Exclude="$(IslandsRoot)node_modules/**" />
+    <Content Remove="ClientIslands/**" />
+    <None Remove="ClientIslands/**" />
   </ItemGroup>
-
-  <Target Name="BuildIslands" BeforeTargets="Build" Condition="!Exists('wwwroot/islands/.vite/manifest.json') And '$(SkipClientBuild)' != 'true'">
-    <Exec Command="npm install" WorkingDirectory="$(IslandsRoot)" Condition="!Exists('$(IslandsRoot)node_modules')" />
-    <Exec Command="npm run build" WorkingDirectory="$(IslandsRoot)" />
-  </Target>
-
-  <Target Name="PublishIslands" AfterTargets="ComputeFilesToPublish" Condition="'$(SkipClientBuild)' != 'true'">
-    <Exec Command="npm ci" WorkingDirectory="$(IslandsRoot)" />
-    <Exec Command="npm run build" WorkingDirectory="$(IslandsRoot)" />
-    <ItemGroup>
-      <IslandFiles Include="wwwroot/islands/**" />
-      <ResolvedFileToPublish Include="@(IslandFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-        <RelativePath>%(IslandFiles.Identity)</RelativePath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </ResolvedFileToPublish>
-    </ItemGroup>
+  <Target Name="BuildIslands" BeforeTargets="Build" Condition="!Exists('wwwroot/js/islands.js')">
+    <Exec Command="npm install" WorkingDirectory="ClientIslands" />
+    <Exec Command="npm run build" WorkingDirectory="ClientIslands" />
   </Target>
 
 </Project>

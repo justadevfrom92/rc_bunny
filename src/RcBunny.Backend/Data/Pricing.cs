@@ -1,13 +1,30 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace RcBunny.Data;
 
-/// <summary>Pricing math shared by the website and the admin.</summary>
+public record PlanPrice(Plan Plan, decimal EnergyCents, decimal PriceAt1000);
+
 public static class Pricing
 {
-    /// <summary>Average price in ¢/kWh at a usage level, the way the Electricity Facts Label shows it.</summary>
-    public static decimal AveragePrice(decimal energy, decimal tdspPerKwh, decimal tdspPerBill, decimal mrc, int kwh)
-        => energy + tdspPerKwh + (tdspPerBill + mrc) / kwh * 100m;
+    /// <summary>
+    /// The advertised price: cents per kWh at 1,000 kWh a month, including utility delivery charges and the plan's monthly fee.
+    /// </summary>
+    public static decimal PriceAt1000(decimal energyCents, Market market, Plan plan) =>
+        Math.Round(energyCents + market.DeliveryCentsPerKwh + (market.DeliveryPerMonth + plan.MonthlyFee) * 100 / 1000, 1);
 
-    public static string TermLabel(int term) => term == 1 ? "Month-to-Month" : $"{term} Months · Fixed";
+    /// <summary>Every active plan with today's rate in a market (plans without a rate there are left out).</summary>
+    public static async Task<List<PlanPrice>> PricesAsync(AppDbContext db, Market market)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var plans = await db.Plans.Where(p => p.Active).ToListAsync();
+        var rates = await db.Rates.Where(r => r.MarketId == market.Id && r.EffectiveOn <= today).ToListAsync();
+        return plans
+            .Select(p => (Plan: p, Rate: rates.Where(r => r.PlanId == p.Id).MaxBy(r => r.EffectiveOn)))
+            .Where(x => x.Rate != null)
+            .Select(x => new PlanPrice(x.Plan, x.Rate!.EnergyCents, PriceAt1000(x.Rate.EnergyCents, market, x.Plan)))
+            .OrderBy(x => x.Plan.TermMonths).ThenBy(x => x.PriceAt1000)
+            .ToList();
+    }
 
-    public static string EtfLabel(string etf) => etf.Any(char.IsDigit) ? etf.Split('/')[0] + " ETF" : "No ETF";
+    public static string TermLabel(int months) => months <= 1 ? "Month to month" : $"{months} months";
 }

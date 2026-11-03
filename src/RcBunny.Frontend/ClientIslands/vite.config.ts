@@ -1,17 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Builds the website's React islands into ../wwwroot/islands with a manifest; the Razor layout reads the manifest
-// to get the hashed file name (Services/IslandAssets). Hashed files are cached by browsers for a year.
-// Dev: `npm run dev` and set Website:IslandsDevServer = http://localhost:5174 to get hot reload inside Razor pages.
+// Builds every island into one file: ../wwwroot/js/islands.js. Pages that use an island add a <script> tag for it.
 export default defineConfig({
   plugins: [react()],
-  base: '/islands/',
-  server: { port: 5174, cors: true, origin: 'http://localhost:5174' },
   build: {
-    outDir: '../wwwroot/islands',
+    outDir: '../wwwroot/js',
     emptyOutDir: true,
-    manifest: true,
-    rollupOptions: { input: 'src/main.tsx' },
+    rollupOptions: {
+      input: 'src/islands.tsx',
+      output: { entryFileNames: 'islands.js' },
+    },
   },
 });
