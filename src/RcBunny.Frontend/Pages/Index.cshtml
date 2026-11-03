@@ -1,0 +1,148 @@
+@page
+@model IndexModel
+@inject Brand B
+@{
+    ViewData["Title"] = $"{B.Name} | Texas Electricity Plans & Rates";
+    ViewData["Description"] = $"Fixed-rate Texas electricity plans, Build Your Own Plan, and {B.Rewards} from {B.Name}.";
+}
+<section class="hero">
+    <div class="wrap">
+        <div>
+            <span class="eyebrow">Texas Electricity, Texas Proud</span>
+            <h1>Power that's <em>bigger</em> than Texas.</h1>
+            <p>Lock in a low fixed rate, build a plan that fits your home, and earn rewards just for keepin' the lights on. No gimmicks, y'all.</p>
+            <div style="display:flex;gap:14px;flex-wrap:wrap">
+                <a class="btn" href="/plans">Shop Plans</a>
+                <a class="btn btn-white" href="/build-your-own-plan">Build Your Own</a>
+            </div>
+            <ul class="hero-badges">
+                <li>Fixed rates up to 36 months</li>
+                <li>@B.Rewards</li>
+                <li>Local Texas support</li>
+            </ul>
+        </div>
+
+        @* Works as a plain GET form; the island adds zip checking and the Home/Business toggle. *@
+        <island name="ZipCheck" props="Model.ZipProps">
+            <form class="zip-card" action="/plans" method="get">
+                <h2>Find your plan</h2>
+                <p>Enter your zip code to see rates available at your address.</p>
+                <div class="field">
+                    <label for="zip">Service Zip Code</label>
+                    <input id="zip" name="zip" inputmode="numeric" maxlength="5" pattern="\d{5}" placeholder="e.g. 77001" autocomplete="postal-code">
+                </div>
+                <button class="btn btn-block" type="submit">View Plans</button>
+            </form>
+        </island>
+    </div>
+    <svg class="hero-wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70V30c240 40 480 40 720 20S1200 0 1440 30v40z" fill="#fff"/></svg>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="center">
+            <span class="eyebrow">Why @B.Name</span>
+            <h2>Electricity, done the Texas way</h2>
+            <p class="lead">We keep it simple: honest pricing, plans that fit how you live, and real people who pick up the phone.</p>
+        </div>
+        <div class="grid-3" style="margin-top:40px">
+            <div class="feature">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div>
+                <h3>Lock In Your Rate</h3>
+                <p>Fixed-rate plans from 12 to 36 months protect you from summer price spikes and surprise bills.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6L12 16.3 6.6 19.3l1.3-6L3.3 9.2l6.1-.6z"/></svg></div>
+                <h3>Earn @B.Rewards</h3>
+                <p>Every residential customer is automatically enrolled. Earn stars on every bill and redeem for gift cards.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
+                <h3>Save With Peak Perks</h3>
+                <p>Let your smart thermostat help the grid on peak days and earn bill credits — no sweat, no effort.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-sky">
+    <div class="wrap">
+        <div class="plans-head">
+            <div>
+                <span class="eyebrow">Featured Plans</span>
+                <h2>Our most popular plans</h2>
+            </div>
+            <a class="btn btn-outline" href="/plans">See All Plans</a>
+        </div>
+        <div class="plan-grid">
+            @foreach (var card in Model.Featured)
+            {
+                <partial name="_PlanCard" model="card" />
+            }
+        </div>
+        <p style="font-size:.8rem;color:#96999d;margin-top:24px">Average price per kWh shown at 1,000 kWh monthly usage, includes TDU delivery charges. See the Electricity Facts Label for full pricing details.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap split">
+        <div class="split-art" aria-hidden="true">
+            <svg viewBox="0 0 300 240" fill="none">
+                <rect x="40" y="40" width="220" height="160" rx="14" fill="#fff" opacity=".12"/>
+                <rect x="62" y="66" width="120" height="12" rx="6" fill="#fff"/>
+                <rect x="62" y="92" width="176" height="8" rx="4" fill="#fff" opacity=".5"/>
+                <rect x="62" y="122" width="176" height="8" rx="4" fill="#fff" opacity=".35"/>
+                <circle cx="140" cy="126" r="11" fill="#C80611"/>
+                <rect x="62" y="150" width="22" height="22" rx="5" fill="#00AEEF"/>
+                <rect x="94" y="155" width="90" height="10" rx="5" fill="#fff" opacity=".7"/>
+                <path d="M67 161l5 5 8-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M232 22l6 13 14 1-10 9 3 14-13-7-13 7 3-14-10-9 14-1z" fill="#FDBB30"/>
+            </svg>
+        </div>
+        <div>
+            <span class="eyebrow">Build Your Own Plan</span>
+            <h2>Your home, your rules, your plan.</h2>
+            <p>Pick your plan length, add AutoPay and Paperless to lower your rate, then stack on the perks that matter to you — like Peak Perks, smart thermostats, and home protection.</p>
+            <ul class="checks">
+                <li>Choose any term from 1 to 36 months</li>
+                <li>See your estimated rate update in real time</li>
+                <li>Add or skip extras — you're the boss</li>
+            </ul>
+            <a class="btn" href="/build-your-own-plan">Start Building</a>
+        </div>
+    </div>
+</section>
+
+<section class="section section-navy" id="rewards">
+    <div class="wrap split">
+        <div>
+            <div class="stars-row" aria-hidden="true">★ ★ ★ ★ ★</div>
+            <span class="eyebrow">@B.Rewards</span>
+            <h2>Get rewarded for keepin' the lights on</h2>
+            <p>Earn stars every time you pay your bill on time, refer a friend, or enroll in AutoPay and Paperless. Trade 'em in for e-gift cards from your favorite brands.</p>
+            <div class="stat-row">
+                <div class="stat"><strong>$0</strong><span>to join — automatic enrollment</span></div>
+                <div class="stat"><strong>E-Gift</strong><span>cards from top brands</span></div>
+                <div class="stat"><strong>Monthly</strong><span>drawings for big prizes</span></div>
+            </div>
+            <a class="btn" href="/plans">Join @B.Name</a>
+        </div>
+        <div class="split-art" style="background:linear-gradient(160deg,var(--cyan) 0%,var(--navy-deep) 100%)" aria-hidden="true">
+            <svg viewBox="0 0 300 240">
+                <rect x="60" y="50" width="180" height="120" rx="14" fill="#fff"/>
+                <rect x="60" y="50" width="180" height="36" rx="14" fill="#C80611"/>
+                <rect x="60" y="72" width="180" height="14" fill="#C80611"/>
+                <text x="150" y="74" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="14" fill="#fff">REWARDS</text>
+                <text x="150" y="130" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="34" fill="#102247">2,450</text>
+                <text x="150" y="152" text-anchor="middle" font-family="Raleway, sans-serif" font-weight="700" font-size="12" fill="#96999d">STARS EARNED</text>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<section class="cta-band">
+    <div class="wrap">
+        <h2>Ready to switch, pardner?</h2>
+        <a class="btn" href="/plans">Find My Plan</a>
+    </div>
+</section>

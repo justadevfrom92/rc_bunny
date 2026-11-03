@@ -1,0 +1,28 @@
+@model PlanCardModel
+@{
+    var p = Model.Plan;
+    var detailUrl = $"/plans/{p.Slug}" + (Model.Zip is { } z ? $"?zip={Uri.EscapeDataString(z)}" : "");
+}
+<article class="plan@(Model.Featured ? " featured" : "")" data-term="@p.Term" data-tags="@string.Join(' ', p.Tags)">
+    @if (Model.Featured)
+    {
+        <span class="plan-flag">Popular Pick</span>
+    }
+    <div class="plan-top">
+        <span class="plan-term">@Pricing.TermLabel(p.Term)</span>
+        <h3><a class="plan-name" href="@detailUrl">@p.Name</a></h3>
+        <div class="plan-rate"><strong>@(Model.Price is { } price ? price.ToString("0.0") + "¢" : "—")</strong><span>per kWh</span></div>
+        <p class="plan-rate-note">Avg. price at 1,000 kWh · @Pricing.EtfLabel(p.Etf)</p>
+    </div>
+    <div class="plan-body">
+        <ul class="checks">
+            @foreach (var perk in p.Perks)
+            {
+                <li>@perk</li>
+            }
+        </ul>
+        <a class="btn btn-block" href="/contact-us?plan=@Uri.EscapeDataString(p.Internal)">Sign Up</a>
+        <a class="btn btn-outline btn-block plan-details" href="@detailUrl">Plan Details</a>
+        <div class="plan-links"><a href="#">Electricity Facts Label</a><a href="#">Terms of Service</a><a href="#">YRAC</a></div>
+    </div>
+</article>

@@ -1,0 +1,55 @@
+@page "/myaccount/bills"
+@model RcBunny.Frontend.Pages.MyAccount.BillsModel
+@inject Brand B
+@{
+    ViewData["Title"] = $"Bills & Payments | My Account | {B.Name}";
+}
+<section class="section section-sky">
+    <div class="wrap">
+        <partial name="_Frame" model="Model" />
+        <div class="ma-grid">
+            <div class="byop-panel">
+                <h2>Bills</h2>
+                @if (Model.Bills.Count == 0)
+                {
+                    <p>No bills yet.</p>
+                }
+                else
+                {
+                    <div class="table-scroll">
+                        <table class="price-table">
+                            <thead><tr><th>Billed</th><th>Invoice</th><th>kWh</th><th>Amount</th><th>Due</th></tr></thead>
+                            <tbody>
+                                @foreach (var b in Model.Bills)
+                                {
+                                    <tr><td>@b.BilledOn.ToString("MMM d, yyyy")</td><td>@b.Invoice</td><td>@b.Kwh.ToString("N0")</td><td>@b.Amount.ToString("C")</td><td>@b.DueOn?.ToString("MMM d")</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+            <div class="byop-panel">
+                <h2>Payments</h2>
+                @if (Model.Payments.Count == 0)
+                {
+                    <p>No payments yet.</p>
+                }
+                else
+                {
+                    <div class="table-scroll">
+                        <table class="price-table">
+                            <thead><tr><th>Date</th><th>Method</th><th>Amount</th><th>Status</th></tr></thead>
+                            <tbody>
+                                @foreach (var p in Model.Payments)
+                                {
+                                    <tr><td>@p.PaidOn.ToString("MMM d, yyyy")</td><td>@p.Method</td><td>@p.Amount.ToString("C")</td><td>@p.Status</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

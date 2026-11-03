@@ -1,0 +1,362 @@
+[
+ {
+  "term": 1,
+  "Generic": -0.5,
+  "CENTRAL": -0.5,
+  "NORTH": -0.5,
+  "CENTERPOINT": -0.5,
+  "ONCOR": -0.5,
+  "TNMP": -0.5,
+  "etf": 0
+ },
+ {
+  "term": 2,
+  "Generic": 0.07,
+  "CENTRAL": 0.07,
+  "NORTH": 0.07,
+  "CENTERPOINT": 0.12,
+  "ONCOR": 0.07,
+  "TNMP": -0.08,
+  "etf": 100
+ },
+ {
+  "term": 3,
+  "Generic": 0.1,
+  "CENTRAL": 0.1,
+  "NORTH": 0.1,
+  "CENTERPOINT": 0.15,
+  "ONCOR": 0.1,
+  "TNMP": -0.05,
+  "etf": 100
+ },
+ {
+  "term": 4,
+  "Generic": 0.13,
+  "CENTRAL": 0.13,
+  "NORTH": 0.13,
+  "CENTERPOINT": 0.18,
+  "ONCOR": 0.13,
+  "TNMP": -0.02,
+  "etf": 175
+ },
+ {
+  "term": 5,
+  "Generic": 0.17,
+  "CENTRAL": 0.17,
+  "NORTH": 0.17,
+  "CENTERPOINT": 0.22,
+  "ONCOR": 0.17,
+  "TNMP": 0.02,
+  "etf": 175
+ },
+ {
+  "term": 6,
+  "Generic": 0.2,
+  "CENTRAL": 0.2,
+  "NORTH": 0.2,
+  "CENTERPOINT": 0.25,
+  "ONCOR": 0.2,
+  "TNMP": 0.05,
+  "etf": 175
+ },
+ {
+  "term": 7,
+  "Generic": 0.23,
+  "CENTRAL": 0.23,
+  "NORTH": 0.23,
+  "CENTERPOINT": 0.28,
+  "ONCOR": 0.23,
+  "TNMP": 0.08,
+  "etf": 250
+ },
+ {
+  "term": 8,
+  "Generic": 0.27,
+  "CENTRAL": 0.27,
+  "NORTH": 0.27,
+  "CENTERPOINT": 0.32,
+  "ONCOR": 0.27,
+  "TNMP": 0.12,
+  "etf": 250
+ },
+ {
+  "term": 9,
+  "Generic": 0.3,
+  "CENTRAL": 0.3,
+  "NORTH": 0.3,
+  "CENTERPOINT": 0.35,
+  "ONCOR": 0.3,
+  "TNMP": 0.15,
+  "etf": 250
+ },
+ {
+  "term": 10,
+  "Generic": 0.33,
+  "CENTRAL": 0.33,
+  "NORTH": 0.33,
+  "CENTERPOINT": 0.38,
+  "ONCOR": 0.33,
+  "TNMP": 0.18,
+  "etf": 250
+ },
+ {
+  "term": 11,
+  "Generic": 0.37,
+  "CENTRAL": 0.37,
+  "NORTH": 0.37,
+  "CENTERPOINT": 0.42,
+  "ONCOR": 0.37,
+  "TNMP": 0.22,
+  "etf": 250
+ },
+ {
+  "term": 12,
+  "Generic": 0.4,
+  "CENTRAL": 0.4,
+  "NORTH": 0.4,
+  "CENTERPOINT": 0.45,
+  "ONCOR": 0.4,
+  "TNMP": 0.25,
+  "etf": 250
+ },
+ {
+  "term": 13,
+  "Generic": 0.43,
+  "CENTRAL": 0.43,
+  "NORTH": 0.43,
+  "CENTERPOINT": 0.48,
+  "ONCOR": 0.43,
+  "TNMP": 0.28,
+  "etf": 275
+ },
+ {
+  "term": 14,
+  "Generic": 0.47,
+  "CENTRAL": 0.47,
+  "NORTH": 0.47,
+  "CENTERPOINT": 0.52,
+  "ONCOR": 0.47,
+  "TNMP": 0.32,
+  "etf": 275
+ },
+ {
+  "term": 15,
+  "Generic": 0.5,
+  "CENTRAL": 0.5,
+  "NORTH": 0.5,
+  "CENTERPOINT": 0.55,
+  "ONCOR": 0.5,
+  "TNMP": 0.35,
+  "etf": 275
+ },
+ {
+  "term": 16,
+  "Generic": 0.53,
+  "CENTRAL": 0.53,
+  "NORTH": 0.53,
+  "CENTERPOINT": 0.58,
+  "ONCOR": 0.53,
+  "TNMP": 0.38,
+  "etf": 275
+ },
+ {
+  "term": 17,
+  "Generic": 0.57,
+  "CENTRAL": 0.57,
+  "NORTH": 0.57,
+  "CENTERPOINT": 0.62,
+  "ONCOR": 0.57,
+  "TNMP": 0.42,
+  "etf": 275
+ },
+ {
+  "term": 18,
+  "Generic": 0.6,
+  "CENTRAL": 0.6,
+  "NORTH": 0.6,
+  "CENTERPOINT": 0.65,
+  "ONCOR": 0.6,
+  "TNMP": 0.45,
+  "etf": 275
+ },
+ {
+  "term": 19,
+  "Generic": 0.63,
+  "CENTRAL": 0.63,
+  "NORTH": 0.63,
+  "CENTERPOINT": 0.68,
+  "ONCOR": 0.63,
+  "TNMP": 0.48,
+  "etf": 400
+ },
+ {
+  "term": 20,
+  "Generic": 0.67,
+  "CENTRAL": 0.67,
+  "NORTH": 0.67,
+  "CENTERPOINT": 0.72,
+  "ONCOR": 0.67,
+  "TNMP": 0.52,
+  "etf": 400
+ },
+ {
+  "term": 21,
+  "Generic": 0.7,
+  "CENTRAL": 0.7,
+  "NORTH": 0.7,
+  "CENTERPOINT": 0.75,
+  "ONCOR": 0.7,
+  "TNMP": 0.55,
+  "etf": 400
+ },
+ {
+  "term": 22,
+  "Generic": 0.73,
+  "CENTRAL": 0.73,
+  "NORTH": 0.73,
+  "CENTERPOINT": 0.78,
+  "ONCOR": 0.73,
+  "TNMP": 0.58,
+  "etf": 400
+ },
+ {
+  "term": 23,
+  "Generic": 0.77,
+  "CENTRAL": 0.77,
+  "NORTH": 0.77,
+  "CENTERPOINT": 0.82,
+  "ONCOR": 0.77,
+  "TNMP": 0.62,
+  "etf": 400
+ },
+ {
+  "term": 24,
+  "Generic": 0.8,
+  "CENTRAL": 0.8,
+  "NORTH": 0.8,
+  "CENTERPOINT": 0.85,
+  "ONCOR": 0.8,
+  "TNMP": 0.65,
+  "etf": 400
+ },
+ {
+  "term": 25,
+  "Generic": 0.83,
+  "CENTRAL": 0.83,
+  "NORTH": 0.83,
+  "CENTERPOINT": 0.88,
+  "ONCOR": 0.83,
+  "TNMP": 0.68,
+  "etf": 500
+ },
+ {
+  "term": 26,
+  "Generic": 0.87,
+  "CENTRAL": 0.87,
+  "NORTH": 0.87,
+  "CENTERPOINT": 0.92,
+  "ONCOR": 0.87,
+  "TNMP": 0.72,
+  "etf": 500
+ },
+ {
+  "term": 27,
+  "Generic": 0.9,
+  "CENTRAL": 0.9,
+  "NORTH": 0.9,
+  "CENTERPOINT": 0.95,
+  "ONCOR": 0.9,
+  "TNMP": 0.75,
+  "etf": 500
+ },
+ {
+  "term": 28,
+  "Generic": 0.93,
+  "CENTRAL": 0.93,
+  "NORTH": 0.93,
+  "CENTERPOINT": 0.98,
+  "ONCOR": 0.93,
+  "TNMP": 0.78,
+  "etf": 500
+ },
+ {
+  "term": 29,
+  "Generic": 0.97,
+  "CENTRAL": 0.97,
+  "NORTH": 0.97,
+  "CENTERPOINT": 1.02,
+  "ONCOR": 0.97,
+  "TNMP": 0.82,
+  "etf": 500
+ },
+ {
+  "term": 30,
+  "Generic": 1,
+  "CENTRAL": 1,
+  "NORTH": 1,
+  "CENTERPOINT": 1.05,
+  "ONCOR": 1,
+  "TNMP": 0.85,
+  "etf": 500
+ },
+ {
+  "term": 31,
+  "Generic": 1.03,
+  "CENTRAL": 1.03,
+  "NORTH": 1.03,
+  "CENTERPOINT": 1.08,
+  "ONCOR": 1.03,
+  "TNMP": 0.88,
+  "etf": 500
+ },
+ {
+  "term": 32,
+  "Generic": 1.07,
+  "CENTRAL": 1.07,
+  "NORTH": 1.07,
+  "CENTERPOINT": 1.12,
+  "ONCOR": 1.07,
+  "TNMP": 0.92,
+  "etf": 500
+ },
+ {
+  "term": 33,
+  "Generic": 1.1,
+  "CENTRAL": 1.1,
+  "NORTH": 1.1,
+  "CENTERPOINT": 1.15,
+  "ONCOR": 1.1,
+  "TNMP": 0.95,
+  "etf": 500
+ },
+ {
+  "term": 34,
+  "Generic": 1.13,
+  "CENTRAL": 1.13,
+  "NORTH": 1.13,
+  "CENTERPOINT": 1.18,
+  "ONCOR": 1.13,
+  "TNMP": 0.98,
+  "etf": 500
+ },
+ {
+  "term": 35,
+  "Generic": 1.17,
+  "CENTRAL": 1.17,
+  "NORTH": 1.17,
+  "CENTERPOINT": 1.22,
+  "ONCOR": 1.17,
+  "TNMP": 1.02,
+  "etf": 500
+ },
+ {
+  "term": 36,
+  "Generic": 1.2,
+  "CENTRAL": 1.2,
+  "NORTH": 1.2,
+  "CENTERPOINT": 1.25,
+  "ONCOR": 1.2,
+  "TNMP": 1.05,
+  "etf": 500
+ }
+]

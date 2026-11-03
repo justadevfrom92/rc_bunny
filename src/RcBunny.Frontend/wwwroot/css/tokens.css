@@ -1,0 +1,40 @@
+/*
+  Brand tokens shared by the website and every admin app.
+  Change a color or font here and it changes everywhere.
+  Every color and variable is listed in the admin at Lando → Style Guide.
+*/
+
+:root {
+  --navy: #102247;
+  --navy-deep: #0a1730;
+  --navy-2: #1a2f5c;
+  --cyan: #00AEEF;
+  --cyan-light: #5dd3ff;
+  --red: #C80611;
+  --red-dark: #9e050d;
+  --orange: #EF8A00;
+  --gold: #FDBB30;
+  --sky: #EDF4F7;
+  --sky-2: #D6EFF9;
+  --line: #D5D9DA;
+  --grey: #96999d;
+  --ink: #262626;
+  --white: #FFFFFF;
+  --slate: #4d5566;        /* secondary text on white */
+  --navy-mid: #17336b;     /* banner gradients */
+  --navy-glow: #0f4c80;
+
+  /* Status colors (alerts, pills, messages) */
+  --ok: #137a3a;
+  --ok-bg: #e3f5ea;
+  --warn: #8a5a00;
+  --warn-bg: #fff3d6;
+  --bad: #a3050e;
+  --bad-bg: #fde7e8;
+  --info: #00739e;
+  --info-bg: #e0f5fd;
+
+  --font-display: 'Montserrat', 'Trebuchet MS', sans-serif;
+  --font-body: 'Raleway', 'Segoe UI', sans-serif;
+  --font-app: 'Varela Round', 'Trebuchet MS', sans-serif;
+}

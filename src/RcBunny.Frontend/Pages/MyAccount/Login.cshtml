@@ -1,0 +1,30 @@
+@page "/myaccount/login"
+@model RcBunny.Frontend.Pages.MyAccount.LoginModel
+@inject Brand B
+@{
+    ViewData["Title"] = $"Sign In | My Account | {B.Name}";
+}
+<section class="section section-sky">
+    <div class="wrap" style="max-width:480px">
+        <form method="post" class="byop-panel">
+            <h1 style="font-size:1.6rem">Sign in to My Account</h1>
+            @if (Model.Error is { } err)
+            {
+                <div class="form-msg error" role="alert">@err</div>
+            }
+            <div class="field">
+                <label for="username">Username or email</label>
+                <input id="username" name="Username" value="@Model.Username" autocomplete="username" required autofocus>
+            </div>
+            <div class="field" style="margin-top:16px">
+                <label for="password">Password</label>
+                <input id="password" name="Password" type="password" autocomplete="current-password" required>
+            </div>
+            <button class="btn btn-block" type="submit" style="margin-top:20px">Sign In</button>
+            @if (Model.TestLogin)
+            {
+                <p class="ma-note">Development sample: <code>demo.customer</code> / <code>password</code></p>
+            }
+        </form>
+    </div>
+</section>

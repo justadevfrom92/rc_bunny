@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>RcBunny.Frontend</RootNamespace>
+    <IslandsRoot>ClientIslands/</IslandsRoot>
+  </PropertyGroup>
+
+  <!--
+    Two projects only: the Backend owns the EF Core model (entities + AppDbContext). The website compiles the same
+    source files in, so both always agree on the schema without a third shared library. Migrations and seeding stay
+    in the Backend (it creates/updates the database; the website only reads and writes rows).
+  -->
+  <ItemGroup>
+    <Compile Include="../RcBunny.Backend/Data/*.cs" Link="Data/%(Filename)%(Extension)" />
+    <Compile Include="../RcBunny.Backend/Data/Entities/**/*.cs" Link="Data/Entities/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
+  </ItemGroup>
+
+  <!-- React island sources: built by Vite into wwwroot/islands (npm run build in ClientIslands). -->
+  <ItemGroup>
+    <Content Remove="$(IslandsRoot)**" />
+    <None Remove="$(IslandsRoot)**" />
+    <None Include="$(IslandsRoot)**" Exclude="$(IslandsRoot)node_modules/**" />
+  </ItemGroup>
+
+  <Target Name="BuildIslands" BeforeTargets="Build" Condition="!Exists('wwwroot/islands/.vite/manifest.json') And '$(SkipClientBuild)' != 'true'">
+    <Exec Command="npm install" WorkingDirectory="$(IslandsRoot)" Condition="!Exists('$(IslandsRoot)node_modules')" />
+    <Exec Command="npm run build" WorkingDirectory="$(IslandsRoot)" />
+  </Target>
+
+  <Target Name="PublishIslands" AfterTargets="ComputeFilesToPublish" Condition="'$(SkipClientBuild)' != 'true'">
+    <Exec Command="npm ci" WorkingDirectory="$(IslandsRoot)" />
+    <Exec Command="npm run build" WorkingDirectory="$(IslandsRoot)" />
+    <ItemGroup>
+      <IslandFiles Include="wwwroot/islands/**" />
+      <ResolvedFileToPublish Include="@(IslandFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(IslandFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

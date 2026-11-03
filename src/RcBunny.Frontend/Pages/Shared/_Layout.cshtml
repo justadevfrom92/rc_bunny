@@ -1,0 +1,97 @@
+@inject Brand B
+@inject IslandAssets Islands
+@{
+    var path = Context.Request.Path.Value ?? "/";
+    bool Active(string href) => href == "/" ? path is "/" or "/index.html" : path.StartsWith(href);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    @if (ViewData["Description"] is string description)
+    {
+        <meta name="description" content="@description">
+    }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Raleway:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+    <link rel="stylesheet" href="~/css/tokens.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/rcbunny.css" asp-append-version="true">
+    @foreach (var css in Islands.Css)
+    {
+        <link rel="stylesheet" href="@css">
+    }
+    <link rel="icon" href="~/favicon.ico">
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap">
+            <a class="logo" href="/" aria-label="@B.Name home">
+                <img class="logo-mark" src="~/img/logo-mark.svg" asp-append-version="true" alt="" width="44" height="44">
+                <span class="logo-text"><strong>@B.Wordmark</strong><span>@B.Tagline</span></span>
+            </a>
+            <div class="nav-panel" id="main-nav">
+                <nav class="nav" aria-label="Main">
+                    @foreach (var (href, label) in Brand.Nav)
+                    {
+                        <a href="@href" class="@(Active(href) ? "active" : null)">@label</a>
+                    }
+                </nav>
+                <div class="nav-actions"><a class="btn" href="/myaccount">My Account</a></div>
+            </div>
+            <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav" data-menu-toggle><span></span></button>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <div class="footer-cols">
+                <div>
+                    <a class="logo" href="/">
+                        <img class="logo-mark" src="~/img/logo-mark-on-dark.svg" asp-append-version="true" alt="" width="44" height="44">
+                        <span class="logo-text"><strong>@B.Wordmark</strong><span>@B.Tagline</span></span>
+                    </a>
+                    <p style="margin-top:18px">Texas-sized service, honest electricity plans and rewards just for keepin' the lights on.</p>
+                    <p class="footer-phone">Call us: <a href="@B.PhoneHref">@B.Phone</a></p>
+                </div>
+                <div><h4>Electricity</h4><ul>
+                    <li><a href="/plans">Residential Plans</a></li>
+                    <li><a href="/build-your-own-plan">Build Your Own Plan</a></li>
+                    <li><a href="/business">Business Plans</a></li>
+                    <li><a href="/plans#faq">Electricity Facts Labels</a></li>
+                </ul></div>
+                <div><h4>Perks</h4><ul>
+                    <li><a href="/#rewards">@B.Rewards</a></li>
+                    <li><a href="/myaccount">My Account</a></li>
+                </ul></div>
+                <div><h4>Company</h4><ul>
+                    <li><a href="/contact-us">Contact Us</a></li>
+                </ul></div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; @DateTime.Now.Year @B.Name. All rights reserved. PUCT Cert. No. @B.Puct</span>
+                <nav><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Your Rights as a Customer</a><a class="admin-btn" href="@B.AdminUrl" rel="nofollow">Admin</a></nav>
+            </div>
+        </div>
+    </footer>
+
+    @* One small module script, deferred by nature: the page is already complete without it. *@
+    @if (Islands.DevServer is { } dev)
+    {
+        <script type="module" src="@dev/@@vite/client"></script>
+        <script type="module" src="@dev/src/main.tsx"></script>
+    }
+    else if (Islands.Script is { } script)
+    {
+        <script type="module" src="@script"></script>
+    }
+</body>
+</html>

@@ -1,0 +1,17 @@
+@model RcBunny.Frontend.Pages.MyAccount.MyAccountPage
+@{
+    var path = Context.Request.Path.Value ?? "";
+    string On(string href) => path.TrimEnd('/') == href ? "on" : "";
+}
+<div class="ma-head">
+    <div>
+        <span class="eyebrow">My Account</span>
+        <h1>Howdy, @(Model.Customer.FirstName ?? Model.Customer.Name)</h1>
+        <p>Account <strong>@Model.Customer.Account</strong> · @Model.Customer.Address, @Model.Customer.City</p>
+    </div>
+    <form method="post" asp-page="/MyAccount/Logout"><button class="btn btn-outline" type="submit">Sign out</button></form>
+</div>
+<nav class="ma-nav" aria-label="My Account">
+    <a class="@On("/myaccount")" href="/myaccount">Dashboard</a>
+    <a class="@On("/myaccount/bills")" href="/myaccount/bills">Bills &amp; Payments</a>
+</nav>

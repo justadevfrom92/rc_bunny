@@ -1,0 +1,37 @@
+/* Additions for the C# site on top of ebunny's site.css: My Account, price tables, link-chips. */
+a.chip { display: inline-block; text-decoration: none; }
+.zip-note { margin: 8px 0 0; color: var(--slate); font-size: .9rem; }
+
+.table-scroll { overflow-x: auto; }
+.price-table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.price-table th { text-align: left; font: 700 .75rem var(--font-display); text-transform: uppercase; letter-spacing: .05em; color: var(--grey); padding: 8px 10px; border-bottom: 2px solid var(--line); }
+.price-table td { padding: 10px; border-bottom: 1px solid var(--line); }
+.price-table tr.here td { background: var(--sky); font-weight: 700; }
+
+/* My Account */
+.ma-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.ma-head h1 { font-size: 2rem; margin: 4px 0; }
+.ma-nav { display: flex; gap: 6px; margin: 20px 0; flex-wrap: wrap; }
+.ma-nav a { padding: 8px 16px; border-radius: 999px; background: var(--white); color: var(--navy); font-weight: 700; text-decoration: none; border: 1px solid var(--line); }
+.ma-nav a.on { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.ma-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.ma-card { background: var(--white); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.ma-card h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--grey); margin: 0 0 6px; }
+.ma-card strong { display: block; color: var(--navy); font-size: 1.1rem; }
+.ma-card strong.big { font: 900 2rem var(--font-display); }
+.ma-card p { margin: 6px 0 0; color: var(--slate); font-size: .9rem; }
+.ma-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; }
+.ma-note { margin-top: 14px; font-size: .85rem; color: var(--slate); }
+
+/* Usage chart island */
+.usage { display: flex; align-items: flex-end; gap: 6px; height: 220px; padding-top: 24px; }
+.usage-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; min-width: 0; }
+.usage-bar span.fill { width: 100%; max-width: 46px; background: var(--cyan); border-radius: 6px 6px 0 0; transition: height .3s; }
+.usage-bar:hover span.fill, .usage-bar:focus-visible span.fill { background: var(--navy); }
+.usage-bar small { margin-top: 6px; font-size: .7rem; color: var(--grey); white-space: nowrap; }
+.usage-tip { position: absolute; bottom: calc(100% + 4px); background: var(--navy); color: var(--white); font-size: .75rem; padding: 4px 8px; border-radius: 6px; white-space: nowrap; pointer-events: none; }
+
+@media (max-width: 640px) {
+  .ma-grid { grid-template-columns: 1fr; }
+  .usage-bar small { display: none; }
+}

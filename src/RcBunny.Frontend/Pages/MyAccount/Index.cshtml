@@ -1,0 +1,54 @@
+@page "/myaccount"
+@model RcBunny.Frontend.Pages.MyAccount.DashboardModel
+@inject Brand B
+@{
+    ViewData["Title"] = $"My Account | {B.Name}";
+    var c = Model.Customer;
+}
+<section class="section section-sky">
+    <div class="wrap">
+        <partial name="_Frame" model="Model" />
+        <div class="ma-cards">
+            <div class="ma-card">
+                <h3>Amount due</h3>
+                <strong class="big">@c.Balance.ToString("C")</strong>
+                <p>Due @(c.DueDate?.ToString("MMM d, yyyy") ?? "—")@(c.Autopay ? " · AutoPay is on" : "")</p>
+            </div>
+            <div class="ma-card">
+                <h3>Your plan</h3>
+                <strong>@(c.Plan?.Name ?? "—")</strong>
+                <p>@(c.Plan is { } p ? Pricing.TermLabel(p.Term) : "") · @c.Market?.Description</p>
+            </div>
+            <div class="ma-card">
+                <h3>@B.Rewards</h3>
+                <strong class="big">@c.Stars.ToString("N0")</strong>
+                <p>stars to spend</p>
+            </div>
+            <div class="ma-card">
+                <h3>Last payment</h3>
+                <strong>@(Model.LastPayment?.Amount.ToString("C") ?? "—")</strong>
+                <p>@Model.LastPayment?.PaidOn.ToString("MMM d, yyyy") @Model.LastPayment?.Method</p>
+            </div>
+        </div>
+
+        <div class="byop-panel" style="margin-top:24px">
+            <h2>Your usage</h2>
+            @* Server-rendered table (readable without JS); the UsageChart island draws it as bars with hover details. *@
+            <island name="UsageChart" props="Model.UsageProps">
+                <table class="price-table">
+                    <thead><tr><th>Month</th><th>kWh</th><th>Bill</th></tr></thead>
+                    <tbody>
+                        @foreach (var b in Model.Bills.OrderBy(b => b.BilledOn))
+                        {
+                            <tr><td>@b.BilledOn.AddMonths(-1).ToString("MMM yy")</td><td>@b.Kwh.ToString("N0")</td><td>@b.Amount.ToString("C")</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </island>
+            @if (Model.Bills.Count == 0)
+            {
+                <p>Your first bill will show here.</p>
+            }
+        </div>
+    </div>
+</section>

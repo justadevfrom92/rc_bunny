@@ -1,0 +1,145 @@
+[
+ {
+  "id": 1,
+  "key": "autopay",
+  "name": "AutoPay",
+  "model": "ItemProductAutopay_model",
+  "type": "Discount",
+  "adj": -0.3,
+  "monthly": 0,
+  "step": "Get Started",
+  "active": true
+ },
+ {
+  "id": 2,
+  "key": "paperless",
+  "name": "Paperless Billing",
+  "model": "ItemProductPaperless_model",
+  "type": "Discount",
+  "adj": -0.2,
+  "monthly": 0,
+  "step": "Get Started",
+  "active": true
+ },
+ {
+  "id": 3,
+  "key": "rewards",
+  "name": "Rangler Rewards",
+  "model": "ItemProductReward_model",
+  "type": "Included",
+  "adj": 0,
+  "monthly": 0,
+  "step": "Lower Your Bill",
+  "active": true
+ },
+ {
+  "id": 4,
+  "key": "peakperks",
+  "name": "Peak Perks",
+  "model": "ItemProductPeakPerk_model",
+  "type": "Discount",
+  "adj": -0.4,
+  "monthly": 0,
+  "step": "Lower Your Bill",
+  "active": true
+ },
+ {
+  "id": 5,
+  "key": "giddyup",
+  "name": "Giddy Up Due Date",
+  "model": "ItemProductGiddyup_model",
+  "type": "Free",
+  "adj": 0,
+  "monthly": 0,
+  "step": "Lower Your Bill",
+  "active": true
+ },
+ {
+  "id": 6,
+  "key": "thermostat",
+  "name": "ecobee Smart Thermostat",
+  "model": "ItemProductThermostat_model",
+  "type": "Monthly",
+  "adj": 0,
+  "monthly": 5.99,
+  "step": "Using Less",
+  "active": true
+ },
+ {
+  "id": 7,
+  "key": "solar",
+  "name": "Solar Buy-Back",
+  "model": "ItemProductSolar_model",
+  "type": "Free",
+  "adj": 0,
+  "monthly": 0,
+  "step": "Using Less",
+  "active": true
+ },
+ {
+  "id": 8,
+  "key": "green",
+  "name": "100% Renewable",
+  "model": "ItemProductGreen_model",
+  "type": "Premium",
+  "adj": 0.3,
+  "monthly": 0,
+  "step": "Using Less",
+  "active": true
+ },
+ {
+  "id": 9,
+  "key": "refer",
+  "name": "Refer a Friend",
+  "model": "ItemProductReferral_model",
+  "type": "Discount",
+  "adj": -0.2,
+  "monthly": 0,
+  "step": "Save More",
+  "active": true
+ },
+ {
+  "id": 10,
+  "key": "billpredictor",
+  "name": "Bill Predictor Alerts",
+  "model": "ItemProductBillPredictor_model",
+  "type": "Free",
+  "adj": 0,
+  "monthly": 0,
+  "step": "Save More",
+  "active": true
+ },
+ {
+  "id": 11,
+  "key": "acwarranty",
+  "name": "A/C Warranty",
+  "model": "ItemProductWarrantyAc_model",
+  "type": "Monthly",
+  "adj": 0,
+  "monthly": 14.99,
+  "step": "Protectin'",
+  "active": true
+ },
+ {
+  "id": 12,
+  "key": "linewarranty",
+  "name": "Line Warranty",
+  "model": "ItemProductWarrantyLine_model",
+  "type": "Monthly",
+  "adj": 0,
+  "monthly": 5.99,
+  "step": "Protectin'",
+  "active": true
+ },
+ {
+  "id": 13,
+  "key": "evwarranty",
+  "name": "EV Charger Warranty",
+  "model": "ItemProductWarrantyCharger_model",
+  "type": "Monthly",
+  "adj": 0,
+  "monthly": 7.99,
+  "step": "Protectin'",
+  "active": true
+ }
+]

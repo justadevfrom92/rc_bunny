@@ -1,0 +1,902 @@
+[
+ {
+  "plan": "MCV",
+  "market": "TX-E-ONCOR",
+  "energy": 11.2,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MCV",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.35,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MCV",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.55,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MCV",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.5,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MCV",
+  "market": "TX-E-TNMP",
+  "energy": 11.7,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBM",
+  "market": "TX-E-ONCOR",
+  "energy": 11.27,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBM",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.42,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBM",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBM",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.57,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBM",
+  "market": "TX-E-TNMP",
+  "energy": 11.77,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBV",
+  "market": "TX-E-ONCOR",
+  "energy": 11.27,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBV",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.42,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBV",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBV",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.57,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCBV",
+  "market": "TX-E-TNMP",
+  "energy": 11.77,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H12",
+  "market": "TX-E-ONCOR",
+  "energy": 10.18,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H12",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.33,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H12",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.53,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H12",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.48,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H12",
+  "market": "TX-E-TNMP",
+  "energy": 10.68,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "IDX12",
+  "market": "TX-E-ONCOR",
+  "energy": 10.32,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "IDX12",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.47,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "IDX12",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.67,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "IDX12",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "IDX12",
+  "market": "TX-E-TNMP",
+  "energy": 10.82,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB12",
+  "market": "TX-E-ONCOR",
+  "energy": 10.32,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB12",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.47,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB12",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.67,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB12",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB12",
+  "market": "TX-E-TNMP",
+  "energy": 10.82,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H24",
+  "market": "TX-E-ONCOR",
+  "energy": 9.76,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H24",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.91,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H24",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.11,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H24",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.06,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "H24",
+  "market": "TX-E-TNMP",
+  "energy": 10.26,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB24",
+  "market": "TX-E-ONCOR",
+  "energy": 9.9,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB24",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.05,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB24",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.25,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB24",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.2,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB24",
+  "market": "TX-E-TNMP",
+  "energy": 10.4,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "Epicenter",
+  "market": "TX-E-ONCOR",
+  "energy": 9.34,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "Epicenter",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.49,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "Epicenter",
+  "market": "TX-E-AEPNORTH",
+  "energy": 9.69,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "Epicenter",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 9.64,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "Epicenter",
+  "market": "TX-E-TNMP",
+  "energy": 9.84,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB36",
+  "market": "TX-E-ONCOR",
+  "energy": 9.48,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB36",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.63,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB36",
+  "market": "TX-E-AEPNORTH",
+  "energy": 9.83,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB36",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 9.78,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "TCB36",
+  "market": "TX-E-TNMP",
+  "energy": 9.98,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CDMV1",
+  "market": "TX-E-ONCOR",
+  "energy": 11.34,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CDMV1",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.49,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CDMV1",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.69,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CDMV1",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.64,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CDMV1",
+  "market": "TX-E-TNMP",
+  "energy": 11.84,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM",
+  "market": "TX-E-ONCOR",
+  "energy": 11.2,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.35,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.55,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.5,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM",
+  "market": "TX-E-TNMP",
+  "energy": 11.7,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM2",
+  "market": "TX-E-ONCOR",
+  "energy": 11.27,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM2",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.42,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM2",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM2",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.57,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ETM2",
+  "market": "TX-E-TNMP",
+  "energy": 11.77,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY",
+  "market": "TX-E-ONCOR",
+  "energy": 11.2,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.35,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.55,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.5,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY",
+  "market": "TX-E-TNMP",
+  "energy": 11.7,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY2",
+  "market": "TX-E-ONCOR",
+  "energy": 11.27,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY2",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.42,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY2",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY2",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.57,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY2",
+  "market": "TX-E-TNMP",
+  "energy": 11.77,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY3",
+  "market": "TX-E-ONCOR",
+  "energy": 11.27,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY3",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.42,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY3",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY3",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.57,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "JEY3",
+  "market": "TX-E-TNMP",
+  "energy": 11.77,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MME1",
+  "market": "TX-E-ONCOR",
+  "energy": 11.27,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MME1",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 11.42,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MME1",
+  "market": "TX-E-AEPNORTH",
+  "energy": 11.62,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MME1",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 11.57,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "MME1",
+  "market": "TX-E-TNMP",
+  "energy": 11.77,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BYOP",
+  "market": "TX-E-ONCOR",
+  "energy": 10.25,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BYOP",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.4,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BYOP",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.6,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BYOP",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.55,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BYOP",
+  "market": "TX-E-TNMP",
+  "energy": 10.75,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CT12",
+  "market": "TX-E-ONCOR",
+  "energy": 10.25,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CT12",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.4,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CT12",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.6,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CT12",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.55,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "CT12",
+  "market": "TX-E-TNMP",
+  "energy": 10.75,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF12",
+  "market": "TX-E-ONCOR",
+  "energy": 10.25,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF12",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.4,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF12",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.6,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF12",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.55,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF12",
+  "market": "TX-E-TNMP",
+  "energy": 10.75,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP12",
+  "market": "TX-E-ONCOR",
+  "energy": 10.25,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP12",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.4,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP12",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.6,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP12",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.55,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP12",
+  "market": "TX-E-TNMP",
+  "energy": 10.75,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "G18",
+  "market": "TX-E-ONCOR",
+  "energy": 9.97,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "G18",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.12,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "G18",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.32,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "G18",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.27,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "G18",
+  "market": "TX-E-TNMP",
+  "energy": 10.47,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP18",
+  "market": "TX-E-ONCOR",
+  "energy": 10.04,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP18",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.19,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP18",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.39,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP18",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.34,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP18",
+  "market": "TX-E-TNMP",
+  "energy": 10.54,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BTT24",
+  "market": "TX-E-ONCOR",
+  "energy": 9.9,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BTT24",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 10.05,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BTT24",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.25,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BTT24",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.2,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "BTT24",
+  "market": "TX-E-TNMP",
+  "energy": 10.4,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF24",
+  "market": "TX-E-ONCOR",
+  "energy": 9.83,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF24",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.98,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF24",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.18,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF24",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.13,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF24",
+  "market": "TX-E-TNMP",
+  "energy": 10.33,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP24",
+  "market": "TX-E-ONCOR",
+  "energy": 9.83,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP24",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.98,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP24",
+  "market": "TX-E-AEPNORTH",
+  "energy": 10.18,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP24",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 10.13,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP24",
+  "market": "TX-E-TNMP",
+  "energy": 10.33,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "36IF",
+  "market": "TX-E-ONCOR",
+  "energy": 9.41,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "36IF",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.56,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "36IF",
+  "market": "TX-E-AEPNORTH",
+  "energy": 9.76,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "36IF",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 9.71,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "36IF",
+  "market": "TX-E-TNMP",
+  "energy": 9.91,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ECG36",
+  "market": "TX-E-ONCOR",
+  "energy": 9.48,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ECG36",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.63,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ECG36",
+  "market": "TX-E-AEPNORTH",
+  "energy": 9.83,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ECG36",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 9.78,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "ECG36",
+  "market": "TX-E-TNMP",
+  "energy": 9.98,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF36",
+  "market": "TX-E-ONCOR",
+  "energy": 9.41,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF36",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.56,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF36",
+  "market": "TX-E-AEPNORTH",
+  "energy": 9.76,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF36",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 9.71,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "FreeF36",
+  "market": "TX-E-TNMP",
+  "energy": 9.91,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP36",
+  "market": "TX-E-ONCOR",
+  "energy": 9.41,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP36",
+  "market": "TX-E-CENTERPOINT",
+  "energy": 9.56,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP36",
+  "market": "TX-E-AEPNORTH",
+  "energy": 9.76,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP36",
+  "market": "TX-E-AEPCENTRAL",
+  "energy": 9.71,
+  "effective": "2026-09-15"
+ },
+ {
+  "plan": "PP36",
+  "market": "TX-E-TNMP",
+  "energy": 9.91,
+  "effective": "2026-09-15"
+ }
+]

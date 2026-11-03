@@ -1,0 +1,42 @@
+[
+ {
+  "id": 2,
+  "name": "TX-E-ONCOR",
+  "short": "ONCOR",
+  "desc": "Oncor Electric Delivery",
+  "region": "ONCOR",
+  "phone": "888-313-4747"
+ },
+ {
+  "id": 3,
+  "name": "TX-E-CENTERPOINT",
+  "short": "CNP",
+  "desc": "CenterPoint Energy Houston Electric",
+  "region": "CENTERPOINT",
+  "phone": "800-332-7143"
+ },
+ {
+  "id": 4,
+  "name": "TX-E-AEPNORTH",
+  "short": "AEPN",
+  "desc": "AEP Texas North",
+  "region": "NORTH",
+  "phone": "877-373-4858"
+ },
+ {
+  "id": 5,
+  "name": "TX-E-AEPCENTRAL",
+  "short": "AEPC",
+  "desc": "AEP Texas Central",
+  "region": "CENTRAL",
+  "phone": "877-373-4858"
+ },
+ {
+  "id": 6,
+  "name": "TX-E-TNMP",
+  "short": "TNMP",
+  "desc": "Texas-New Mexico Power",
+  "region": "TNMP",
+  "phone": "888-866-7456"
+ }
+]

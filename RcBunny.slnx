@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RcBunny.Backend/RcBunny.Backend.csproj" />
+    <Project Path="src/RcBunny.Frontend/RcBunny.Frontend.csproj" />
+  </Folder>
+</Solution>

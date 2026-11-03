@@ -1,0 +1,65 @@
+[
+ {
+  "name": "Administrator",
+  "perms": [
+   "corral",
+   "lando",
+   "astro",
+   "walker",
+   "sheriff",
+   "refunds",
+   "caboose",
+   "bounty",
+   "rodeo",
+   "deputy",
+   "ranger"
+  ]
+ },
+ {
+  "name": "Customer Service",
+  "perms": [
+   "corral",
+   "bounty",
+   "ranger"
+  ]
+ },
+ {
+  "name": "Pricing",
+  "perms": [
+   "lando",
+   "astro"
+  ]
+ },
+ {
+  "name": "Content Editor",
+  "perms": [
+   "lando",
+   "rodeo"
+  ]
+ },
+ {
+  "name": "Finance",
+  "perms": [
+   "corral",
+   "walker",
+   "refunds",
+   "caboose"
+  ]
+ },
+ {
+  "name": "Customer Service Lead",
+  "perms": [
+   "corral",
+   "bounty",
+   "rodeo",
+   "deputy",
+   "ranger"
+  ]
+ },
+ {
+  "name": "AI Operations",
+  "perms": [
+   "deputy"
+  ]
+ }
+]

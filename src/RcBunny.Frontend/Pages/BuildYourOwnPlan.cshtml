@@ -1,0 +1,51 @@
+@page "/build-your-own-plan"
+@model BuildYourOwnPlanModel
+@inject Brand B
+@{
+    ViewData["Title"] = $"Build Your Own Plan | {B.Name}";
+    var c = Model.Catalog;
+    string PriceLabel(ByopView p) => p.Type == "Included" ? "Included"
+        : p.Monthly > 0 ? $"+${p.Monthly:0.00}/mo"
+        : p.Adj != 0 ? $"{(p.Adj < 0 ? "−" : "+")}{Math.Abs(p.Adj):0.0}¢" : "Free";
+}
+<section class="page-banner">
+    <div class="wrap">
+        <h1>Build Your Own Plan</h1>
+        <p>With @B.Name, you can create the perfect plan that best suits your needs. Let's start with the basics.</p>
+    </div>
+</section>
+
+<section class="section section-sky">
+    <div class="wrap">
+        @*
+            Without JavaScript this shows every option and a starting estimate (12 months, AutoPay + Paperless).
+            The ByopBuilder island turns it into the step-by-step builder with a live price.
+        *@
+        <island name="ByopBuilder" props="Model.Props">
+            <div class="byop">
+                <div class="byop-panel">
+                    @foreach (var step in BuildYourOwnPlanModel.Steps)
+                    {
+                        <h2>@step</h2>
+                        @foreach (var p in c.Byop.Where(x => x.Step == step))
+                        {
+                            <label class="opt">
+                                <input type="checkbox" disabled checked="@(p.Key is "autopay" or "paperless" or "rewards")">
+                                <span><strong>@p.Name</strong>@if (p.Description is { } d) {<small>@d</small>}</span>
+                                <span class="price">@PriceLabel(p)</span>
+                            </label>
+                        }
+                    }
+                </div>
+                <aside class="summary">
+                    <h3>Your Plan Summary</h3>
+                    <dl>
+                        <dt>Plan length</dt><dd>12 months</dd>
+                        <dt>Early termination fee</dt><dd>$@c.Etfs.GetValueOrDefault(12)</dd>
+                    </dl>
+                    <div class="total"><span>Est. avg. price from</span><strong>@Model.Base12.ToString("0.0")¢</strong></div>
+                </aside>
+            </div>
+        </island>
+    </div>
+</section>

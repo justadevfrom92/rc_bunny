@@ -1,0 +1,51 @@
+@page "/plans/{slug}"
+@model PlanDetailModel
+@inject Brand B
+@{
+    var p = Model.Plan;
+    ViewData["Title"] = $"{p.Name} | {B.Name}";
+    ViewData["Description"] = $"{p.Name}: {Pricing.TermLabel(p.Term)} electricity plan from {B.Name}.";
+}
+<section class="page-banner">
+    <div class="wrap">
+        <span class="eyebrow">@Pricing.TermLabel(p.Term)</span>
+        <h1>@p.Name</h1>
+        <p>@Pricing.EtfLabel(p.Etf) · @p.Green% renewable · plan code @p.Internal</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap split">
+        <div>
+            <h2>What you get</h2>
+            <ul class="checks">
+                @foreach (var perk in p.Perks)
+                {
+                    <li>@perk</li>
+                }
+                <li>Automatic @B.Rewards enrollment</li>
+            </ul>
+            <a class="btn" href="/contact-us?plan=@Uri.EscapeDataString(p.Internal)">Sign Up</a>
+        </div>
+        <div>
+            <h2>Average price by utility area</h2>
+            <div class="table-scroll">
+                <table class="price-table">
+                    <thead><tr><th>Utility</th><th>500 kWh</th><th>1,000 kWh</th><th>2,000 kWh</th></tr></thead>
+                    <tbody>
+                        @foreach (var (m, p500, p1000, p2000) in Model.Prices)
+                        {
+                            <tr class="@(Model.ZipMarket?.Id == m.Id ? "here" : null)">
+                                <td>@m.Description</td>
+                                <td>@p500?.ToString("0.0")¢</td>
+                                <td><strong>@p1000?.ToString("0.0")¢</strong></td>
+                                <td>@p2000?.ToString("0.0")¢</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:.8rem;color:#96999d;margin-top:12px">Includes TDU delivery charges and the $@p.Mrc.ToString("0.00") monthly base charge.</p>
+        </div>
+    </div>
+</section>

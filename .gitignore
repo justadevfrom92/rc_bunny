@@ -1,0 +1,23 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.idea/
+*.swp
+
+# Node / Vite
+node_modules/
+*.tsbuildinfo
+
+# Built client bundles (made by `npm run build`, dotnet build on a fresh clone, or dotnet publish)
+src/RcBunny.Backend/wwwroot/
+src/RcBunny.Frontend/wwwroot/islands/
+
+# Local databases and secrets
+*.db
+*.db-shm
+*.db-wal
+appsettings.Local.json
+.env

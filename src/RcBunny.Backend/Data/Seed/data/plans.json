@@ -1,0 +1,742 @@
+[
+ {
+  "id": 60,
+  "type": "Biz",
+  "term": 1,
+  "name": "Mill Creek Variable",
+  "internal": "MCV",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 2.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "mill-creek-variable"
+ },
+ {
+  "id": 61,
+  "type": "Biz",
+  "term": 1,
+  "name": "Takin' Care of Business Monthly",
+  "internal": "TCBM",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 0,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "takin-care-of-business-monthly"
+ },
+ {
+  "id": 62,
+  "type": "Biz",
+  "term": 1,
+  "name": "Takin' Care of Business Variable",
+  "internal": "TCBV",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 0,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "takin-care-of-business-variable"
+ },
+ {
+  "id": 63,
+  "type": "Biz",
+  "term": 12,
+  "name": "Homebuilder 12",
+  "internal": "H12",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 2.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "homebuilder-12"
+ },
+ {
+  "id": 64,
+  "type": "Biz",
+  "term": 12,
+  "name": "Indexed 12",
+  "internal": "IDX12",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 0,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "indexed-12"
+ },
+ {
+  "id": 65,
+  "type": "Biz",
+  "term": 12,
+  "name": "Takin' Care of Business 12",
+  "internal": "TCB12",
+  "rolloff": "TCBV",
+  "etf": "$300/$50x",
+  "mrc": 0,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "takin-care-of-business-12"
+ },
+ {
+  "id": 66,
+  "type": "Biz",
+  "term": 24,
+  "name": "Homebuilder 24",
+  "internal": "H24",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 2.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "homebuilder-24"
+ },
+ {
+  "id": 67,
+  "type": "Biz",
+  "term": 24,
+  "name": "Takin' Care of Business 24",
+  "internal": "TCB24",
+  "rolloff": "TCBV",
+  "etf": "$300/$50x",
+  "mrc": 0,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "takin-care-of-business-24"
+ },
+ {
+  "id": 68,
+  "type": "Biz",
+  "term": 36,
+  "name": "Epicenter",
+  "internal": "Epicenter",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 0,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "epicenter"
+ },
+ {
+  "id": 69,
+  "type": "Biz",
+  "term": 36,
+  "name": "Takin' Care of Business 36",
+  "internal": "TCB36",
+  "rolloff": "TCBV",
+  "etf": "$300/$50x",
+  "mrc": 0,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "takin-care-of-business-36"
+ },
+ {
+  "id": 70,
+  "type": "Resi",
+  "term": 1,
+  "name": "Cinco de Mayo",
+  "internal": "CDMV1",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "cinco-de-mayo"
+ },
+ {
+  "id": 71,
+  "type": "Resi",
+  "term": 1,
+  "name": "Energy Texas Monthly",
+  "internal": "ETM",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "month"
+  ],
+  "perks": [
+   "Leave anytime, no ETF",
+   "Great for renters & short stays",
+   "Paperless & AutoPay ready"
+  ],
+  "slug": "energy-texas-monthly"
+ },
+ {
+  "id": 72,
+  "type": "Resi",
+  "term": 1,
+  "name": "Energy Texas Monthly",
+  "internal": "ETM2",
+  "rolloff": "ETM",
+  "etf": "-",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "energy-texas-monthly"
+ },
+ {
+  "id": 73,
+  "type": "Resi",
+  "term": 1,
+  "name": "Just Electricity, Y'all",
+  "internal": "JEY",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "month"
+  ],
+  "perks": [
+   "No contract, no cancellation fee",
+   "Month-to-month flexibility",
+   "Rangler Rewards included"
+  ],
+  "slug": "just-electricity-y-all"
+ },
+ {
+  "id": 74,
+  "type": "Resi",
+  "term": 1,
+  "name": "Just Electricity, Y'all",
+  "internal": "JEY2",
+  "rolloff": "JEY",
+  "etf": "-",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "just-electricity-y-all"
+ },
+ {
+  "id": 75,
+  "type": "Resi",
+  "term": 1,
+  "name": "Just Electricity, Y'all",
+  "internal": "JEY3",
+  "rolloff": "JEY2",
+  "etf": "-",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "just-electricity-y-all"
+ },
+ {
+  "id": 76,
+  "type": "Resi",
+  "term": 1,
+  "name": "Moving Made Easy",
+  "internal": "MME1",
+  "rolloff": "None",
+  "etf": "-",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "month"
+  ],
+  "perks": [
+   "Same-day service available",
+   "Built for movers",
+   "Switch to a fixed plan anytime"
+  ],
+  "slug": "moving-made-easy"
+ },
+ {
+  "id": 77,
+  "type": "Resi",
+  "term": 12,
+  "name": "Build Your Own Plan",
+  "internal": "BYOP",
+  "rolloff": "BYOPV",
+  "etf": "$250",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [],
+  "perks": [],
+  "slug": "build-your-own-plan"
+ },
+ {
+  "id": 78,
+  "type": "Resi",
+  "term": 12,
+  "name": "Come & Take It 12",
+  "internal": "CT12",
+  "rolloff": "JEY3",
+  "etf": "$250",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed"
+  ],
+  "perks": [
+   "Fixed rate locked for 12 months",
+   "Rangler Rewards on every bill",
+   "Free Peak Perks enrollment"
+  ],
+  "slug": "come-and-take-it-12"
+ },
+ {
+  "id": 79,
+  "type": "Resi",
+  "term": 12,
+  "name": "Freedom Flex 12",
+  "internal": "FreeF12",
+  "rolloff": "JEY3",
+  "etf": "$250",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed",
+   "flex"
+  ],
+  "perks": [
+   "Fixed rate for 12 months",
+   "Flex your due date",
+   "Rangler Rewards included"
+  ],
+  "slug": "freedom-flex-12"
+ },
+ {
+  "id": 80,
+  "type": "Resi",
+  "term": 12,
+  "name": "Pardner Preferred 12",
+  "internal": "PP12",
+  "rolloff": "JEY3",
+  "etf": "$250",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed"
+  ],
+  "perks": [
+   "Fixed rate for 12 months",
+   "Priority customer care line",
+   "Rangler Rewards included"
+  ],
+  "slug": "pardner-preferred-12"
+ },
+ {
+  "id": 81,
+  "type": "Resi",
+  "term": 18,
+  "name": "The Gruene 18",
+  "internal": "G18",
+  "rolloff": "JEY3",
+  "etf": "$275",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed",
+   "green"
+  ],
+  "perks": [
+   "100% renewable energy",
+   "Fixed rate for 18 months",
+   "Rangler Rewards included"
+  ],
+  "slug": "the-gruene-18"
+ },
+ {
+  "id": 82,
+  "type": "Resi",
+  "term": 18,
+  "name": "Pardner Preferred 18",
+  "internal": "PP18",
+  "rolloff": "JEY3",
+  "etf": "$275",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed"
+  ],
+  "perks": [
+   "Fixed rate for 18 months",
+   "Priority customer care line",
+   "Rangler Rewards included"
+  ],
+  "slug": "pardner-preferred-18"
+ },
+ {
+  "id": 83,
+  "type": "Resi",
+  "term": 24,
+  "name": "Bigger Than Texas 24",
+  "internal": "BTT24",
+  "rolloff": "JEY3",
+  "etf": "$400",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed"
+  ],
+  "perks": [
+   "Fixed rate locked for 2 years",
+   "Bonus Rangler Rewards stars",
+   "Free Peak Perks enrollment"
+  ],
+  "slug": "bigger-than-texas-24"
+ },
+ {
+  "id": 84,
+  "type": "Resi",
+  "term": 24,
+  "name": "Freedom Flex 24",
+  "internal": "FreeF24",
+  "rolloff": "JEY3",
+  "etf": "$400",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed",
+   "flex"
+  ],
+  "perks": [
+   "Fixed rate for 24 months",
+   "Flex your due date",
+   "Rangler Rewards included"
+  ],
+  "slug": "freedom-flex-24"
+ },
+ {
+  "id": 85,
+  "type": "Resi",
+  "term": 24,
+  "name": "Pardner Preferred 24",
+  "internal": "PP24",
+  "rolloff": "JEY3",
+  "etf": "$400",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed"
+  ],
+  "perks": [
+   "Fixed rate for 24 months",
+   "Priority customer care line",
+   "Rangler Rewards included"
+  ],
+  "slug": "pardner-preferred-24"
+ },
+ {
+  "id": 86,
+  "type": "Resi",
+  "term": 36,
+  "name": "36 Inflation Fix",
+  "internal": "36IF",
+  "rolloff": "JEY3",
+  "etf": "$500",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed"
+  ],
+  "perks": [
+   "Beat inflation for 3 full years",
+   "Lowest long-term fixed rate",
+   "Rangler Rewards included"
+  ],
+  "slug": "36-inflation-fix"
+ },
+ {
+  "id": 87,
+  "type": "Resi",
+  "term": 36,
+  "name": "ecobee Clean & Green 36",
+  "internal": "ECG36",
+  "rolloff": "JEY3",
+  "etf": "$500",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed",
+   "green"
+  ],
+  "perks": [
+   "FREE ecobee smart thermostat",
+   "100% renewable energy",
+   "Fixed rate for 36 months"
+  ],
+  "slug": "ecobee-clean-and-green-36"
+ },
+ {
+  "id": 88,
+  "type": "Resi",
+  "term": 36,
+  "name": "Freedom Flex 36",
+  "internal": "FreeF36",
+  "rolloff": "JEY3",
+  "etf": "$500",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed",
+   "flex"
+  ],
+  "perks": [
+   "Fixed rate for 36 months",
+   "Flex your due date",
+   "Rangler Rewards included"
+  ],
+  "slug": "freedom-flex-36"
+ },
+ {
+  "id": 89,
+  "type": "Resi",
+  "term": 36,
+  "name": "Pardner Preferred 36",
+  "internal": "PP36",
+  "rolloff": "JEY3",
+  "etf": "$500",
+  "mrc": 4.95,
+  "green": 100,
+  "active": true,
+  "tags": [
+   "fixed"
+  ],
+  "perks": [
+   "Fixed rate for 36 months",
+   "Priority customer care line",
+   "Rangler Rewards included"
+  ],
+  "slug": "pardner-preferred-36"
+ },
+ {
+  "id": 90,
+  "type": "Biz",
+  "term": 6,
+  "name": "Takin' Care of Business 6",
+  "internal": "TCB6",
+  "rolloff": "TCBV",
+  "etf": "$300",
+  "mrc": 0,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "takin-care-of-business-6"
+ },
+ {
+  "id": 91,
+  "type": "Resi",
+  "term": 1,
+  "name": "Build Your Own Plan",
+  "internal": "BYOPV",
+  "rolloff": "None",
+  "etf": "$0",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "build-your-own-plan"
+ },
+ {
+  "id": 92,
+  "type": "Resi",
+  "term": 3,
+  "name": "Taste of Energy Texas 3",
+  "internal": "TET3",
+  "rolloff": "JEY3",
+  "etf": "$100",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "taste-of-energy-texas-3"
+ },
+ {
+  "id": 93,
+  "type": "Resi",
+  "term": 3,
+  "name": "Texan Pride 3",
+  "internal": "TXP3",
+  "rolloff": "JEY3",
+  "etf": "$100",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "texan-pride-3"
+ },
+ {
+  "id": 94,
+  "type": "Resi",
+  "term": 6,
+  "name": "Lone Star 6",
+  "internal": "LS6",
+  "rolloff": "JEY3",
+  "etf": "$175",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "lone-star-6"
+ },
+ {
+  "id": 95,
+  "type": "Resi",
+  "term": 11,
+  "name": "Texan 11",
+  "internal": "TX11",
+  "rolloff": "JEY3",
+  "etf": "$300",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "texan-11"
+ },
+ {
+  "id": 96,
+  "type": "Resi",
+  "term": 12,
+  "name": "Friends & Family 12",
+  "internal": "FF12",
+  "rolloff": "JEY3",
+  "etf": "$250",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "friends-and-family-12"
+ },
+ {
+  "id": 97,
+  "type": "Resi",
+  "term": 12,
+  "name": "September Savin' 12",
+  "internal": "SS12",
+  "rolloff": "JEY3",
+  "etf": "$250",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "september-savin-12"
+ },
+ {
+  "id": 98,
+  "type": "Resi",
+  "term": 12,
+  "name": "Very Important Texan 12",
+  "internal": "VIT12",
+  "rolloff": "JEY3",
+  "etf": "$250",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "very-important-texan-12"
+ },
+ {
+  "id": 99,
+  "type": "Resi",
+  "term": 12,
+  "name": "True Texan 12",
+  "internal": "TT12",
+  "rolloff": "JEY3",
+  "etf": "$300",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "true-texan-12"
+ },
+ {
+  "id": 100,
+  "type": "Resi",
+  "term": 13,
+  "name": "The Abilene 13",
+  "internal": "A13",
+  "rolloff": "JEY3",
+  "etf": "$300",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "the-abilene-13"
+ },
+ {
+  "id": 101,
+  "type": "Resi",
+  "term": 14,
+  "name": "Fixin' to 14",
+  "internal": "F14",
+  "rolloff": "JEY3",
+  "etf": "$275",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "fixin-to-14"
+ },
+ {
+  "id": 102,
+  "type": "Resi",
+  "term": 15,
+  "name": "The Seguin 15",
+  "internal": "S15",
+  "rolloff": "JEY3",
+  "etf": "$275",
+  "mrc": 4.95,
+  "green": 100,
+  "active": false,
+  "tags": [],
+  "perks": [],
+  "slug": "the-seguin-15"
+ }
+]

@@ -1,0 +1,37 @@
+[
+ {
+  "market": "TX-E-AEPCENTRAL",
+  "perKwh": 5.6436,
+  "perBill": 4.79,
+  "kwhDate": "2026-09-01",
+  "billDate": "2026-09-01"
+ },
+ {
+  "market": "TX-E-AEPNORTH",
+  "perKwh": 5.2381,
+  "perBill": 4.79,
+  "kwhDate": "2026-09-01",
+  "billDate": "2026-09-01"
+ },
+ {
+  "market": "TX-E-CENTERPOINT",
+  "perKwh": 5.4892,
+  "perBill": 4.39,
+  "kwhDate": "2026-09-01",
+  "billDate": "2026-09-01"
+ },
+ {
+  "market": "TX-E-ONCOR",
+  "perKwh": 5.573,
+  "perBill": 4.23,
+  "kwhDate": "2026-07-01",
+  "billDate": "2026-07-01"
+ },
+ {
+  "market": "TX-E-TNMP",
+  "perKwh": 6.041,
+  "perBill": 7.85,
+  "kwhDate": "2026-09-01",
+  "billDate": "2026-09-01"
+ }
+]
