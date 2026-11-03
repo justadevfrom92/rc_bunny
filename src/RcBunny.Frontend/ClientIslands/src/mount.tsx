@@ -8,6 +8,8 @@ const islands: Record<string, () => Promise<{ default: ComponentType<any> }>> = 
   ByopBuilder: () => import('./islands/ByopBuilder'),
   ContactForm: () => import('./islands/ContactForm'),
   UsageChart: () => import('./islands/UsageChart'),
+  ChatBubble: () => import('./islands/ChatBubble'),
+  CookieBanner: () => import('./islands/CookieBanner'),
 };
 
 export function mountAll(elements: HTMLElement[]) {

@@ -1,0 +1,28 @@
+@page "/myaccount/insights"
+@model InsightsModel
+@inject Brand B
+@{
+    ViewData["Title"] = $"Usage | {B.Name}";
+    var bills = Model.Bills;
+    var avg = bills.Count == 0 ? 0 : bills.Average(b => b.Kwh);
+    var last = bills.LastOrDefault();
+    var yearAgo = last is null ? null : bills.FirstOrDefault(b => b.BilledOn.Year == last.BilledOn.Year - 1 && b.BilledOn.Month == last.BilledOn.Month);
+    var props = new { months = bills.Select(b => new { label = b.BilledOn.AddMonths(-1).ToString("MMM yy"), kwh = b.Kwh, amount = b.Amount }) };
+}
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <div class="ma-cards">
+        <div class="ma-card"><h3>Average month</h3><strong class="big">@avg.ToString("N0")</strong><p>kWh</p></div>
+        <div class="ma-card"><h3>Last bill</h3><strong class="big">@(last?.Kwh.ToString("N0") ?? "—")</strong><p>kWh · @last?.Amount.ToString("C")</p></div>
+        <div class="ma-card"><h3>Same month last year</h3><strong class="big">@(yearAgo?.Kwh.ToString("N0") ?? "—")</strong><p>@(yearAgo is { } y && last is { } l && y.Kwh > 0 ? $"{(l.Kwh - y.Kwh) * 100.0 / y.Kwh:+0;-0}% this year" : "kWh")</p></div>
+        <div class="ma-card"><h3>Average cost</h3><strong class="big">@(bills.Sum(b => b.Kwh) is var k and > 0 ? (bills.Sum(b => b.Amount) * 100 / k).ToString("0.0") + "¢" : "—")</strong><p>per kWh, all in</p></div>
+    </div>
+    <div class="byop-panel" style="margin-top:24px">
+        <h2>Month by month</h2>
+        <island name="UsageChart" props="props">
+            <table class="price-table"><thead><tr><th>Month</th><th>kWh</th><th>Bill</th></tr></thead><tbody>
+            @foreach (var b in bills) { <tr><td>@b.BilledOn.AddMonths(-1).ToString("MMM yy")</td><td>@b.Kwh.ToString("N0")</td><td>@b.Amount.ToString("C")</td></tr> }
+            </tbody></table>
+        </island>
+    </div>
+</div></section>

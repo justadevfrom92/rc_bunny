@@ -1,0 +1,29 @@
+@page "/myaccount/checkout"
+@model ShopCheckoutModel
+@inject Brand B
+@{ ViewData["Title"] = $"Shop Checkout | {B.Name}"; var c = Model.Customer; var sub = Model.Subtotal; var tax = Math.Round(sub * RcBunny.Frontend.Services.Cart.TaxRate, 2); var ship = RcBunny.Frontend.Services.Cart.Shipping(sub); }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <partial name="_Flash" model="Model" />
+    <div class="ma-grid">
+        <div class="byop-panel">
+            <h2>Your order</h2>
+            <table class="price-table"><tbody>@foreach (var (p, q) in Model.Lines) { <tr><td>@p.Name</td><td>× @q</td><td>@((p.Price * q).ToString("C"))</td></tr> }</tbody></table>
+            <dl class="cart-totals"><dt>Subtotal</dt><dd>@sub.ToString("C")</dd><dt>Tax</dt><dd>@tax.ToString("C")</dd><dt>Shipping</dt><dd>@(ship == 0 ? "Free" : ship.ToString("C"))</dd><dt>Total</dt><dd><strong>@((sub + tax + ship).ToString("C"))</strong></dd></dl>
+        </div>
+        <div class="byop-panel">
+            <h2>Ship &amp; pay</h2>
+            <form method="post" class="stack-form">
+                <div class="field"><label for="s">Street</label><input id="s" name="street" value="@c.Address" required></div>
+                <div class="field"><label for="ci">City</label><input id="ci" name="city" value="@c.City" required></div>
+                <div class="field"><label for="z">Zip</label><input id="z" name="zip" value="@c.Zip" required></div>
+                <label class="opt-line"><input type="radio" name="payWith" value="bill" checked> Add it to my electricity bill</label>
+                @if (Model.Methods.Count > 0)
+                {
+                    <label class="opt-line"><input type="radio" name="payWith" value="card"> Pay now with <select name="methodId">@foreach (var m in Model.Methods) { <option value="@m.Id">@m.Type ending @m.Last4</option> }</select></label>
+                }
+                <button class="btn">Place order</button>
+            </form>
+        </div>
+    </div>
+</div></section>

@@ -20,6 +20,7 @@ public sealed class Brand
         ("/plans", "Plans"),
         ("/build-your-own-plan", "Build Your Own Plan"),
         ("/business", "Business"),
+        ("/shop", "Shop"),
         ("/contact-us", "Contact Us"),
     ];
 }

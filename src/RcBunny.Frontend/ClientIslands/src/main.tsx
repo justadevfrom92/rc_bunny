@@ -5,6 +5,13 @@
   island's data is already in the page, so it renders the moment the code arrives: no fetch, no spinner.
 */
 const islands = [...document.querySelectorAll<HTMLElement>('[data-island]')];
+// Cookie banner: only for visitors who haven't answered yet (everyone else downloads nothing extra).
+if (!document.cookie.split('; ').some((c) => c.startsWith('et_consent='))) {
+  const el = document.createElement('div');
+  el.dataset.island = 'CookieBanner';
+  document.body.append(el);
+  islands.push(el);
+}
 if (islands.length) void import('./mount').then((m) => m.mountAll(islands));
 
 // Header menu on phones (the only bit of page chrome that needs script).

@@ -4,12 +4,21 @@ using Microsoft.AspNetCore.ResponseCompression;
 using RcBunny.Data;
 using RcBunny.Frontend.Services;
 
+// Money and dates are shown the US way whatever the server's locale is.
+System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.DefaultThreadCurrentCulture = System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-US");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRcBunnyDatabase(builder.Configuration);
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<Catalog>();
 builder.Services.AddSingleton<IslandAssets>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<Cms>();
+builder.Services.AddSingleton<ShopCatalog>();
+builder.Services.AddScoped<Cart>();
+builder.Services.AddSingleton<VisitWriter>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<VisitWriter>());
+SurveyLinks.Secret = builder.Configuration["Survey:LinkSecret"] ?? SurveyLinks.Secret;
 builder.Services.AddSingleton(builder.Configuration.GetSection("Brand").Get<Brand>() ?? new Brand());
 
 // ---- Customer sign-in (My Account). Separate cookie and scheme from the employee admin. ----------------
@@ -30,7 +39,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddRazorPages(o =>
 {
     o.Conventions.AuthorizeFolder("/MyAccount");
-    o.Conventions.AllowAnonymousToPage("/MyAccount/Login");
+    foreach (var anon in new[] { "Login", "QuickPay", "Register", "Forgot", "Reset" }) o.Conventions.AllowAnonymousToPage("/MyAccount/" + anon);
     // ebunny's addresses keep working (/plans.html …)
     o.Conventions.AddPageRoute("/Index", "index.html");
     o.Conventions.AddPageRoute("/Plans/Index", "plans.html");
@@ -60,7 +69,10 @@ builder.Services.AddRateLimiter(o =>
     o.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
     o.AddPolicy("forms", ctx => RateLimitPartition.GetFixedWindowLimiter(
         ctx.Connection.RemoteIpAddress?.ToString() ?? "?",
-        _ => new FixedWindowRateLimiterOptions { PermitLimit = 10, Window = TimeSpan.FromMinutes(1) }));
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = builder.Configuration.GetValue("Website:FormsPerMinute", 10), Window = TimeSpan.FromMinutes(1) }));
+    o.AddPolicy("chat", ctx => RateLimitPartition.GetFixedWindowLimiter(
+        ctx.User.Identity?.Name ?? ctx.Connection.RemoteIpAddress?.ToString() ?? "?",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1) }));
 });
 
 var app = builder.Build();
@@ -87,9 +99,11 @@ app.UseRouting();
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<SiteGuard>();
 app.UseOutputCache();
 
 app.MapRazorPages();
+app.MapSiteEndpoints();
 app.MapGet("/healthz", () => Results.Ok(new { ok = true }));
 
 app.Run();

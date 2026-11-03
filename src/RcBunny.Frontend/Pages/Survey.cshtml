@@ -1,0 +1,56 @@
+@page "/survey/{slug}"
+@model SurveyModel
+@inject Brand B
+@{ var s = Model.Survey; ViewData["Title"] = $"{s.Title} | {B.Name}"; }
+<section class="page-banner"><div class="wrap"><h1>@s.Title</h1>@if (s.Intro is { } intro) { <p>@intro</p> }</div></section>
+<section class="section section-sky">
+    <div class="wrap" style="max-width:760px">
+        @if (Model.Done)
+        {
+            <div class="byop-panel center"><h2>Thank you!</h2><p>@(s.ThankYou ?? "We got your answers.")</p><a class="btn" href="/">Back to the website</a></div>
+        }
+        else if (Model.Closed is { } closed)
+        {
+            <div class="byop-panel center"><p>@closed</p></div>
+        }
+        else
+        {
+            <form method="post" class="byop-panel survey">
+                @if (Model.Error is { } err) { <div class="form-msg error" role="alert">@err</div> }
+                @foreach (var group in Model.Questions.GroupBy(q => q.SurveyCategoryId))
+                {
+                    @if (group.Key is { } cat && Model.Categories.TryGetValue(cat, out var catName)) { <h2 class="survey-cat">@catName</h2> }
+                    @foreach (var q in group)
+                    {
+                        var name = $"q{q.Id}";
+                        var opts = q.Options?.AsArray().Select(o => o!.ToString()).ToList() ?? [];
+                        <fieldset class="survey-q">
+                            <legend>@q.Question@(q.Required ? " *" : "")</legend>
+                            @if (q.Help is { } help) { <p class="muted">@help</p> }
+                            @switch (q.Type)
+                            {
+                                case "rating":
+                                    <div class="nps">@for (var i = 0; i <= 10; i++) { <label><input type="radio" name="@name" value="@i" required="@q.Required"><span>@i</span></label> }</div>
+                                    break;
+                                case "multi":
+                                    @foreach (var o in opts) { <label class="opt-line"><input type="checkbox" name="@name" value="@o"> @o</label> }
+                                    break;
+                                case "yes_no":
+                                    @foreach (var o in new[] { "Yes", "No" }) { <label class="opt-line"><input type="radio" name="@name" value="@o" required="@q.Required"> @o</label> }
+                                    break;
+                                case "text":
+                                    <textarea name="@name" rows="4" maxlength="2000" required="@q.Required"></textarea>
+                                    break;
+                                default:
+                                    @foreach (var o in opts) { <label class="opt-line"><input type="radio" name="@name" value="@o" required="@q.Required"> @o</label> }
+                                    break;
+                            }
+                        </fieldset>
+                    }
+                }
+                <input type="hidden" name="c" value="@Request.Query["c"]"><input type="hidden" name="sig" value="@Request.Query["sig"]">
+                <button class="btn">Send Answers</button>
+            </form>
+        }
+    </div>
+</section>

@@ -1,0 +1,24 @@
+@page "/shop/{slug}"
+@model ShopProductModel
+@inject Brand B
+@{ var p = Model.Product; ViewData["Title"] = $"{p.Name} | Shop | {B.Name}"; ViewData["Description"] = p.Blurb; }
+<section class="section">
+    <div class="wrap split">
+        <div class="split-art" aria-hidden="true"><svg viewBox="0 0 300 240"><rect x="80" y="40" width="140" height="160" rx="20" fill="#fff" opacity=".9"/><circle cx="150" cy="120" r="40" fill="#00AEEF"/></svg></div>
+        <div>
+            <p class="crumbs"><a href="/shop">Shop</a> › <a href="/shop?cat=@p.Cat">@(ShopCatalog.Categories.GetValueOrDefault(p.Cat) ?? p.Cat)</a></p>
+            <h1>@p.Name</h1>
+            <p class="lead">@p.Blurb</p>
+            <p><strong style="font-size:1.8rem">@p.Price.ToString("C")</strong> @if (p.Was is { } was) { <s>@was.ToString("C")</s> }</p>
+            <p>★ @p.Rating.ToString("0.0") from @p.Reviews.ToString("N0") reviews · earns <strong>@p.Stars.ToString("N0") @B.Rewards stars</strong> · SKU @p.Sku</p>
+            @if (Model.Details is { } d) { <p>@d</p> }
+            @if (p.Stock)
+            {
+                <form method="post" action="/shop/cart?handler=Add" class="row-form"><input type="hidden" name="sku" value="@p.Sku">
+                    <label>Qty <select name="qty">@for (var i = 1; i <= 5; i++) { <option>@i</option> }</select></label>
+                    <button class="btn">Add to Cart</button></form>
+            }
+            else { <p><strong>Out of stock</strong></p> }
+        </div>
+    </div>
+</section>

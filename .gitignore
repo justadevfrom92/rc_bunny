@@ -21,3 +21,6 @@ src/RcBunny.Frontend/wwwroot/islands/
 *.db-wal
 appsettings.Local.json
 .env
+
+# Uploaded files (support attachments, site files)
+/storage/

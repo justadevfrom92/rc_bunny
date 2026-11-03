@@ -1,0 +1,13 @@
+@page "/checkout/accepted"
+@model AcceptedModel
+@inject Brand B
+@{ ViewData["Title"] = $"Welcome! | {B.Name}"; }
+<section class="section section-sky"><div class="wrap" style="max-width:720px">
+    <div class="byop-panel center">
+        <div class="stars-row" style="justify-content:center" aria-hidden="true">★ ★ ★</div>
+        <h1>Welcome aboard, pardner!</h1>
+        <p class="lead">Your account number is <strong>@Model.Account</strong>. We'll email you when your switch is scheduled.</p>
+        @if (Model.Deposit > 0) { <p>A deposit of <strong>@Model.Deposit.ToString("C0")</strong> is due before service starts. <a href="/checkout/deposit?account=@Model.Account">Pay it or see options</a>.</p> }
+        @if (Model.Login) { <a class="btn" href="/myaccount">Go to My Account</a> } else { <a class="btn" href="/myaccount/create-account">Create My Account Login</a> }
+    </div>
+</div></section>

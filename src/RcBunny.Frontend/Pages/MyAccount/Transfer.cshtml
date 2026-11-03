@@ -1,0 +1,21 @@
+@page "/myaccount/transfer"
+@model TransferModel
+@inject Brand B
+@{ ViewData["Title"] = $"Transfer Service | {B.Name}"; }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <partial name="_Flash" model="Model" />
+    <div class="byop-panel" style="max-width:640px">
+        <h2>Moving? Take us with you.</h2>
+        <p>We'll stop service at @Model.Customer.Address and start it at your new place.</p>
+        <form method="post" class="stack-form">
+            <div class="field"><label for="s">New street address</label><input id="s" name="street" required></div>
+            <div class="field"><label for="u">Unit</label><input id="u" name="unit"></div>
+            <div class="field"><label for="c">City</label><input id="c" name="city" required></div>
+            <div class="field"><label for="z">Zip</label><input id="z" name="zip" maxlength="5" pattern="\d{5}" required></div>
+            <div class="field"><label for="o">Stop service at the old address on</label><input id="o" name="moveOut" type="date" required></div>
+            <div class="field"><label for="i">Start service at the new address on</label><input id="i" name="moveIn" type="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required></div>
+            <button class="btn">Transfer my service</button>
+        </form>
+    </div>
+</div></section>

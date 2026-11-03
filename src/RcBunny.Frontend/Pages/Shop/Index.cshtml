@@ -1,0 +1,51 @@
+@page "/shop"
+@model ShopModel
+@inject Brand B
+@{
+    ViewData["Title"] = $"Shop | {B.Name}";
+    string Href(string? cat, string sort) => "/shop?" + string.Join("&", new[] { cat is null ? null : "cat=" + cat, sort == "featured" ? null : "sort=" + sort }.Where(x => x != null));
+}
+<section class="page-banner"><div class="wrap"><h1>Shop</h1><p>Smart home gear that saves energy. Every purchase earns @B.Rewards stars.</p></div></section>
+<section class="section section-sky">
+    <div class="wrap">
+        <div class="plans-head">
+            <div class="filters" role="toolbar" aria-label="Categories">
+                <a class="chip@(Model.Cat is null ? " on" : "")" href="@Href(null, Model.Sort)">All</a>
+                @foreach (var (key, label) in ShopCatalog.Categories)
+                {
+                    <a class="chip@(Model.Cat == key ? " on" : "")" href="@Href(key, Model.Sort)">@label</a>
+                }
+            </div>
+            <form method="get" class="shop-sort">
+                @if (Model.Cat is { } c) { <input type="hidden" name="cat" value="@c"> }
+                <label>Sort <select name="sort" onchange="this.form.submit()">
+                    @foreach (var (k, l) in new[] { ("featured", "Featured"), ("price", "Price: low to high"), ("price-desc", "Price: high to low"), ("rating", "Rating"), ("stars", "Most stars") })
+                    { <option value="@k" selected="@(Model.Sort == k)">@l</option> }
+                </select></label>
+                <noscript><button class="btn btn-outline">Sort</button></noscript>
+            </form>
+        </div>
+        <div class="plan-grid shop-grid">
+            @foreach (var p in Model.Products)
+            {
+                <article class="plan shop-card">
+                    @if (p.Badge is { } badge) { <span class="plan-flag">@badge</span> }
+                    <div class="plan-top">
+                        <span class="plan-term">@(ShopCatalog.Categories.GetValueOrDefault(p.Cat) ?? p.Cat)</span>
+                        <h3><a class="plan-name" href="/shop/@ShopCatalog.Slug(p)">@p.Name</a></h3>
+                        <div class="plan-rate"><strong>@p.Price.ToString("C0")</strong>@if (p.Was is { } was) { <span><s>@was.ToString("C0")</s></span> }</div>
+                        <p class="plan-rate-note">★ @p.Rating.ToString("0.0") (@p.Reviews.ToString("N0")) · earns @p.Stars.ToString("N0") stars</p>
+                    </div>
+                    <div class="plan-body">
+                        <p>@p.Blurb</p>
+                        @if (p.Stock)
+                        {
+                            <form method="post" action="/shop/cart?handler=Add"><input type="hidden" name="sku" value="@p.Sku"><button class="btn btn-block">Add to Cart</button></form>
+                        }
+                        else { <p class="muted"><strong>Out of stock</strong></p> }
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>

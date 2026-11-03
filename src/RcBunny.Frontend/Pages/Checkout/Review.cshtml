@@ -1,0 +1,31 @@
+@page "/checkout/review"
+@model ReviewModel
+@inject Brand B
+@{ ViewData["Title"] = $"Review | {B.Name}"; var d = Model.Data; }
+<section class="section section-sky"><div class="wrap" style="max-width:820px">
+    <partial name="_Steps" model="@("review")" />
+    <div class="byop-panel">
+        <h1 style="font-size:1.6rem">Review your order</h1>
+        @if (Model.Error is { } err) { <div class="form-msg error" role="alert">@err</div> }
+        <dl class="cart-totals">
+            <dt>Plan</dt><dd>@Model.Plan?.Name · @Model.Price?.ToString("0.0")¢/kWh at 1,000 kWh</dd>
+            <dt>Service address</dt><dd>@d.Address @d.Unit, @d.City @d.Zip (@Model.Market?.Short)</dd>
+            <dt>Start</dt><dd>@(d.EnrollmentType == "Move-In" ? $"Move-in on {d.StartDate:MMMM d}" : "Switch on the next available date")</dd>
+            <dt>Name</dt><dd>@(d.Biz ? d.BusinessName + " · " : "")@d.FirstName @d.LastName</dd>
+            <dt>Contact</dt><dd>@d.Email · @d.Phone</dd>
+        </dl>
+        <form method="post">
+            <label class="opt-line"><input type="checkbox" name="Autopay" value="true" checked> AutoPay (lowers your rate)</label>
+            <label class="opt-line"><input type="checkbox" name="Paperless" value="true" checked> Paperless billing</label>
+            <label class="opt-line"><input type="checkbox" name="PeakPerks" value="true"> Peak Perks (smart thermostat credits)</label>
+            <div class="field" style="margin:12px 0"><label for="pc">Promo code</label><input id="pc" name="PromoCode" value="@d.PromoCode"></div>
+            <label class="opt-line"><input type="checkbox" name="AgreeEfl" value="true" required> I've read the <a href="#">Electricity Facts Label</a></label>
+            <label class="opt-line"><input type="checkbox" name="AgreeTos" value="true" required> I agree to the <a href="#">Terms of Service</a></label>
+            <label class="opt-line"><input type="checkbox" name="AgreeYrac" value="true" required> I've read <a href="#">Your Rights as a Customer</a></label>
+            <button class="btn" style="margin-top:16px">Submit My Order</button>
+        </form>
+        <form method="post" asp-page-handler="Save" class="row-form" style="margin-top:20px">
+            <label>Not ready? Email me a link to finish later: <input type="email" name="email" value="@d.Email" required></label> <button class="btn btn-outline">Save & Finish Later</button>
+        </form>
+    </div>
+</div></section>

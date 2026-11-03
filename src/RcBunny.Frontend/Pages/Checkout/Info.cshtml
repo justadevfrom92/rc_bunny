@@ -1,0 +1,40 @@
+@page "/checkout/{kind:regex(^(saved|frozen|alternatives|start-call|cancel|error|deposit)$)}"
+@model InfoModel
+@inject Brand B
+@{ ViewData["Title"] = $"Sign Up | {B.Name}"; }
+<section class="section section-sky"><div class="wrap" style="max-width:720px"><div class="byop-panel">
+    @switch (Model.Kind)
+    {
+        case "saved":
+            <h1>Saved!</h1><p>We emailed you a link to finish signing up. (Mail isn't set up here, so here it is:) <a href="@TempData["saved"]">@TempData["saved"]</a></p>
+            break;
+        case "frozen":
+            <h1>Your credit is frozen</h1><p>We need to run a credit check to start service. Lift the freeze with the credit bureau for a day, then <a href="/checkout/review">come back to finish</a>, or <a href="/checkout/alternatives">see deposit alternatives</a>.</p>
+            break;
+        case "alternatives":
+            <h1>Deposit alternatives</h1><ul class="checks"><li>A letter of credit from your last provider (12 months on time)</li><li>Medically indigent or 65+ with a good payment history</li><li>Pay the deposit in installments</li></ul><p>Call us at <a href="@B.PhoneHref">@B.Phone</a> to set one up.</p>
+            break;
+        case "start-call":
+            <h1>Let's finish by phone</h1><p>Call <a href="@B.PhoneHref">@B.Phone</a> (@B.Hours) and we'll pick up where you left off.</p>
+            break;
+        case "cancel":
+            <h1>Cancel your sign-up</h1><p>Changed your mind? You can cancel within 3 business days with no fee. Call <a href="@B.PhoneHref">@B.Phone</a>.</p>
+            break;
+        case "deposit":
+            <h1>Pay your deposit</h1>
+            <form method="get" class="row-form"><label>Account <input name="account" value="@Request.Query["account"]" required></label><label>Service zip <input name="zip" value="@Request.Query["zip"]" maxlength="5" required></label><button class="btn">Look Up</button></form>
+            @if (Model.Looked)
+            {
+                if (Model.Customer is { } c)
+                {
+                    <p>@c.Name: deposit due <strong>@c.DepositDue.ToString("C")</strong>@(c.DepositHeld > 0 ? $", held {c.DepositHeld:C}" : "").</p>
+                    @if (c.DepositDue > 0) { <a class="btn" href="/quickpay?account=@c.Account&zip=@c.Zip&amount=@c.DepositDue.ToString("0.00")">Pay the Deposit</a> }
+                }
+                else { <p class="form-msg error">We couldn't find that account and zip.</p> }
+            }
+            break;
+        default:
+            <h1>Something went wrong</h1><p>Please <a href="/checkout">start again</a> or call us.</p>
+            break;
+    }
+</div></div></section>

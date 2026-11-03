@@ -1,0 +1,52 @@
+@page "/myaccount/profile"
+@model ProfileModel
+@inject Brand B
+@{ ViewData["Title"] = $"Profile | {B.Name}"; var c = Model.Customer; var au = c.AuthorizedUsers as System.Text.Json.Nodes.JsonArray; }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <partial name="_Flash" model="Model" />
+    <div class="ma-grid">
+        <div class="byop-panel">
+            <h2>Contact details</h2>
+            <form method="post" asp-page-handler="Contact" class="stack-form">
+                <div class="field"><label for="e">Email</label><input id="e" name="email" type="email" value="@c.Email" required></div>
+                <div class="field"><label for="p">Phone</label><input id="p" name="phone" value="@c.Phone"></div>
+                <div class="field"><label for="pt">Phone type</label><select id="pt" name="phoneType">@foreach (var t in new[] { "Mobile", "Home", "Work" }) { <option selected="@(c.PhoneType == t)">@t</option> }</select></div>
+                <div class="field"><label for="l">Language</label><select id="l" name="language"><option selected="@(c.Language != "Spanish")">English</option><option selected="@(c.Language == "Spanish")">Spanish</option></select></div>
+                <label class="opt-line"><input type="checkbox" name="marketing" value="true" checked="@c.MarketingOptIn"> Send me offers and news</label>
+                <button class="btn">Save</button>
+            </form>
+        </div>
+        <div class="byop-panel">
+            <h2>Password</h2>
+            <form method="post" asp-page-handler="Password" class="stack-form">
+                <div class="field"><label for="cur">Current password</label><input id="cur" name="current" type="password" autocomplete="current-password" required></div>
+                <div class="field"><label for="np">New password</label><input id="np" name="password" type="password" autocomplete="new-password" minlength="8" required></div>
+                <div class="field"><label for="cp">Type it again</label><input id="cp" name="confirm" type="password" autocomplete="new-password" required></div>
+                <button class="btn">Change password</button>
+            </form>
+        </div>
+        <div class="byop-panel">
+            <h2>Authorized users</h2>
+            <p>People who can call us about this account.</p>
+            @if (au != null) { for (var i = 0; i < au.Count; i++) {
+                <form method="post" asp-page-handler="RemoveAuthorized" class="row-form"><input type="hidden" name="index" value="@i"><span>@au[i]?["name"] (@au[i]?["relationship"]) @au[i]?["phone"]</span> <button class="btn btn-outline btn-sm">Remove</button></form>
+            } }
+            <form method="post" asp-page-handler="Authorized" class="stack-form">
+                <div class="field"><label for="an">Name</label><input id="an" name="name" required></div>
+                <div class="field"><label for="ar">Relationship</label><select id="ar" name="relationship"><option>Spouse</option><option>Family</option><option>Roommate</option><option>Business partner</option><option>Other</option></select></div>
+                <div class="field"><label for="ap">Phone</label><input id="ap" name="phone"></div>
+                <button class="btn btn-outline">Add</button>
+            </form>
+        </div>
+        <div class="byop-panel">
+            <h2>Linked accounts</h2>
+            <p>Have more than one account? Link them to switch without signing out.</p>
+            <form method="post" asp-page-handler="Link" class="stack-form">
+                <div class="field"><label for="la">Account number</label><input id="la" name="account" required></div>
+                <div class="field"><label for="lz">Service zip</label><input id="lz" name="zip" maxlength="5" required></div>
+                <button class="btn btn-outline">Link</button>
+            </form>
+        </div>
+    </div>
+</div></section>

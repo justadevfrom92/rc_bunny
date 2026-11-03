@@ -1,0 +1,32 @@
+@page "/myaccount/payment-methods"
+@model MethodsModel
+@inject Brand B
+@{ ViewData["Title"] = $"Payment Methods | {B.Name}"; }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <partial name="_Flash" model="Model" />
+    <div class="ma-grid">
+        <div class="byop-panel">
+            <h2>Payment methods</h2>
+            @if (Model.Methods.Count == 0) { <p>None saved yet.</p> }
+            @foreach (var m in Model.Methods)
+            {
+                <div class="row-form">
+                    <span><strong>@m.Type</strong> ending @m.Last4 @(m.Expires is { } e ? $"· exp {e}" : "") @m.Nickname @if (m.Autopay) { <span class="tag">AutoPay</span> }</span>
+                    @if (!m.Autopay) { <form method="post" asp-page-handler="Autopay"><input type="hidden" name="id" value="@m.Id"><button class="btn btn-outline btn-sm">Use for AutoPay</button></form> }
+                    <form method="post" asp-page-handler="Remove"><input type="hidden" name="id" value="@m.Id"><button class="btn btn-outline btn-sm">Remove</button></form>
+                </div>
+            }
+        </div>
+        <div class="byop-panel">
+            <h2>Add one</h2>
+            <form method="post" asp-page-handler="Add" class="stack-form" autocomplete="off">
+                <div class="field"><label for="t">Type</label><select id="t" name="type"><option>Credit Card</option><option>Bank Account</option></select></div>
+                <div class="field"><label for="n">Card or account number</label><input id="n" name="number" inputmode="numeric" required></div>
+                <div class="field"><label for="x">Expires (cards)</label><input id="x" name="expires" placeholder="MM/YY"></div>
+                <div class="field"><label for="k">Nickname</label><input id="k" name="nickname"></div>
+                <button class="btn">Save</button>
+            </form>
+        </div>
+    </div>
+</div></section>

@@ -1,0 +1,34 @@
+@page "/quickpay"
+@model QuickPayModel
+@inject Brand B
+@{ ViewData["Title"] = $"QuickPay | {B.Name}"; var c = Model.Customer; }
+<section class="section section-sky"><div class="wrap" style="max-width:560px">
+    <div class="byop-panel">
+        <h1 style="font-size:1.6rem">QuickPay</h1>
+        <p>Pay your bill without signing in.</p>
+        @if (Model.Message is { } msg) { <div class="form-msg ok" role="status">@msg</div> }
+        else
+        {
+            @if (Model.Problem is { } p) { <div class="form-msg error" role="alert">@p</div> }
+            @if (c is null)
+            {
+                <form method="get" class="stack-form">
+                    <div class="field"><label for="a">Account number</label><input id="a" name="account" required></div>
+                    <div class="field"><label for="z">Service zip</label><input id="z" name="zip" maxlength="5" required></div>
+                    <button class="btn">Find my bill</button>
+                </form>
+            }
+            else
+            {
+                <p>@c.FirstName, your balance is <strong>@c.Balance.ToString("C")</strong>.</p>
+                <form method="post" class="stack-form" autocomplete="off">
+                    <input type="hidden" name="account" value="@c.Account"><input type="hidden" name="zip" value="@c.Zip">
+                    <div class="field"><label for="amt">Amount</label><input id="amt" name="amount" type="number" step="0.01" min="0.01" value="@(Model.Amount is { } a ? a.ToString("0.00") : c.Balance > 0 ? c.Balance.ToString("0.00") : "")" required></div>
+                    <div class="field"><label for="cn">Card number</label><input id="cn" name="card" inputmode="numeric" required></div>
+                    <div class="field"><label for="ex">Expires</label><input id="ex" name="expires" placeholder="MM/YY" required></div>
+                    <button class="btn">Pay</button>
+                </form>
+            }
+        }
+    </div>
+</div></section>

@@ -26,5 +26,7 @@
                 <p class="ma-note">Development sample: <code>demo.customer</code> / <code>password</code></p>
             }
         </form>
+        <p class="ma-links"><a href="/myaccount/forgot-password">Forgot password?</a> · <a href="/myaccount/forgot-username">Forgot username?</a> · <a href="/myaccount/register">Create a login</a> · <a href="/quickpay">QuickPay</a></p>
+        @if (TempData["flash"] is string f) { <div class="form-msg ok" role="status">@f</div> }
     </div>
 </section>

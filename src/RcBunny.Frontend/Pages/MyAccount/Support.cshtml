@@ -1,0 +1,58 @@
+@page "/myaccount/support/{id:int?}"
+@model SupportModel
+@inject Brand B
+@{ ViewData["Title"] = $"Support | {B.Name}"; }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <partial name="_Flash" model="Model" />
+    <div class="ma-grid">
+        <div class="byop-panel">
+            <h2>Your requests</h2>
+            @if (Model.Tickets.Count == 0) { <p>No requests yet.</p> }
+            <ul class="msg-list">
+            @foreach (var t in Model.Tickets) { <li><a href="/myaccount/support/@t.Id">#@t.Id @t.Subject</a> <span class="tag">@t.Status</span> <small>@t.LastActivityAt?.ToString("MMM d")</small></li> }
+            </ul>
+            <a class="btn btn-outline" href="/myaccount/support">New request</a>
+        </div>
+        @if (Model.Ticket is { } tk)
+        {
+            <div class="byop-panel">
+                <h2>#@tk.Id @tk.Subject</h2>
+                <p><span class="tag">@tk.Status</span> @tk.Topic</p>
+                @foreach (var m in Model.Thread.Where(m => m.Author != "note"))
+                {
+                    <div class="chat-line @(m.Author == "customer" ? "me" : "")"><small>@(m.Author == "customer" ? "You" : m.User?.Name ?? "Support") · @m.CreatedAt.ToString("MMM d, h:mm tt")</small><p>@m.Body</p>
+                    @foreach (var f in Model.Files.Where(f => f.SupportTicketMessageId == m.Id)) { <a href="/myaccount/support/@tk.Id?handler=File&fileId=@f.Id">📎 @f.Name</a> }
+                    </div>
+                }
+                <form method="post" asp-page-handler="Reply" enctype="multipart/form-data" class="stack-form">
+                    <input type="hidden" name="id" value="@tk.Id">
+                    <div class="field"><label for="r">Reply</label><textarea id="r" name="message" rows="4"></textarea></div>
+                    <div class="field"><label for="rf">Attach a file</label><input id="rf" type="file" name="file" accept="image/*,application/pdf,text/plain"></div>
+                    <button class="btn">Send</button>
+                </form>
+                @if (tk.Status is "solved" or "closed" && tk.Rating == null)
+                {
+                    <form method="post" asp-page-handler="Rate" class="stack-form"><input type="hidden" name="id" value="@tk.Id">
+                        <p>How did we do?</p>
+                        <label class="opt-line"><input type="radio" name="rating" value="good" required> Good</label><label class="opt-line"><input type="radio" name="rating" value="bad"> Not good</label>
+                        <div class="field"><label for="rc">Comment</label><input id="rc" name="comment"></div><button class="btn btn-outline">Send rating</button>
+                    </form>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="byop-panel">
+                <h2>New request</h2>
+                <form method="post" asp-page-handler="New" enctype="multipart/form-data" class="stack-form">
+                    <div class="field"><label for="s">Subject</label><input id="s" name="subject" maxlength="200" required></div>
+                    <div class="field"><label for="tp">Topic</label><select id="tp" name="topic">@foreach (var t in SupportModel.Topics) { <option>@t</option> }</select></div>
+                    <div class="field"><label for="m">Message</label><textarea id="m" name="message" rows="5" required></textarea></div>
+                    <div class="field"><label for="f">Attach a file</label><input id="f" type="file" name="file" accept="image/*,application/pdf,text/plain"></div>
+                    <button class="btn">Send</button>
+                </form>
+            </div>
+        }
+    </div>
+</div></section>

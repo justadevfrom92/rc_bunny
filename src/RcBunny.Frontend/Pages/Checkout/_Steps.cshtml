@@ -1,0 +1,8 @@
+@model string
+@{ var names = new[] { ("address", "Address"), ("plan", "Plan"), ("about", "About You"), ("review", "Review") }; var cur = Array.FindIndex(names, n => n.Item1 == Model); }
+<ol class="steps">
+    @for (var i = 0; i < names.Length; i++)
+    {
+        <li class="@(i == cur ? "on" : i < cur ? "done" : "")">@names[i].Item2</li>
+    }
+</ol>

@@ -1,0 +1,20 @@
+@page "/myaccount/register"
+@model RegisterModel
+@inject Brand B
+@{ ViewData["Title"] = $"Create a Login | {B.Name}"; }
+<section class="section section-sky"><div class="wrap" style="max-width:560px">
+    <div class="byop-panel">
+        <h1 style="font-size:1.6rem">Create your My Account login</h1>
+        @if (Model.Problem is { } p) { <div class="form-msg error" role="alert">@p</div> }
+        <form method="post" class="stack-form">
+            <div class="field"><label for="a">Account number</label><input id="a" name="account" required></div>
+            <div class="field"><label for="z">Service zip</label><input id="z" name="zip" maxlength="5" required></div>
+            <div class="field"><label for="e">Email on the account</label><input id="e" name="email" type="email" required></div>
+            <div class="field"><label for="u">Pick a username</label><input id="u" name="username" autocomplete="username" required></div>
+            <div class="field"><label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="new-password" minlength="8" required></div>
+            <div class="field"><label for="cf">Type it again</label><input id="cf" name="confirm" type="password" autocomplete="new-password" required></div>
+            <button class="btn">Create login</button>
+        </form>
+        <p style="margin-top:16px"><a href="/myaccount/login">Already have one? Sign in</a></p>
+    </div>
+</div></section>

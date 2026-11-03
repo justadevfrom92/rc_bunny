@@ -1,0 +1,25 @@
+@page "/myaccount/orders/{id:int?}"
+@model OrdersModel
+@inject Brand B
+@{ ViewData["Title"] = $"Orders | {B.Name}"; }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <partial name="_Flash" model="Model" />
+    <div class="ma-grid">
+        <div class="byop-panel">
+            <h2>Shop orders</h2>
+            @if (Model.Orders.Count == 0) { <p>No orders yet. Visit the <a href="/shop">shop</a>.</p> }
+            <ul class="msg-list">@foreach (var row in Model.Orders) { <li><a href="/myaccount/orders/@row.Id">@row.Number</a> <span class="tag">@row.Status</span> <small>@row.Total.ToString("C") · @row.CreatedAt.ToString("MMM d")</small></li> }</ul>
+        </div>
+        @if (Model.Order is { } o)
+        {
+            <div class="byop-panel">
+                <h2>@o.Number</h2>
+                <table class="price-table"><thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead><tbody>
+                @foreach (var i in (o.Items as System.Text.Json.Nodes.JsonArray) ?? []) { <tr><td>@i?["name"]</td><td>@i?["qty"]</td><td>@((i?["price"]?.GetValue<decimal>() ?? 0).ToString("C"))</td></tr> }
+                </tbody></table>
+                <dl class="cart-totals"><dt>Subtotal</dt><dd>@o.Subtotal.ToString("C")</dd><dt>Tax</dt><dd>@o.Tax.ToString("C")</dd><dt>Shipping</dt><dd>@o.Shipping.ToString("C")</dd><dt>Total</dt><dd><strong>@o.Total.ToString("C")</strong></dd><dt>Paid</dt><dd>@o.PaymentStatus (@o.PayWith)</dd><dt>Stars earned</dt><dd>@o.Stars</dd></dl>
+            </div>
+        }
+    </div>
+</div></section>

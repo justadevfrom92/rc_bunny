@@ -199,20 +199,6 @@ public static class SurveyEmails
     }
 }
 
-/// <summary>Signed survey links so an answer is tied to the account ({{survey:slug}}). Same secret on the website.</summary>
-public static class SurveyLinks
-{
-    public static string Secret = "rcbunny-dev-survey-secret";
-
-    public static string Sign(string slug, int customerId)
-    {
-        using var h = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(Secret));
-        return Convert.ToHexString(h.ComputeHash(Encoding.UTF8.GetBytes($"{slug}|{customerId}")))[..20].ToLowerInvariant();
-    }
-
-    public static string For(string slug, int customerId) => $"/survey/{slug}?c={customerId}&sig={Sign(slug, customerId)}";
-}
-
 /// <summary>Sheriff → Heartbeat: is everything working? Database, scheduler, queue, storage, mail, website, keys.</summary>
 public static class Health
 {

@@ -1,0 +1,20 @@
+@page "/checkout/plan"
+@model PlanModel
+@inject Brand B
+@{ ViewData["Title"] = $"Choose a Plan | {B.Name}"; }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Steps" model="@("plan")" />
+    <h1 style="font-size:1.6rem">Plans for @Model.Market?.Description</h1>
+    <div class="plan-grid">
+        @foreach (var (p, price) in Model.Plans)
+        {
+            <article class="plan@(Model.Data.PlanId == p.Id ? " featured" : "")">
+                @if (Model.Data.PlanId == p.Id) { <span class="plan-flag">Your pick</span> }
+                <div class="plan-top"><span class="plan-term">@Pricing.TermLabel(p.Term)</span><h3>@p.Name</h3><div class="plan-rate"><strong>@price?.ToString("0.0")¢</strong><span>per kWh</span></div><p class="plan-rate-note">Avg. at 1,000 kWh · @Pricing.EtfLabel(p.Etf)</p></div>
+                <div class="plan-body"><ul class="checks">@foreach (var x in p.Perks) { <li>@x</li> }</ul>
+                    <form method="post"><input type="hidden" name="planId" value="@p.Id"><button class="btn btn-block">Choose This Plan</button></form></div>
+            </article>
+        }
+    </div>
+    <p><a href="/checkout">← Back</a></p>
+</div></section>

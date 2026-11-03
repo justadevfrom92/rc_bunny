@@ -1,0 +1,24 @@
+@page "/myaccount/products"
+@model ProductsModel
+@inject Brand B
+@{ ViewData["Title"] = $"Products | {B.Name}"; }
+<section class="section section-sky"><div class="wrap">
+    <partial name="_Frame" model="Model" />
+    <partial name="_Flash" model="Model" />
+    <div class="ma-cards">
+        @foreach (var p in Model.Products)
+        {
+            <div class="ma-card">
+                <h3>@p.Name @if (p.Enrolled) { <span class="tag">On</span> }</h3>
+                <p>@p.Description</p>
+                <p><strong>@p.Price</strong></p>
+                @if (p.How == "self")
+                {
+                    <form method="post"><input type="hidden" name="key" value="@p.Key"><button class="btn @(p.Enrolled ? "btn-outline" : "")">@(p.Enrolled ? "Turn off" : "Enroll")</button></form>
+                }
+                else if (p.How == "call") { <p>Call <a href="@B.PhoneHref">@B.Phone</a> to set this up.</p> }
+                else { <a class="btn btn-outline" href="/@p.How.Replace("myaccount.", "myaccount/")">Open</a> }
+            </div>
+        }
+    </div>
+</div></section>

@@ -22,7 +22,7 @@
                             <tbody>
                                 @foreach (var b in Model.Bills)
                                 {
-                                    <tr><td>@b.BilledOn.ToString("MMM d, yyyy")</td><td>@b.Invoice</td><td>@b.Kwh.ToString("N0")</td><td>@b.Amount.ToString("C")</td><td>@b.DueOn?.ToString("MMM d")</td></tr>
+                                    <tr><td>@b.BilledOn.ToString("MMM d, yyyy")</td><td><a href="/myaccount/bills/@b.Id/pdf">@b.Invoice</a></td><td>@b.Kwh.ToString("N0")</td><td>@b.Amount.ToString("C")</td><td>@b.DueOn?.ToString("MMM d")</td></tr>
                                 }
                             </tbody>
                         </table>

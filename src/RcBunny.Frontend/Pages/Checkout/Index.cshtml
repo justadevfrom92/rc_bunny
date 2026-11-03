@@ -1,0 +1,28 @@
+@page "/checkout"
+@model AddressModel
+@inject Brand B
+@{ ViewData["Title"] = $"Sign Up | {B.Name}"; var f = Model.Form; }
+<section class="section section-sky"><div class="wrap" style="max-width:820px">
+    <partial name="_Steps" model="@("address")" />
+    <form method="post" class="byop-panel">
+        <h1 style="font-size:1.6rem">Where do you need power?</h1>
+        <div class="toggle-group" role="group" aria-label="Service type">
+            <label><input type="radio" name="Form.Biz" value="false" checked="@(!f.Biz)"> Home</label>
+            <label><input type="radio" name="Form.Biz" value="true" checked="@f.Biz"> Business</label>
+        </div>
+        <div class="form-2">
+            <div class="field"><label for="a">Street address</label><input id="a" name="Form.Address" value="@f.Address" required autocomplete="address-line1"><span class="form-msg error">@Model.Err("Form.Address")</span></div>
+            <div class="field"><label for="u">Unit</label><input id="u" name="Form.Unit" value="@f.Unit" autocomplete="address-line2"></div>
+        </div>
+        <div class="form-2" style="margin-top:16px">
+            <div class="field"><label for="c">City</label><input id="c" name="Form.City" value="@f.City" required autocomplete="address-level2"><span class="form-msg error">@Model.Err("Form.City")</span></div>
+            <div class="field"><label for="z">Zip</label><input id="z" name="Form.Zip" value="@f.Zip" required inputmode="numeric" maxlength="5" autocomplete="postal-code"><span class="form-msg error">@Model.Err("Form.Zip")</span></div>
+        </div>
+        <div class="field" style="margin-top:16px"><label for="e">ESIID (optional; it's on your current bill)</label><input id="e" name="Form.Esiid" value="@f.Esiid" inputmode="numeric"><span class="form-msg error">@Model.Err("Form.Esiid")</span></div>
+        <div class="form-2" style="margin-top:16px">
+            <div class="field"><label for="t">Are you…</label><select id="t" name="Form.EnrollmentType"><option value="Switch" selected="@(f.EnrollmentType == "Switch")">Switching providers at this address</option><option value="Move-In" selected="@(f.EnrollmentType == "Move-In")">Moving in</option></select></div>
+            <div class="field"><label for="d">Move-in date</label><input id="d" type="date" name="Form.StartDate" value="@f.StartDate?.ToString("yyyy-MM-dd")"><span class="form-msg error">@Model.Err("Form.StartDate")</span></div>
+        </div>
+        <button class="btn" style="margin-top:20px">Continue</button>
+    </form>
+</div></section>
