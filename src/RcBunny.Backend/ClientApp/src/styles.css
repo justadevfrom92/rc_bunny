@@ -7,11 +7,19 @@
 /* Panels */
 .card { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; color: var(--ink); }
 a.card:hover { border-color: var(--cyan); text-decoration: none; }
-.card > h2:first-child, .card > h3:first-child { margin-top: 0; }
+/* A card that starts with a heading is drawn as ebunny's .panel with its .panel-head row */
+.card:has(> h2:first-child) { padding-top: 0; }
+.card > h2:first-child { margin: 0 -18px 18px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.card > h3:first-child { margin-top: 0; }
+/* Tables inside a card run edge to edge, like ebunny's .panel > .table-wrap */
+.card > table, .card > .scroll, .card > .table-wrap { margin-left: -18px; margin-right: -18px; width: calc(100% + 36px); max-width: none; }
+.card > table:last-child, .card > .scroll:last-child, .card > .table-wrap:last-child { margin-bottom: -18px; }
+.card > h2:first-child + table, .card > h2:first-child + .scroll, .card > h2:first-child + .table-wrap { margin-top: -18px; }
+.card table th:first-child, .card table td:first-child { padding-left: 18px; }
+.card table th:last-child, .card table td:last-child { padding-right: 18px; }
+.content > table, .content > .scroll { overflow: hidden; }
 .content > table, .content > .scroll, .card + table { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
 .scroll { overflow-x: auto; }
-.card table { margin: 0; }
-.card > table:first-child { margin-top: -6px; }
 
 /* Rows of controls */
 .row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
