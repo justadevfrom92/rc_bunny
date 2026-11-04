@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Residential Electricity Plans | Energy Texas</title>
-  <meta name="description" content="Compare fixed-rate and month-to-month Texas electricity plans from Energy Texas.">
-  <link rel="stylesheet" href="/frontend/css/style.css">
-  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
-</head>
-<body>
-  <div id="site-header"></div>
-
-  <main>
+@page "/plans.html"
+@* ebunny's public/frontend/plans.html: the same markup. The header, footer, plan cards and forms are filled in by main.js. *@
+@{ ViewData["FullTitle"] = "Residential Electricity Plans | Energy Texas"; ViewData["Description"] = "Compare fixed-rate and month-to-month Texas electricity plans from Energy Texas."; ViewData["NoHeading"] = true; }
     <h1 class="sr-only">Residential Electricity Plans</h1>
 
     <div data-zone="top"></div>
@@ -92,9 +81,3 @@
         </div>
       </div>
     </section>
-  </main>
-
-  <div data-zone="bottom"></div>
-  <div id="site-footer"></div>
-</body>
-</html>

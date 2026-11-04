@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Business Electricity Plans | Energy Texas</title>
-  <meta name="description" content="Commercial electricity plans for Texas businesses and homebuilders from Energy Texas.">
-  <link rel="stylesheet" href="/frontend/css/style.css">
-  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
-</head>
-<body>
-  <div id="site-header"></div>
-
-  <main>
+@page "/business.html"
+@* ebunny's public/frontend/business.html: the same markup. The header, footer, plan cards and forms are filled in by main.js. *@
+@{ ViewData["FullTitle"] = "Business Electricity Plans | Energy Texas"; ViewData["Description"] = "Commercial electricity plans for Texas businesses and homebuilders from Energy Texas."; ViewData["NoHeading"] = true; }
     <h1 class="sr-only">Takin' Care of Business</h1>
 
     <div data-zone="top"></div>
@@ -67,9 +56,3 @@
         <a class="btn" href="contact-us.html?topic=business">Talk to Our Team</a>
       </div>
     </section>
-  </main>
-
-  <div data-zone="bottom"></div>
-  <div id="site-footer"></div>
-</body>
-</html>

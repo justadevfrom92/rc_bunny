@@ -9,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAppDatabase(builder.Configuration);
 builder.Services.AddMemoryCache();
-builder.Services.AddRazorPages(o => o.Conventions.AuthorizeFolder("/MyAccount").AllowAnonymousToPage("/MyAccount/Login"));
+builder.Services.AddRazorPages(o =>
+{
+    o.Conventions.AuthorizeFolder("/MyAccount").AllowAnonymousToPage("/MyAccount/Login");
+    o.Conventions.AddPageRoute("/Index", "index.html"); // main.js links home as index.html
+});
 
 
 // Customers sign in to My Account with their own cookie (separate from the employee admin).
@@ -29,7 +33,7 @@ app.UseMiddleware<Maintenance>(); // Sheriff can switch the website off
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapSite();      // ebunny's website pages and what they ask the server for (Services/SiteEndpoints.cs)
-app.MapRazorPages(); // My Account
+app.MapSite();       // what main.js asks the server for (Services/SiteEndpoints.cs)
+app.MapRazorPages(); // the website's pages and My Account
 
 app.Run();

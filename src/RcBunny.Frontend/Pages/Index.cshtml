@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Energy Texas | Texas Electricity Plans &amp; Rates</title>
-  <meta name="description" content="Fixed-rate Texas electricity plans, Build Your Own Plan, and Rangler Rewards from Energy Texas.">
-  <link rel="stylesheet" href="/frontend/css/style.css">
-  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
-</head>
-<body>
-  <div id="site-header"></div>
-
-  <main>
+@page "/"
+@* ebunny's public/frontend/index.html: the same markup. The header, footer, plan cards and forms are filled in by main.js. *@
+@{ ViewData["FullTitle"] = "Energy Texas | Texas Electricity Plans & Rates"; ViewData["Description"] = "Fixed-rate Texas electricity plans, Build Your Own Plan, and Rangler Rewards from Energy Texas."; ViewData["NoHeading"] = true; }
     <!-- Hero + zip lookup -->
     <section class="hero">
       <div class="wrap">
@@ -216,9 +205,3 @@
         <a class="btn" href="plans.html">Find My Plan</a>
       </div>
     </section>
-  </main>
-
-  <div data-zone="bottom"></div>
-  <div id="site-footer"></div>
-</body>
-</html>

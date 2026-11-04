@@ -4,7 +4,7 @@ A simple C# version of ebunny: two projects that share one database.
 
 | Project | What it is | Address |
 | --- | --- | --- |
-| `src/RcBunny.Frontend` | Public website and customer My Account. ebunny's own website pages, style.css and main.js; My Account is Razor Pages with ebunny's markup. | http://localhost:5100 |
+| `src/RcBunny.Frontend` | Public website and customer My Account. Razor Pages with ebunny's markup, style.css and main.js. | http://localhost:5100 |
 | `src/RcBunny.Backend` | Employee admin. A plain Web API plus a React + TypeScript app in `ClientApp`. | http://localhost:5200 |
 
 ## Run it
@@ -121,11 +121,12 @@ src/RcBunny.Backend/
                           Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
 src/RcBunny.Frontend/
   Program.cs              customer sign-in, the site's pages and My Account
-  Services/SiteEndpoints.cs  what ebunny's pages ask the server for: /shared/config/brand.js and catalog.js (plans, rates,
+  Services/SiteEndpoints.cs  what main.js asks the server for: /shared/config/brand.js and catalog.js (plans, rates,
                           fees from the database), /site/session, the Contact Us form
   Services/Maintenance.cs the "we'll be right back" page when Sheriff switches the website off
-  Pages/                  MyAccount/* (Login, Dashboard, Pay, Rewards, Support), Shared/_Layout and _MyAccount (ebunny's frame)
-  wwwroot/frontend/       ebunny's index, plans, build-your-own-plan, business and contact-us pages, style.css and main.js, unchanged
+  Pages/                  Index, Plans, BuildYourOwnPlan, Business, ContactUs (ebunny's pages, at the same addresses: /plans.html…),
+                          MyAccount/* (Login, Dashboard, Pay, Rewards, Support), Shared/_Layout and _MyAccount (ebunny's frame)
+  wwwroot/frontend/       ebunny's style.css and main.js, unchanged
   wwwroot/shared/         ebunny's boot.js, core.js, tokens.css and logos
 ```
 

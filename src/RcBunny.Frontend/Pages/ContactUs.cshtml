@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contact Us | Energy Texas</title>
-  <meta name="description" content="Get in touch with Energy Texas customer care.">
-  <link rel="stylesheet" href="/frontend/css/style.css">
-  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
-</head>
-<body>
-  <div id="site-header"></div>
-
-  <main>
+@page "/contact-us.html"
+@* ebunny's public/frontend/contact-us.html: the same markup. The header, footer, plan cards and forms are filled in by main.js. *@
+@{ ViewData["FullTitle"] = "Contact Us | Energy Texas"; ViewData["Description"] = "Get in touch with Energy Texas customer care."; ViewData["NoHeading"] = true; }
     <h1 class="sr-only">Howdy! How can we help?</h1>
 
     <div data-zone="top"></div>
@@ -62,9 +51,3 @@
         </form>
       </div>
     </section>
-  </main>
-
-  <div data-zone="bottom"></div>
-  <div id="site-footer"></div>
-</body>
-</html>

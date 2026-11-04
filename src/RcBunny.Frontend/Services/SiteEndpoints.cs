@@ -6,22 +6,13 @@ using RcBunny.Data;
 namespace RcBunny.Frontend.Services;
 
 /// <summary>
-/// The website is ebunny's own pages (wwwroot/frontend/*.html, style.css and main.js, unchanged). These are the few
-/// things those pages ask the server for: the brand, the plan catalog, who's signed in, and the Contact Us form.
+/// The website's pages are Razor Pages with ebunny's markup, style.css and main.js. These are the few things main.js
+/// asks the server for: the brand, the plan catalog, who's signed in, and the Contact Us form.
 /// </summary>
 public static class SiteEndpoints
 {
-    private static readonly string[] Pages = ["index", "plans", "build-your-own-plan", "business", "contact-us"];
-
     public static void MapSite(this WebApplication app)
     {
-        var root = Path.Combine(app.Environment.WebRootPath, "frontend");
-
-        // The built-in pages
-        app.MapGet("/", () => Results.File(Path.Combine(root, "index.html"), "text/html; charset=utf-8"));
-        app.MapGet("/{page}.html", (string page) => Pages.Contains(page)
-            ? Results.File(Path.Combine(root, page + ".html"), "text/html; charset=utf-8")
-            : Results.NotFound());
         app.MapGet("/plans", () => Results.Redirect("/plans.html"));
         app.MapGet("/contact", () => Results.Redirect("/contact-us.html"));
 

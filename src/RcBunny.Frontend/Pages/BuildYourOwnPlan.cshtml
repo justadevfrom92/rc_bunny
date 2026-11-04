@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Build Your Own Plan | Energy Texas</title>
-  <meta name="description" content="Create a custom Texas electricity plan with Energy Texas — choose your term, savings and perks.">
-  <link rel="stylesheet" href="/frontend/css/style.css">
-  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
-</head>
-<body>
-  <div id="site-header"></div>
-
-  <main>
+@page "/build-your-own-plan.html"
+@* ebunny's public/frontend/build-your-own-plan.html: the same markup. The header, footer, plan cards and forms are filled in by main.js. *@
+@{ ViewData["FullTitle"] = "Build Your Own Plan | Energy Texas"; ViewData["Description"] = "Create a custom Texas electricity plan with Energy Texas — choose your term, savings and perks."; ViewData["NoHeading"] = true; }
     <section class="page-banner">
       <div class="wrap">
         <h1>Build Your Own Plan</h1>
@@ -159,9 +148,3 @@
         </div>
       </div>
     </section>
-  </main>
-
-  <div data-zone="bottom"></div>
-  <div id="site-footer"></div>
-</body>
-</html>
