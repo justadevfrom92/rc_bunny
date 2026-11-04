@@ -59,7 +59,9 @@ export function useLoad<T>(url: string | null) {
 
 export const money = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 export const date = (s: string) => new Date(s.length === 10 ? s + 'T00:00' : s).toLocaleDateString('en-US');
-export const dateTime = (s: string) => new Date(s).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
+/** ebunny's date and time: 10/26/2026 9:04 PM */
+export const dateTime = (s: string) =>
+  new Date(s).toLocaleString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }).replace(',', '');
 /** Builds a query string from the values that aren't empty. */
 export const qs = (values: Record<string, string | number | boolean | null | undefined>) =>
   new URLSearchParams(Object.entries(values).filter(([, v]) => v !== '' && v != null && v !== false).map(([k, v]) => [k, String(v)])).toString();
