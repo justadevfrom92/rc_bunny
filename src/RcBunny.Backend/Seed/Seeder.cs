@@ -80,6 +80,7 @@ public static partial class Seeder
         var today = DateOnly.FromDateTime(DateTime.Today);
         await db.SaveChangesAsync();
         await SeedCustomersAsync(db, markets, plans, password);
+        await SeedPortalLoginsAsync(db, password);
         var adminUser = await db.Users.FirstAsync(u => u.Email == "admin@example.com");
         await SeedCrmAsync(db, adminUser, markets);
         await SeedShopAsync(db);
@@ -145,6 +146,27 @@ public static partial class Seeder
         members[0].Stars -= 2500; members[1].Stars -= 800;
         db.DrawingWinners.Add(new DrawingWinner { Month = DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM"), CustomerId = members[2].Id, Prize = "$500 bill credit", DrawnBy = "Admin Demo", DrawnAt = DateTime.UtcNow.AddDays(-20) });
 
+        await db.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// My Account logins for sample customers in different situations, for the Test Sign-Ins (password "password"),
+    /// the same as ebunny's PortalLoginSeeder.
+    /// </summary>
+    private static async Task SeedPortalLoginsAsync(AppDbContext db, string password)
+    {
+        var customers = await db.Customers.Where(c => c.Email != null).OrderBy(c => c.Id).ToListAsync();
+        var picks = new (string Username, Func<Customer, bool> Where)[]
+        {
+            ("test.business", c => c.Type == "Small Business"),
+            ("test.pastdue", c => c.Balance > 50 && c.Status == "Good - On Flow"),
+            ("test.credit", c => c.Balance < 0),
+            ("test.deposit", c => c.Status == "Pending - Deposit Due"),
+            ("test.moved", c => c.Status is "Dropped - Churned" or "Moved Out" or "Disconnected"),
+        };
+        foreach (var (username, where) in picks)
+            if (customers.FirstOrDefault(c => c.PasswordHash == null && where(c)) is { } c)
+                (c.Username, c.PasswordHash) = (username, password);
         await db.SaveChangesAsync();
     }
 

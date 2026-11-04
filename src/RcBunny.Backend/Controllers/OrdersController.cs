@@ -23,7 +23,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
         var prefill = renewing ?? (string.IsNullOrEmpty(esiid) ? null : await db.Customers.FirstOrDefaultAsync(c => c.Esiid == esiid));
         biz = biz || renewing?.Type == "Small Business";
         var today = DateOnly.FromDateTime(DateTime.Today);
-        var rates = await db.Rates.Where(r => r.EffectiveOn <= today).ToListAsync();
+        var rates = Pricing.CurrentRates(await db.Rates.ToListAsync(), today);
         var markets = await db.Markets.OrderBy(m => m.Name).ToListAsync();
         return Ok(new
         {
@@ -112,7 +112,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
     private async Task<PlanTerm> NewTerm(Customer c, Plan plan, int marketId, DateOnly? start)
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
-        var rate = await db.Rates.Where(r => r.PlanId == plan.Id && r.MarketId == marketId && r.EffectiveOn <= today).OrderByDescending(r => r.EffectiveOn).FirstOrDefaultAsync();
+        var rate = Pricing.CurrentRate(await db.Rates.Where(r => r.PlanId == plan.Id && r.MarketId == marketId).ToListAsync(), today);
         var market = await db.Markets.FindAsync(marketId);
         return new PlanTerm
         {

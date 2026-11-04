@@ -16,7 +16,7 @@ public class PlansController(AppDbContext db) : ControllerBase
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
         var markets = await db.Markets.OrderBy(m => m.Name).Select(m => new { m.Id, m.Name }).ToListAsync();
-        var rates = await db.Rates.Where(r => r.EffectiveOn <= today).ToListAsync();
+        var rates = Pricing.CurrentRates(await db.Rates.ToListAsync(), today);
         var plans = (await db.Plans.OrderBy(p => p.Type).ThenBy(p => p.TermMonths).ThenBy(p => p.Name).ToListAsync())
             .Select(p => new
             {

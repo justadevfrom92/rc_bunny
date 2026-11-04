@@ -24,10 +24,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 var app = builder.Build();
+var storage = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, app.Configuration["Storage:Root"] ?? "../../storage"));
 
+// Database commands, like artisan: dotnet run -- migrate | migrate:fresh | db:show (see Seed/Commands.cs)
+if (args.FirstOrDefault(a => Commands.Names.Contains(a)) is { } command)
+{
+    using var scope = app.Services.CreateScope();
+    return await Commands.RunAsync(command, scope.ServiceProvider.GetRequiredService<AppDbContext>(), storage);
+}
+
+// Starting normally creates the database and sample data the first time
 using (var scope = app.Services.CreateScope())
-    await Seeder.RunAsync(scope.ServiceProvider.GetRequiredService<AppDbContext>(),
-        Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, app.Configuration["Storage:Root"] ?? "../../storage")));
+    await Seeder.RunAsync(scope.ServiceProvider.GetRequiredService<AppDbContext>(), storage);
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -36,3 +44,4 @@ app.MapControllers();
 app.MapFallbackToFile("index.html"); // the React admin handles its own pages
 
 app.Run();
+return 0;

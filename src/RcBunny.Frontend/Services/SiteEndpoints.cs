@@ -91,8 +91,7 @@ public static class SiteEndpoints
         var plans = await db.Plans.OrderBy(p => p.Id).ToListAsync();
         var today = DateOnly.FromDateTime(DateTime.Today);
         // The rate in effect today for each plan and market
-        var rates = (await db.Rates.Where(r => r.EffectiveOn <= today).ToListAsync())
-            .GroupBy(r => (r.PlanId, r.MarketId)).Select(g => g.OrderByDescending(r => r.EffectiveOn).First()).ToList();
+        var rates = Pricing.CurrentRates(await db.Rates.ToListAsync(), today);
         var regions = new[] { "Generic" }.Concat(markets.Select(m => m.Region).Distinct()).ToList();
         var discounts = await db.TermDiscounts.ToListAsync();
         var etfs = await db.TermEtfs.ToDictionaryAsync(e => e.Term, e => e.Amount);
