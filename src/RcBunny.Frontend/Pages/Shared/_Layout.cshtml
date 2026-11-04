@@ -1,49 +1,37 @@
-@{
-    var path = Context.Request.Path.Value ?? "/";
-    string Active(string href) => (href == "/" ? path == "/" : path.StartsWith(href)) ? "active" : "";
-}
+@* The website layout for pages the server builds (My Account), same as ebunny's frontend/layouts/main.blade.php:
+   the header and footer come from main.js, like on the built-in pages. *@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Raleway:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="~/css/tokens.css" asp-append-version="true">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
-    <link rel="stylesheet" href="~/css/rcbunny.css" asp-append-version="true">
-    <link rel="icon" href="~/favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@ViewData["Title"] | @Site.Name</title>
+  @await RenderSectionAsync("Head", required: false)
+  <link rel="stylesheet" href="/frontend/css/style.css">
+  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
+  <script src="/shared/password-toggle.js" defer></script>
+  <script src="/shared/datepicker.js" defer></script>
 </head>
 <body>
-    <header class="site-header">
-        <div class="wrap">
-            <a class="logo" href="/">
-                <img class="logo-mark" src="~/img/logo-mark.svg" alt="" width="44" height="44">
-                <span class="logo-text"><strong>ENERGY TEXAS</strong><span>Power to the People</span></span>
-            </a>
-            <div class="nav-panel">
-                <nav class="nav">
-                    <a href="/" class="@Active("/")">Home</a>
-                    <a href="/plans" class="@Active("/plans")">Plans</a>
-                    <a href="/plans?type=business">Business</a>
-                    <a href="/contact" class="@Active("/contact")">Contact Us</a>
-                </nav>
-                <div class="nav-actions"><a class="btn" href="/myaccount">My Account</a></div>
-            </div>
-        </div>
-    </header>
+  <div id="site-header"></div>
+  @await RenderSectionAsync("Notice", required: false)
 
-    <main>@RenderBody()</main>
+  <main>
+    @if (ViewData["ShowTitle"] is true)
+    {
+      <div class="page-title"><div class="wrap">
+        @if (ViewData["Eyebrow"] is string eyebrow) { <p class="eyebrow">@eyebrow</p> }
+        <h1>@(ViewData["Heading"] ?? ViewData["Title"])</h1>
+      </div></div>
+    }
+    else
+    {
+      <h1 class="sr-only">@(ViewData["Heading"] ?? ViewData["Title"])</h1>
+    }
+    @RenderBody()
+  </main>
 
-    <footer class="site-footer">
-        <div class="wrap">
-            <p>Call us: <a href="@Site.PhoneLink">@Site.Phone</a></p>
-            <div class="footer-bottom">
-                <span>&copy; @DateTime.Now.Year @Site.Name</span>
-                <nav><a href="/plans">Plans</a><a href="/contact">Contact</a><a href="/myaccount">My Account</a><a href="@Site.AdminUrl" rel="nofollow">Admin</a></nav>
-            </div>
-        </div>
-    </footer>
-    @await RenderSectionAsync("Scripts", required: false)
+  <div id="site-footer"></div>
+  @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

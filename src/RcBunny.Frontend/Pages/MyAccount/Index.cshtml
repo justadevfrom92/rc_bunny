@@ -1,49 +1,67 @@
 @page "/myaccount"
 @model RcBunny.Frontend.Pages.MyAccount.IndexModel
-@{ ViewData["Title"] = $"My Account | {Site.Name}"; var c = Model.Customer; }
-<section class="section section-sky">
-    <div class="wrap">
-        <div class="ma-head">
-            <div>
-                <span class="eyebrow">My Account</span>
-                <h1>Howdy, @c.Name.Split(' ')[0]</h1>
-                <p>Account <strong>@c.Account</strong> · @c.Address, @c.City</p>
-            </div>
-            <form method="post" asp-page="/MyAccount/Logout"><button class="btn btn-outline">Sign out</button></form>
+@{
+    var c = Model.Customer;
+    ViewData["Title"] = "Dashboard"; ViewData["MaTitle"] = "Dashboard"; ViewData["Customer"] = c; ViewData["Status"] = TempData["paid"];
+    Layout = "_MyAccount";
+    var last = Model.Bills.FirstOrDefault();
+    var usage = Model.Bills.Take(12).Reverse().ToList();
+    var top = Math.Max(1, usage.Count == 0 ? 1 : usage.Max(b => b.Kwh));
+}
+<div class="ma-cards">
+  <div class="ma-stat"><span>Current Balance</span><strong>@c.Balance.ToString("C")</strong><small>@(c.DueDate is { } due ? $"Due {due:MMM d, yyyy}" : "Nothing due")</small>
+    <a class="btn btn-block" href="/myaccount/pay">Pay Bill</a></div>
+  <div class="ma-stat"><span>Plan</span><strong class="sm">@(c.Plan?.Name ?? "—")</strong><small>@c.Status</small>
+    <a class="btn btn-outline btn-block" href="/plans.html">See Plans</a></div>
+  <div class="ma-stat"><span>Rewards</span><strong>@c.Stars.ToString("N0") ★</strong><small>stars to spend</small>
+    <a class="btn btn-outline btn-block" href="/myaccount/rewards">Redeem</a></div>
+</div>
+<div class="ma-row">
+  <div class="co-card"><h3>Last Bill</h3>
+    @if (last != null) { <p>@last.BilledOn.ToString("MMM d, yyyy") · @last.Kwh.ToString("N0") kWh · <b>@last.Amount.ToString("C")</b></p> }
+    else { <p>Your first bill will show here.</p> }
+  </div>
+  <div class="co-card"><h3>Services</h3>
+    <ul class="ma-services">
+      <li>AutoPay <span class="@(c.Autopay ? "pill-on" : "pill-off")">@(c.Autopay ? "On" : "Off")</span></li>
+      <li>Paperless Billing <span class="@(c.Paperless ? "pill-on" : "pill-off")">@(c.Paperless ? "On" : "Off")</span></li>
+      <li>Peak Perks <span class="@(c.PeakPerks ? "pill-on" : "pill-off")">@(c.PeakPerks ? "On" : "Off")</span></li>
+    </ul>
+  </div>
+</div>
+@if (usage.Count > 0)
+{
+  <div class="co-card" style="margin-top:20px"><h3>Usage (kWh)</h3>
+    <div class="bc" style="--bc-n:@usage.Count;--bc-h:170px" role="img" aria-label="@string.Join("; ", usage.Select(b => $"{b.BilledOn:MMMM yyyy}: {b.Kwh:N0} kWh"))">
+      @foreach (var b in usage)
+      {
+        <div class="bc-col" tabindex="0" data-tip="@($"{b.BilledOn:MMMM yyyy}: {b.Kwh:N0} kWh")">
+          <span class="bc-val">@b.Kwh.ToString("N0")</span>
+          <span class="bc-track"><b style="height:@(Math.Round((double)b.Kwh / top * 100, 1).ToString(System.Globalization.CultureInfo.InvariantCulture))%"></b></span>
+          <span class="bc-lab">@b.BilledOn.ToString("MMM")</span>
         </div>
-        @if (TempData["paid"] is string paid) { <div class="form-msg ok">@paid</div> }
-
-        <div class="ma-cards">
-            <div class="ma-card">
-                <h3>Amount due</h3>
-                <strong class="big">@c.Balance.ToString("C")</strong>
-                <p>Due @(c.DueDate?.ToString("MMM d, yyyy") ?? "—")@(c.Autopay ? " · AutoPay is on" : "")</p>
-                <a class="btn" href="/myaccount/pay">Pay My Bill</a>
-            </div>
-            <div class="ma-card"><h3>Rewards</h3><strong class="big">@c.Stars.ToString("N0")</strong><p>stars to spend</p><a class="btn btn-outline" href="/myaccount/rewards">Redeem</a></div>
-            <div class="ma-card"><h3>Need help?</h3><strong>Support</strong><p>Ask us anything and track the answer.</p><a class="btn btn-outline" href="/myaccount/support">Get Support</a></div>
-            <div class="ma-card"><h3>Your plan</h3><strong>@(c.Plan?.Name ?? "—")</strong><p>@(c.Plan is { } plan ? Pricing.TermLabel(plan.TermMonths) : "")</p></div>
-        </div>
-
-        <div class="ma-grid" style="margin-top:24px">
-            <div class="byop-panel">
-                <h2>Bills</h2>
-                <table class="price-table">
-                    <thead><tr><th>Billed</th><th>kWh</th><th>Amount</th><th>Due</th></tr></thead>
-                    <tbody>
-                        @foreach (var b in Model.Bills) { <tr><td>@b.BilledOn.ToString("MMM d, yyyy")</td><td>@b.Kwh.ToString("N0")</td><td>@b.Amount.ToString("C")</td><td>@b.DueOn.ToString("MMM d")</td></tr> }
-                    </tbody>
-                </table>
-            </div>
-            <div class="byop-panel">
-                <h2>Payments</h2>
-                <table class="price-table">
-                    <thead><tr><th>Date</th><th>Method</th><th>Amount</th><th>Status</th></tr></thead>
-                    <tbody>
-                        @foreach (var p in Model.Payments) { <tr><td>@p.PaidOn.ToString("MMM d, yyyy")</td><td>@p.Method</td><td>@p.Amount.ToString("C")</td><td>@p.Status</td></tr> }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      }
     </div>
-</section>
+  </div>
+}
+<div class="co-card" style="margin-top:20px"><h3>Payments</h3>
+  <div class="ma-table"><table class="price-table">
+    <thead><tr><th>Date</th><th>Method</th><th class="num">Amount</th><th>Status</th></tr></thead>
+    <tbody>
+      @foreach (var p in Model.Payments.Take(12)) { <tr><td>@p.PaidOn.ToString("MMM d, yyyy")</td><td>@p.Method</td><td class="num">@p.Amount.ToString("C")</td><td><span class="@(p.Status == "Success" ? "pill-on" : "pill-off")">@p.Status</span></td></tr> }
+      @if (Model.Payments.Count == 0) { <tr><td colspan="4">No payments yet.</td></tr> }
+    </tbody>
+  </table></div>
+</div>
+@section Head {
+<style>
+.bc { display: grid; grid-template-columns: repeat(var(--bc-n), minmax(0, 1fr)); gap: 4px; height: var(--bc-h); align-items: stretch; }
+.bc-col { display: flex; flex-direction: column; align-items: center; min-width: 0; outline: none; cursor: default; }
+.bc-val { font-size: .68rem; font-weight: 600; line-height: 1.3; color: inherit; white-space: nowrap; }
+.bc-track { flex: 1; width: 100%; display: flex; align-items: flex-end; border-bottom: 1px solid rgba(127,127,127,.35); }
+.bc-track b { display: block; width: 100%; min-height: 2px; border-radius: 3px 3px 0 0; background: var(--bc-color, #00AEEF); transition: filter .1s; }
+.bc-col:hover b, .bc-col:focus-visible b { filter: brightness(.85); }
+.bc-lab { font-size: .66rem; line-height: 1.2; height: 1.4em; padding-top: 3px; opacity: .75; white-space: nowrap; }
+@@media (max-width: 600px) { .bc-val { font-size: .56rem; } .bc { gap: 2px; } }
+</style>
+}

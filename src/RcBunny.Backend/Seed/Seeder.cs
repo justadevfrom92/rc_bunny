@@ -35,6 +35,8 @@ public static partial class Seeder
             Code = S(m, "name"), Name = S(m, "desc"),
             DeliveryCentsPerKwh = fees.TryGetValue(S(m, "name"), out var f) ? D(f, "perKwh") : 0,
             DeliveryPerMonth = fees.TryGetValue(S(m, "name"), out var f2) ? D(f2, "perBill") : 0,
+            DeliveryEffectiveOn = fees.TryGetValue(S(m, "name"), out var f3) ? DateOnly.Parse(S(f3, "kwhDate")) : null,
+            Short = S(m, "short"), Region = S(m, "region"), Phone = S(m, "phone"),
         }).ToDictionary(m => m.Code);
         db.Markets.AddRange(markets.Values);
         await db.SaveChangesAsync();
@@ -47,12 +49,32 @@ public static partial class Seeder
         {
             Code = S(p, "internal"), Name = S(p, "name"), Type = S(p, "type") == "Biz" ? "Business" : "Residential",
             TermMonths = p["term"]!.GetValue<int>(), MonthlyFee = D(p, "mrc"), GreenPercent = p["green"]!.GetValue<int>(), Active = p["active"]!.GetValue<bool>(),
+            Rolloff = S(p, "rolloff"), Etf = S(p, "etf"), Slug = S(p, "slug"),
+            Tags = string.Join(",", p["tags"]!.AsArray().Select(t => t!.ToString())), Perks = string.Join("\n", p["perks"]!.AsArray().Select(t => t!.ToString())),
         }).ToDictionary(p => p.Code);
         db.Plans.AddRange(plans.Values);
         await db.SaveChangesAsync();
         foreach (var r in Load("rates"))
             if (plans.TryGetValue(S(r, "plan"), out var plan) && markets.TryGetValue(S(r, "market"), out var market))
                 db.Rates.Add(new Rate { PlanId = plan.Id, MarketId = market.Id, EnergyCents = D(r, "energy"), EffectiveOn = DateOnly.Parse(S(r, "effective")) });
+
+        // What the website's plan pages and Build Your Own Plan read: plan groups, term discounts and ETFs, add-ons
+        foreach (var g in Load("plan_groups"))
+            db.PlanGroups.Add(new PlanGroup { Name = S(g, "name"), Slug = S(g, "slug"), PlanCodes = string.Join(",", g["plans"]!.AsArray().Select(c => c!.ToString())) });
+        var regions = Load("regions").Select(r => r!.ToString()).ToList();
+        foreach (var row in Load("term_mods"))
+        {
+            var term = row["term"]!.GetValue<int>();
+            foreach (var region in regions) db.TermDiscounts.Add(new TermDiscount { Term = term, Region = region, Discount = D(row, region) });
+            db.TermEtfs.Add(new TermEtf { Term = term, Amount = D(row, "etf") });
+        }
+        var position = 0;
+        foreach (var b in Load("byop_products"))
+            db.ByopProducts.Add(new ByopProduct
+            {
+                Key = S(b, "key"), Name = S(b, "name"), Model = S(b, "model"), Type = S(b, "type"), RateAdj = D(b, "adj"), Monthly = D(b, "monthly"),
+                Step = S(b, "step"), Active = b["active"]!.GetValue<bool>(), Description = b["description"]?.ToString(), Position = position++,
+            });
 
         // Customers with everything on their accounts, then CRM and the Shop (Seed/CorralSeed.cs)
         var today = DateOnly.FromDateTime(DateTime.Today);

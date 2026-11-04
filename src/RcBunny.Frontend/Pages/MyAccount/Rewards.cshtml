@@ -1,37 +1,25 @@
 @page "/myaccount/rewards"
 @model RcBunny.Frontend.Pages.MyAccount.RewardsModel
-@{ ViewData["Title"] = $"Rewards | My Account | {Site.Name}"; var c = Model.Customer; }
-<section class="section section-sky">
-    <div class="wrap">
-        <p><a href="/myaccount">← My Account</a></p>
-        <div class="ma-head"><div><span class="eyebrow">Rewards</span><h1>You have @c.Stars.ToString("N0") stars</h1><p>Earn stars every time you pay your bill.</p></div></div>
-        @if (TempData["redeemed"] is string done) { <div class="form-msg ok">@done</div> }
-        @if (Model.Error is { } error) { <div class="form-msg error">@error</div> }
-        <div class="ma-cards">
-            @foreach (var o in Model.Offers)
-            {
-                var already = o.Effect == "drawing" && Model.InDrawing;
-                <div class="ma-card">
-                    <h3>@o.Stars.ToString("N0") stars</h3>
-                    <strong>@o.Name</strong>
-                    <p>@o.Description</p>
-                    <form method="post"><input type="hidden" name="offerId" value="@o.Id">
-                        <button class="btn @(c.Stars < o.Stars || already ? "btn-outline" : "")" disabled="@(c.Stars < o.Stars || already)">@(already ? "You're entered" : c.Stars < o.Stars ? $"{o.Stars - c.Stars:N0} more stars" : "Redeem")</button>
-                    </form>
-                </div>
-            }
-        </div>
-        <div class="byop-panel" style="margin-top:24px">
-            <h2>History</h2>
-            <table class="price-table">
-                <thead><tr><th>Date</th><th>What</th><th>Stars</th></tr></thead>
-                <tbody>
-                    @foreach (var e in Model.History)
-                    {
-                        <tr><td>@e.CreatedAt.ToLocalTime().ToString("MMM d, yyyy")</td><td>@e.Reason@(e.Fulfillment == "pending" ? " (on its way)" : "")</td><td>@e.Stars.ToString("+#,0;-#,0")</td></tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
+@{
+    var c = Model.Customer;
+    ViewData["Title"] = "My Rewards"; ViewData["MaTitle"] = "My Rewards"; ViewData["Customer"] = c;
+    ViewData["Status"] = TempData["redeemed"]; ViewData["Error"] = Model.Error;
+    Layout = "_MyAccount";
+}
+<div class="co-card"><p>You have <b>@c.Stars.ToString("N0") stars</b>. Earn stars for on-time payments, paperless billing and referrals.</p></div>
+<div class="offer-grid">
+  @foreach (var o in Model.Offers)
+  {
+    var locked = o.Stars > c.Stars;
+    var entered = o.Effect == "drawing" && Model.InDrawing;
+    <form method="post" class="offer-card @(locked ? "locked" : null)">
+      <input type="hidden" name="offerId" value="@o.Id">
+      <strong>@(o.Stars > 0 ? $"{o.Stars:N0} ★" : "Free")</strong><b>@o.Name</b><small>@o.Description</small>
+      <button class="btn btn-block" disabled="@(locked || entered)">@(entered ? "You're entered" : locked ? $"Need {o.Stars - c.Stars:N0} more" : "Redeem")</button>
+    </form>
+  }
+</div>
+<div class="co-card" style="margin-top:20px"><h3>Star History</h3><table class="price-table"><tbody>
+  @foreach (var s in Model.History) { <tr><td>@s.CreatedAt.ToLocalTime().ToString("MMM d, yyyy")</td><td>@s.Reason</td><td>@(s.Stars >= 0 ? "+" : "")@s.Stars</td></tr> }
+  @if (Model.History.Count == 0) { <tr><td>No stars yet.</td></tr> }
+</tbody></table></div>

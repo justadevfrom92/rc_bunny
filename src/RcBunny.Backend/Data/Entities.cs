@@ -34,6 +34,11 @@ public class Market
     public decimal DeliveryCentsPerKwh { get; set; }
     /// <summary>Utility delivery charge, dollars per month.</summary>
     public decimal DeliveryPerMonth { get; set; }
+    public DateOnly? DeliveryEffectiveOn { get; set; }
+    /// <summary>Short name (ONCOR), pricing region (ONCOR, CENTRAL…) and the utility's outage phone.</summary>
+    public string Short { get; set; } = "";
+    public string Region { get; set; } = "";
+    public string Phone { get; set; } = "";
 }
 
 public class ZipRange
@@ -55,6 +60,56 @@ public class Plan
     public decimal MonthlyFee { get; set; }
     public int GreenPercent { get; set; }
     public bool Active { get; set; } = true;
+    /// <summary>What the rate rolls to at the end of the term, and the early termination fee as shown ("-" for none).</summary>
+    public string Rolloff { get; set; } = "None";
+    public string Etf { get; set; } = "-";
+    /// <summary>Comma-separated tags (month, fixed, free…) and perks (one per line) shown on the plan cards.</summary>
+    public string Tags { get; set; } = "";
+    public string Perks { get; set; } = "";
+    public string Slug { get; set; } = "";
+}
+
+/// <summary>A named list of plans the website shows together (Homepage Featured, Residential Plans Page…).</summary>
+public class PlanGroup
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+    public string Slug { get; set; } = "";
+    /// <summary>Plan codes in order, comma-separated.</summary>
+    public string PlanCodes { get; set; } = "";
+}
+
+/// <summary>Cents per kWh added to (or taken off) a rate for a contract length, per pricing region.</summary>
+public class TermDiscount
+{
+    public int Id { get; set; }
+    public int Term { get; set; }
+    public string Region { get; set; } = "";
+    public decimal Discount { get; set; }
+}
+
+/// <summary>The early termination fee for a contract length.</summary>
+public class TermEtf
+{
+    public int Id { get; set; }
+    public int Term { get; set; }
+    public decimal Amount { get; set; }
+}
+
+/// <summary>An add-on in Build Your Own Plan: a discount or extra on the rate, or a monthly charge.</summary>
+public class ByopProduct
+{
+    public int Id { get; set; }
+    public string Key { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Model { get; set; } = "";
+    public string Type { get; set; } = "";
+    public decimal RateAdj { get; set; }
+    public decimal Monthly { get; set; }
+    public string Step { get; set; } = "";
+    public bool Active { get; set; } = true;
+    public string? Description { get; set; }
+    public int Position { get; set; }
 }
 
 public class Rate

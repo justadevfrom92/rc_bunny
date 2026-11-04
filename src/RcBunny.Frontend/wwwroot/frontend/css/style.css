@@ -2,7 +2,7 @@
   Energy Texas — site styles
   Palette and type taken from et_style_2021.css (Integrate ET 2021 theme)
 */
-
+@import url('../../shared/css/tokens.css');
 
 /* Site-only tokens; brand colors and fonts come from shared/css/tokens.css */
 :root {

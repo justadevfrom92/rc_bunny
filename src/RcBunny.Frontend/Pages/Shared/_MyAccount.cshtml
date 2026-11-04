@@ -1,0 +1,41 @@
+@using RcBunny.Data
+@* My Account frame, as ebunny's x-frontend.myaccount: the page on the left, the account menu on the right (below on phones).
+   Pages set ViewData["Customer"] and ViewData["MaTitle"], and ViewData["Status"] / ["Error"] for the message bar. *@
+@{
+    Layout = "_Layout";
+    ViewData["Heading"] ??= "My Account";
+    var c = (Customer)ViewData["Customer"]!;
+    var here = Context.Request.Path.Value ?? "";
+    var menu = new (string Heading, (string Label, string Url)[] Items)[]
+    {
+        ("Account", [("Dashboard", "/myaccount"), ("Support Tickets", "/myaccount/support")]),
+        ("Bills", [("Pay Bill", "/myaccount/pay")]),
+        ("Rewards", [("My Rewards", "/myaccount/rewards")]),
+    };
+}
+<section class="section ma">
+  <div class="wrap ma-grid">
+    <div class="ma-main">
+      <h2 class="ma-title">@ViewData["MaTitle"]</h2>
+      @if (ViewData["Status"] is string status) { <div class="site-alert ok" role="status">@status</div> }
+      @if (ViewData["Error"] is string error) { <div class="site-alert error" role="alert">@error</div> }
+      @RenderBody()
+    </div>
+    <nav class="ma-nav" aria-label="My Account">
+      <div class="ma-who"><b>@c.Name</b><span>Account @c.Account</span></div>
+      @foreach (var (heading, items) in menu)
+      {
+        <h4>@heading</h4>
+        <div class="ma-group">
+          @foreach (var (label, url) in items)
+          {
+            var on = here == url || (url == "/myaccount/support" && here.StartsWith(url + "/"));
+            <a href="@url" class="@(on ? "on" : null)" aria-current="@(on ? "page" : null)">@label</a>
+          }
+        </div>
+      }
+    </nav>
+  </div>
+</section>
+@section Head { @await RenderSectionAsync("Head", required: false) }
+@section Scripts { @await RenderSectionAsync("Scripts", required: false) }

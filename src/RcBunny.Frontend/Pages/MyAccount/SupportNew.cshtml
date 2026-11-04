@@ -1,0 +1,17 @@
+@page "/myaccount/support/new"
+@model RcBunny.Frontend.Pages.MyAccount.SupportModel
+@using RcBunny.Data
+@{
+    ViewData["Title"] = "New Support Ticket"; ViewData["MaTitle"] = "New Support Ticket"; ViewData["Customer"] = Model.Customer; ViewData["Error"] = Model.Error;
+    Layout = "_MyAccount";
+    var topic = Request.HasFormContentType ? Request.Form["topic"].ToString() : "";
+}
+<form method="post" asp-page-handler="New" class="co-card" enctype="multipart/form-data">
+  <div class="field"><label>What's it about?</label>
+    <div class="sp-topics">@foreach (var (k, l) in Ranger.Topics) { <label><input type="radio" name="topic" value="@k" required checked="@(topic == k)"><span>@l</span></label> }</div></div>
+  <div class="field"><label for="sp-subject">Subject</label><input id="sp-subject" name="subject" required maxlength="200" value="@(Request.HasFormContentType ? Request.Form["subject"] : "")" placeholder="e.g. Question about my last bill"></div>
+  <div class="field"><label for="sp-body">Tell us more</label><textarea id="sp-body" name="message" required maxlength="5000" placeholder="The more detail, the faster we can help.">@(Request.HasFormContentType ? Request.Form["message"] : "")</textarea></div>
+  <div class="field"><label for="sp-files">Attach files (optional)</label><input id="sp-files" type="file" name="files" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.heic,.txt,.csv,.doc,.docx,.xls,.xlsx"><small>A photo of your bill or meter, a lease, a screenshot… up to 5 files, 10 MB each.</small></div>
+  <p><small>For a power outage, call your utility first. We'll still follow up here.</small></p>
+  <div class="sp-actions"><a class="btn btn-outline btn-back" href="/myaccount/support">Back</a><button class="btn">Open Ticket</button></div>
+</form>

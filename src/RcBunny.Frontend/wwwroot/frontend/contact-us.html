@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Us | Energy Texas</title>
+  <meta name="description" content="Get in touch with Energy Texas customer care.">
+  <link rel="stylesheet" href="/frontend/css/style.css">
+  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <h1 class="sr-only">Howdy! How can we help?</h1>
+
+    <div data-zone="top"></div>
+
+    <section class="section">
+      <div class="wrap contact-grid">
+        <div>
+          <div class="contact-card">
+            <h3>Customer Care</h3>
+            <p><a data-brand="phone" href="#">&nbsp;</a><br><span data-brand="hours"></span></p>
+          </div>
+          <div class="contact-card">
+            <h3>Power Outage?</h3>
+            <p>Contact your local utility (TDSP) directly — they own the poles and wires and handle restoration.</p>
+          </div>
+          <div class="contact-card">
+            <h3>Manage Your Account</h3>
+            <p>Pay your bill, view usage and redeem Rangler Rewards anytime in <a href="#">My Account</a>.</p>
+          </div>
+        </div>
+
+        <form class="byop-panel" id="contact-form" novalidate>
+          <h2>Send us a message</h2>
+          <div class="form-2">
+            <div class="field"><label for="fn">First Name *</label><input id="fn" name="first" required></div>
+            <div class="field"><label for="ln">Last Name *</label><input id="ln" name="last" required></div>
+          </div>
+          <div class="form-2" style="margin-top:16px">
+            <div class="field"><label for="em">Email *</label><input id="em" name="email" type="email" required></div>
+            <div class="field"><label for="ph">Phone</label><input id="ph" name="phone" type="tel"></div>
+          </div>
+          <div class="field" style="margin-top:16px">
+            <label for="topic">Topic</label>
+            <select id="topic" name="topic">
+              <option value="general">General question</option>
+              <option value="signup">Sign up for service</option>
+              <option value="billing">Billing &amp; payments</option>
+              <option value="business">Business service</option>
+              <option value="rewards">Rangler Rewards</option>
+            </select>
+          </div>
+          <div class="field" style="margin-top:16px">
+            <label for="msg">Message *</label>
+            <textarea id="msg" name="message" required></textarea>
+          </div>
+          <button class="btn" type="submit" style="margin-top:20px">Send Message</button>
+          <div class="form-msg" role="status"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div data-zone="bottom"></div>
+  <div id="site-footer"></div>
+</body>
+</html>

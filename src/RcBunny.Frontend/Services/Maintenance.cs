@@ -10,7 +10,7 @@ public class Maintenance(RequestDelegate next, IMemoryCache cache)
     public async Task InvokeAsync(HttpContext context, AppDbContext db)
     {
         var path = context.Request.Path.Value ?? "";
-        if (path.StartsWith("/css") || path.StartsWith("/img") || path.StartsWith("/js")) { await next(context); return; }
+        if (path.StartsWith("/frontend/css") || path.StartsWith("/shared")) { await next(context); return; }
 
         var control = await cache.GetOrCreateAsync("maintenance", e =>
         {
@@ -23,7 +23,7 @@ public class Maintenance(RequestDelegate next, IMemoryCache cache)
         context.Response.ContentType = "text/html; charset=utf-8";
         await context.Response.WriteAsync($$"""
             <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Back soon | {{Site.Name}}</title><link rel="stylesheet" href="/css/tokens.css"><link rel="stylesheet" href="/css/site.css"></head>
+            <title>Back soon | {{Site.Name}}</title><link rel="stylesheet" href="/frontend/css/style.css"></head>
             <body><section class="section"><div class="wrap" style="max-width:640px;text-align:center">
             <h1>We'll be right back.</h1><p>{{System.Net.WebUtility.HtmlEncode(control.Reason)}}</p>
             <p>Need help now? Call <a href="{{Site.PhoneLink}}">{{Site.Phone}}</a>.</p></div></section></body></html>

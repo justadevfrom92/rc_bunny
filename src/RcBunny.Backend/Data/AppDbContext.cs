@@ -18,6 +18,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<PaymentMethod> PaymentMethods => Set<PaymentMethod>();
     public DbSet<Note> Notes => Set<Note>();
     public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
+    public DbSet<PlanGroup> PlanGroups => Set<PlanGroup>();
+    public DbSet<TermDiscount> TermDiscounts => Set<TermDiscount>();
+    public DbSet<TermEtf> TermEtfs => Set<TermEtf>();
+    public DbSet<ByopProduct> ByopProducts => Set<ByopProduct>();
     public DbSet<HistoryEntry> History => Set<HistoryEntry>();
 
     // Corral

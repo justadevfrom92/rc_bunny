@@ -9,11 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAppDatabase(builder.Configuration);
 builder.Services.AddMemoryCache();
-builder.Services.AddScoped<Catalog>();
 builder.Services.AddRazorPages(o => o.Conventions.AuthorizeFolder("/MyAccount").AllowAnonymousToPage("/MyAccount/Login"));
 
-// Public pages are the same for everyone, so the finished HTML is kept for a minute and served straight from memory.
-builder.Services.AddOutputCache(o => o.AddPolicy("Public", p => p.Expire(TimeSpan.FromSeconds(60)).SetVaryByQuery("zip", "type")));
 
 // Customers sign in to My Account with their own cookie (separate from the employee admin).
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -32,7 +29,7 @@ app.UseMiddleware<Maintenance>(); // Sheriff can switch the website off
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseOutputCache();
-app.MapRazorPages();
+app.MapSite();      // ebunny's website pages and what they ask the server for (Services/SiteEndpoints.cs)
+app.MapRazorPages(); // My Account
 
 app.Run();

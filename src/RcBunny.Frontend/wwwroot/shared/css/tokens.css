@@ -3,6 +3,7 @@
   Change a color or font here and it changes everywhere.
   Every color and variable is listed in the admin at Lando → Style Guide.
 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Raleway:ital,wght@0,400;0,600;0,700;1,400&family=Varela+Round&display=swap');
 
 :root {
   --navy: #102247;

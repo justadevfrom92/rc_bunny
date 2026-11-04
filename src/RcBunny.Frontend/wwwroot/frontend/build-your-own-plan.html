@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build Your Own Plan | Energy Texas</title>
+  <meta name="description" content="Create a custom Texas electricity plan with Energy Texas — choose your term, savings and perks.">
+  <link rel="stylesheet" href="/frontend/css/style.css">
+  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-banner">
+      <div class="wrap">
+        <h1>Build Your Own Plan</h1>
+        <p>With Energy Texas, you can create the perfect plan that best suits your needs. Let's start with the basics.</p>
+      </div>
+    </section>
+
+    <div data-zone="top"></div>
+
+    <section class="section section-sky">
+      <div class="wrap">
+        <ol class="steps">
+          <li><span class="dot">1</span><span class="lbl">Get Started</span></li>
+          <li><span class="dot">2</span><span class="lbl">Lower Your Bill</span></li>
+          <li><span class="dot">3</span><span class="lbl">Using Less</span></li>
+          <li><span class="dot">4</span><span class="lbl">Save More</span></li>
+          <li><span class="dot">5</span><span class="lbl">Protectin'</span></li>
+          <li><span class="dot">6</span><span class="lbl">Thank You</span></li>
+        </ol>
+
+        <div class="byop" id="byop">
+          <div class="byop-panel">
+            <!-- 1. Get Started -->
+            <div class="byop-tab">
+              <h2>Let's Get Started</h2>
+              <div class="range-wrap">
+                <h3>First, choose your plan length:</h3>
+                <div class="range-value" id="term-out">12 months</div>
+                <input type="range" id="term" min="0" max="6" step="1" value="2" aria-label="Plan length">
+                <div class="range-labels"><span>1</span><span>6</span><span>12</span><span>18</span><span>24</span><span>30</span><span>36</span></div>
+              </div>
+              <label class="opt">
+                <input type="checkbox" checked data-product="autopay">
+                <span><strong>Set it and Forget it With AutoPay</strong><small>Get rid of any worries about making your payments on time.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" checked data-product="paperless">
+                <span><strong>Go Green with Paperless Communications</strong><small>Get less in the mail and receive all communications via email.</small></span>
+                <span class="price"></span>
+              </label>
+            </div>
+
+            <!-- 2. Lower Your Bill -->
+            <div class="byop-tab">
+              <h2>Let's Talk Ways to Lower Your Bill</h2>
+              <label class="opt">
+                <input type="checkbox" checked disabled data-product="rewards">
+                <span><strong>Earn Rewards Using Energy Texas</strong><small>Every residential member is automatically enrolled in Rangler Rewards at no cost. Earn points and enter giveaways.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" data-product="peakperks">
+                <span><strong>Peak Perks</strong><small>Link your smart thermostat and let it make small adjustments during peak demand. Earn bill credits.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" data-product="giddyup">
+                <span><strong>Giddy Up Due Date</strong><small>Pick the bill due date that lines up with your paycheck.</small></span>
+                <span class="price"></span>
+              </label>
+            </div>
+
+            <!-- 3. Using Less -->
+            <div class="byop-tab">
+              <h2>Using Less, Saving More</h2>
+              <label class="opt">
+                <input type="checkbox" data-product="thermostat">
+                <span><strong>ecobee Smart Thermostat</strong><small>Get a smart thermostat installed and pair it with Peak Perks for even more savings.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" data-product="solar">
+                <span><strong>Solar Buy-Back</strong><small>Already have solar panels? Get credit for the extra energy you send back to the grid.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" data-product="green">
+                <span><strong>Go 100% Renewable</strong><small>Match 100% of your usage with Texas wind and solar renewable energy credits.</small></span>
+                <span class="price"></span>
+              </label>
+            </div>
+
+            <!-- 4. Save More -->
+            <div class="byop-tab">
+              <h2>Ways to Save More</h2>
+              <label class="opt">
+                <input type="checkbox" data-product="refer">
+                <span><strong>Refer a Friend</strong><small>Share your link and earn bonus Rangler Rewards stars for every friend who signs up.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" data-product="billpredictor">
+                <span><strong>Bill Predictor Alerts</strong><small>Get a heads up by text or email when your bill is trending higher than usual.</small></span>
+                <span class="price"></span>
+              </label>
+            </div>
+
+            <!-- 5. Protection -->
+            <div class="byop-tab">
+              <h2>Protectin' What Matters</h2>
+              <label class="opt">
+                <input type="checkbox" data-product="acwarranty">
+                <span><strong>A/C &amp; Heating Protection</strong><small>Covers repairs to your central air and heating system — because Texas summers don't wait.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" data-product="linewarranty">
+                <span><strong>Electrical Line Protection</strong><small>Covers repairs to the electrical wiring on your side of the meter.</small></span>
+                <span class="price"></span>
+              </label>
+              <label class="opt">
+                <input type="checkbox" data-product="evwarranty">
+                <span><strong>EV Charger Protection</strong><small>Keep your home EV charger covered for repairs and replacement.</small></span>
+                <span class="price"></span>
+              </label>
+            </div>
+
+            <!-- 6. Thank You -->
+            <div class="byop-tab center">
+              <div class="stars-row" style="justify-content:center" aria-hidden="true">★ ★ ★</div>
+              <h2>Thank You, Pardner!</h2>
+              <p class="lead">Your custom plan is ready to go. Review your summary, then continue to enter your service address and get powered up.</p>
+              <a class="btn" href="contact-us.html?plan=BYOP">Continue to Sign Up</a>
+            </div>
+
+            <div class="byop-nav">
+              <button class="btn btn-outline btn-back" id="byop-prev" type="button">Back</button>
+              <button class="btn" id="byop-next" type="button">Next Step</button>
+            </div>
+          </div>
+
+          <aside class="summary" aria-live="polite">
+            <h3>Your Plan Summary</h3>
+            <dl>
+              <dt>Plan length</dt><dd id="sum-term">12 months</dd>
+              <dt>Extras</dt><dd id="sum-adds">None</dd>
+              <dt>Monthly charges</dt><dd id="sum-mo">$4.95</dd>
+              <dt>Early termination fee</dt><dd id="sum-etf">$250</dd>
+              <dt>Est. monthly bill*</dt><dd id="sum-bill">$140</dd>
+            </dl>
+            <div class="total"><span>Est. avg. price</span><strong id="sum-rate">13.9¢</strong></div>
+            <p style="font-size:.75rem;opacity:.7;margin:14px 0 0">*Estimate at 1,000 kWh/month. Illustrative pricing — your final rate is shown on the Electricity Facts Label at checkout.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-zone="bottom"></div>
+  <div id="site-footer"></div>
+</body>
+</html>

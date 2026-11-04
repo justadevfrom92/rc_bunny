@@ -4,7 +4,7 @@ A simple C# version of ebunny: two projects that share one database.
 
 | Project | What it is | Address |
 | --- | --- | --- |
-| `src/RcBunny.Frontend` | Public website and customer My Account. Razor Pages, plus one small React island (the plan filter). | http://localhost:5100 |
+| `src/RcBunny.Frontend` | Public website and customer My Account. ebunny's own website pages, style.css and main.js; My Account is Razor Pages with ebunny's markup. | http://localhost:5100 |
 | `src/RcBunny.Backend` | Employee admin. A plain Web API plus a React + TypeScript app in `ClientApp`. | http://localhost:5200 |
 
 ## Run it
@@ -115,16 +115,18 @@ src/RcBunny.Backend/
                           Ranger's: Ranger, Messages; Caboose; Bounty; Sheriff's: Staff, Sheriff
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
-  ClientApp/src/          main.tsx (menu and routes), api.ts, auth.tsx, pages/*.tsx, styles.css
+  ClientApp/src/          main.tsx (routes), api.ts, auth.tsx, pages/*.tsx; admin.css is ebunny's admin.css unchanged,
+                          styles.css gives our pages' own class names the same look
                           pages/corral, pages/ranger, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes (Corral.tsx, Ranger.tsx,
-                          Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx draws the menus
+                          Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
 src/RcBunny.Frontend/
-  Program.cs              Razor Pages, page caching, customer sign-in
-  Services/Catalog.cs     markets and prices, cached
+  Program.cs              customer sign-in, the site's pages and My Account
+  Services/SiteEndpoints.cs  what ebunny's pages ask the server for: /shared/config/brand.js and catalog.js (plans, rates,
+                          fees from the database), /site/session, the Contact Us form
   Services/Maintenance.cs the "we'll be right back" page when Sheriff switches the website off
-  Pages/                  Index, Plans, Contact, MyAccount/* (Login, Index, Pay, Rewards, Support), Shared/_Layout
-  ClientIslands/src/      PlanFilter.tsx (the plan filter island)
-  wwwroot/css/            ebunny's styles
+  Pages/                  MyAccount/* (Login, Dashboard, Pay, Rewards, Support), Shared/_Layout and _MyAccount (ebunny's frame)
+  wwwroot/frontend/       ebunny's index, plans, build-your-own-plan, business and contact-us pages, style.css and main.js, unchanged
+  wwwroot/shared/         ebunny's boot.js, core.js, tokens.css and logos
 ```
 
 ## SQL Server

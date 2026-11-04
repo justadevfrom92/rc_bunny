@@ -1,16 +1,53 @@
 @page "/myaccount/pay"
 @model RcBunny.Frontend.Pages.MyAccount.PayModel
-@{ ViewData["Title"] = $"Pay My Bill | {Site.Name}"; }
-<section class="section section-sky">
-    <div class="wrap" style="max-width:520px">
-        <form class="byop-panel" method="post" autocomplete="off">
-            <h1 style="font-size:1.6rem">Pay my bill</h1>
-            <p>Your balance is <strong>@Model.Customer.Balance.ToString("C")</strong>.</p>
-            @if (Model.Error is { } error) { <div class="form-msg error">@error</div> }
-            <div class="field"><label for="a">Amount</label><input id="a" asp-for="Amount" type="number" step="0.01" min="0.01" required></div>
-            <div class="field" style="margin-top:12px"><label for="n">Card number</label><input id="n" asp-for="CardNumber" inputmode="numeric" required></div>
-            <button class="btn btn-block" style="margin-top:16px">Pay</button>
-            <p><a href="/myaccount">← Back</a></p>
-        </form>
-    </div>
-</section>
+@{
+    ViewData["Title"] = "Pay Bill"; ViewData["MaTitle"] = "Pay Bill"; ViewData["Customer"] = Model.Customer; ViewData["Error"] = Model.Error;
+    Layout = "_MyAccount";
+    var chosen = Request.HasFormContentType ? Request.Form["choice"].ToString() : Model.Amounts[0].Key;
+    var method = Request.HasFormContentType ? Request.Form["method"].ToString() : Model.Methods.FirstOrDefault()?.Id.ToString();
+}
+<div class="co-card">
+  @if (Model.Methods.Count == 0)
+  {
+    <p class="site-alert">You don't have a saved payment method. Adding a new card online isn't available yet; please call @Site.Phone to pay.</p>
+  }
+  else
+  {
+    <form method="post" class="pay-form">
+      <fieldset class="field"><legend class="pay-legend">How much?</legend>
+        <div class="pay-choices">
+          @foreach (var (key, label, amount, note) in Model.Amounts)
+          {
+            <label class="pay-choice @(key == "other" ? "other" : null)">
+              <input type="radio" name="choice" value="@key" checked="@(chosen == key)">
+              <span class="pc-label">@label</span>
+              @if (amount is { } a) { <strong>@a.ToString("C")</strong> }
+              else { <span class="pc-other">$ <input name="amount" type="number" step="0.01" min="1" max="10000" inputmode="decimal" aria-label="Other amount" placeholder="0.00"></span> }
+              @if (note != null) { <small>@note</small> }
+            </label>
+          }
+        </div>
+      </fieldset>
+
+      <fieldset class="field"><legend class="pay-legend">Pay with</legend>
+        <div class="ma-table"><table class="price-table"><tbody>
+          @foreach (var m in Model.Methods)
+          {
+            <tr><td style="width:36px"><input type="radio" id="m@(m.Id)" name="method" value="@m.Id" checked="@(method == m.Id.ToString())"></td><td><label for="m@(m.Id)">@m.Label()</label></td><td>@(m.Autopay ? "Default" : "")</td></tr>
+          }
+        </tbody></table></div>
+      </fieldset>
+      <button class="btn" style="margin-top:20px" id="pay-btn">Pay Now</button>
+    </form>
+  }
+</div>
+<script>
+(function () {
+  var f = document.querySelector('.pay-form'); if (!f) return;
+  var other = f.querySelector('input[name=amount]');
+  function sync() { var c = f.querySelector('input[name=choice]:checked'); if (other) other.required = !!c && c.value === 'other'; }
+  f.addEventListener('change', sync);
+  if (other) other.addEventListener('focus', function () { f.querySelector('input[name=choice][value=other]').checked = true; sync(); });
+  sync();
+})();
+</script>

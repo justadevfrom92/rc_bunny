@@ -1,16 +1,33 @@
 @page "/myaccount/login"
 @model RcBunny.Frontend.Pages.MyAccount.LoginModel
-@inject IWebHostEnvironment Env
-@{ ViewData["Title"] = $"Sign In | My Account | {Site.Name}"; }
-<section class="section section-sky">
-    <div class="wrap" style="max-width:460px">
-        <form class="byop-panel" method="post">
-            <h1 style="font-size:1.6rem">Sign in to My Account</h1>
-            @if (Model.Error is { } error) { <div class="form-msg error">@error</div> }
-            <div class="field"><label for="u">Username or email</label><input id="u" asp-for="Username" autocomplete="username" required autofocus></div>
-            <div class="field" style="margin-top:12px"><label for="p">Password</label><input id="p" asp-for="Password" type="password" autocomplete="current-password" required></div>
-            <button class="btn btn-block" style="margin-top:16px">Sign In</button>
-            @if (Env.IsDevelopment()) { <p class="ma-note">Sample: <code>demo.customer</code> / <code>password</code></p> }
-        </form>
-    </div>
-</section>
+@{ ViewData["Title"] = "My Account"; ViewData["Heading"] = "Sign in to My Account"; }
+<section class="section"><div class="wrap narrow ma-split">
+  <div class="co-card">
+    @if (Model.Error is { } error) { <div class="site-alert error" role="alert">@error</div> }
+    <form method="post">
+      <div class="field"><label for="login">Username or Email</label><input id="login" asp-for="Username" required autocomplete="username"></div>
+      <div class="field"><label for="password">Password</label><input id="password" asp-for="Password" type="password" required autocomplete="current-password"></div>
+      <label class="check"><input type="checkbox" name="remember" value="1"> Keep me signed in</label>
+      <button class="btn btn-block" style="margin-top:16px">Sign In</button>
+    </form>
+    @if (Model.TestCustomers.Count > 0)
+    {
+      <div class="test-logins-site">
+        <h3>Test Sign-Ins</h3>
+        <p class="muted-text">For testing only (never shown on the live site): open My Account as a sample customer.</p>
+        @foreach (var tc in Model.TestCustomers)
+        {
+          <form method="post" asp-page-handler="Test" asp-route-id="@tc.Id">
+            <button class="test-customer"><b>@tc.Name</b><small>@tc.Account · @tc.Type · @tc.Status · @(tc.Balance < 0 ? $"{Math.Abs(tc.Balance):C} credit" : $"{tc.Balance:C} due")</small></button>
+          </form>
+        }
+      </div>
+    }
+  </div>
+  <div class="co-card">
+    <h3>Not a customer yet?</h3>
+    <p><a class="btn btn-outline" href="/plans.html">Shop plans</a></p>
+    <h3 style="margin-top:20px">Need a hand?</h3>
+    <p>Call us at <a href="@Site.PhoneLink">@Site.Phone</a>.</p>
+  </div>
+</div></section>

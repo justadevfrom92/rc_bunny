@@ -12,7 +12,8 @@ public class SupportModel(AppDbContext db, IConfiguration config, IWebHostEnviro
 
     public List<SupportTicket> Tickets { get; private set; } = [];
     public SupportTicket? Ticket { get; private set; }
-    public List<TicketMessage> Messages { get; private set; } = [];
+    public List<TicketMessage> Thread { get; private set; } = [];
+    public Customer Customer { get; private set; } = null!;
     public List<TicketAttachment> Files { get; private set; } = [];
     public string? Error { get; private set; }
 
@@ -20,12 +21,15 @@ public class SupportModel(AppDbContext db, IConfiguration config, IWebHostEnviro
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
+        Customer = await db.Customers.FirstAsync(c => c.Id == CustomerId);
         Tickets = await db.SupportTickets.Where(t => t.CustomerId == CustomerId).OrderByDescending(t => t.UpdatedAt).ToListAsync();
         if (id is not null)
         {
             Ticket = Tickets.FirstOrDefault(t => t.Id == id);
             if (Ticket is null) return NotFound();
-            Messages = (await db.TicketMessages.Where(m => m.TicketId == id).OrderBy(m => m.CreatedAt).ThenBy(m => m.Id).ToListAsync()).Where(m => m.CustomerSees).ToList();
+            // What the customer sees: their messages, our replies, and a line for each phone call (not notes or changes)
+            Thread = (await db.TicketMessages.Where(m => m.TicketId == id).OrderBy(m => m.CreatedAt).ThenBy(m => m.Id).ToListAsync())
+                .Where(m => m.Kind is "customer" || m.Kind == "agent").ToList();
             Files = await db.TicketAttachments.Where(a => a.TicketId == id).ToListAsync();
         }
         return Page();

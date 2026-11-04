@@ -1,0 +1,77 @@
+[
+ {
+  "id": 1,
+  "name": "Homepage Featured",
+  "slug": "featured",
+  "plans": [
+   "CT12",
+   "BTT24",
+   "36IF"
+  ]
+ },
+ {
+  "id": 2,
+  "name": "Residential Plans Page",
+  "slug": "resi",
+  "plans": [
+   "JEY",
+   "ETM",
+   "MME1",
+   "CT12",
+   "FreeF12",
+   "PP12",
+   "G18",
+   "PP18",
+   "BTT24",
+   "FreeF24",
+   "PP24",
+   "36IF",
+   "ECG36",
+   "FreeF36",
+   "PP36"
+  ]
+ },
+ {
+  "id": 3,
+  "name": "Business",
+  "slug": "business",
+  "plans": [
+   "TCBV",
+   "TCB12",
+   "TCB24",
+   "TCB36",
+   "H12",
+   "H24",
+   "IDX12"
+  ]
+ },
+ {
+  "id": 4,
+  "name": "Freedom Flex",
+  "slug": "freedom-flex",
+  "plans": [
+   "FreeF12",
+   "FreeF24",
+   "FreeF36"
+  ]
+ },
+ {
+  "id": 5,
+  "name": "Renewal Offers",
+  "slug": "renew",
+  "plans": [
+   "PP12",
+   "PP24",
+   "PP36",
+   "36IF"
+  ]
+ },
+ {
+  "id": 6,
+  "name": "ecobee Partner",
+  "slug": "ecobee",
+  "plans": [
+   "ECG36"
+  ]
+ }
+]

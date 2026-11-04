@@ -19,14 +19,5 @@
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
 
-  <!-- The React islands live in ClientIslands. The first build installs and builds them into wwwroot/js. -->
-  <ItemGroup>
-    <Content Remove="ClientIslands/**" />
-    <None Remove="ClientIslands/**" />
-  </ItemGroup>
-  <Target Name="BuildIslands" BeforeTargets="Build" Condition="!Exists('wwwroot/js/islands.js')">
-    <Exec Command="npm install" WorkingDirectory="ClientIslands" />
-    <Exec Command="npm run build" WorkingDirectory="ClientIslands" />
-  </Target>
 
 </Project>

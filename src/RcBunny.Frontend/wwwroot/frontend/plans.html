@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Residential Electricity Plans | Energy Texas</title>
+  <meta name="description" content="Compare fixed-rate and month-to-month Texas electricity plans from Energy Texas.">
+  <link rel="stylesheet" href="/frontend/css/style.css">
+  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <h1 class="sr-only">Residential Electricity Plans</h1>
+
+    <div data-zone="top"></div>
+
+    <section class="section section-sky">
+      <div class="wrap">
+        <div class="plans-head">
+          <div>
+            <span class="eyebrow">Filter Plans</span>
+            <h2 style="margin-bottom:0">Find your fit</h2>
+            <p id="zip-note" class="zip-note" hidden></p>
+          </div>
+          <div class="filters" role="toolbar" aria-label="Filter plans">
+            <button class="chip on" data-filter="all">All Plans</button>
+            <button class="chip" data-filter="month">Month-to-Month</button>
+            <button class="chip" data-filter="12">12 Months</button>
+            <button class="chip" data-filter="18">18 Months</button>
+            <button class="chip" data-filter="24">24 Months</button>
+            <button class="chip" data-filter="36">36 Months</button>
+            <button class="chip" data-filter="green">100% Green</button>
+          </div>
+        </div>
+        <div class="plan-grid" id="plan-grid"></div>
+        <p style="font-size:.8rem;color:#96999d;margin-top:30px">Average price per kWh shown at 1,000 kWh monthly usage, includes TDU delivery charges and a $4.95 monthly base charge. Prices are illustrative and vary by service area. Early termination fees (ETF) apply to fixed-rate plans and are waived if you move to a new address and provide forwarding information. See the Electricity Facts Label (EFL), Terms of Service, and Your Rights as a Customer (YRAC) for each plan.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap split">
+        <div class="reveal">
+          <span class="eyebrow">Can't decide?</span>
+          <h2>Build your own plan instead</h2>
+          <p>Choose your term, stack on savings with AutoPay and Paperless, and add only the perks you want.</p>
+          <a class="btn" href="build-your-own-plan.html">Build Your Own Plan</a>
+        </div>
+        <div class="reveal">
+          <div class="feature" style="border-bottom-color:#C80611">
+            <h3>Every plan includes</h3>
+            <ul class="checks" style="margin:0">
+              <li>Automatic Rangler Rewards enrollment</li>
+              <li>Free online account &amp; mobile app access</li>
+              <li>Bill Predictor &amp; Energy Insights</li>
+              <li>Local, friendly Texas customer care</li>
+              <li>No deposit options for qualifying customers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-sky" id="faq">
+      <div class="wrap">
+        <div class="center reveal">
+          <span class="eyebrow">FAQ</span>
+          <h2>Questions? We've got answers.</h2>
+        </div>
+        <div class="faq" style="margin-top:30px">
+          <details>
+            <summary>What's the difference between fixed and month-to-month?</summary>
+            <p>A fixed-rate plan locks in your energy charge for the whole term, so your price per kWh won't change. Month-to-month plans have no contract and no early termination fee, but the rate can change with the market.</p>
+          </details>
+          <details>
+            <summary>What is an Electricity Facts Label (EFL)?</summary>
+            <p>Every Texas retail electricity plan has an EFL that lists the average price at 500, 1,000 and 2,000 kWh, the base charge, TDU charges, term length and renewable content. It's the best way to compare apples to apples.</p>
+          </details>
+          <details>
+            <summary>Will my power be interrupted when I switch?</summary>
+            <p>Nope. Your local utility still delivers your power through the same poles and wires. The only thing that changes is who sends your bill — and how much you pay.</p>
+          </details>
+          <details>
+            <summary>What happens when my plan expires?</summary>
+            <p>We'll reach out before your contract ends with renewal options. If you don't pick a new plan, you'll roll onto a month-to-month plan with no cancellation fee.</p>
+          </details>
+          <details>
+            <summary>Do I need a deposit?</summary>
+            <p>It depends on your credit history. Many customers qualify for no deposit, and we offer deposit alternatives like a letter of credit from a previous provider.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-zone="bottom"></div>
+  <div id="site-footer"></div>
+</body>
+</html>

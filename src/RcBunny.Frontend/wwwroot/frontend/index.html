@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Energy Texas | Texas Electricity Plans &amp; Rates</title>
+  <meta name="description" content="Fixed-rate Texas electricity plans, Build Your Own Plan, and Rangler Rewards from Energy Texas.">
+  <link rel="stylesheet" href="/frontend/css/style.css">
+  <script src="/shared/boot.js" data-then="/frontend/js/main.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Hero + zip lookup -->
+    <section class="hero">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow">Texas Electricity, Texas Proud</span>
+          <h1>Power that's <em>bigger</em> than Texas.</h1>
+          <p>Lock in a low fixed rate, build a plan that fits your home, and earn rewards just for keepin' the lights on. No gimmicks, y'all.</p>
+          <div style="display:flex;gap:14px;flex-wrap:wrap">
+            <a class="btn" href="plans.html">Shop Plans</a>
+            <a class="btn btn-white" href="build-your-own-plan.html">Build Your Own</a>
+          </div>
+          <ul class="hero-badges">
+            <li>Fixed rates up to 36 months</li>
+            <li>Rangler Rewards</li>
+            <li>Local Texas support</li>
+          </ul>
+        </div>
+
+        <form class="zip-card" data-zip-form novalidate>
+          <h2>Find your plan</h2>
+          <p>Enter your zip code to see rates available at your address.</p>
+          <div class="toggle-group" role="group" aria-label="Service type">
+            <button type="button" class="on" data-type="home">Home</button>
+            <button type="button" data-type="business">Business</button>
+          </div>
+          <div class="field">
+            <label for="zip">Service Zip Code</label>
+            <input id="zip" name="zip" inputmode="numeric" maxlength="5" placeholder="e.g. 77001" autocomplete="postal-code">
+          </div>
+          <button class="btn btn-block" type="submit">View Plans</button>
+          <div class="form-msg" role="status"></div>
+        </form>
+      </div>
+      <svg class="hero-wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70V30c240 40 480 40 720 20S1200 0 1440 30v40z" fill="#fff"/></svg>
+    </section>
+
+    <div data-zone="top"></div>
+
+    <!-- Why Energy Texas -->
+    <section class="section">
+      <div class="wrap">
+        <div class="center reveal">
+          <span class="eyebrow">Why Energy Texas</span>
+          <h2>Electricity, done the Texas way</h2>
+          <p class="lead">We keep it simple: honest pricing, plans that fit how you live, and real people who pick up the phone.</p>
+        </div>
+        <div class="grid-3" style="margin-top:40px">
+          <div class="feature reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div>
+            <h3>Lock In Your Rate</h3>
+            <p>Fixed-rate plans from 12 to 36 months protect you from summer price spikes and surprise bills.</p>
+          </div>
+          <div class="feature reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6L12 16.3 6.6 19.3l1.3-6L3.3 9.2l6.1-.6z"/></svg></div>
+            <h3>Earn Rangler Rewards</h3>
+            <p>Every residential customer is automatically enrolled. Earn stars on every bill and redeem for gift cards.</p>
+          </div>
+          <div class="feature reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
+            <h3>Save With Peak Perks</h3>
+            <p>Let your smart thermostat help the grid on peak days and earn bill credits — no sweat, no effort.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured plans -->
+    <section class="section section-sky">
+      <div class="wrap">
+        <div class="plans-head reveal">
+          <div>
+            <span class="eyebrow">Featured Plans</span>
+            <h2>Our most popular plans</h2>
+          </div>
+          <a class="btn btn-outline" href="plans.html">See All Plans</a>
+        </div>
+        <div class="plan-grid" id="plan-grid" data-group="featured"></div>
+        <p style="font-size:.8rem;color:#96999d;margin-top:24px">Average price per kWh shown at 1,000 kWh monthly usage, includes TDU delivery charges. See the Electricity Facts Label for full pricing details.</p>
+      </div>
+    </section>
+
+    <!-- BYOP split -->
+    <section class="section">
+      <div class="wrap split">
+        <div class="split-art reveal" aria-hidden="true">
+          <svg viewBox="0 0 300 240" fill="none">
+            <rect x="40" y="40" width="220" height="160" rx="14" fill="#fff" opacity=".12"/>
+            <rect x="62" y="66" width="120" height="12" rx="6" fill="#fff"/>
+            <rect x="62" y="92" width="176" height="8" rx="4" fill="#fff" opacity=".5"/>
+            <rect x="62" y="122" width="176" height="8" rx="4" fill="#fff" opacity=".35"/>
+            <circle cx="140" cy="126" r="11" fill="#C80611"/>
+            <rect x="62" y="150" width="22" height="22" rx="5" fill="#00AEEF"/>
+            <rect x="94" y="155" width="90" height="10" rx="5" fill="#fff" opacity=".7"/>
+            <path d="M67 161l5 5 8-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M232 22l6 13 14 1-10 9 3 14-13-7-13 7 3-14-10-9 14-1z" fill="#FDBB30"/>
+          </svg>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Build Your Own Plan</span>
+          <h2>Your home, your rules, your plan.</h2>
+          <p>Pick your plan length, add AutoPay and Paperless to lower your rate, then stack on the perks that matter to you — like Peak Perks, smart thermostats, and home protection.</p>
+          <ul class="checks">
+            <li>Choose any term from 1 to 36 months</li>
+            <li>See your estimated rate update in real time</li>
+            <li>Add or skip extras — you're the boss</li>
+          </ul>
+          <a class="btn" href="build-your-own-plan.html">Start Building</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rewards -->
+    <section class="section section-navy" id="rewards">
+      <div class="wrap split">
+        <div class="reveal">
+          <div class="stars-row" aria-hidden="true">★ ★ ★ ★ ★</div>
+          <span class="eyebrow">Rangler Rewards</span>
+          <h2>Get rewarded for keepin' the lights on</h2>
+          <p>Earn stars every time you pay your bill on time, refer a friend, or enroll in AutoPay and Paperless. Trade 'em in for e-gift cards from your favorite brands.</p>
+          <div class="stat-row">
+            <div class="stat"><strong>$0</strong><span>to join — automatic enrollment</span></div>
+            <div class="stat"><strong>E-Gift</strong><span>cards from top brands</span></div>
+            <div class="stat"><strong>Monthly</strong><span>drawings for big prizes</span></div>
+          </div>
+          <a class="btn" href="plans.html">Join Energy Texas</a>
+        </div>
+        <div class="split-art reveal" style="background:linear-gradient(160deg,var(--cyan) 0%,var(--navy-deep) 100%)" aria-hidden="true">
+          <svg viewBox="0 0 300 240">
+            <rect x="60" y="50" width="180" height="120" rx="14" fill="#fff"/>
+            <rect x="60" y="50" width="180" height="36" rx="14" fill="#C80611"/>
+            <rect x="60" y="72" width="180" height="14" fill="#C80611"/>
+            <text x="150" y="74" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="14" fill="#fff">RANGLER REWARDS</text>
+            <text x="150" y="130" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="34" fill="#102247">2,450</text>
+            <text x="150" y="152" text-anchor="middle" font-family="Raleway, sans-serif" font-weight="700" font-size="12" fill="#96999d">STARS EARNED</text>
+            <path d="M246 170l7 15 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2z" fill="#FDBB30"/>
+            <path d="M48 30l5 10 11 1-8 7 2 11-10-5-10 5 2-11-8-7 11-1z" fill="#FDBB30" opacity=".8"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section section-sky">
+      <div class="wrap">
+        <div class="center reveal">
+          <span class="eyebrow">Happy Customers</span>
+          <h2>What Texans are sayin'</h2>
+        </div>
+        <div class="grid-3" style="margin-top:40px">
+          <blockquote class="quote reveal">
+            <div class="stars-row" aria-label="5 stars">★★★★★</div>
+            <p>"Switching took five minutes and my bill dropped the very first month. Customer service actually answers the phone!"</p>
+            <cite>Sample Review<span>Houston, TX</span></cite>
+          </blockquote>
+          <blockquote class="quote reveal">
+            <div class="stars-row" aria-label="5 stars">★★★★★</div>
+            <p>"Love the rewards program. I've already cashed in stars for two gift cards just by paying on time."</p>
+            <cite>Sample Review<span>Fort Worth, TX</span></cite>
+          </blockquote>
+          <blockquote class="quote reveal">
+            <div class="stars-row" aria-label="5 stars">★★★★★</div>
+            <p>"Build Your Own Plan let me pick exactly what I wanted. No pushy add-ons, no surprises."</p>
+            <cite>Sample Review<span>Corpus Christi, TX</span></cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Get to Learnin' -->
+    <section class="section" id="learn">
+      <div class="wrap">
+        <div class="plans-head reveal">
+          <div>
+            <span class="eyebrow">Get to Learnin'</span>
+            <h2>Tips to save energy &amp; money</h2>
+          </div>
+        </div>
+        <div class="grid-4">
+          <article class="article reveal">
+            <div class="article-art" style="background:var(--navy)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div>
+            <div class="article-body"><h3>How to Read a Texas Electricity Facts Label</h3><p>Decode the EFL so you know exactly what you're paying.</p><a class="more" href="#">Read More →</a></div>
+          </article>
+          <article class="article reveal">
+            <div class="article-art" style="background:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></div>
+            <div class="article-body"><h3>How to Keep Your Cool in Extreme Heat</h3><p>Beat the Texas summer without blowing up your bill.</p><a class="more" href="#">Read More →</a></div>
+          </article>
+          <article class="article reveal">
+            <div class="article-art" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg></div>
+            <div class="article-body"><h3>DIY Home Energy Audit</h3><p>Find the leaks and drafts that are costing you money.</p><a class="more" href="#">Read More →</a></div>
+          </article>
+          <article class="article reveal">
+            <div class="article-art" style="background:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg></div>
+            <div class="article-body"><h3>What Is Energy Choice?</h3><p>How deregulation lets Texans pick their provider.</p><a class="more" href="#">Read More →</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="wrap">
+        <h2>Ready to switch, pardner?</h2>
+        <a class="btn" href="plans.html">Find My Plan</a>
+      </div>
+    </section>
+  </main>
+
+  <div data-zone="bottom"></div>
+  <div id="site-footer"></div>
+</body>
+</html>
