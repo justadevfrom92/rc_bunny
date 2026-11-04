@@ -23,6 +23,10 @@ public class LoginModel(AppDbContext db) : PageModel
             Error = "That username and password don't match.";
             return Page();
         }
+        // The sign-in goes in the account's Logins log (Corral → account → Logs)
+        db.ActorName = customer.Name;
+        db.Record(customer.Id, "Logins", "ItemLogin_model", "Customer", customer.Id, "signed in", $"Signed in to My Account from {HttpContext.Connection.RemoteIpAddress}");
+        await db.SaveChangesAsync();
         var identity = new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, customer.Id.ToString())], CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(new ClaimsPrincipal(identity));
         return LocalRedirect(Url.IsLocalUrl(returnUrl) ? returnUrl! : "/myaccount");
@@ -80,7 +84,12 @@ public class PayModel(AppDbContext db) : PageModel
         else if (digits.Length < 12) Error = "Enter your full card number.";
         if (Error != null) return Page();
 
-        db.Payments.Add(new Payment { CustomerId = Customer.Id, PaidOn = DateOnly.FromDateTime(DateTime.Today), Amount = Amount, Method = $"Card ending {digits[^4..]}", Source = "My Account" });
+        db.Payments.Add(new Payment
+        {
+            CustomerId = Customer.Id, Reference = $"MA-{Customer.Account[^4..]}{DateTime.Now:MMddHHmmss}", PaidOn = DateOnly.FromDateTime(DateTime.Today),
+            PaidTime = TimeOnly.FromDateTime(DateTime.Now), Amount = Amount, Method = $"Card ending {digits[^4..]}", Source = "My Account",
+        });
+        db.ActorName = Customer.Name;
         Customer.Balance -= Amount;
         db.Notes.Add(new Note { CustomerId = Customer.Id, Author = "My Account", Body = $"Paid {Amount:C} online." });
         await db.SaveChangesAsync();

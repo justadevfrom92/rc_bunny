@@ -41,7 +41,7 @@ export default function Payments() {
         <form key={qs} className="row" onSubmit={filter}>
           <input name="start" type="date" defaultValue={data.start} />
           <input name="end" type="date" defaultValue={data.end} />
-          <select name="status" defaultValue={params.get('status') ?? ''}><option value="">Any status</option><option>Paid</option><option>Reversed</option></select>
+          <select name="status" defaultValue={params.get('status') ?? ''}><option value="">Any status</option><option>Success</option><option>Pending</option><option>Failed</option><option>Reversed</option></select>
           <input name="account" placeholder="Account" defaultValue={params.get('account') ?? ''} />
           <button>Show</button>
         </form>
@@ -54,7 +54,7 @@ export default function Payments() {
             <thead><tr><th>Date</th><th>Account</th><th>Kind</th><th>Method</th><th>Source</th><th>Status</th><th className="num">Amount</th></tr></thead>
             <tbody>
               {data.rows.map((p) => (
-                <tr key={p.id} className={p.status === 'Paid' ? '' : 'inactive'}>
+                <tr key={p.id} className={p.status === 'Success' ? '' : 'inactive'}>
                   <td>{date(p.paidOn)}</td><td><AccountLink id={p.customerId} account={p.account} name={p.customer} /></td>
                   <td>{p.kind}</td><td>{p.method}</td><td>{p.source}</td><td>{p.status}</td><td className="num">{money(p.amount)}</td>
                 </tr>

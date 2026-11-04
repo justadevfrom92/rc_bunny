@@ -23,7 +23,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
     public async Task<object> Dashboard()
     {
         var since = DateOnly.FromDateTime(DateTime.Today.AddDays(-30));
-        var paid = await db.Payments.Where(p => p.Status == "Paid" && p.PaidOn >= since).ToListAsync();
+        var paid = await db.Payments.Where(p => p.Status == "Success" && p.PaidOn >= since).ToListAsync();
         return new
         {
             paid30 = paid.Sum(p => p.Amount),
@@ -50,7 +50,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
         var rows = await query.OrderByDescending(p => p.PaidOn).ThenByDescending(p => p.Id).Take(500)
             .Join(db.Customers, p => p.CustomerId, c => c.Id, (p, c) => new { p.Id, p.PaidOn, p.Amount, p.Method, p.Kind, p.Source, p.Status, customerId = c.Id, c.Account, customer = c.Name })
             .ToListAsync();
-        return new { start = from, end = to, rows, total = rows.Where(r => r.Status == "Paid").Sum(r => r.Amount) };
+        return new { start = from, end = to, rows, total = rows.Where(r => r.Status == "Success").Sum(r => r.Amount) };
     }
 
     public record NewPayment(string Account, decimal Amount, string Method, string Kind);
@@ -84,7 +84,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
     };
 
     private Task<List<object>> LedgerRows(IQueryable<LedgerEntry> query) => query
-        .Select(e => (object)new { e.Id, e.CustomerId, account = e.Customer!.Account, customer = e.Customer.Name, e.Kind, e.Amount, e.Reason, e.Status, e.RequestedBy, e.DecidedBy, e.DecidedAt, e.DecisionNote, e.CreatedAt })
+        .Select(e => (object)new { e.Id, e.CustomerId, account = e.Customer!.Account, customer = e.Customer.Name, e.Kind, e.Amount, e.Description, e.Status, e.RequestedBy, e.DecidedBy, e.DecidedAt, e.DecisionNote, e.CreatedAt })
         .ToListAsync();
 
     public record NewLedgerEntry(string Account, string Kind, decimal Amount, string Reason);
@@ -96,7 +96,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
         if (customer is null) return BadRequest(new { error = "No account with that number." });
         if (input.Amount is <= 0 or > 5000) return BadRequest(new { error = "Enter an amount between $0.01 and $5,000." });
         if (string.IsNullOrWhiteSpace(input.Reason)) return BadRequest(new { error = "Say why." });
-        db.LedgerEntries.Add(new LedgerEntry { CustomerId = customer.Id, Kind = input.Kind == "debit" ? "debit" : "credit", Amount = input.Amount, Reason = input.Reason.Trim(), RequestedBy = await MyName() });
+        db.LedgerEntries.Add(new LedgerEntry { CustomerId = customer.Id, Kind = input.Kind == "debit" ? "debit" : "credit", Amount = input.Amount, Description = input.Reason.Trim(), RequestedBy = await MyName() });
         await db.SaveChangesAsync();
         return Ok();
     }
@@ -117,7 +117,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
         entry.Status = apply ? "applied" : "rejected";
         entry.DecidedBy = me; entry.DecidedAt = DateTime.UtcNow; entry.DecisionNote = decision.Note?.Trim();
         if (apply) entry.Customer!.Balance += entry.Kind == "debit" ? entry.Amount : -entry.Amount;
-        await Note(entry.CustomerId, $"{(entry.Kind == "credit" ? "Credit" : "Debit")} of {entry.Amount:C} {(apply ? "applied" : "rejected")}: {entry.Reason}");
+        await Note(entry.CustomerId, $"{(entry.Kind == "credit" ? "Credit" : "Debit")} of {entry.Amount:C} {(apply ? "applied" : "rejected")}: {entry.Description}");
         return Ok();
     }
 
@@ -226,7 +226,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
         var to = end ?? DateOnly.FromDateTime(DateTime.Today);
         var lines = new List<JournalLine>();
 
-        foreach (var g in (await db.Payments.Where(p => p.Status == "Paid" && p.PaidOn >= from && p.PaidOn <= to).ToListAsync()).GroupBy(p => (p.PaidOn, p.Kind)))
+        foreach (var g in (await db.Payments.Where(p => p.Status == "Success" && p.PaidOn >= from && p.PaidOn <= to).ToListAsync()).GroupBy(p => (p.PaidOn, p.Kind)))
             lines.Add(g.Key.Kind == "Deposit"
                 ? new(g.Key.PaidOn, "Cash", "Customer Deposits", g.Sum(p => p.Amount), $"{g.Count()} deposits received")
                 : new(g.Key.PaidOn, "Cash", "Accounts Receivable", g.Sum(p => p.Amount), $"{g.Count()} payments received"));

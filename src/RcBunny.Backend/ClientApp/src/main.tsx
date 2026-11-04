@@ -11,6 +11,7 @@ import Ranger from './pages/ranger/Ranger';
 import Sheriff from './pages/sheriff/Sheriff';
 import Caboose from './pages/caboose/Caboose';
 import Bounty from './pages/bounty/Bounty';
+import Record from './pages/Record';
 import './styles.css';
 
 const menu = [
@@ -49,6 +50,7 @@ function App() {
           <Route path="/caboose/*" element={<RequirePermission permission="caboose"><Caboose /></RequirePermission>} />
           <Route path="/bounty/*" element={<RequirePermission permission="bounty"><Bounty /></RequirePermission>} />
           <Route path="/sheriff/*" element={<RequirePermission permission="sheriff"><Sheriff /></RequirePermission>} />
+          <Route path="/records/:type/:id" element={<Record />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>

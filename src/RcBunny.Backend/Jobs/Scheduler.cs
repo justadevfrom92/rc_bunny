@@ -75,7 +75,7 @@ public class Scheduler(IServiceScopeFactory scopes, ILogger<Scheduler> log) : Ba
         if (rule is null) return "The \"Pay a bill\" rule is turned off.";
         var since = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
         var payments = await db.Payments
-            .Where(p => p.Status == "Paid" && p.Kind == "Balance Payment" && p.PaidOn >= since && !db.StarEntries.Any(e => e.PaymentId == p.Id))
+            .Where(p => p.Status == "Success" && p.Kind == "Balance Payment" && p.PaidOn >= since && !db.StarEntries.Any(e => e.PaymentId == p.Id))
             .ToListAsync();
         foreach (var p in payments)
         {

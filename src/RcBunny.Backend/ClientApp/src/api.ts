@@ -59,3 +59,15 @@ export function useLoad<T>(url: string | null) {
 
 export const money = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 export const date = (s: string) => new Date(s.length === 10 ? s + 'T00:00' : s).toLocaleDateString('en-US');
+export const dateTime = (s: string) => new Date(s).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
+/** Builds a query string from the values that aren't empty. */
+export const qs = (values: Record<string, string | number | boolean | null | undefined>) =>
+  new URLSearchParams(Object.entries(values).filter(([, v]) => v !== '' && v != null && v !== false).map(([k, v]) => [k, String(v)])).toString();
+
+/** Sends a file (multipart form), for uploads. */
+export async function upload(url: string, file: File) {
+  const body = new FormData();
+  body.append('file', file);
+  const res = await fetch(url, { method: 'POST', body });
+  if (!res.ok) throw new ApiError(res.status, (await res.json().catch(() => null))?.error ?? 'Upload failed.');
+}

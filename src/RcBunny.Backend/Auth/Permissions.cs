@@ -14,6 +14,7 @@ public static class Permissions
     {
         ["corral"] = "Corral: customers, orders, texts and calls, CRM, products, ERCOT, exception queues",
         ["refunds"] = "Approve refunds, credits and debits, and reverse payments",
+        ["delete"] = "Delete accounts and records permanently",
         ["plans"] = "Change plans and rates",
         ["caboose"] = "Caboose: payments, credits and debits, refunds, deposits, aging, the journal, MSIDs and promo codes",
         ["bounty"] = "Bounty: reward offers, earning rules, redemptions, members and the monthly drawing",
@@ -49,6 +50,12 @@ public class RequirePermissionAttribute(string permission) : Attribute, IAsyncAu
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
         var me = await Permissions.CurrentAsync(context.HttpContext);
+        if (me != null)
+        {
+            // Changes saved during this request are recorded in history under this person's name
+            var db = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
+            (db.ActorName, db.ActorId) = (me.Name, me.Id);
+        }
         if (me is null) context.Result = new UnauthorizedResult();
         else if (!me.Permissions.Contains(permission)) context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
     }

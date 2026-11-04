@@ -1,47 +1,43 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router';
-import { api, date } from '../../api';
+import { date, qs, useLoad } from '../../api';
+import { RecordLink, Status } from '../../ui';
 
-interface Result {
-  customers: { id: number; account: string; name: string; address: string; city: string; status: string }[];
-  transactions: { id: number; type: string; status: string; message: string | null; sentAt: string }[];
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+/** ESIID Lookup: accounts at an address or meter ID, and what's been sent to ERCOT for those meters. */
 export default function EsiidLookup() {
-  const [esiid, setEsiid] = useState('');
-  const [result, setResult] = useState<Result | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const look = (e: FormEvent) => {
-    e.preventDefault();
-    api.get<Result>(`/api/customers/esiid/${encodeURIComponent(esiid.trim())}`).then(setResult, (err: Error) => setError(err.message));
-  };
+  const [search, setSearch] = useState({ q: '', zip: '' });
+  const { data, error } = useLoad<any>(search.q ? `/api/corral/esiid?${qs(search)}` : null);
+  const submit = (e: FormEvent<HTMLFormElement>) => { e.preventDefault(); const f = new FormData(e.currentTarget); setSearch({ q: String(f.get('q')).trim(), zip: String(f.get('zip')).trim() }); };
 
   return (
     <>
       <h1>ESIID Lookup</h1>
-      <form className="row" onSubmit={look}>
-        <input value={esiid} onChange={(e) => setEsiid(e.target.value)} placeholder="ESIID (the meter's ID)" required />
+      <p className="muted">Search our accounts by service address or ESIID. Looking up meters we don't serve needs an ERCOT data connection, which isn't set up.</p>
+      <form className="row" onSubmit={submit}>
+        <input name="q" placeholder="Street address or ESIID" required />
+        <input name="zip" placeholder="Zip (optional)" maxLength={5} style={{ maxWidth: 140 }} />
         <button className="primary">Look up</button>
       </form>
       {error && <p className="error">{error}</p>}
-      {result && (
+      {data && (
         <>
-          <section className="card">
-            <h2>Accounts on this meter</h2>
-            {result.customers.length === 0 ? <p className="muted">No account has this ESIID.</p> : (
+          <section className="card"><h2>Accounts ({data.results.length})</h2>
+            {data.results.length === 0 ? <p className="muted">No account at that address or ESIID.</p> : (
               <table>
-                <thead><tr><th>Account</th><th>Name</th><th>Address</th><th>Status</th></tr></thead>
-                <tbody>{result.customers.map((c) => <tr key={c.id}><td><Link to={`/corral/customers/${c.id}`}>{c.account}</Link></td><td>{c.name}</td><td>{c.address}, {c.city}</td><td>{c.status}</td></tr>)}</tbody>
+                <thead><tr><th>Account</th><th>Name</th><th>Address</th><th>ESIID</th><th>Utility</th><th>Meter</th><th>Status</th></tr></thead>
+                <tbody>{data.results.map((c: any) => <tr key={c.id}><td><Link to={`/corral/customers/${c.id}`}>{c.account}</Link></td><td>{c.name}</td>
+                  <td>{c.address}{c.unit && ` #${c.unit}`}, {c.city} {c.zip}</td><td className="mono">{c.esiid ?? '—'}</td><td>{c.market}</td><td>{c.meterType} {c.loadZone}</td><td>{c.status}</td></tr>)}</tbody>
               </table>
             )}
           </section>
-          <section className="card">
-            <h2>ERCOT history</h2>
-            {result.transactions.length === 0 ? <p className="muted">Nothing sent for this meter.</p> : (
+          <section className="card"><h2>ERCOT history</h2>
+            {data.transactions.length === 0 ? <p className="muted">Nothing sent for these meters.</p> : (
               <table>
-                <thead><tr><th>Sent</th><th>Type</th><th>Status</th><th>Message</th></tr></thead>
-                <tbody>{result.transactions.map((t) => <tr key={t.id}><td>{date(t.sentAt)}</td><td>{t.type}</td><td>{t.status}</td><td>{t.message}</td></tr>)}</tbody>
+                <thead><tr><th>ID</th><th>Date</th><th>ESIID</th><th>Purpose</th><th>Type</th><th>Status</th></tr></thead>
+                <tbody>{data.transactions.map((t: any) => <tr key={t.id}><td><RecordLink type="ercot_transaction" id={t.id} /></td><td>{date(t.transDate)}</td><td className="mono">{t.esiid}</td><td>{t.purpose}</td>
+                  <td><span className="mono">{t.transType}</span> {t.label}</td><td><Status value={t.status} /></td></tr>)}</tbody>
               </table>
             )}
           </section>

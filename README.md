@@ -60,16 +60,15 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
 - When Sheriff switches the website off, every page shows a "we'll be right back" notice.
 
 **Admin**
-- Corral (customer service and CRM), with the same menu as ebunny's:
-  - Customer Search (by account, name, email, phone, address or ESIID; filter by type and status) and the account page: details, bills, payments, notes, texts, calls, ERCOT, exceptions and product orders. People with the "refunds" permission can reverse a payment.
-  - ESIID Lookup: who's on a meter and what's been sent to ERCOT for it.
-  - Create Order and Create Order - Biz: enter the zip, pick a plan, and the new account is created. With an ESIID the switch request goes to ERCOT; without one the account goes in the "No ESIID" queue.
-  - SMS and Phone Calls. No text provider is connected, so texts are saved but not delivered.
-  - CRM: Pipeline (open leads by stage, win rate), Leads, Follow-ups (overdue ones in red), Partners & Brokers.
-  - Products and Product Orders.
-  - ERCOT: every request and its answer. There's no ERCOT connection yet, so people record the answer; a rejection puts the account in the "Rejected by ERCOT" queue.
-  - Exceptions: queues of accounts that need someone to look at them.
-- Plans & Rates: today's rate for every plan in every market. Add a rate (today or a future date), hide or show a plan.
+- Corral (customer service and CRM), everything in ebunny's Corral:
+  - Customer Search: counts, your bookmarks, search by name, email, account, ticket, ESIID, address, city, zip or phone digits, and filters by type, status and exception.
+  - The account page, section by section like ebunny's: flags (some show a banner), balances with pending credits and debits, the Status and Customer Service action menus (all 34 actions: run credit, send to market, disconnect, move out, cancel, payments, payment plans, transfers, meter requests…), contact details, products, shop orders, service and billing address, stars (spend and recalculate), status, plan and marketing details, files (uploads, and welcome letter / EFL / terms / YRAC / invoice generated in English or Spanish as PDFs to view, print, email or regenerate), notes with category, action and priority, calls, texts, billing summary, usage by month, bill details, payments (reverse), payment methods (AutoPay, remove), plan change log (activate, welcome packet, edit rate), address change log, ERCOT transactions (unlink, cancel), order-flow queues, the warehouse row, and logs.
+  - Every change to an account is recorded with who made it; the logs (Account Attributes, Products, Payments, Files, EDI, Emails, Notes, Calls, Logins, Queues) and the account ticket show it. Every ID in a table opens that row's page, where it can be edited or (with the "delete" right) deleted.
+  - ESIID Lookup; Create Order (residential and business) and Renew / Change Plan; SMS (filters, waiting on a reply, conversation, send); Phone Calls (filters, transcript); New Contact; resolutions on calls and texts.
+  - CRM: Pipeline (value, weighted value, win rate, by source, recent wins), Leads (stages, activities, follow-ups, lost reasons, won accounts), Follow-ups (overdue, today, coming up, done), Partners & Brokers (commission earned).
+  - Products: the website Shop's catalog, product pages, orders and their status, and ordering for a customer by phone (cart, protection plans on the bill, stars).
+  - ERCOT (filters by ESIID, account, tracking, type, purpose, status, dates) and the Exceptions work queues.
+  - Nothing outside is connected yet (Stripe, Experian, Twilio, email, ERCOT). Those actions record what would have been sent and say so.
 - Ranger (support tickets):
   - Dashboard (unassigned, mine, by status, approval) and Tickets (filter by status and by who has them).
   - A ticket: reply to the customer or add an internal note the customer never sees, change status and priority, pick it up. Ticket team managers can also assign it to anyone or take it over.
@@ -96,7 +95,7 @@ To start over with fresh sample data, stop both apps and delete `rcbunny-dev.db`
 
 ## How access works
 
-- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `plans`, `caboose`, `bounty`, `ranger`, `sheriff`.
+- Each employee has one role. A role is a list of permissions: `corral`, `refunds`, `delete`, `plans`, `caboose`, `bounty`, `ranger`, `sheriff`.
 - The server checks every request with `[RequirePermission("...")]` (`Backend/Auth/Permissions.cs`). It reads the person's current role from the database, cached for 30 seconds. Changing someone's role or turning them off clears that cache, so it takes effect on their next click.
 - The admin app hides menus, pages and buttons you can't use (`ClientApp/src/auth.tsx`). It re-checks who you are every minute, when the tab gets focus, and whenever the server says no.
 

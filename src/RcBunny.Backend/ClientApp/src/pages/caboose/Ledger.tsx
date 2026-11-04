@@ -3,7 +3,7 @@ import { api, date, money, useLoad } from '../../api';
 import { useAuth } from '../../auth';
 import AccountLink from '../AccountLink';
 
-interface Entry { id: number; customerId: number; account: string; customer: string; kind: string; amount: number; reason: string; status: string; requestedBy: string; decidedBy: string | null; decidedAt: string | null; decisionNote: string | null; createdAt: string }
+interface Entry { id: number; customerId: number; account: string; customer: string; kind: string; amount: number; description: string; status: string; requestedBy: string; decidedBy: string | null; decidedAt: string | null; decisionNote: string | null; createdAt: string }
 
 /** Credits lower a balance, debits raise it. They change the balance only when someone with "refunds" approves them. */
 export default function Ledger() {
@@ -44,7 +44,7 @@ export default function Ledger() {
                 {data.pending.map((e) => (
                   <tr key={e.id}>
                     <td>{date(e.createdAt)}</td><td><AccountLink id={e.customerId} account={e.account} name={e.customer} /></td>
-                    <td>{e.kind}</td><td className="num">{money(e.amount)}</td><td>{e.reason}</td><td>{e.requestedBy}</td>
+                    <td>{e.kind}</td><td className="num">{money(e.amount)}</td><td>{e.description}</td><td>{e.requestedBy}</td>
                     <td className="row">
                       {can('refunds') && e.requestedBy !== me!.name
                         ? <><button className="primary" onClick={() => decide(e, true)}>Apply</button><button onClick={() => decide(e, false)}>Reject</button></>
