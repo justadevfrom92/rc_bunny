@@ -52,3 +52,67 @@ export const RecordLink = ({ type, id }: { type: string; id: number }) => <Link 
 
 /** Minutes:seconds from seconds. */
 export const duration = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+
+// ---- ebunny's building blocks (backend/partials/*): the same markup and classes as ebunny's admin pages ----
+
+/** The page title, a line under it, and buttons on the right (ebunny's partials/page-head). */
+export function PageHead({ title, sub, actions }: { title: ReactNode; sub?: ReactNode; actions?: ReactNode }) {
+  return (
+    <div className="page-head">
+      <div>
+        <h1>{title}</h1>
+        {sub && <p className="muted">{sub}</p>}
+      </div>
+      {actions && <div className="actions">{actions}</div>}
+    </div>
+  );
+}
+
+/** A white panel with a heading row (title on the left, anything on the right). Set body to wrap the content in .panel-body. */
+export function Panel({ title, right, body, children, id, className }: { title?: ReactNode; right?: ReactNode; body?: boolean; children?: ReactNode; id?: string; className?: string }) {
+  return (
+    <div className={`panel${className ? ' ' + className : ''}`} id={id}>
+      {(title || right) && <div className="panel-head">{typeof title === 'string' ? <h2>{title}</h2> : title}{right}</div>}
+      {body ? <div className="panel-body">{children}</div> : children}
+    </div>
+  );
+}
+
+/** A number tile (ebunny's .stat): label, big number, small note. alert makes the number red. */
+export function Stat({ label, value, note, alert, onClick }: { label: ReactNode; value: ReactNode; note?: ReactNode; alert?: boolean; onClick?: () => void }) {
+  return (
+    <div className={`stat${alert ? ' alert' : ''}`} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
+      <span>{label}</span><strong>{value}</strong>{note && <small>{note}</small>}
+    </div>
+  );
+}
+
+/** A labelled form field (ebunny's .field). */
+export function Field({ label, htmlFor, grow, children }: { label: ReactNode; htmlFor?: string; grow?: boolean; children: ReactNode }) {
+  return <div className={`field${grow ? ' grow' : ''}`}><label htmlFor={htmlFor}>{label}</label>{children}</div>;
+}
+
+/** An empty table row with ebunny's .empty text. */
+export const EmptyRow = ({ cols, children }: { cols: number; children: ReactNode }) => <tr><td colSpan={cols} className="empty">{children}</td></tr>;
+
+/** ebunny's pager: ‹ 1 2 3 … 9 › and "1–25 of 300". */
+export function PagerBar({ page, total, size, onPage }: { page: number; total: number; size: number; onPage: (p: number) => void }) {
+  const last = Math.max(1, Math.ceil(total / size));
+  if (last <= 1) return null;
+  const nums = [...new Set([1, last, ...Array.from({ length: 5 }, (_, i) => page - 2 + i)])].filter((n) => n >= 1 && n <= last).sort((a, b) => a - b);
+  return (
+    <nav className="pager" aria-label="Pages">
+      <span>
+        <button className="btn sm ghost" disabled={page <= 1} onClick={() => onPage(page - 1)} aria-label="Previous page">‹</button>{' '}
+        {nums.map((n, i) => (
+          <span key={n}>
+            {i > 0 && n - nums[i - 1] > 1 && <span className="muted">… </span>}
+            {n === page ? <span className="btn sm on" aria-current="page">{n}</span> : <button className="btn sm ghost" onClick={() => onPage(n)}>{n}</button>}{' '}
+          </span>
+        ))}
+        <button className="btn sm ghost" disabled={page >= last} onClick={() => onPage(page + 1)} aria-label="Next page">›</button>
+      </span>
+      <span className="muted pager-of">{((page - 1) * size + 1).toLocaleString()}–{Math.min(page * size, total).toLocaleString()} of {total.toLocaleString()}</span>
+    </nav>
+  );
+}

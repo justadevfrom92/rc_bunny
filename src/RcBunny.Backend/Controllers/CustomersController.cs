@@ -53,9 +53,9 @@ public class CustomersController(AppDbContext db, IConfiguration config, IWebHos
         };
     }
 
-    private static Task<List<object>> Rows(IQueryable<Customer> q) => q
-        .Select(c => (object)new { c.Id, c.Account, c.Name, c.Type, c.City, c.Status, c.Exception, c.Balance, plan = c.Plan!.Name, market = c.Market!.Name, c.CreatedAt })
-        .ToListAsync();
+    private static async Task<List<object>> Rows(IQueryable<Customer> q) => (await q
+        .Select(c => new { c.Id, c.Account, c.Name, c.Type, c.Phone, c.Email, c.Address, c.City, c.Zip, c.Status, c.Exception, c.Balance, plan = c.Plan!.Name, market = c.Market!.Name, c.Source, c.CreatedAt })
+        .ToListAsync()).Select(c => (object)new { c.Id, c.Account, c.Name, c.Type, c.Phone, c.Email, c.Address, c.City, c.Zip, c.Status, tone = Corral.StatusTone(c.Status), c.Exception, c.Balance, c.plan, c.market, c.Source, c.CreatedAt }).ToList();
 
     // ---- The account page -------------------------------------------------------------------------------------
 
