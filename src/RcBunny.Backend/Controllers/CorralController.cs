@@ -223,7 +223,10 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
         {
             case "call" when await db.PhoneCalls.FindAsync(id) is { } call: (call.Resolution, call.ResolvedBy) = (input.Resolution, who); break;
             case "contact" when await db.ContactLogs.FindAsync(id) is { } log: (log.Resolution, log.ResolvedBy) = (input.Resolution, who); break;
-            case "message" when await db.ContactMessages.FindAsync(id) is { } msg: msg.Handled = input.Resolution == "Resolved"; break;
+            case "message" when await db.ContactMessages.FindAsync(id) is { } msg:
+                var me = await Me();
+                (msg.HandledAt, msg.HandledById) = input.Resolution == "Resolved" ? ((DateTime?)DateTime.UtcNow, (int?)me.Id) : (null, null);
+                break;
             default: return NotFound();
         }
         await db.SaveChangesAsync();

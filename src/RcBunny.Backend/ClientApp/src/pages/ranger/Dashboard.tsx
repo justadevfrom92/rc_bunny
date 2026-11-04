@@ -1,34 +1,57 @@
 import { Link } from 'react-router';
-import { date, useLoad } from '../../api';
+import { dateTime, useLoad } from '../../api';
+import { ApprovalCard, TicketTable, type Approval, type Lists, type Row } from './shared';
 
-interface DashboardData {
-  byStatus: { status: string; count: number }[]; unassigned: number; mine: number; highPriority: number; approval: number | null;
-  oldest: { id: number; subject: string; name: string; createdAt: string }[];
+interface Data {
+  counts: { new: number; unassigned: number; open: number; solvedToday: number };
+  overall: Approval; teams: { team: string; label: string; approval: Approval }[];
+  open: Row[]; manager: boolean; lists: Lists;
+  managerRequests: { id: number; number: string; subject: string; name: string; managerRequestedAt: string; requestedBy: string | null; managerRequestNote: string | null }[];
 }
 
+/** The day's numbers, approval for the last 30 days, manager requests, and every open ticket, most urgent first. */
 export default function Dashboard() {
-  const { data, error } = useLoad<DashboardData>('/api/ranger/dashboard');
+  const { data, error } = useLoad<Data>('/api/ranger/dashboard');
   if (error) return <p className="error">{error}</p>;
   if (!data) return <p>Loading…</p>;
-  const count = (s: string) => data.byStatus.find((b) => b.status === s)?.count ?? 0;
+  const c = data.counts;
 
   return (
     <>
       <h1>Ranger</h1>
       <div className="stats">
-        <Link className="card" to="/ranger/tickets?who=unassigned"><span className="muted">Unassigned</span><strong>{data.unassigned}</strong></Link>
-        <Link className="card" to="/ranger/tickets?who=mine"><span className="muted">Mine</span><strong>{data.mine}</strong></Link>
-        <div className="card"><span className="muted">High priority</span><strong>{data.highPriority}</strong></div>
-        <div className="card"><span className="muted">New</span><strong>{count('new')}</strong></div>
-        <div className="card"><span className="muted">Open</span><strong>{count('open')}</strong></div>
-        <div className="card"><span className="muted">Waiting on customer</span><strong>{count('waiting')}</strong></div>
-        <Link className="card" to="/ranger/ratings"><span className="muted">Approval</span><strong>{data.approval === null ? '—' : `${data.approval}%`}</strong></Link>
+        <Link className="card" to="/ranger/tickets?view=active&status=new"><span className="muted">New</span><strong>{c.new}</strong></Link>
+        <Link className="card" to="/ranger/tickets?view=unassigned"><span className="muted">Unassigned</span><strong>{c.unassigned}</strong></Link>
+        <Link className="card" to="/ranger/tickets?view=active"><span className="muted">Open</span><strong>{c.open}</strong></Link>
+        <Link className="card" to="/ranger/tickets?view=done"><span className="muted">Solved today</span><strong>{c.solvedToday}</strong></Link>
       </div>
+      <h2>Approval · last 30 days</h2>
+      <div className="stats">
+        <ApprovalCard label="Overall" a={data.overall} />
+        {data.teams.map((t) => <ApprovalCard key={t.team} label={t.label} a={t.approval} />)}
+        <Link className="card" to="/ranger/satisfaction"><span className="muted">More</span><strong>→</strong><small className="muted">Satisfaction</small></Link>
+      </div>
+
+      {data.managerRequests.length > 0 && (
+        <section className="card">
+          <h2>Manager Requests</h2>
+          <table>
+            <thead><tr><th>Ticket</th><th>Asked by</th><th>Why</th><th>When</th></tr></thead>
+            <tbody>
+              {data.managerRequests.map((r) => (
+                <tr key={r.id}>
+                  <td><Link to={`/ranger/tickets/${r.id}`}><span className="mono">{r.number}</span> {r.subject}</Link><div className="muted">{r.name}</div></td>
+                  <td>{r.requestedBy ?? '—'}</td><td>{r.managerRequestNote ?? <span className="muted">—</span>}</td><td className="nowrap">{dateTime(r.managerRequestedAt)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
+
       <section className="card">
-        <h2>Oldest open tickets</h2>
-        <table>
-          <tbody>{data.oldest.map((t) => <tr key={t.id}><td><Link to={`/ranger/tickets/${t.id}`}>#{t.id} {t.subject}</Link></td><td>{t.name}</td><td>{date(t.createdAt)}</td></tr>)}</tbody>
-        </table>
+        <h2>Open Tickets <span className="muted">· most urgent first</span></h2>
+        <TicketTable rows={data.open} lists={data.lists} empty="Nothing open. Nice work!" />
       </section>
     </>
   );

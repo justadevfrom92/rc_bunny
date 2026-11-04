@@ -12,7 +12,7 @@
                     <tbody>
                         @foreach (var x in Model.Tickets)
                         {
-                            <tr><td><a href="/myaccount/support/@x.Id">#@x.Id @x.Subject</a></td><td>@(x.Status == "waiting" ? "Waiting on you" : x.Status)</td><td>@x.UpdatedAt.ToLocalTime().ToString("MMM d")</td></tr>
+                            <tr><td><a href="/myaccount/support/@x.Id">@x.Number @x.Subject</a></td><td>@(x.Status == "waiting" ? "Waiting on you" : RcBunny.Data.Ranger.Statuses[x.Status].Label)</td><td>@x.UpdatedAt.ToLocalTime().ToString("MMM d")</td></tr>
                         }
                     </tbody>
                 </table>
@@ -21,22 +21,26 @@
 
             @if (t is null)
             {
-                <form class="byop-panel" method="post" asp-page-handler="New">
+                <form class="byop-panel" method="post" asp-page-handler="New" enctype="multipart/form-data">
                     <h2>Ask us something</h2>
                     @if (Model.Error is { } error) { <div class="form-msg error">@error</div> }
                     <div class="field"><label for="s">Subject</label><input id="s" name="subject" maxlength="200" required></div>
-                    <div class="field" style="margin-top:12px"><label for="t">Topic</label><select id="t" name="topic">@foreach (var topic in RcBunny.Frontend.Pages.MyAccount.SupportModel.Topics) { <option>@topic</option> }</select></div>
+                    <div class="field" style="margin-top:12px"><label for="t">Topic</label><select id="t" name="topic">@foreach (var (key, label) in RcBunny.Data.Ranger.Topics) { <option value="@key">@label</option> }</select></div>
                     <div class="field" style="margin-top:12px"><label for="m">Message</label><textarea id="m" name="message" rows="5" required></textarea></div>
+                    <div class="field" style="margin-top:12px"><label for="f">Attach files (optional, up to 5)</label><input id="f" type="file" name="files" multiple></div>
                     <button class="btn" style="margin-top:16px">Send</button>
                 </form>
             }
             else
             {
                 <div class="byop-panel">
-                    <h2>#@t.Id @t.Subject</h2>
+                    <h2>@t.Number @t.Subject</h2>
+                    @if (Model.Error is { } replyError) { <div class="form-msg error">@replyError</div> }
                     @foreach (var m in Model.Messages)
                     {
-                        <div class="ticket-msg @(m.FromCustomer ? "me" : "")"><small>@(m.FromCustomer ? "You" : m.Author) · @m.CreatedAt.ToLocalTime().ToString("MMM d, h:mm tt")</small><p>@m.Body</p></div>
+                        <div class="ticket-msg @(m.Kind == "customer" ? "me" : "")"><small>@(m.Kind == "customer" ? "You" : m.Author) · @m.CreatedAt.ToLocalTime().ToString("MMM d, h:mm tt")@(m.Via == "email" ? " · by email" : "")</small><p>@m.Body</p>
+                            @foreach (var f in Model.Files.Where(f => f.MessageId == m.Id)) { <p><a href="/myaccount/support/@t.Id?handler=File&fileId=@f.Id">📎 @f.Name</a></p> }
+                        </div>
                     }
                     @if (t.Status is "solved" or "closed")
                     {
@@ -52,8 +56,9 @@
                         }
                         else { <p>Thanks for rating us <strong>@t.Rating</strong>.</p> }
                     }
-                    <form method="post" asp-page-handler="Reply" asp-route-id="@t.Id" style="margin-top:16px">
+                    <form method="post" asp-page-handler="Reply" asp-route-id="@t.Id" style="margin-top:16px" enctype="multipart/form-data">
                         <div class="field"><label for="r">Reply</label><textarea id="r" name="message" rows="4" required></textarea></div>
+                        <div class="field" style="margin-top:8px"><input type="file" name="files" multiple aria-label="Attach files"></div>
                         <button class="btn" style="margin-top:12px">Send</button>
                     </form>
                 </div>

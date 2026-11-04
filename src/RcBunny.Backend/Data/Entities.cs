@@ -11,6 +11,8 @@ public class User
     public int RoleId { get; set; }
     public Role? Role { get; set; }
     public bool Active { get; set; } = true;
+    /// <summary>For people from a 3rd-party company (e.g. a support vendor); null for our own staff.</summary>
+    public string? Company { get; set; }
 }
 
 public class Role
@@ -231,6 +233,9 @@ public class Note
     public string? Priority { get; set; }
     public string Body { get; set; } = "";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public int? UserId { get; set; }
+    /// <summary>Set when the note was written on a Ranger ticket (it shows on the ticket and the account).</summary>
+    public int? SupportTicketId { get; set; }
 }
 
 public class ContactMessage
@@ -241,8 +246,17 @@ public class ContactMessage
     public string? Phone { get; set; }
     public string Topic { get; set; } = "";
     public string Message { get; set; } = "";
-    public bool Handled { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    /// <summary>The account it's about, saved once someone replies.</summary>
+    public int? CustomerId { get; set; }
+    public DateTime? HandledAt { get; set; }
+    public int? HandledById { get; set; }
+    public User? HandledBy { get; set; }
+    public string? Reply { get; set; }
+    public DateTime? RepliedAt { get; set; }
+    public int? RepliedById { get; set; }
+    public User? RepliedBy { get; set; }
+    public bool Handled => HandledAt != null;
 }
 
 /// <summary>

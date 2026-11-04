@@ -26,7 +26,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
-    await Seeder.RunAsync(scope.ServiceProvider.GetRequiredService<AppDbContext>());
+    await Seeder.RunAsync(scope.ServiceProvider.GetRequiredService<AppDbContext>(),
+        Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, app.Configuration["Storage:Root"] ?? "../../storage")));
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

@@ -8,7 +8,7 @@ namespace RcBunny.Seed;
 /// <summary>Creates the database on first start and fills it with ebunny's sample data (Seed/data/*.json).</summary>
 public static partial class Seeder
 {
-    public static async Task RunAsync(AppDbContext db)
+    public static async Task RunAsync(AppDbContext db, string storageRoot)
     {
         await db.Database.EnsureCreatedAsync();
         if (await db.Roles.AnyAsync()) return;
@@ -62,31 +62,8 @@ public static partial class Seeder
         await SeedCrmAsync(db, adminUser, markets);
         await SeedShopAsync(db);
 
-        // Ranger: the ticket team and some tickets
-        var csrUser = await db.Users.FirstAsync(u => u.Email == "csr@example.com");
-        db.RangerAgents.AddRange(new RangerAgent { User = adminUser, IsManager = true }, new RangerAgent { User = csrUser });
-        var ticketCustomers = await db.Customers.OrderBy(c => c.Id).Take(8).ToListAsync();
-        var subjects = new[] { ("Billing", "Why is my bill higher this month?"), ("My plan", "When does my contract end?"), ("Moving", "Moving next month"), ("Billing", "Double charged?"),
-            ("Something else", "Can I add my spouse to the account?"), ("Billing", "AutoPay didn't run"), ("My plan", "Renewal options"), ("Moving", "Stop service at old address") };
-        var ticketStatuses = new[] { "new", "new", "open", "waiting", "open", "solved", "solved", "closed" };
-        for (var i = 0; i < ticketCustomers.Count; i++)
-        {
-            var c = ticketCustomers[i];
-            var status = ticketStatuses[i];
-            var created = DateTime.UtcNow.AddDays(-10 + i);
-            var ticket = new SupportTicket
-            {
-                CustomerId = c.Id, Name = c.Name, Email = c.Email ?? "", Topic = subjects[i].Item1, Subject = subjects[i].Item2, Status = status,
-                Priority = i == 3 ? "high" : "normal", AssignedTo = status == "new" ? null : i % 2 == 0 ? csrUser : adminUser, CreatedAt = created, UpdatedAt = created.AddHours(5),
-                FirstResponseAt = status == "new" ? null : created.AddHours(2), SolvedAt = status is "solved" or "closed" ? created.AddDays(1) : null,
-                Rating = status is "solved" or "closed" ? (i == 6 ? "bad" : "good") : null, RatingComment = i == 6 ? "Took too long." : null,
-            };
-            db.SupportTickets.Add(ticket);
-            await db.SaveChangesAsync();
-            db.TicketMessages.Add(new TicketMessage { TicketId = ticket.Id, Author = c.Name, FromCustomer = true, Body = subjects[i].Item2 + " Thanks for your help.", CreatedAt = created });
-            if (status != "new")
-                db.TicketMessages.Add(new TicketMessage { TicketId = ticket.Id, Author = ticket.AssignedTo!.Name, Body = "Thanks for reaching out! Let me take a look and get back to you.", CreatedAt = created.AddHours(2) });
-        }
+        // Ranger: the ticket team (in-office and a 3rd-party company), tickets, and website messages (Seed/RangerSeed.cs)
+        await SeedRangerAsync(db, adminUser, await db.Users.FirstAsync(u => u.Email == "csr@example.com"), service, password, storageRoot);
 
         // Sheriff: the website's maintenance switch
         db.HeartbeatControls.Add(new HeartbeatControl { Key = "website", Name = "Website" });
@@ -145,10 +122,6 @@ public static partial class Seeder
         db.StarEntries.Add(new StarEntry { CustomerId = members[1].Id, Stars = -800, Reason = "Redeemed: LED bulb 6-pack", Offer = offers[3], Fulfillment = "pending", By = "My Account" });
         members[0].Stars -= 2500; members[1].Stars -= 800;
         db.DrawingWinners.Add(new DrawingWinner { Month = DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM"), CustomerId = members[2].Id, Prize = "$500 bill credit", DrawnBy = "Admin Demo", DrawnAt = DateTime.UtcNow.AddDays(-20) });
-
-        db.ContactMessages.AddRange(
-            new ContactMessage { Name = "Jordan Lee", Email = "jordan@example.com", Topic = "Billing", Message = "Can I change my due date?" },
-            new ContactMessage { Name = "Sam Ortiz", Email = "sam@example.com", Phone = "(555) 555-0199", Topic = "New service", Message = "Moving to Dallas next month, which plan should I pick?" });
 
         await db.SaveChangesAsync();
     }

@@ -32,6 +32,7 @@ public static class Accounts
         await db.DrawingWinners.Where(x => x.CustomerId == id).ExecuteDeleteAsync();
         await db.PhoneCalls.Where(x => x.CustomerId == id).ExecuteUpdateAsync(s => s.SetProperty(x => x.CustomerId, (int?)null));
         await db.SupportTickets.Where(x => x.CustomerId == id).ExecuteUpdateAsync(s => s.SetProperty(x => x.CustomerId, (int?)null));
+        await db.ContactMessages.Where(x => x.CustomerId == id).ExecuteUpdateAsync(s => s.SetProperty(x => x.CustomerId, (int?)null));
         await db.CrmLeads.Where(x => x.CustomerId == id).ExecuteUpdateAsync(s => s.SetProperty(x => x.CustomerId, (int?)null));
         db.Customers.Remove(c);
     }

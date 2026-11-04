@@ -43,6 +43,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
     public DbSet<TicketMessage> TicketMessages => Set<TicketMessage>();
     public DbSet<RangerAgent> RangerAgents => Set<RangerAgent>();
+    public DbSet<TicketAttachment> TicketAttachments => Set<TicketAttachment>();
+    public DbSet<TicketWatcher> TicketWatchers => Set<TicketWatcher>();
 
     // Sheriff
     public DbSet<AuditEntry> AuditEntries => Set<AuditEntry>();
@@ -87,6 +89,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<Bookmark>().HasIndex(b => new { b.UserId, b.CustomerId }).IsUnique();
         m.Entity<HistoryEntry>().HasIndex(h => new { h.CustomerId, h.Group });
         m.Entity<RangerAgent>().HasIndex(a => a.UserId).IsUnique();
+        m.Entity<RangerAgent>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+        m.Entity<RangerAgent>().HasOne(a => a.AddedBy).WithMany().HasForeignKey(a => a.AddedById).OnDelete(DeleteBehavior.NoAction);
+        m.Entity<SupportTicket>().HasOne(t => t.AssignedTo).WithMany().HasForeignKey(t => t.AssignedToId).OnDelete(DeleteBehavior.NoAction);
+        m.Entity<SupportTicket>().HasOne(t => t.ManagerRequestedBy).WithMany().HasForeignKey(t => t.ManagerRequestedById).OnDelete(DeleteBehavior.NoAction);
+        m.Entity<TicketWatcher>().HasIndex(w => new { w.TicketId, w.UserId }).IsUnique();
+        m.Entity<ContactMessage>().HasOne(x => x.HandledBy).WithMany().HasForeignKey(x => x.HandledById).OnDelete(DeleteBehavior.NoAction);
+        m.Entity<ContactMessage>().HasOne(x => x.RepliedBy).WithMany().HasForeignKey(x => x.RepliedById).OnDelete(DeleteBehavior.NoAction);
         m.Entity<HeartbeatControl>().HasIndex(h => h.Key).IsUnique();
         m.Entity<Msid>().HasIndex(x => x.Code).IsUnique();
         m.Entity<PromoCode>().HasIndex(x => x.Code).IsUnique();

@@ -18,7 +18,7 @@ async function request<T>(method: string, url: string, body?: unknown): Promise<
     const data = await res.json().catch(() => null);
     const message = data?.error ?? (res.status === 403 ? "You don't have access to that." : 'Something went wrong.');
     // Signed out, or access changed: let the app re-check who we are.
-    if (res.status === 401 || res.status === 403) window.dispatchEvent(new Event('access-changed'));
+    if ((res.status === 401 || res.status === 403) && url !== '/api/me') window.dispatchEvent(new Event('access-changed'));
     throw new ApiError(res.status, message);
   }
   const text = await res.text();

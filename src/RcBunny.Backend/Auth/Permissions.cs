@@ -37,7 +37,11 @@ public static class Permissions
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
             var db = http.RequestServices.GetRequiredService<AppDbContext>();
             var user = await db.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == id && u.Active);
-            return user is null ? null : new SignedIn(user.Id, user.Name, user.Email, user.Role!.Name, user.Role.PermissionList());
+            if (user is null) return null;
+            var permissions = user.Role!.PermissionList();
+            // Being on Ranger's ticket team gives Ranger, whatever the role
+            if (!permissions.Contains("ranger") && await db.RangerAgents.AnyAsync(a => a.UserId == id && a.Active)) permissions.Add("ranger");
+            return new SignedIn(user.Id, user.Name, user.Email, user.Role.Name, permissions);
         });
     }
 
