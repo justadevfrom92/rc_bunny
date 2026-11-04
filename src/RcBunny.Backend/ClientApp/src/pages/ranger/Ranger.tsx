@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router';
-import Sidebar, { type Menu } from '../../Sidebar';
+import AppShell, { type Menu } from '../../Sidebar';
 import Dashboard from './Dashboard';
 import Tickets from './Tickets';
 import Ticket from './Ticket';
@@ -22,9 +22,7 @@ const menu: Menu = [
 
 export default function Ranger() {
   return (
-    <div className="with-sidebar">
-      <Sidebar app="ranger" menu={menu} />
-      <div className="content">
+    <AppShell app="ranger" menu={menu}>
         <Routes>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
@@ -41,7 +39,6 @@ export default function Ranger() {
           <Route path="employees" element={<Employees />} />
           <Route path="employees/:id" element={<Employee />} />
         </Routes>
-      </div>
-    </div>
+    </AppShell>
   );
 }

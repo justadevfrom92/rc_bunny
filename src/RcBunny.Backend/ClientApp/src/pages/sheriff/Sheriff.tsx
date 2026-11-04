@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router';
-import Sidebar, { type Menu } from '../../Sidebar';
+import AppShell, { type Menu } from '../../Sidebar';
 import Heartbeat from './Heartbeat';
 import Checks from './Checks';
 import Timeline from './Timeline';
@@ -20,9 +20,7 @@ const menu: Menu = [
 
 export default function Sheriff() {
   return (
-    <div className="with-sidebar">
-      <Sidebar app="sheriff" menu={menu} />
-      <div className="content">
+    <AppShell app="sheriff" menu={menu}>
         <Routes>
           <Route index element={<Navigate to="staff" replace />} />
           <Route path="heartbeat" element={<Heartbeat />} />
@@ -36,7 +34,6 @@ export default function Sheriff() {
           <Route path="markets" element={<Markets />} />
           <Route path="integrations" element={<Integrations />} />
         </Routes>
-      </div>
-    </div>
+    </AppShell>
   );
 }

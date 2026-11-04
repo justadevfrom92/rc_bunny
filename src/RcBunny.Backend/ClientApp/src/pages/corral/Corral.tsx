@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router';
-import Sidebar, { type Menu } from '../../Sidebar';
+import AppShell, { type Menu } from '../../Sidebar';
 import Customers from './Customers';
 import Customer from './Customer';
 import { ActionForm, ApiLog, ContactLog, History, PanelLog, Stars } from './AccountPages';
@@ -33,9 +33,7 @@ const menu: Menu = [
 
 export default function Corral() {
   return (
-    <div className="with-sidebar">
-      <Sidebar app="corral" menu={menu} />
-      <div className="content">
+    <AppShell app="corral" menu={menu}>
         <Routes>
           <Route index element={<Navigate to="customers" replace />} />
           <Route path="customers" element={<Customers />} />
@@ -76,7 +74,6 @@ export default function Corral() {
           <Route path="queues" element={<Queues />} />
           <Route path="queues/:key" element={<Queue />} />
         </Routes>
-      </div>
-    </div>
+    </AppShell>
   );
 }

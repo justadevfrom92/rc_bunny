@@ -1,35 +1,51 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { useAuth, type Me } from '../auth';
+import { apps, Brand, initials } from '../Sidebar';
 
+interface TestUser { email: string; name: string; role: string; permissions: string[] }
+
+/** Admin sign in, as ebunny's: the navy page, the white card, and the test sign-ins (development only). */
 export default function Login() {
   const { setMe } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [samples, setSamples] = useState<string[]>([]);
+  const [error, setError] = useState('');
+  const [testUsers, setTestUsers] = useState<TestUser[]>([]);
 
-  useEffect(() => { api.get<string[]>('/api/demo-logins').then(setSamples, () => {}); }, []);
+  useEffect(() => { api.get<TestUser[]>('/api/demo-logins').then(setTestUsers, () => {}); }, []);
 
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    setError(null);
+  const signIn = (email: string, password: string) => {
+    setError('');
     api.post<Me>('/api/login', { email, password }).then(setMe, (err: Error) => setError(err.message));
+  };
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    signIn(String(f.get('email')), String(f.get('password')));
   };
 
   return (
-    <form className="login card" onSubmit={submit}>
-      <h1>RC Bunny Admin</h1>
-      <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required autoFocus /></label>
-      <label>Password<input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required /></label>
-      {error && <p className="error">{error}</p>}
-      <button className="primary">Sign in</button>
-      {samples.length > 0 && (
-        <div className="samples">
-          <p>Sample sign-ins (password is <code>password</code>):</p>
-          {samples.map((s) => <button type="button" key={s} onClick={() => { setEmail(s); setPassword('password'); }}>{s}</button>)}
+    <div className="login-wrap">
+      <form className="login" onSubmit={submit}>
+        <div className="brand"><Brand /></div>
+        <div className="field"><label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="username" required autoFocus /></div>
+        <div className="field"><label htmlFor="password">Password</label><input id="password" name="password" type="password" autoComplete="current-password" required /></div>
+        <label className="check"><input type="checkbox" name="remember" value="1" /> Keep me signed in</label>
+        <div className="err" role="alert">{error}</div>
+        <button className="btn cyan">Sign In</button>
+        <a href="/" className="muted" style={{ textAlign: 'center', fontSize: '.85rem' }}>← Back to website</a>
+      </form>
+      {testUsers.length > 0 && (
+        <div className="login test-logins">
+          <h2>Test Sign-Ins</h2>
+          <p className="muted">For testing only (never shown in production): sign in as any sample admin to see what their role can do.</p>
+          {testUsers.map((u) => (
+            <button key={u.email} type="button" className="test-user" onClick={() => signIn(u.email, 'password')}>
+              <span className="avatar">{initials(u.name)}</span>
+              <span><b>{u.name}</b><small>{u.role} · {u.permissions.map((p) => apps[p]?.name).filter(Boolean).join(', ') || 'no apps'}</small></span>
+            </button>
+          ))}
         </div>
       )}
-    </form>
+    </div>
   );
 }

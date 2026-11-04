@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router';
-import Sidebar, { type Menu } from '../../Sidebar';
+import AppShell, { type Menu } from '../../Sidebar';
 import Dashboard from './Dashboard';
 import Payments from './Payments';
 import Ledger from './Ledger';
@@ -17,9 +17,7 @@ const menu: Menu = [
 
 export default function Caboose() {
   return (
-    <div className="with-sidebar">
-      <Sidebar app="caboose" menu={menu} />
-      <div className="content">
+    <AppShell app="caboose" menu={menu}>
         <Routes>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
@@ -31,7 +29,6 @@ export default function Caboose() {
           <Route path="journal" element={<Journal />} />
           <Route path="channels" element={<Channels />} />
         </Routes>
-      </div>
-    </div>
+    </AppShell>
   );
 }

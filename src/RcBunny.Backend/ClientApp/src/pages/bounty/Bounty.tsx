@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router';
-import Sidebar, { type Menu } from '../../Sidebar';
+import AppShell, { type Menu } from '../../Sidebar';
 import Dashboard from './Dashboard';
 import Offers from './Offers';
 import Rules from './Rules';
@@ -16,9 +16,7 @@ const menu: Menu = [
 
 export default function Bounty() {
   return (
-    <div className="with-sidebar">
-      <Sidebar app="bounty" menu={menu} />
-      <div className="content">
+    <AppShell app="bounty" menu={menu}>
         <Routes>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
@@ -30,7 +28,6 @@ export default function Bounty() {
           <Route path="drawing" element={<Drawing />} />
           <Route path="winners" element={<Winners />} />
         </Routes>
-      </div>
-    </div>
+    </AppShell>
   );
 }

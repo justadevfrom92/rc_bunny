@@ -44,9 +44,12 @@ public class AuthController(AppDbContext db, IWebHostEnvironment env) : Controll
         return me is null ? Unauthorized() : Ok(me);
     }
 
-    /// <summary>Sample sign-ins shown on the login page, in Development only.</summary>
+    /// <summary>Test sign-ins shown on the login page (Development only): every active employee, with their role and apps.</summary>
     [HttpGet("demo-logins")]
-    public object DemoLogins() => env.IsDevelopment()
-        ? new[] { "admin@example.com", "csr@example.com", "pricing@example.com", "finance@example.com" }
-        : Array.Empty<string>();
+    public async Task<object> DemoLogins()
+    {
+        if (!env.IsDevelopment()) return Array.Empty<object>();
+        var users = await db.Users.Include(u => u.Role).Where(u => u.Active).OrderBy(u => u.Id).ToListAsync();
+        return users.Select(u => new { u.Email, u.Name, role = u.Role!.Name, permissions = u.Role.PermissionList() });
+    }
 }
