@@ -116,3 +116,59 @@ export function PagerBar({ page, total, size, onPage }: { page: number; total: n
     </nav>
   );
 }
+
+/** ebunny's config corral.resolutions: how a call, email or text ended, and its pill colour. */
+export const resolutions: Record<string, string> = { Resolved: 'ok', Incomplete: 'warn', 'Follow-up Needed': 'info', Escalated: 'bad', 'No Answer': '' };
+
+/** ebunny's partials/resolution-pill: the resolution, or "Open". */
+export const ResolutionPill = ({ value }: { value?: string | null }) =>
+  value ? <span className={`pill ${resolutions[value] ?? ''}`}>{value}</span> : <span className="pill">Open</span>;
+
+/** ebunny's corral/_resolution: a dropdown that saves as soon as it changes. */
+export function ResolutionForm({ value, by, onSave }: { value?: string | null; by?: string | null; onSave: (resolution: string) => void }) {
+  return (
+    <form className="resolution-form" onSubmit={(e) => e.preventDefault()}>
+      <select aria-label="Resolution" value={value ?? ''} onChange={(e) => e.target.value && onSave(e.target.value)}>
+        {!value && <option value="">Pick a resolution</option>}
+        {Object.keys(resolutions).map((r) => <option key={r}>{r}</option>)}
+      </select>
+      {by && <div className="help" style={{ marginTop: 6 }}>Set by {by}</div>}
+    </form>
+  );
+}
+
+/** ebunny's partials/account-link: the account number linking to its Corral account. */
+export const AccountNo = ({ id, account }: { id?: number | null; account?: string | null }) =>
+  id && account ? <Link className="mono" to={`/corral/customers/${id}`}>{account}</Link> : <>—</>;
+
+/** ebunny's partials/phone-actions: the number with call and text icons. */
+export function PhoneActions({ phone, account }: { phone?: string | null; account?: string | null }) {
+  if (!phone) return <>—</>;
+  return (
+    <span className="phone-actions"><span>{phone}</span>
+      <a className="phone-ico" href={`tel:${phone.replace(/[^\d+]/g, '')}`} aria-label={`Call ${phone}`} data-tip="Call">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" /></svg></a>
+      {account && <Link className="phone-ico" to={`/corral/sms/new?account=${account}`} aria-label={`Text ${phone}`} data-tip="Text">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></Link>}
+    </span>
+  );
+}
+
+/** ebunny's 'n/j g:i A' (no year): 10/26 9:04 PM */
+export const shortTime = (s: string) => new Date(s).toLocaleString('en-US', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' }).replace(',', '');
+/** ebunny's 'l, F j, Y g:i A': Monday, October 26, 2026 9:04 PM */
+export const longTime = (s: string) => new Date(s).toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }).replace(' at ', ' ');
+/** ebunny's 'n/j/Y g:i:s A' */
+export const secondsTime = (s: string) => new Date(s).toLocaleString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit' }).replace(',', '');
+
+/** ebunny's Customer::statusTone(): the pill colour for an account status. */
+export const statusTone = (status?: string | null) =>
+  !status ? '' : status.startsWith('Good') ? 'ok' : status === 'Submitted' ? 'info' : status.startsWith('Pending') ? 'warn' : 'bad';
+
+/** How long ago, the way Carbon's diffForHumans(null, true) says it: "3 days", "2 hours". */
+export function age(from: string, to?: string | null) {
+  const s = Math.max(0, ((to ? new Date(to) : new Date()).getTime() - new Date(from).getTime()) / 1000);
+  const units: [number, string][] = [[31536000, 'year'], [2592000, 'month'], [604800, 'week'], [86400, 'day'], [3600, 'hour'], [60, 'minute'], [1, 'second']];
+  for (const [n, u] of units) if (s >= n) { const k = Math.floor(s / n); return `${k} ${u}${k === 1 ? '' : 's'}`; }
+  return '1 second';
+}

@@ -25,7 +25,7 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
         var results = await db.Customers.Include(c => c.Market)
             .Where(c => EF.Functions.Like(c.Address, like) || EF.Functions.Like(c.Esiid!, q.Trim() + "%"))
             .Where(c => string.IsNullOrEmpty(zip) || c.Zip == zip).OrderBy(c => c.Address).Take(100)
-            .Select(c => new { c.Id, c.Account, c.Name, c.Address, c.Unit, c.City, c.Zip, c.Esiid, c.Status, market = c.Market!.Name, c.MeterType, c.LoadZone })
+            .Select(c => new { c.Id, c.Account, c.Name, c.Address, c.Unit, c.City, c.Zip, c.Esiid, c.Status, c.Type, market = c.Market!.Code, c.MeterType, c.LoadZone })
             .ToListAsync();
         var esiids = results.Select(r => r.Esiid).Where(e => e != null).ToList();
         return new
@@ -64,7 +64,7 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
             total, page, ready = SmsReady, waitingIds,
             statuses = await db.ContactLogs.Where(l => l.Channel == "SMS").Select(l => l.Status).Distinct().ToListAsync(),
             rows = await query.OrderByDescending(l => l.CreatedAt).ThenByDescending(l => l.Id).Skip((Math.Max(page, 1) - 1) * 50).Take(50)
-                .Select(l => new { l.Id, l.CustomerId, account = l.Customer!.Account, customer = l.Customer.Name, l.Phone, l.Body, l.Direction, l.Status, l.Resolution, l.Who, l.CreatedAt })
+                .Select(l => new { l.Id, l.CustomerId, account = l.Customer!.Account, customer = l.Customer.Name, customerPhone = l.Customer.Phone, l.Phone, l.Body, l.Direction, l.Status, l.Resolution, l.Who, l.CreatedAt })
                 .ToListAsync(),
         };
     }
@@ -77,8 +77,8 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
         if (m is null) return NotFound();
         return Ok(new
         {
-            message = new { m.Id, m.Body, m.Direction, m.Status, m.Resolution, m.ResolvedBy, m.Who, m.Phone, m.CreatedAt, m.CustomerId },
-            customer = m.Customer == null ? null : new { m.Customer.Id, m.Customer.Account, m.Customer.Name, m.Customer.Phone },
+            message = new { m.Id, m.Body, m.Direction, m.Status, m.Resolution, m.ResolvedBy, m.Who, m.Phone, m.Template, m.SentAt, m.CreatedAt, m.CustomerId },
+            customer = m.Customer == null ? null : new { m.Customer.Id, m.Customer.Account, m.Customer.Name, m.Customer.FirstName, m.Customer.Phone },
             thread = await db.ContactLogs.Where(l => l.Channel == "SMS" && l.CustomerId == m.CustomerId).OrderBy(l => l.CreatedAt).ThenBy(l => l.Id).ToListAsync(),
             resolutions = Corral.Resolutions.Select(r => r.Resolution),
         });
@@ -158,7 +158,7 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
         var c = string.IsNullOrEmpty(account) ? null : await db.Customers.FirstOrDefaultAsync(x => x.Account == account);
         return new
         {
-            customer = c == null ? null : new { c.Id, c.Account, c.Name, c.Phone },
+            customer = c == null ? null : new { c.Id, c.Account, c.Name, c.Phone, c.Email },
             channels = Corral.ContactChannels, resolutions = Corral.Resolutions.Select(r => r.Resolution),
             issues = await db.PhoneCalls.Where(x => x.Issue != null).Select(x => x.Issue).Distinct().OrderBy(i => i).ToListAsync(),
         };
@@ -287,7 +287,7 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
     }
 
     private static Task<List<object>> Resolved(IQueryable<WorkItem> q) => q.Where(w => w.ResolvedAt != null).OrderByDescending(w => w.ResolvedAt).Take(25)
-        .Select(w => (object)new { w.Id, w.Queue, w.Summary, w.ResolvedAt, w.ResolvedBy, w.CustomerId, account = w.Customer!.Account, customer = w.Customer.Name })
+        .Select(w => (object)new { w.Id, w.Queue, w.Summary, w.CreatedAt, w.ResolvedAt, w.ResolvedBy, w.CustomerId, account = w.Customer!.Account, customer = w.Customer.Name })
         .ToListAsync();
 
     [HttpPost("work-items/{id:int}/resolve")]
