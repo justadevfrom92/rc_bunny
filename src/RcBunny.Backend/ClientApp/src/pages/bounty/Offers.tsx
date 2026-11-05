@@ -1,59 +1,46 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import { api, useLoad } from '../../api';
+import { PageHead, useRun } from '../../ui';
 
-interface Offer { id: number; name: string; description: string; stars: number; effect: string; value: string; active: boolean; position: number; redeemed: number }
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-const effectLabels: Record<string, string> = { credit: 'Bill credit ($)', gift: 'E-gift card (staff send it)', drawing: 'Monthly drawing entry', product: 'Product (staff send it)' };
+const effects: Record<string, string> = { credit: 'Bill credit', gift: 'Gift card', drawing: 'Drawing entry', product: 'Product' };
 
-/** What customers can spend stars on, in My Account. */
+/** Bounty → Offers (ebunny's bounty/offers): every offer in one editable table; Save Offers saves them all. */
 export default function Offers() {
-  const { data, error, reload } = useLoad<{ effects: string[]; offers: Offer[] }>('/api/bounty/offers');
-  const [editing, setEditing] = useState<Offer | 'new' | null>(null);
-  const [problem, setProblem] = useState<string | null>(null);
+  const { data, error, reload } = useLoad<any>('/api/bounty/offers');
+  if (error) return <div className="flash bad">{error}</div>;
+  if (!data) return <div className="empty">Loading…</div>;
+  return <OffersForm offers={data.offers} reload={reload} key={JSON.stringify(data.offers)} />;
+}
 
-  const save = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    const body = { name: f.get('name'), description: f.get('description'), stars: Number(f.get('stars')), effect: f.get('effect'), value: f.get('value'), active: f.get('active') === 'on', position: Number(f.get('position') || 0) };
-    const call = editing === 'new' ? api.post('/api/bounty/offers', body) : api.put(`/api/bounty/offers/${(editing as Offer).id}`, body);
-    call.then(() => { setEditing(null); setProblem(null); reload(); }, (err: Error) => setProblem(err.message));
-  };
-  const o = editing === 'new' ? null : editing;
-
+function OffersForm({ offers, reload }: { offers: any[]; reload: () => void }) {
+  const [rows, setRows] = useState<any[]>(offers.map((o) => ({ ...o })));
+  const [run, bar] = useRun(reload);
+  const set = (i: number, k: string, v: unknown) => setRows(rows.map((r, j) => (j === i ? { ...r, [k]: v } : r)));
+  const save = () => run(Promise.all(rows.map((r, i) => {
+    const body = { name: r.name, description: r.description, stars: Number(r.stars), effect: r.effect, value: r.value ?? '', active: r.active, position: r.position ?? i };
+    return r.id ? api.put(`/api/bounty/offers/${r.id}`, body) : api.post('/api/bounty/offers', body);
+  })), 'Offers saved');
   return (
-    <>
-      <div className="row spread"><h1>Offers</h1><button onClick={() => setEditing('new')}>New offer</button></div>
-      {(problem || error) && <p className="error">{problem ?? error}</p>}
-      {editing && data && (
-        <form key={o?.id ?? 'new'} className="card" onSubmit={save}>
-          <div className="row">
-            <label>Name<input name="name" defaultValue={o?.name} required /></label>
-            <label>Stars<input name="stars" type="number" min="1" defaultValue={o?.stars} required /></label>
-            <label>Order<input name="position" type="number" defaultValue={o?.position ?? 0} /></label>
-          </div>
-          <div className="row">
-            <label>What it does<select name="effect" defaultValue={o?.effect ?? 'credit'}>{data.effects.map((x) => <option key={x} value={x}>{effectLabels[x]}</option>)}</select></label>
-            <label>Value (dollars for a credit, or what to send)<input name="value" defaultValue={o?.value} /></label>
-          </div>
-          <label>Description (customers see this)<input name="description" defaultValue={o?.description} /></label>
-          <label style={{ flexDirection: 'row' }}><input name="active" type="checkbox" defaultChecked={o?.active ?? true} /> Offered in My Account</label>
-          <div className="row"><button className="primary">Save</button><button type="button" onClick={() => setEditing(null)}>Cancel</button></div>
-        </form>
-      )}
-      {!data ? <p>Loading…</p> : (
-        <table>
-          <thead><tr><th>Offer</th><th className="num">Stars</th><th>Does</th><th className="num">Redeemed</th><th /></tr></thead>
-          <tbody>
-            {data.offers.map((x) => (
-              <tr key={x.id} className={x.active ? '' : 'inactive'}>
-                <td>{x.name}<div className="muted">{x.description}</div></td><td className="num">{x.stars.toLocaleString()}</td>
-                <td>{effectLabels[x.effect]}{x.value && ` · ${x.effect === 'credit' ? `$${x.value}` : x.value}`}</td><td className="num">{x.redeemed}</td>
-                <td><button onClick={() => setEditing(x)}>Edit</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </>
+    <form style={{ display: 'flex', flexDirection: 'column', gap: 20 }} onSubmit={(e) => { e.preventDefault(); save(); }}>
+      <PageHead title="Offers" sub="What customers can spend stars on. Corral (Spend Stars) and My Account (My Rewards) show the active offers."
+        actions={<><button type="button" className="btn ghost" onClick={() => setRows([...rows, { name: '', description: '', stars: '', effect: 'credit', value: '', active: true, position: rows.length }])}>Add an Offer</button><button className="btn cyan">Save Offers</button></>} />
+      {bar}
+      <div className="panel"><div className="table-wrap"><table>
+        <thead><tr><th>Offer</th><th>Description</th><th className="num">Stars</th><th>Effect</th><th>Value</th><th>Active</th></tr></thead>
+        <tbody>{rows.map((o, i) => (
+          <tr key={o.id ?? `new${i}`}>
+            <td><input className="cell-input" value={o.name} required aria-label="Offer name" onChange={(e) => set(i, 'name', e.target.value)} /></td>
+            <td><input className="cell-input" value={o.description} required aria-label="Description" onChange={(e) => set(i, 'description', e.target.value)} /></td>
+            <td className="num"><input type="number" min="0" value={o.stars} required aria-label="Stars" style={{ width: '9ch' }} onChange={(e) => set(i, 'stars', e.target.value)} /></td>
+            <td><select value={o.effect} aria-label="Effect" onChange={(e) => set(i, 'effect', e.target.value)}>{Object.entries(effects).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></td>
+            <td><input className="cell-input" value={o.value ?? ''} aria-label="Value" placeholder="$ or product" style={{ width: '12ch' }} onChange={(e) => set(i, 'value', e.target.value)} /></td>
+            <td>{o.id ? <label className="check"><input type="checkbox" checked={o.active} onChange={(e) => set(i, 'active', e.target.checked)} /> Active</label> : 'New'}</td>
+          </tr>
+        ))}</tbody>
+      </table></div></div>
+      <p className="help">Value: the dollar amount for a bill credit, or the product name (e.g. ecobee) for a product. Bill credits go to Caboose → Credits &amp; Debits to be applied.</p>
+    </form>
   );
 }

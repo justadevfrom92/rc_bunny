@@ -14,21 +14,22 @@ public class BountyController(AppDbContext db) : ControllerBase
     public static readonly string[] Effects = ["credit", "gift", "drawing", "product"];
     private static string ThisMonth => DateTime.UtcNow.ToString("yyyy-MM");
 
+    /// <summary>Rewards dashboard (ebunny's bounty/dashboard).</summary>
     [HttpGet("dashboard")]
     public async Task<object> Dashboard()
     {
-        var since = DateTime.UtcNow.AddDays(-30);
-        var recent = await db.StarEntries.Where(e => e.CreatedAt >= since).Select(e => e.Stars).ToListAsync();
+        var monthStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var month = await db.StarEntries.Where(e => e.CreatedAt >= monthStart).Select(e => e.Stars).ToListAsync();
         return new
         {
             members = await db.Customers.CountAsync(c => c.Stars > 0),
             outstanding = await db.Customers.SumAsync(c => c.Stars),
-            earned30 = recent.Where(s => s > 0).Sum(),
-            spent30 = -recent.Where(s => s < 0).Sum(),
-            toSend = await db.StarEntries.CountAsync(e => e.Fulfillment == "pending"),
-            drawingEntries = await db.DrawingEntries.CountAsync(e => e.Month == ThisMonth),
-            topOffers = await db.StarEntries.Where(e => e.OfferId != null).GroupBy(e => e.Offer!.Name)
-                .Select(g => new { offer = g.Key, redeemed = g.Count() }).OrderByDescending(x => x.redeemed).Take(5).ToListAsync(),
+            earned = month.Where(s => s > 0).Sum(),
+            redeemed = -month.Where(s => s < 0).Sum(),
+            giftsPending = await db.StarEntries.CountAsync(e => e.Fulfillment == "pending"),
+            popular = await db.StarEntries.Where(e => e.OfferId != null).GroupBy(e => e.Offer!.Name)
+                .Select(g => new { name = g.Key, n = g.Count() }).OrderByDescending(x => x.n).Take(10).ToListAsync(),
+            top = await db.Customers.Where(c => c.Stars > 0).OrderByDescending(c => c.Stars).Take(10).Select(c => new { c.Id, c.Account, c.Name, c.Stars }).ToListAsync(),
         };
     }
 
@@ -66,7 +67,19 @@ public class BountyController(AppDbContext db) : ControllerBase
     }
 
     [HttpGet("rules")]
-    public async Task<List<RewardRule>> Rules() => await db.RewardRules.OrderBy(r => r.Name).ToListAsync();
+    public async Task<object> Rules() => new
+    {
+        rules = await db.RewardRules.OrderBy(r => r.Id).ToListAsync(),
+        last = await db.JobRuns.Where(r => r.Job == "Reward stars").OrderByDescending(r => r.StartedAt).FirstOrDefaultAsync(),
+    };
+
+    /// <summary>Award Stars Now: run the nightly "Reward stars" job straight away.</summary>
+    [HttpPost("award")]
+    public async Task<IActionResult> Award()
+    {
+        var run = await RcBunny.Jobs.Scheduler.RunAsync(HttpContext.RequestServices, RcBunny.Jobs.Scheduler.All.First(j => j.Name == "Reward stars"), await MyName());
+        return Ok(new { message = run.Message });
+    }
 
     public record RuleInput(string Name, int Stars, bool Active);
 
@@ -173,6 +186,9 @@ public class BountyController(AppDbContext db) : ControllerBase
         return new
         {
             month, thisMonth = ThisMonth,
+            months = Enumerable.Range(0, 12).Select(i => DateTime.UtcNow.AddMonths(-i).ToString("yyyy-MM")),
+            past = await db.DrawingWinners.Where(w => w.Month != month).OrderByDescending(w => w.Month).Take(12)
+                .Select(w => new { w.Id, w.Month, w.Prize, w.CustomerId, account = w.Customer!.Account, w.DrawnAt }).ToListAsync(),
             entries = await db.DrawingEntries.Where(e => e.Month == month).OrderBy(e => e.CreatedAt)
                 .Select(e => new { e.Id, e.CustomerId, account = e.Customer!.Account, customer = e.Customer.Name, e.CreatedAt }).ToListAsync(),
             winner = await db.DrawingWinners.Where(w => w.Month == month).Select(w => new { w.Id, w.CustomerId, account = w.Customer!.Account, customer = w.Customer.Name, w.Prize, w.DrawnBy, w.DrawnAt }).FirstOrDefaultAsync(),
@@ -195,6 +211,24 @@ public class BountyController(AppDbContext db) : ControllerBase
         db.Notes.Add(new Note { CustomerId = winnerId, Author = me, Body = $"Won the {ThisMonth} monthly drawing: {input.Prize.Trim()}." });
         await db.SaveChangesAsync();
         return Ok();
+    }
+
+    /// <summary>One drawing winner (ebunny's bounty/winner).</summary>
+    [HttpGet("winners/{id:int}")]
+    public async Task<IActionResult> Winner(int id)
+    {
+        var w = await db.DrawingWinners.Include(x => x.Customer).FirstOrDefaultAsync(x => x.Id == id);
+        if (w is null) return NotFound();
+        var c = w.Customer!;
+        return Ok(new
+        {
+            w.Id, w.Month, w.Prize, w.DrawnAt, w.DrawnBy,
+            customer = new { c.Id, c.Account, c.Name, c.Email, c.Phone, c.Address, c.Unit, c.City, c.Zip, c.Stars },
+            entries = await db.DrawingEntries.CountAsync(e => e.Month == w.Month),
+            theirEntries = await db.DrawingEntries.CountAsync(e => e.Month == w.Month && e.CustomerId == c.Id),
+            note = await db.Notes.Where(n => n.CustomerId == c.Id && n.Body.Contains(w.Month) && n.Body.Contains("drawing")).OrderByDescending(n => n.CreatedAt)
+                .Select(n => new { n.Body, n.Author, n.CreatedAt }).FirstOrDefaultAsync(),
+        });
     }
 
     [HttpGet("winners")]

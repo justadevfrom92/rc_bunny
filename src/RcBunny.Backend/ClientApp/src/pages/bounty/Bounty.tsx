@@ -5,7 +5,7 @@ import Offers from './Offers';
 import Rules from './Rules';
 import Redemptions from './Redemptions';
 import Members from './Members';
-import Drawing from './Drawing';
+import Drawing, { Draw, Winner } from './Drawing';
 import Winners from './Winners';
 import Record from '../Record';
 
@@ -24,7 +24,9 @@ export default function Bounty() {
           <Route path="redemptions" element={<Redemptions />} />
           <Route path="members" element={<Members />} />
           <Route path="drawing" element={<Drawing />} />
+          <Route path="drawing/draw" element={<Draw />} />
           <Route path="winners" element={<Winners />} />
+          <Route path="winners/:id" element={<Winner />} />
           <Route path="records/:type/:id" element={<Record />} />
         </Routes>
     </AppShell>
