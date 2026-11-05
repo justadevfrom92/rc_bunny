@@ -154,3 +154,19 @@ export function PasswordInput(props: Omit<InputHTMLAttributes<HTMLInputElement>,
     </span>
   );
 }
+
+/**
+ * ebunny's input[data-track]: a grid cell that turns blue once it's changed (and red when a number goes below zero).
+ * Use it as onInput on an uncontrolled input (defaultValue / defaultChecked).
+ */
+export function track(e: { currentTarget: HTMLInputElement }) {
+  const i = e.currentTarget;
+  const changed = i.type === 'checkbox' ? i.checked !== i.defaultChecked : i.value !== i.defaultValue;
+  i.classList.toggle('dirty', changed);
+  if (i.type === 'number') i.classList.toggle('neg', +i.value < 0);
+  const label = i.closest('label')?.querySelector<HTMLElement>('[data-label]');
+  if (label) label.textContent = i.checked ? label.dataset.on! : label.dataset.off!;
+}
+
+/** ebunny's data-slug-source: the URL slug made from a name. */
+export const slugify = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

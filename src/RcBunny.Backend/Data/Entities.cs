@@ -132,6 +132,12 @@ public class ByopProduct
     public bool Active { get; set; } = true;
     public string? Description { get; set; }
     public int Position { get; set; }
+    /// <summary>How far it can be discounted, in ¢/kWh (negative numbers; null = no limit).</summary>
+    public decimal? MinDiscount { get; set; }
+    public decimal? MaxDiscount { get; set; }
+    /// <summary>ebunny's ByopProduct::STEPS and TYPES.</summary>
+    public static readonly string[] Steps = ["Get Started", "Lower Your Bill", "Using Less", "Save More", "Protectin'"];
+    public static readonly string[] Types = ["Discount", "Free", "Monthly", "Premium", "Included"];
 }
 
 public class Rate

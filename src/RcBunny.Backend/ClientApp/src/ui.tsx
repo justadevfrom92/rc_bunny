@@ -38,13 +38,26 @@ export function useRun(reload?: () => void): [(action: Promise<unknown>, done?: 
     action.then(
       (result) => {
         const text = (result as { message?: string } | undefined)?.message ?? done;
-        setMessage(text ? { ok: true, text } : null);
+        setMessage(null);
+        if (text) toast(text);
         reload?.();
       },
       (e: Error) => setMessage({ ok: false, text: e.message }),
     );
-  const bar = message && <p className={message.ok ? 'notice-ok' : 'error'}>{message.text}</p>;
+  // ebunny: a success message is a toast at the bottom (above); an error is a red .flash on the page
+  const bar = message && !message.ok && <div className="flash bad" role="alert">{message.text}</div>;
   return [run, bar];
+}
+
+/** ebunny's toast(): a message that shows at the bottom of the screen for a few seconds. */
+let toastTimer = 0;
+export function toast(text: string) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.className = 'toast'; t.id = 'toast'; t.setAttribute('role', 'status'); t.setAttribute('aria-live', 'polite'); document.body.appendChild(t); }
+  t.textContent = text;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => t!.classList.remove('show'), 3200);
 }
 
 /** The ID column: "#12" linking to the record's page, in the app you're in (ebunny's /admin/{app}/records/{type}/{id}). */

@@ -1,17 +1,15 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router';
-import AppShell from './Sidebar';
 import { AuthProvider, RequirePermission, useAuth } from './auth';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Corral from './pages/corral/Corral';
-import Plans from './pages/Plans';
+import Astro from './pages/astro/Astro';
 import Ranger from './pages/ranger/Ranger';
 import Sheriff from './pages/sheriff/Sheriff';
 import Caboose from './pages/caboose/Caboose';
 import Bounty from './pages/bounty/Bounty';
-import Record from './pages/Record';
 import './admin.css';
 import './styles.css';
 import { enhancePages } from './enhance';
@@ -30,9 +28,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Navigate to={new URLSearchParams(location.search).get('to') ?? '/'} replace />} />
       <Route path="/corral/*" element={<RequirePermission permission="corral"><Corral /></RequirePermission>} />
-      <Route path="/astro" element={<Navigate to="/astro/rates" replace />} />
-      <Route path="/astro/*" element={<RequirePermission permission="plans"><AppShell app="astro" menu={[{ heading: 'Rates', links: [['View Rates', 'rates']] }]}>
-        <Routes><Route path="rates" element={<Plans />} /><Route path="records/:type/:id" element={<Record />} /></Routes></AppShell></RequirePermission>} />
+      <Route path="/astro/*" element={<RequirePermission permission="plans"><Astro /></RequirePermission>} />
       <Route path="/ranger/*" element={<RequirePermission permission="ranger"><Ranger /></RequirePermission>} />
       <Route path="/caboose/*" element={<RequirePermission permission="caboose"><Caboose /></RequirePermission>} />
       <Route path="/bounty/*" element={<RequirePermission permission="bounty"><Bounty /></RequirePermission>} />

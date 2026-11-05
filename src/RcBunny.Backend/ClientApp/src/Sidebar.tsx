@@ -11,7 +11,7 @@ export type Menu = { heading?: string; links: [label: string, path: string, opti
 export const apps: Record<string, { name: string; desc: string; icon: string; home: string; perm?: string }> = {
   corral: { name: 'Corral', icon: 'users', home: '/corral', desc: 'Customer service and CRM: search accounts, create orders, work exception queues, the sales pipeline of leads, follow-ups and partners.' },
   ranger: { name: 'Ranger', icon: 'ticket', home: '/ranger', desc: 'Support tickets customers open from My Account and messages from the website contact form: the queue, replies and notes, take over and join in for managers, the ticket team (in-office and 3rd party) and approval ratings.' },
-  astro: { name: 'Astro', icon: 'chart', home: '/astro/rates', perm: 'plans', desc: 'Plans and pricing: plans, plan groups, rates, TDSP fees, term discounts, ETFs and Build Your Own Plan products.' },
+  astro: { name: 'Astro', icon: 'chart', home: '/astro/plans', perm: 'plans', desc: 'Plans and pricing: plans, plan groups, rates, TDSP fees, term discounts, ETFs and Build Your Own Plan products.' },
   caboose: { name: 'Caboose', icon: 'train', home: '/caboose', desc: 'Finance: payments, credits and debits approval, refunds, deposits, receivables aging, the journal export, MSIDs and promo codes.' },
   bounty: { name: 'Bounty', icon: 'gift', home: '/bounty', desc: 'Rewards: offers, how stars are earned, redemptions to fulfil, member balances and the monthly drawing.' },
   sheriff: { name: 'Sheriff', icon: 'star', home: '/sheriff/users', desc: 'Settings: the staff directory (profiles, permissions, log in as), roles, markets, API integrations, scheduled jobs, cron automations and the timeline of everything that ran.' },

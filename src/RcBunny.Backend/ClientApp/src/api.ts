@@ -9,10 +9,12 @@ export class ApiError extends Error {
 }
 
 async function request<T>(method: string, url: string, body?: unknown): Promise<T> {
+  // A FormData body (a file upload) is sent as it is; anything else as JSON
+  const form = body instanceof FormData;
   const res = await fetch(url, {
     method,
-    headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: body === undefined || form ? {} : { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : form ? body : JSON.stringify(body),
   });
   if (!res.ok) {
     const data = await res.json().catch(() => null);
