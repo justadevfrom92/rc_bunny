@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { api, qs, useLoad } from '../../api';
 import { useRun } from '../../ui';
+import { DateInput } from '../../fields';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -56,7 +57,7 @@ export default function CreateOrder({ business }: { business: boolean }) {
         </div>
         <div className="row">
           <label>Enrollment type<select name="enrollmentType" defaultValue={data.renew ? 'Renewal' : 'Switch'}>{data.enrollmentTypes.map((t: string) => <option key={t}>{t}</option>)}</select></label>
-          <label>Start date<input name="startDate" type="date" min={new Date().toISOString().slice(0, 10)} /></label>
+          <label>Start date<DateInput name="startDate" min={new Date().toISOString().slice(0, 10)} /></label>
           {!data.renew && <label>Source<select name="source">{data.sources.map((s: string) => <option key={s}>{s}</option>)}</select></label>}
         </div>
         {!data.renew && (

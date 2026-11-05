@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { api, useLoad } from '../api';
+import { DateInput } from '../fields';
 
 interface Market { id: number; name: string }
 interface PlanRow { id: number; name: string; code: string; type: string; termMonths: number; active: boolean; rates: Record<string, number | null> }
@@ -34,7 +35,7 @@ export default function Plans() {
           <div className="row">
             <label>Market<select name="market">{data.markets.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select></label>
             <label>Cents per kWh<input name="cents" type="number" step="0.01" min="0.01" required /></label>
-            <label>Starts on<input name="effective" type="date" defaultValue={new Date().toISOString().slice(0, 10)} required /></label>
+            <label>Starts on<DateInput name="effective" defaultValue={new Date().toISOString().slice(0, 10)} required /></label>
           </div>
           <div className="row"><button className="primary">Save rate</button><button type="button" onClick={() => setEditing(null)}>Cancel</button></div>
         </form>

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router';
 import { api, date, money, useLoad } from '../../api';
 import AccountLink from '../AccountLink';
+import { DateInput } from '../../fields';
 
 interface Row { id: number; paidOn: string; amount: number; method: string; kind: string; source: string; status: string; customerId: number; account: string; customer: string }
 
@@ -39,8 +40,8 @@ export default function Payments() {
       {message && <p>{message}</p>}
       {data && (
         <form key={qs} className="row" onSubmit={filter}>
-          <input name="start" type="date" defaultValue={data.start} />
-          <input name="end" type="date" defaultValue={data.end} />
+          <DateInput name="start" defaultValue={data.start} />
+          <DateInput name="end" defaultValue={data.end} />
           <select name="status" defaultValue={params.get('status') ?? ''}><option value="">Any status</option><option>Success</option><option>Pending</option><option>Failed</option><option>Reversed</option></select>
           <input name="account" placeholder="Account" defaultValue={params.get('account') ?? ''} />
           <button>Show</button>

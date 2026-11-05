@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router';
 import { qs, useLoad } from '../../api';
 import { Pager } from '../../ui';
 import { TicketTable, type Lists, type Row } from './shared';
+import { DateInput } from '../../fields';
 
 interface Data {
   view: string; page: number; total: number; tickets: Row[]; counts: Record<string, number>;
@@ -67,8 +68,8 @@ export default function Tickets() {
           <label>Team<select name="team" defaultValue={get('team')}><option value="">Any</option>{Object.entries(l.teams).map(([k, s]) => <option key={k} value={k}>{s}</option>)}</select></label>
           <label>Owner<select name="owner" defaultValue={get('owner')}><option value="">Anyone</option>{data.people.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
           <label>Handled by<select name="handledBy" defaultValue={get('handledBy')}><option value="">Anyone</option>{data.people.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
-          <label>Opened from<input type="date" name="from" defaultValue={get('from')} /></label>
-          <label>to<input type="date" name="to" defaultValue={get('to')} /></label>
+          <label>Opened from<DateInput name="from" defaultValue={get('from')} /></label>
+          <label>to<DateInput name="to" defaultValue={get('to')} /></label>
           {get('customer') && <input type="hidden" name="customer" value={get('customer')} />}
         </div>
         <div className="row"><button className="primary">Search</button><Link to={`/ranger/tickets?${qs({ view: data.view })}`}>Clear</Link></div>

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { api, date, dateTime, money, qs, useLoad } from '../../api';
 import { Pager, Pill, Status, useRun } from '../../ui';
+import { DateInput } from '../../fields';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -109,7 +110,7 @@ function ActivityForm({ url, run }: { url: string; run: (p: Promise<unknown>, do
       <div className="row">
         <select value={type} onChange={(e) => setType(e.target.value)}><option value="call">Call</option><option value="email">Email</option><option value="meeting">Meeting</option><option value="note">Note</option><option value="task">Follow-up</option></select>
         <input name="subject" placeholder={type === 'task' ? 'What to do' : 'Subject'} required />
-        {type === 'task' && <input name="dueOn" type="date" required style={{ maxWidth: 170 }} />}
+        {type === 'task' && <DateInput name="dueOn" required style={{ maxWidth: 170 }} />}
       </div>
       <textarea name="body" rows={2} placeholder="Details (optional)" />
       <button className="primary">Save</button>
@@ -231,8 +232,8 @@ export function LeadForm() {
         </div>
         <div className="row">
           <label>Current provider<input name="currentProvider" defaultValue={l.currentProvider ?? ''} /></label>
-          <label>Their contract ends<input name="contractEndsOn" type="date" defaultValue={l.contractEndsOn ?? ''} /></label>
-          <label>Next follow-up<input name="nextFollowUpOn" type="date" defaultValue={l.nextFollowUpOn ?? ''} /></label>
+          <label>Their contract ends<DateInput name="contractEndsOn" defaultValue={l.contractEndsOn ?? ''} /></label>
+          <label>Next follow-up<DateInput name="nextFollowUpOn" defaultValue={l.nextFollowUpOn ?? ''} /></label>
         </div>
         <label>Notes<textarea name="notes" rows={3} defaultValue={l.notes ?? ''} /></label>
         <button className="primary">Save</button>
@@ -364,7 +365,7 @@ export function PartnerForm() {
           <label>Commission based on<select name="commissionBasis" defaultValue={p.commissionBasis}><option value="kwh">Yearly kWh ($ per kWh)</option><option value="flat">Yearly value (share)</option></select></label>
           <label>Rate<input name="commissionRate" type="number" step="0.0001" min="0" max="1" defaultValue={p.commissionRate} required /></label>
           <label>Owner<select name="ownerId" defaultValue={p.ownerId ?? ''}><option value="">—</option>{options.owners.map((o: any) => <option key={o.id} value={o.id}>{o.name}</option>)}</select></label>
-          <label>Agreement ends<input name="agreementEndsOn" type="date" defaultValue={p.agreementEndsOn ?? ''} /></label>
+          <label>Agreement ends<DateInput name="agreementEndsOn" defaultValue={p.agreementEndsOn ?? ''} /></label>
         </div>
         <label>Notes<textarea name="notes" rows={3} defaultValue={p.notes ?? ''} /></label>
         <button className="primary">Save</button>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { date, money, useLoad } from '../../api';
+import { DateInput } from '../../fields';
 
 interface Line { date: string; debit: string; credit: string; amount: number; memo: string }
 
@@ -16,8 +17,8 @@ export default function Journal() {
     <>
       <h1>Journal</h1>
       <div className="row">
-        <input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
-        <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} />
+        <DateInput value={start} onChange={setStart} />
+        <DateInput value={end} onChange={setEnd} />
         <a className="button" href={`${url}&format=csv`}>Download CSV</a>
       </div>
       {error && <p className="error">{error}</p>}

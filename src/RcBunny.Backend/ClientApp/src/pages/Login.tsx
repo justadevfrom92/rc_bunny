@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { useAuth, type Me } from '../auth';
 import { apps, Brand, initials, websiteUrl } from '../Sidebar';
+import { PasswordInput } from '../fields';
 
 interface TestUser { email: string; name: string; role: string; permissions: string[] }
 
@@ -29,7 +30,7 @@ export default function Login() {
       <form className="login" onSubmit={submit}>
         <div className="brand"><Brand /></div>
         <div className="field"><label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="username" required autoFocus /></div>
-        <div className="field"><label htmlFor="password">Password</label><input id="password" name="password" type="password" autoComplete="current-password" required /></div>
+        <div className="field"><label htmlFor="password">Password</label><PasswordInput id="password" name="password" autoComplete="current-password" required /></div>
         <label className="check"><input type="checkbox" name="remember" value="1" /> Keep me signed in</label>
         <div className="err" role="alert">{error}</div>
         <button className="btn cyan">Sign In</button>

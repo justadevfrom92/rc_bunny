@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { api, useLoad } from '../../api';
 import { useAuth } from '../../auth';
+import { PasswordInput } from '../../fields';
 
 interface User { id: number; name: string; email: string; roleId: number; role: string; active: boolean }
 interface Role { id: number; name: string }
@@ -43,7 +44,7 @@ export default function Staff() {
         <form className="card row" onSubmit={add}>
           <input name="name" placeholder="Name" required />
           <input name="email" type="email" placeholder="Email" required />
-          <input name="password" type="password" placeholder="Password (8+ characters)" minLength={8} required />
+          <PasswordInput name="password" placeholder="Password (8+ characters)" minLength={8} required />
           <select name="role">{data.roles.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select>
           <button className="primary">Add</button>
         </form>

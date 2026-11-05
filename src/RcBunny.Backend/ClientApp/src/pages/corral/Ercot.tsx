@@ -2,6 +2,7 @@ import { type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { date, qs, useLoad } from '../../api';
 import { EmptyRow, Field, PageHead, PagerBar, Panel } from '../../ui';
+import { DateInput } from '../../fields';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -30,8 +31,8 @@ export default function Ercot() {
               <Field label="Trans Type" htmlFor="type"><select id="type" name="type" defaultValue={f.type}><option value="">-- Any --</option>{data?.types.map((t: string) => <option key={t}>{t}</option>)}</select></Field>
               <Field label="Purpose" htmlFor="purpose"><select id="purpose" name="purpose" defaultValue={f.purpose}><option value="">-- Any --</option><option>request</option><option>response</option></select></Field>
               <Field label="Status" htmlFor="status"><select id="status" name="status" defaultValue={f.status}><option value="">-- Any --</option><option>linked</option><option>unlinked</option><option>cancelled</option></select></Field>
-              <Field label="From" htmlFor="start"><input id="start" name="start" type="date" defaultValue={f.start} /></Field>
-              <Field label="To" htmlFor="end"><input id="end" name="end" type="date" defaultValue={f.end} /></Field>
+              <Field label="From" htmlFor="start"><DateInput id="start" name="start" defaultValue={f.start} /></Field>
+              <Field label="To" htmlFor="end"><DateInput id="end" name="end" defaultValue={f.end} /></Field>
               <button className="btn">Search</button>
               {Object.values(f).some(Boolean) && <Link className="btn ghost" to="/corral/ercot">Clear</Link>}
             </div>

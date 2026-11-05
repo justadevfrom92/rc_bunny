@@ -2,6 +2,7 @@ import { useState, type FormEvent, type ReactNode } from 'react';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router';
 import { api, date, dateTime, money, qs, upload, useLoad } from '../../api';
 import { EmptyRow, PageHead, Pill, RecordLink, Status, duration, useRun } from '../../ui';
+import { DateInput } from '../../fields';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Any = any;
@@ -507,8 +508,8 @@ function AddressRow({ a, run }: { a: Any; run: (p: Promise<unknown>, done?: stri
         <tr className="edit-row"><td colSpan={8}>
           <form className="date-edit" onSubmit={(e) => { e.preventDefault(); const f = new FormData(e.currentTarget);
             run(api.put(`/api/customers/addresses/${a.id}`, { serviceStart: f.get('start') || null, serviceEnd: f.get('end') || null }).then(() => setEditing(false)), 'Service dates updated'); }}>
-            <div className="field"><label htmlFor={`ms${a.id}`}>Service start (move-in)</label><input id={`ms${a.id}`} type="date" name="start" defaultValue={a.serviceStart ?? ''} /></div>
-            <div className="field"><label htmlFor={`me${a.id}`}>Service end (move-out)</label><input id={`me${a.id}`} type="date" name="end" defaultValue={a.serviceEnd ?? ''} /></div>
+            <div className="field"><label htmlFor={`ms${a.id}`}>Service start (move-in)</label><DateInput id={`ms${a.id}`} name="start" defaultValue={a.serviceStart ?? ''} /></div>
+            <div className="field"><label htmlFor={`me${a.id}`}>Service end (move-out)</label><DateInput id={`me${a.id}`} name="end" defaultValue={a.serviceEnd ?? ''} /></div>
             <div className="actions"><button className="btn sm cyan">Save Dates</button><button type="button" className="btn sm ghost" onClick={() => setEditing(false)}>Cancel</button></div>
           </form>
         </td></tr>

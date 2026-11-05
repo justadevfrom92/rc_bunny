@@ -14,6 +14,10 @@ import Bounty from './pages/bounty/Bounty';
 import Record from './pages/Record';
 import './admin.css';
 import './styles.css';
+import { enhancePages } from './enhance';
+
+// ebunny's admin.js table paging (10 rows at a time)
+enhancePages();
 
 function App() {
   const { me } = useAuth();

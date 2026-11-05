@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { api, date, money, useLoad } from '../../api';
+import { DateInput } from '../../fields';
 
 interface MsidRow { id: number; code: string; name: string; channel: string; active: boolean; customers: number }
 interface Promo { id: number; code: string; description: string; credit: number; startsOn: string | null; endsOn: string | null; active: boolean; customers: number }
@@ -49,8 +50,8 @@ export default function Channels() {
           <input name="code" placeholder="Code" required style={{ maxWidth: 140 }} />
           <input name="description" placeholder="Description" required />
           <input name="credit" type="number" step="0.01" min="0" placeholder="Credit $" style={{ maxWidth: 110 }} />
-          <input name="startsOn" type="date" title="Starts" style={{ maxWidth: 160 }} />
-          <input name="endsOn" type="date" title="Ends" style={{ maxWidth: 160 }} />
+          <DateInput name="startsOn" title="Starts" style={{ maxWidth: 160 }} />
+          <DateInput name="endsOn" title="Ends" style={{ maxWidth: 160 }} />
           <button className="primary">Add</button>
         </form>
         <table>

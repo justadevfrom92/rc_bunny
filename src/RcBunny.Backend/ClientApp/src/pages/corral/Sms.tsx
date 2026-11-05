@@ -2,6 +2,7 @@ import { type FormEvent } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { api, dateTime, qs, useLoad } from '../../api';
 import { AccountNo, EmptyRow, Field, PageHead, PagerBar, Panel, PhoneActions, ResolutionForm, ResolutionPill, longTime, secondsTime, shortTime, useRun } from '../../ui';
+import { DateInput } from '../../fields';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -32,8 +33,8 @@ export function Sms() {
             <Field label="Account Number" htmlFor="account"><input id="account" name="account" defaultValue={f.account} inputMode="numeric" /></Field>
             <Field label="Direction" htmlFor="direction"><select id="direction" name="direction" defaultValue={f.direction}><option value="">Both</option><option value="in">From customer</option><option value="out">To customer</option></select></Field>
             <Field label="Status" htmlFor="status"><select id="status" name="status" defaultValue={f.status}><option value="">Any</option>{data?.statuses.map((s: string) => <option key={s}>{s}</option>)}</select></Field>
-            <Field label="Start" htmlFor="start"><input id="start" name="start" type="date" defaultValue={f.start} /></Field>
-            <Field label="End" htmlFor="end"><input id="end" name="end" type="date" defaultValue={f.end} /></Field>
+            <Field label="Start" htmlFor="start"><DateInput id="start" name="start" defaultValue={f.start} /></Field>
+            <Field label="End" htmlFor="end"><DateInput id="end" name="end" defaultValue={f.end} /></Field>
             <label className="check"><input type="checkbox" name="waiting" value="true" defaultChecked={f.waiting === 'true'} /> Waiting on a reply</label>
             <button className="btn">Search</button>{filtered && <Link className="btn ghost" to="/corral/sms">Clear</Link>}
           </div></form>

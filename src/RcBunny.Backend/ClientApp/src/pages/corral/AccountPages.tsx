@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { api, date, dateTime, money, useLoad } from '../../api';
 import { EmptyRow, PageHead, Panel, Pill, RecordLink, ResolutionPill, duration, secondsTime, shortTime, useRun } from '../../ui';
+import { DateInput } from '../../fields';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Any = any;
@@ -45,7 +46,7 @@ export function ActionForm() {
               <label key={f.name + 'l'} htmlFor={fid}>{f.label}</label>,
               f.type === 'money' ? <input key={f.name} id={fid} name={f.name} type="number" step="0.01" min="0.01" required defaultValue={f.name === 'amount' && action.key === 'make-payment' && c.balance > 0 ? c.balance.toFixed(2) : ''} />
                 : f.type === 'number' ? <input key={f.name} id={fid} name={f.name} type="number" step="1" min="1" required />
-                : f.type === 'date' ? <input key={f.name} id={fid} name={f.name} type="date" required defaultValue={new Date().toISOString().slice(0, 10)} />
+                : f.type === 'date' ? <DateInput key={f.name} id={fid} name={f.name} required defaultValue={new Date().toISOString().slice(0, 10)} />
                 : f.type === 'textarea' ? <textarea key={f.name} id={fid} name={f.name} maxLength={2000} required style={{ fontFamily: 'inherit', minHeight: 140 }} />
                 : f.type === 'method' ? <select key={f.name} id={fid} name={f.name} required defaultValue={autopay ?? ''}><option value="">-- Payment method --</option>
                     {data.methods.map((m: Any) => <option key={m.id} value={m.id}>{m.nickname ?? m.type} ending {m.last4}{m.autopay ? ' (AutoPay)' : ''}</option>)}</select>

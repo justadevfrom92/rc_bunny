@@ -2,6 +2,7 @@ import { type FormEvent } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { api, dateTime, qs, useLoad } from '../../api';
 import { AccountNo, EmptyRow, Field, PageHead, PagerBar, Panel, PhoneActions, ResolutionForm, ResolutionPill, duration, longTime, resolutions, useRun } from '../../ui';
+import { DateInput } from '../../fields';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -24,8 +25,8 @@ export function Calls() {
       <div className="search-layout">
         <aside className="search-side">
           <form className="panel" onSubmit={filter} key={params.toString()}><div className="panel-head"><h2>Search Calls</h2></div><div className="panel-body">
-            <Field label="Start" htmlFor="start"><input id="start" name="start" type="date" defaultValue={f.start} /></Field>
-            <Field label="End" htmlFor="end"><input id="end" name="end" type="date" defaultValue={f.end} /></Field>
+            <Field label="Start" htmlFor="start"><DateInput id="start" name="start" defaultValue={f.start} /></Field>
+            <Field label="End" htmlFor="end"><DateInput id="end" name="end" defaultValue={f.end} /></Field>
             <Field label="Account Number" htmlFor="account"><input id="account" name="account" defaultValue={f.account} inputMode="numeric" /></Field>
             <Field label="Phone Number" htmlFor="phone"><input id="phone" name="phone" defaultValue={f.phone} inputMode="tel" /></Field>
             <Field label="Issue" htmlFor="issue"><select id="issue" name="issue" defaultValue={f.issue}><option value="">Any</option>{data?.issues.map((i: string) => <option key={i}>{i}</option>)}</select></Field>
@@ -138,7 +139,10 @@ export function NewContact() {
           <label>Direction</label>
           <div className="chips small"><label><input type="radio" name="direction" value="in" defaultChecked /><span>From the customer</span></label><label><input type="radio" name="direction" value="out" /><span>To the customer</span></label></div>
           <label htmlFor="ct-issue">Issue</label><div><input id="ct-issue" name="issue" maxLength={60} placeholder="e.g. Balance Inquiry" />
-            <div className="chips small" style={{ marginTop: 6 }}>{data.issues.slice(0, 12).map((i: string) => <button key={i} type="button" className="chip-link" onClick={() => { (document.getElementById('ct-issue') as HTMLInputElement).value = i; }}>{i}</button>)}</div></div>
+            {/* ebunny's pills.js shows more than 3 pill buttons as one dropdown */}
+            <select className="pill-select" style={{ marginTop: 6 }} defaultValue="" onChange={(e) => { (document.getElementById('ct-issue') as HTMLInputElement).value = e.target.value; e.target.value = ''; }}>
+              <option value="" disabled>Pick one…</option>{data.issues.slice(0, 12).map((i: string) => <option key={i} value={i}>{i}</option>)}
+            </select></div>
           <label htmlFor="ct-min">Minutes</label><div><input id="ct-min" name="minutes" type="number" min="0" max="600" style={{ maxWidth: '10ch' }} /><div className="help">Phone calls only.</div></div>
           <label htmlFor="ct-body">What happened</label><textarea id="ct-body" name="body" required maxLength={5000} style={{ minHeight: 120 }} />
           <label htmlFor="ct-res">Resolution</label><select id="ct-res" name="resolution" required defaultValue="Resolved">{Object.keys(resolutions).map((r) => <option key={r}>{r}</option>)}</select>
