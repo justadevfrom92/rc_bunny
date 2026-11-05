@@ -20,13 +20,17 @@
     <Content Remove="Seed/data/*.json" />
   </ItemGroup>
 
-  <!-- The React admin lives in ClientApp. The first build installs and builds it into wwwroot. -->
+  <!-- The React admin lives in ClientApp. Every build rebuilds it into wwwroot when any of its files changed since the
+       last time (so pulling new code and running dotnet run is enough), and installs packages when package-lock.json changed. -->
   <ItemGroup>
     <Content Remove="ClientApp/**" />
     <None Remove="ClientApp/**" />
+    <ClientAppFiles Include="ClientApp/src/**;ClientApp/public/**;ClientApp/index.html;ClientApp/package.json;ClientApp/package-lock.json;ClientApp/vite.config.ts;ClientApp/tsconfig*.json" />
   </ItemGroup>
-  <Target Name="BuildClientApp" BeforeTargets="Build" Condition="!Exists('wwwroot/index.html')">
+  <Target Name="InstallClientApp" BeforeTargets="BuildClientApp" Inputs="ClientApp/package-lock.json" Outputs="ClientApp/node_modules/.package-lock.json">
     <Exec Command="npm install" WorkingDirectory="ClientApp" />
+  </Target>
+  <Target Name="BuildClientApp" BeforeTargets="Build" Inputs="@(ClientAppFiles)" Outputs="wwwroot/index.html">
     <Exec Command="npm run build" WorkingDirectory="ClientApp" />
   </Target>
 
