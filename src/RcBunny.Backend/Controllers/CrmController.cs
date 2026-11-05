@@ -37,7 +37,7 @@ public class CrmController(AppDbContext db) : ControllerBase
         stages = Stages.Select(s => new { key = s.Key, s.Value.Label }), kinds = Kinds, sources = Sources, lostReasons = LostReasons,
         activityTypes = ActivityTypes, partnerKinds = PartnerKinds, partnerStatuses = PartnerStatuses,
         owners = (await db.Users.Include(u => u.Role).Where(u => u.Active).OrderBy(u => u.Name).ToListAsync())
-            .Where(u => u.Role!.PermissionList().Contains("corral")).Select(u => new { u.Id, u.Name }),
+            .ToList().Where(u => u.PermissionList().Contains("corral")).Select(u => new { u.Id, u.Name }),
         partners = await db.CrmPartners.Where(p => p.Status != "Ended").OrderBy(p => p.Name).Select(p => new { p.Id, p.Name }).ToListAsync(),
         markets = await db.Markets.OrderBy(m => m.Name).Select(m => new { m.Id, m.Name }).ToListAsync(),
     };

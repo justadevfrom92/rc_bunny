@@ -20,6 +20,9 @@ public class AuthController(AppDbContext db, IWebHostEnvironment env) : Controll
         var user = await db.Users.FirstOrDefaultAsync(u => u.Email == request.Email.Trim().ToLower());
         if (user is null || !user.Active || !Passwords.Verify(user.PasswordHash, request.Password))
             return BadRequest(new { error = "That email and password don't match." });
+        if (user.AccessEndsOn < DateOnly.FromDateTime(DateTime.Today))
+            return BadRequest(new { error = "Your access to the admin has ended. Ask your contact at Energy Texas." });
+        user.LastLoginAt = DateTime.UtcNow;
         Audit.Add(db, user.Name, "sign-in", $"{user.Name} signed in.");
         await db.SaveChangesAsync();
 
@@ -50,6 +53,6 @@ public class AuthController(AppDbContext db, IWebHostEnvironment env) : Controll
     {
         if (!env.IsDevelopment()) return Array.Empty<object>();
         var users = await db.Users.Include(u => u.Role).Where(u => u.Active).OrderBy(u => u.Id).ToListAsync();
-        return users.Select(u => new { u.Email, u.Name, role = u.Role!.Name, permissions = u.Role.PermissionList() });
+        return users.Select(u => new { u.Email, u.Name, role = u.Role!.Name, permissions = u.PermissionList() });
     }
 }

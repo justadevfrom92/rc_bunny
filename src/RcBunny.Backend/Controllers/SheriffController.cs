@@ -15,11 +15,41 @@ public class SheriffController(AppDbContext db, IMemoryCache cache, IConfigurati
 {
     // ---- Heartbeat --------------------------------------------------------------------------------------------
 
+    /// <summary>
+    /// Heartbeat (ebunny's sheriff/heartbeat): overall status, uptime, the last 24 hours in 15-minute blocks, each check
+    /// now, the crons and the latest actions. A control that's switched off (the website) shows as Taken Down.
+    /// </summary>
     [HttpGet("heartbeat")]
     public async Task<object> Heartbeat()
     {
+        var since = DateTime.UtcNow.AddHours(-24);
+        var recent = await db.HealthChecks.Where(c => c.CheckedAt >= since).ToListAsync();
         var latest = await db.HealthChecks.GroupBy(c => c.Name).Select(g => g.OrderByDescending(c => c.CheckedAt).First()).ToListAsync();
-        return new { checks = latest, controls = await db.HeartbeatControls.OrderBy(c => c.Name).ToListAsync() };
+        var controls = await db.HeartbeatControls.OrderBy(c => c.Name).ToListAsync();
+        var runs = await db.JobRuns.OrderByDescending(r => r.StartedAt).Take(500).ToListAsync();
+        var start = DateTime.UtcNow.AddMinutes(-15 * 96);
+        var blocks = Enumerable.Range(0, 96).Select(i =>
+        {
+            var from = start.AddMinutes(15 * i);
+            var inBlock = recent.Where(c => c.CheckedAt >= from && c.CheckedAt < from.AddMinutes(15)).ToList();
+            return new { from, n = inBlock.Count, status = inBlock.Count == 0 ? "none" : inBlock.Any(c => !c.Ok) ? "bad" : "ok",
+                rows = inBlock.Where(c => !c.Ok).Select(c => new { c.Name, c.Detail, c.CheckedAt }) };
+        }).ToList();
+        var checks = latest.Select(c => new { key = c.Name, name = c.Name, status = c.Ok ? "ok" : "bad", detail = c.Detail, checkedAt = c.CheckedAt, control = (int?)null, reason = (string?)null })
+            .Concat(controls.Select(c => new { key = c.Key, name = c.Name, status = c.Down ? "down" : "ok", detail = c.Down ? $"Taken down: {c.Reason}" : "Up", checkedAt = c.ChangedAt, control = (int?)c.Id, reason = c.Reason }))
+            .ToList();
+        return new
+        {
+            status = checks.Any(c => c.status == "bad") ? "bad" : checks.Any(c => c.status == "down") ? "down" : "ok",
+            lastCheck = latest.Count == 0 ? (DateTime?)null : latest.Max(c => c.CheckedAt),
+            uptime = recent.Count == 0 ? (double?)null : Math.Round(100.0 * recent.Count(c => c.Ok) / recent.Count, 1),
+            beats24 = recent.Count, blocks, checks,
+            scheduler = runs.FirstOrDefault()?.StartedAt,
+            failed24 = runs.Count(r => !r.Ok && r.StartedAt >= since),
+            crons = RcBunny.Jobs.Scheduler.All.Select(j => new { j.Name, j.Schedule, last = runs.FirstOrDefault(r => r.Job == j.Name) }),
+            actions = await db.History.OrderByDescending(h => h.CreatedAt).Take(10).Select(h => new { h.Id, h.CreatedAt, h.Who, h.Summary }).ToListAsync(),
+            controls,
+        };
     }
 
     [HttpGet("heartbeat/checks")]
@@ -48,9 +78,51 @@ public class SheriffController(AppDbContext db, IMemoryCache cache, IConfigurati
 
     // ---- Timeline ---------------------------------------------------------------------------------------------
 
+    public record TimelineEvent(string Src, int Seq, DateTime At, string Kind, string Status, string Title, string? Detail, int? UserId, string? Who);
+
+    /// <summary>
+    /// Timeline (ebunny's sheriff/timeline): everything that ran or happened, newest first: cron jobs, heartbeat
+    /// controls, sign-ins and access changes, and every change people made. Search, dates, kinds, status, one person.
+    /// </summary>
     [HttpGet("timeline")]
-    public async Task<List<AuditEntry>> Timeline(string? category) =>
-        await db.AuditEntries.Where(a => category == null || a.Category == category).OrderByDescending(a => a.CreatedAt).Take(300).ToListAsync();
+    public async Task<object> Timeline(string? q, DateOnly? from, DateOnly? to, string? kind, string? status, int? user, int page = 1)
+    {
+        var users = await db.Users.ToDictionaryAsync(u => u.Name, u => u.Id);
+        var events = (await db.JobRuns.ToListAsync()).Select(r => new TimelineEvent("job_run", r.Id, r.StartedAt, "job", r.Ok ? "ok" : "bad", r.Job, r.Message,
+                r.RunBy != null && users.TryGetValue(r.RunBy, out var id) ? id : null, r.RunBy))
+            .Concat((await db.AuditEntries.ToListAsync()).Select(a => new TimelineEvent("audit_entry", a.Id, a.CreatedAt, a.Category == "heartbeat" ? "job" : "user", "ok",
+                a.Category switch { "sign-in" => "Signed in", "access" => "Access", "heartbeat" => "Heartbeat control", "market" => "Markets", _ => a.Category }, a.What,
+                users.TryGetValue(a.Who, out var id) ? id : null, a.Who)))
+            .Concat((await db.History.ToListAsync()).Select(h => new TimelineEvent("history_entry", h.Id, h.CreatedAt, "user", "ok", h.Model, h.Summary, h.UserId, h.Who)))
+            .ToList();
+        var person = user == null ? null : await db.Users.Where(u => u.Id == user).Select(u => new { u.Id, u.Name }).FirstOrDefaultAsync();
+        IEnumerable<TimelineEvent> shown = events;
+        if (user != null) shown = shown.Where(e => e.UserId == user);
+        if (!string.IsNullOrWhiteSpace(q)) shown = shown.Where(e => $"{e.Title} {e.Detail} {e.Who}".Contains(q.Trim(), StringComparison.OrdinalIgnoreCase));
+        if (from != null) shown = shown.Where(e => DateOnly.FromDateTime(e.At.ToLocalTime()) >= from);
+        if (to != null) shown = shown.Where(e => DateOnly.FromDateTime(e.At.ToLocalTime()) <= to);
+        var kinds = (kind ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
+        if (kinds.Length > 0) shown = shown.Where(e => kinds.Contains(e.Kind));
+        var list = shown.ToList();
+        var counts = list.GroupBy(e => e.Status).ToDictionary(g => g.Key, g => g.Count());
+        if (!string.IsNullOrEmpty(status)) list = list.Where(e => e.Status == status).ToList();
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        return new
+        {
+            person, total = list.Count, page, counts,
+            days = Enumerable.Range(0, 14).Select(i => today.AddDays(i - 13)).Select(d =>
+            {
+                var day = events.Where(e => (user == null || e.UserId == user) && DateOnly.FromDateTime(e.At.ToLocalTime()) == d).ToList();
+                return new { date = d, n = day.Count, bad = day.Count(e => e.Status == "bad"), warn = day.Count(e => e.Status == "warn") };
+            }),
+            events = list.OrderByDescending(e => e.At).Skip((Math.Max(page, 1) - 1) * 25).Take(25),
+        };
+    }
+
+    /// <summary>Control Log (ebunny's sheriff/heartbeat-log): every heartbeat control anyone used.</summary>
+    [HttpGet("heartbeat/log")]
+    public async Task<object> ControlLog() =>
+        await db.AuditEntries.Where(a => a.Category == "heartbeat").OrderByDescending(a => a.CreatedAt).Take(200).ToListAsync();
 
     // ---- Crons ------------------------------------------------------------------------------------------------
 
@@ -88,21 +160,22 @@ public class SheriffController(AppDbContext db, IMemoryCache cache, IConfigurati
     // ---- Markets ----------------------------------------------------------------------------------------------
 
     [HttpGet("markets")]
-    public async Task<object> Markets() => await db.Markets.OrderBy(m => m.Name).Select(m => new
+    public async Task<object> Markets() => await db.Markets.OrderBy(m => m.Id).Select(m => new
     {
-        m.Id, m.Code, m.Name, m.DeliveryCentsPerKwh, m.DeliveryPerMonth,
+        m.Id, m.Code, m.Name, m.Short, m.Region, m.Phone, m.DeliveryCentsPerKwh, m.DeliveryPerMonth,
         zips = db.ZipRanges.Where(z => z.MarketId == m.Id).Select(z => new { z.Id, z.From, z.To }).ToList(),
         customers = db.Customers.Count(c => c.MarketId == m.Id),
     }).ToListAsync();
 
-    public record MarketInput(string Code, string Name, decimal DeliveryCentsPerKwh, decimal DeliveryPerMonth, int? ZipFrom, int? ZipTo);
+    public record MarketInput(string Code, string Name, decimal DeliveryCentsPerKwh, decimal DeliveryPerMonth, int? ZipFrom, int? ZipTo, string? Short = null, string? Region = null, string? Phone = null);
 
     [HttpPost("markets")]
     public async Task<IActionResult> AddMarket(MarketInput input)
     {
         if (string.IsNullOrWhiteSpace(input.Code) || string.IsNullOrWhiteSpace(input.Name)) return BadRequest(new { error = "Enter a code and a name." });
         if (await db.Markets.AnyAsync(m => m.Code == input.Code.Trim())) return BadRequest(new { error = "There's already a market with that code." });
-        var market = new Market { Code = input.Code.Trim().ToUpper(), Name = input.Name.Trim(), DeliveryCentsPerKwh = input.DeliveryCentsPerKwh, DeliveryPerMonth = input.DeliveryPerMonth };
+        var market = new Market { Code = input.Code.Trim().ToUpper(), Name = input.Name.Trim(), DeliveryCentsPerKwh = input.DeliveryCentsPerKwh, DeliveryPerMonth = input.DeliveryPerMonth,
+            Short = input.Short?.Trim() ?? "", Region = input.Region?.Trim() ?? "", Phone = input.Phone?.Trim() ?? "" };
         db.Markets.Add(market);
         await db.SaveChangesAsync();
         var problem = await AddZips(market.Id, input.ZipFrom, input.ZipTo);
@@ -117,6 +190,7 @@ public class SheriffController(AppDbContext db, IMemoryCache cache, IConfigurati
         var market = await db.Markets.FindAsync(id);
         if (market is null) return NotFound();
         market.Name = input.Name.Trim();
+        (market.Short, market.Region, market.Phone) = (input.Short?.Trim() ?? market.Short, input.Region?.Trim() ?? market.Region, input.Phone?.Trim() ?? market.Phone);
         market.DeliveryCentsPerKwh = input.DeliveryCentsPerKwh;
         market.DeliveryPerMonth = input.DeliveryPerMonth;
         var problem = await AddZips(id, input.ZipFrom, input.ZipTo);

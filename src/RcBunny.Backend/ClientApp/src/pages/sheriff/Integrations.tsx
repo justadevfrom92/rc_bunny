@@ -1,24 +1,29 @@
 import { useLoad } from '../../api';
+import { PageHead } from '../../ui';
 
-interface Integration { name: string; usedFor: string; setting: string; configured: boolean }
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+/** Sheriff → APIs (ebunny's sheriff/integrations): third-party integrations and whether each is set up. */
 export default function Integrations() {
-  const { data, error } = useLoad<Integration[]>('/api/sheriff/integrations');
+  const { data, error } = useLoad<any[]>('/api/sheriff/integrations');
+  if (error) return <div className="flash bad">{error}</div>;
+  if (!data) return <div className="empty">Loading…</div>;
   return (
     <>
-      <h1>Integrations</h1>
-      <p className="muted">The outside services ebunny used. None is connected in this version yet; until one is, that feature records what it would have sent.</p>
-      {error && <p className="error">{error}</p>}
-      {!data ? <p>Loading…</p> : (
-        <table>
-          <thead><tr><th>Service</th><th>Used for</th><th>Setting</th><th>Status</th></tr></thead>
-          <tbody>
-            {data.map((i) => (
-              <tr key={i.name}><td>{i.name}</td><td>{i.usedFor}</td><td><code>{i.setting}</code></td><td>{i.configured ? 'Setting found (not connected yet)' : <span className="muted">Not set up</span>}</td></tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <PageHead title="APIs" sub="Third-party integrations." />
+      <div className="banner-note">Keys and passwords live in the server's settings (<span className="mono">appsettings</span> or environment variables), never in the database or the code. This screen only shows whether each value is set.</div>
+      <div className="grid-3">
+        {data.map((i) => (
+          <div key={i.name} className="panel"><div className="panel-head"><h2>{i.name}</h2><span className={`pill ${i.configured ? 'ok' : 'warn'}`}>{i.configured ? 'Configured' : 'Not configured'}</span></div>
+            <div className="panel-body">
+              <p className="muted" style={{ marginBottom: 10 }}>{i.usedFor}</p>
+              <dl className="kv" style={{ gridTemplateColumns: '1fr auto' }}>
+                <dt className="mono">{i.setting}</dt><dd className={i.configured ? 'secret-set' : 'muted'}>{i.configured ? 'set' : '—'}</dd>
+              </dl>
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   );
 }

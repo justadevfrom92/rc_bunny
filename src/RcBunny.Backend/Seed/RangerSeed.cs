@@ -9,8 +9,8 @@ public static partial class Seeder
     private static async Task SeedRangerAsync(AppDbContext db, User admin, User csr, Role service, string password, string storageRoot)
     {
         const string vendor = "Lone Star Support";
-        var riley = new User { Name = "Riley Vendor", Email = "riley@lonestarsupport.example", PasswordHash = password, Role = service, Company = vendor };
-        var jamie = new User { Name = "Jamie Vendor", Email = "jamie@lonestarsupport.example", PasswordHash = password, Role = service, Company = vendor };
+        var riley = new User { Name = "Riley Vendor", Email = "riley@lonestarsupport.example", PasswordHash = password, Role = service, Company = vendor, Title = "Support Agent", AccessEndsOn = DateOnly.FromDateTime(DateTime.Today).AddYears(1) };
+        var jamie = new User { Name = "Jamie Vendor", Email = "jamie@lonestarsupport.example", PasswordHash = password, Role = service, Company = vendor, Title = "Support Agent", AccessEndsOn = DateOnly.FromDateTime(DateTime.Today).AddYears(1) };
         db.Users.AddRange(riley, jamie);
         db.RangerAgents.AddRange(
             new RangerAgent { User = admin, Team = "office", Level = "manager", CreatedAt = DateTime.UtcNow.AddDays(-200) },

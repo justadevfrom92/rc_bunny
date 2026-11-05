@@ -93,6 +93,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<Bookmark>().HasIndex(b => new { b.UserId, b.CustomerId }).IsUnique();
         m.Entity<HistoryEntry>().HasIndex(h => new { h.CustomerId, h.Group });
         m.Entity<RangerAgent>().HasIndex(a => a.UserId).IsUnique();
+        m.Entity<User>().HasOne(u => u.Manager).WithMany().HasForeignKey(u => u.ManagerId).OnDelete(DeleteBehavior.NoAction);
         m.Entity<RangerAgent>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
         m.Entity<RangerAgent>().HasOne(a => a.AddedBy).WithMany().HasForeignKey(a => a.AddedById).OnDelete(DeleteBehavior.NoAction);
         m.Entity<SupportTicket>().HasOne(t => t.AssignedTo).WithMany().HasForeignKey(t => t.AssignedToId).OnDelete(DeleteBehavior.NoAction);

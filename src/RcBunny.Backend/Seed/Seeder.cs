@@ -16,17 +16,27 @@ public static partial class Seeder
 
         var password = Passwords.Hash("password");
 
-        // Staff and what each role can do
-        var admin = new Role { Name = "Administrator", Permissions = string.Join(",", Permissions.All.Keys) };
-        var service = new Role { Name = "Customer Service", Permissions = "corral,ranger,bounty" };
-        var pricing = new Role { Name = "Pricing", Permissions = "plans" };
-        var finance = new Role { Name = "Finance", Permissions = "corral,refunds,caboose" };
-        db.Roles.AddRange(admin, service, pricing, finance);
-        db.Users.AddRange(
-            new User { Name = "Admin Demo", Email = "admin@example.com", PasswordHash = password, Role = admin },
-            new User { Name = "Casey Service", Email = "csr@example.com", PasswordHash = password, Role = service },
-            new User { Name = "Pat Pricing", Email = "pricing@example.com", PasswordHash = password, Role = pricing },
-            new User { Name = "Frankie Finance", Email = "finance@example.com", PasswordHash = password, Role = finance });
+        // Staff and what each role can do: ebunny's roles and staff (Seed/data/roles.json, users.json). ebunny's Astro is
+        // our "plans" permission; its apps we don't have yet (Lando, Walker, Rodeo, Deputy) are left out.
+        string Perms(JsonNode? list) => string.Join(",", (list?.AsArray() ?? []).Select(p => p!.ToString() == "astro" ? "plans" : p!.ToString())
+            .Where(Permissions.All.ContainsKey).Distinct());
+        var roles = Load("roles").Select(r => new Role { Name = S(r, "name"), Permissions = Perms(r["perms"]) }).ToDictionary(r => r.Name);
+        roles["Administrator"].Permissions = string.Join(",", Permissions.All.Keys); // every right, delete included
+        db.Roles.AddRange(roles.Values);
+        var staff = Load("users").ToList();
+        var users = staff.Select(u => new User
+        {
+            Name = S(u, "name"), Email = S(u, "email"), PasswordHash = password, Role = roles[S(u, "role")], Active = u["active"]!.GetValue<bool>(),
+            EmployeeId = u["employee_id"]?.ToString(), Title = u["title"]?.ToString(), Department = u["department"]?.ToString(),
+            PhoneExt = u["ext"]?.ToString(), Location = u["location"]?.ToString(), HiredOn = u["hired"] is { } h ? DateOnly.Parse(h.ToString()) : null,
+            ExtraPermissions = Perms(u["extra"]), DeniedPermissions = Perms(u["denied"]), AccessNote = u["note"]?.ToString(),
+            LastLoginAt = u["last"] is { } l ? DateTime.Parse(l.ToString()).ToUniversalTime() : null,
+        }).ToDictionary(u => u.Email);
+        db.Users.AddRange(users.Values);
+        await db.SaveChangesAsync();
+        foreach (var u in staff) // managers once everyone exists
+            if (u["manager"]?.ToString() is { } m && users.TryGetValue(m, out var manager)) users[S(u, "email")].ManagerId = manager.Id;
+        var service = roles["Customer Service"];
 
         // Markets with their delivery charges
         var fees = Load("tdsp_fees").ToDictionary(f => S(f, "market"));

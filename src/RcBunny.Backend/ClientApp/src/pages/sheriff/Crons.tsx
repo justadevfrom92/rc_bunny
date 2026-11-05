@@ -1,39 +1,46 @@
-import { useState } from 'react';
-import { api, useLoad } from '../../api';
+import { api, dateTime, useLoad } from '../../api';
+import { EmptyRow, PageHead, Panel, useRun } from '../../ui';
 
-interface Run { id: number; job: string; startedAt: string; ok: boolean; message: string; runBy: string | null }
-interface Job { name: string; schedule: string; last: Run | null }
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+const command = (name: string) => 'app:' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/** Sheriff → Crons (ebunny's sheriff/jobs): the scheduled jobs, Run Now, and every run. */
 export default function Crons() {
-  const { data, error, reload } = useLoad<{ jobs: Job[]; runs: Run[] }>('/api/sheriff/jobs');
-  const [running, setRunning] = useState<string | null>(null);
-
-  if (error) return <p className="error">{error}</p>;
-  if (!data) return <p>Loading…</p>;
-
-  const run = (name: string) => { setRunning(name); api.post(`/api/sheriff/jobs/run?name=${encodeURIComponent(name)}`).then(reload).finally(() => setRunning(null)); };
-  const when = (s: string) => new Date(s).toLocaleString('en-US');
-
+  const { data, error, reload } = useLoad<any>('/api/sheriff/jobs');
+  const [run, bar] = useRun(reload);
+  if (error) return <div className="flash bad">{error}</div>;
+  if (!data) return <div className="empty">Loading…</div>;
+  const status = (r: any) => (r.ok ? 'OK' : 'Failed');
   return (
     <>
-      <h1>Crons</h1>
-      <table>
-        <thead><tr><th>Job</th><th>Runs</th><th>Last run</th><th /></tr></thead>
-        <tbody>
-          {data.jobs.map((j) => (
-            <tr key={j.name}>
-              <td>{j.name}</td><td>{j.schedule}</td>
-              <td>{j.last ? <><span className={j.last.ok ? '' : 'error'}>{j.last.ok ? 'OK' : 'Failed'}</span> · {when(j.last.startedAt)} · {j.last.message}</> : <span className="muted">Not yet</span>}</td>
-              <td><button onClick={() => run(j.name)} disabled={running !== null}>{running === j.name ? 'Running…' : 'Run now'}</button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2 style={{ marginTop: 24 }}>Job runs</h2>
-      <table>
-        <thead><tr><th>When</th><th>Job</th><th>Result</th><th>Message</th><th>Run by</th></tr></thead>
-        <tbody>{data.runs.map((r) => <tr key={r.id}><td>{when(r.startedAt)}</td><td>{r.job}</td><td className={r.ok ? '' : 'error'}>{r.ok ? 'OK' : 'Failed'}</td><td>{r.message}</td><td>{r.runBy ?? 'Schedule'}</td></tr>)}</tbody>
-      </table>
+      <PageHead title="Crons" sub="Scheduled background jobs. The admin runs them on their schedule while it's running." />
+      {bar}
+      <div className="panel"><div className="table-wrap"><table>
+        <thead><tr><th>Job</th><th>Command</th><th>Schedule</th><th>Last Run</th><th className="num">Duration</th><th>Status</th><th /></tr></thead>
+        <tbody>{data.jobs.map((j: any) => (
+          <tr key={j.name}><td><b>{j.name}</b>{j.last?.message && <><br /><span className="help">{j.last.message}</span></>}</td>
+            <td className="mono">{command(j.name)}</td><td className="mono">{j.schedule}</td>
+            <td className="nowrap">{j.last ? <>#{j.last.id} · {dateTime(j.last.startedAt)}</> : 'Never'}</td>
+            <td className="num">—</td>
+            <td>{j.last && <span className={`pill ${j.last.ok ? 'ok' : 'bad'}`}>{status(j.last)}</span>}</td>
+            <td><button className="btn sm ghost" onClick={() => run(api.post(`/api/sheriff/jobs/run?name=${encodeURIComponent(j.name)}`), `${j.name} ran`)}>Run Now</button></td></tr>
+        ))}</tbody>
+      </table></div></div>
+      <Panel title="Recent Runs" right={<span className="muted">every cron run, newest first</span>}>
+        <div className="table-wrap"><table>
+          <thead><tr><th>ID</th><th>Started</th><th>Job</th><th>Status</th><th className="num">Duration</th><th>Message</th></tr></thead>
+          <tbody>
+            {data.runs.map((r: any) => (
+              <tr key={r.id}><td className="nowrap"><b>#{r.id}</b></td><td className="nowrap">{dateTime(r.startedAt)}</td>
+                <td><b>{r.job}</b><div className="help mono">{command(r.job)}</div></td>
+                <td><span className={`pill ${r.ok ? 'ok' : 'bad'}`}>{status(r)}</span></td><td className="num">—</td>
+                <td className="wrap">{r.message.length > 120 ? r.message.slice(0, 120) + '...' : r.message}</td></tr>
+            ))}
+            {data.runs.length === 0 && <EmptyRow cols={6}>No runs yet.</EmptyRow>}
+          </tbody>
+        </table></div>
+      </Panel>
     </>
   );
 }

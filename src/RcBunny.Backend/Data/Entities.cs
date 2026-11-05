@@ -13,6 +13,28 @@ public class User
     public bool Active { get; set; } = true;
     /// <summary>For people from a 3rd-party company (e.g. a support vendor); null for our own staff.</summary>
     public string? Company { get; set; }
+    // The staff directory (Sheriff → Staff Directory), like ebunny's
+    public string? EmployeeId { get; set; }
+    public string? Title { get; set; }
+    public string? Department { get; set; }
+    public int? ManagerId { get; set; }
+    public User? Manager { get; set; }
+    public string? PhoneExt { get; set; }
+    public string? Location { get; set; }
+    public DateOnly? HiredOn { get; set; }
+    /// <summary>3rd-party users: the last day they can sign in (usually the end of their company's contract).</summary>
+    public DateOnly? AccessEndsOn { get; set; }
+    /// <summary>Apps and rights added for this person on top of their role, and taken away from it (comma-separated), and why.</summary>
+    public string ExtraPermissions { get; set; } = "";
+    public string DeniedPermissions { get; set; } = "";
+    public string? AccessNote { get; set; }
+    public DateTime? LastLoginAt { get; set; }
+
+    public List<string> ExtraList() => ExtraPermissions.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+    public List<string> DeniedList() => DeniedPermissions.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+    /// <summary>Everything this person can open and do: their role's, plus what's added, minus what's taken away.</summary>
+    public List<string> PermissionList() => Active ? (Role?.PermissionList() ?? []).Union(ExtraList()).Except(DeniedList()).ToList() : [];
 }
 
 public class Role
