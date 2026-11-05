@@ -28,7 +28,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
         return Ok(new
         {
             biz, renew = renewing?.Account, enrollmentTypes = EnrollmentTypes, sources = Sources,
-            prefill = prefill == null ? null : new { prefill.Name, prefill.Phone, prefill.Email, prefill.Address, prefill.City, prefill.Zip, prefill.Esiid, prefill.MarketId, prefill.PlanId },
+            prefill = prefill == null ? null : new { customerId = prefill.Id, businessName = prefill.Name, prefill.Name, prefill.Phone, prefill.Email, prefill.Address, prefill.City, prefill.Zip, prefill.Esiid, prefill.MarketId, prefill.PlanId, prefill.Autopay, prefill.Paperless, prefill.PeakPerks },
             markets = markets.Select(m => new { m.Id, m.Name }),
             plans = (await db.Plans.Where(p => p.Active && p.Type == (biz ? "Business" : "Residential")).OrderBy(p => p.TermMonths).ThenBy(p => p.Name).ToListAsync())
                 .Select(p => new

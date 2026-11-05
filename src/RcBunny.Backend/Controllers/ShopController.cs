@@ -29,7 +29,7 @@ public class ShopController(AppDbContext db) : ControllerBase
         var query = db.ShopProducts.Where(p => cat == null || p.Category == cat);
         return new
         {
-            categories = Shop.Categories, cat, page, total = await query.CountAsync(), sold = await Sold(),
+            categories = Shop.Categories, protection = Shop.Protection.Keys, icons = Shop.Icons, cat, page, total = await query.CountAsync(), sold = await Sold(),
             counts = await db.ShopProducts.GroupBy(p => p.Category).Select(g => new { cat = g.Key, n = g.Count() }).ToListAsync(),
             products = await query.OrderBy(p => p.Position).ThenBy(p => p.Id).Skip((Math.Max(page, 1) - 1) * 10).Take(10).ToListAsync(),
         };
@@ -42,8 +42,12 @@ public class ShopController(AppDbContext db) : ControllerBase
         if (p is null) return NotFound();
         var orders = (await db.ShopOrders.Include(o => o.Customer).OrderByDescending(o => o.Id).ToListAsync())
             .Where(o => o.Items.Contains($"\"sku\":\"{p.Sku}\"")).Take(10)
-            .Select(o => new { o.Id, o.Number, o.CreatedAt, o.Status, o.Total, o.CustomerId, customer = o.Customer?.Name, account = o.Customer?.Account });
-        return Ok(new { product = p, categories = Shop.Categories, icons = Shop.Icons, sold = (await Sold()).GetValueOrDefault(p.Sku), orders });
+            .Select(o => new
+            {
+                o.Id, o.Number, o.CreatedAt, o.Status, o.Total, o.CustomerId, customer = o.Customer?.Name, account = o.Customer?.Account,
+                qty = System.Text.Json.JsonDocument.Parse(o.Items).RootElement.EnumerateArray().Where(i => i.GetProperty("sku").GetString() == p.Sku).Sum(i => i.GetProperty("qty").GetInt32()),
+            });
+        return Ok(new { product = p, categories = Shop.Categories, protection = Shop.Protection.Keys, icons = Shop.Icons, sold = (await Sold()).GetValueOrDefault(p.Sku), orders });
     }
 
     public record ProductInput(string Sku, string Name, string Category, decimal Price, decimal? Was, int Stars, string? Badge, string Icon, string? Blurb, bool InStock, bool Active);

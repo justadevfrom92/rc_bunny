@@ -34,11 +34,11 @@ public class CrmController(AppDbContext db) : ControllerBase
     [HttpGet("options")]
     public async Task<object> Options() => new
     {
-        stages = Stages.Select(s => new { key = s.Key, s.Value.Label }), kinds = Kinds, sources = Sources, lostReasons = LostReasons,
+        stages = Stages.Select(s => new { key = s.Key, s.Value.Label, s.Value.Chance }), kinds = Kinds, sources = Sources, lostReasons = LostReasons,
         activityTypes = ActivityTypes, partnerKinds = PartnerKinds, partnerStatuses = PartnerStatuses,
         owners = (await db.Users.Include(u => u.Role).Where(u => u.Active).OrderBy(u => u.Name).ToListAsync())
-            .ToList().Where(u => u.PermissionList().Contains("corral")).Select(u => new { u.Id, u.Name }),
-        partners = await db.CrmPartners.Where(p => p.Status != "Ended").OrderBy(p => p.Name).Select(p => new { p.Id, p.Name }).ToListAsync(),
+            .ToList().Where(u => u.PermissionList().Contains("corral")).Select(u => new { u.Id, u.Name, u.Title, u.Company }),
+        partners = await db.CrmPartners.Where(p => p.Status != "Ended").OrderBy(p => p.Name).Select(p => new { p.Id, p.Name, p.ContactName, p.Kind }).ToListAsync(),
         markets = await db.Markets.OrderBy(m => m.Name).Select(m => new { m.Id, m.Name }).ToListAsync(),
     };
 
@@ -60,8 +60,8 @@ public class CrmController(AppDbContext db) : ControllerBase
             mine,
             stages = Open.Select(s => new
             {
-                key = s, label = Stages[s].Label,
-                leads = open.Where(l => l.Stage == s).Select(l => new { l.Id, l.Name, l.Company, l.Kind, l.EstValue, l.AnnualKwh, l.NextFollowUpOn, owner = l.Owner?.Name, partner = l.Partner?.Name, overdue = l.NextFollowUpOn < today }),
+                key = s, label = Stages[s].Label, chance = Stages[s].Chance,
+                leads = open.Where(l => l.Stage == s).Select(l => new { l.Id, l.Name, l.Company, l.Kind, l.Source, l.EstValue, weighted = Weighted(l), l.AnnualKwh, l.NextFollowUpOn, owner = l.Owner?.Name, partner = l.Partner?.Name, overdue = l.NextFollowUpOn < today }),
             }),
             stats = new
             {
@@ -95,7 +95,7 @@ public class CrmController(AppDbContext db) : ControllerBase
             counts = await db.CrmLeads.GroupBy(l => l.Stage).Select(g => new { stage = g.Key, n = g.Count() }).ToListAsync(),
             leads = await query.OrderBy(l => l.Stage == "won" || l.Stage == "lost" ? 1 : 0).ThenBy(l => l.NextFollowUpOn).ThenByDescending(l => l.Id)
                 .Skip((Math.Max(page, 1) - 1) * 30).Take(30)
-                .Select(l => new { l.Id, l.Name, l.Company, l.Kind, l.Source, l.Stage, l.EstValue, l.AnnualKwh, l.NextFollowUpOn, owner = l.Owner!.Name, partner = l.Partner!.Name, l.CreatedAt })
+                .Select(l => new { l.Id, l.Name, l.Company, l.Kind, l.Source, l.Stage, l.EstValue, l.AnnualKwh, l.NextFollowUpOn, owner = l.Owner!.Name, partner = l.Partner!.Name, l.CreatedAt, l.City, l.ClosedAt })
                 .ToListAsync(),
         };
     }
@@ -244,10 +244,10 @@ public class CrmController(AppDbContext db) : ControllerBase
         };
     }
 
-    private record TaskRow(int Id, string Subject, string? Body, DateOnly? DueOn, DateTime? DoneAt, int? LeadId, string? Lead, int? PartnerId, string? Partner, string? User);
+    private record TaskRow(int Id, string Subject, string? Body, DateOnly? DueOn, DateTime? DoneAt, int? LeadId, string? Lead, string? LeadStage, int? PartnerId, string? Partner, string? User);
 
     private static readonly System.Linq.Expressions.Expression<Func<CrmActivity, TaskRow>> Row = a =>
-        new TaskRow(a.Id, a.Subject, a.Body, a.DueOn, a.DoneAt, a.LeadId, a.Lead!.Company ?? a.Lead.Name, a.PartnerId, a.Partner!.Name, a.User!.Name);
+        new TaskRow(a.Id, a.Subject, a.Body, a.DueOn, a.DoneAt, a.LeadId, a.Lead!.Company ?? a.Lead.Name, a.Lead.Stage, a.PartnerId, a.Partner!.Name, a.User!.Name);
 
     /// <summary>Mark a follow-up done, or reopen it.</summary>
     [HttpPost("follow-ups/{id:int}")]

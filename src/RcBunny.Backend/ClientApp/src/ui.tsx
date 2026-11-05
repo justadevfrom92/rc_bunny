@@ -15,19 +15,6 @@ const statusTones: Record<string, string> = {
 /** A pill coloured by what the word means (Success is green, Failed is red…). */
 export const Status = ({ value }: { value: string | null | undefined }) => (value ? <Pill tone={statusTones[value]}>{value}</Pill> : <>—</>);
 
-/** Previous / Next for a list that comes back in pages. */
-export function Pager({ page, total, size, onPage }: { page: number; total: number; size: number; onPage: (p: number) => void }) {
-  const pages = Math.max(1, Math.ceil(total / size));
-  if (pages <= 1) return null;
-  return (
-    <div className="row">
-      <button disabled={page <= 1} onClick={() => onPage(page - 1)}>Previous</button>
-      <span>Page {page} of {pages}</span>
-      <button disabled={page >= pages} onClick={() => onPage(page + 1)}>Next</button>
-    </div>
-  );
-}
-
 /**
  * For buttons that change something: run(promise) shows the server's message (or error) and then reloads.
  * Returns [run, the message bar to show].

@@ -72,6 +72,7 @@ export default function Corral() {
           <Route path="products/orders" element={<ProductOrders />} />
           <Route path="products/orders/:id" element={<ProductOrder />} />
           <Route path="products/:id" element={<Product />} />
+          <Route path="products/:id/edit" element={<ProductForm />} />
           <Route path="ercot" element={<Ercot />} />
           <Route path="queues" element={<Queues />} />
           <Route path="queues/:key" element={<Queue />} />
