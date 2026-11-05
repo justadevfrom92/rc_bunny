@@ -333,7 +333,20 @@ public class ContactMessage
     public DateTime? RepliedAt { get; set; }
     public int? RepliedById { get; set; }
     public User? RepliedBy { get; set; }
+    /// <summary>How it ended (Resolved, Incomplete…), like a call or text.</summary>
+    public string? Resolution { get; set; }
+    public int? ResolvedById { get; set; }
+    public User? ResolvedBy { get; set; }
+    public DateTime? ResolvedAt { get; set; }
+    /// <summary>Where it was sent from.</summary>
+    public string? Ip { get; set; }
     public bool Handled => HandledAt != null;
+    /// <summary>The Contact Us topics (ebunny's ContactMessage::TOPICS).</summary>
+    public static readonly Dictionary<string, string> Topics = new()
+    {
+        ["general"] = "General question", ["signup"] = "Sign up for service", ["billing"] = "Billing & payments", ["business"] = "Business service", ["rewards"] = "Rewards",
+    };
+    public string TopicLabel => Topics.GetValueOrDefault(Topic, Topic.Length > 0 ? char.ToUpper(Topic[0]) + Topic[1..] : Topic);
 }
 
 /// <summary>

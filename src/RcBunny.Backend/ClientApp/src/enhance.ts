@@ -82,8 +82,28 @@ function pause(fn: () => void) {
   try { fn(); } finally { observer?.observe(document.body, { childList: true, subtree: true }); }
 }
 
+/** ebunny's components/chart-tip: an instant tooltip for anything with data-tip (chart bars, phone icons). */
+function chartTips() {
+  const tip = document.createElement('div');
+  tip.className = 'chart-tip'; tip.hidden = true; tip.setAttribute('role', 'tooltip');
+  const show = (el: Element) => {
+    if (!tip.isConnected) document.body.appendChild(tip);
+    tip.textContent = el.getAttribute('data-tip'); tip.hidden = false;
+    const r = el.getBoundingClientRect();
+    tip.style.left = Math.min(Math.max(r.left + r.width / 2, 60), window.innerWidth - 60) + 'px';
+    tip.style.top = Math.max(r.top, 36) + 'px';
+  };
+  const hide = () => { tip.hidden = true; };
+  const find = (e: Event) => (e.target as Element).closest?.('[data-tip]');
+  document.addEventListener('pointerover', (e) => { const el = find(e); if (el) show(el); else hide(); });
+  document.addEventListener('focusin', (e) => { const el = find(e); if (el) show(el); });
+  document.addEventListener('focusout', hide);
+  window.addEventListener('scroll', hide, true);
+}
+
 /** Start watching the page (call once). */
 export function enhancePages() {
+  chartTips();
   observer = new MutationObserver(() => {
     if (queued) return;
     queued = true;

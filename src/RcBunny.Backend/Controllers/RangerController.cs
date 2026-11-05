@@ -119,22 +119,25 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
         var userIds = await db.TicketMessages.Where(m => m.TicketId == id && m.UserId != null).Select(m => m.UserId!.Value).Distinct().ToListAsync();
         var teamOf = await db.RangerAgents.Where(a => userIds.Contains(a.UserId) || a.UserId == t.AssignedToId).ToDictionaryAsync(a => a.UserId.ToString(), a => Ranger.Teams[a.Team]);
         var c = t.Customer;
+        var uploaderIds = attachments.Where(a => a.UserId != null).Select(a => a.UserId!.Value).ToList();
+        var names = await db.Users.Where(u => uploaderIds.Contains(u.Id)).ToDictionaryAsync(u => u.Id, u => u.Name);
         return Ok(new
         {
             t.Id, t.Number, t.Subject, t.Name, t.Email, t.Topic, topicLabel = Ranger.Topics.GetValueOrDefault(t.Topic, t.Topic), t.Channel,
             t.Status, t.Priority, t.CreatedAt, t.UpdatedAt, t.FirstResponseAt, t.SolvedAt, t.Rating, t.RatingComment, t.RatedAt,
             t.AssignedToId, assignedTo = t.AssignedTo?.Name, assignedCompany = t.AssignedTo?.Company,
             t.ManagerRequestedAt, managerRequestedBy = t.ManagerRequestedBy?.Name, t.ManagerRequestNote,
-            customer = c == null ? null : new { c.Id, c.Account, c.Name, c.Email, c.Phone, c.Status, plan = c.Plan?.Name, c.Address },
+            customer = c == null ? null : new { c.Id, c.Account, c.Name, c.Email, c.Phone, c.Status, plan = c.Plan?.Name, c.Address, c.Balance },
             otherTickets = c == null ? 0 : await db.SupportTickets.CountAsync(x => x.CustomerId == c.Id),
             messages = (await db.TicketMessages.Where(m => m.TicketId == id).OrderBy(m => m.CreatedAt).ThenBy(m => m.Id).ToListAsync())
                 .Select(m => new { m.Id, m.Kind, m.Author, m.UserId, m.Via, m.Direction, m.DurationSec, m.Contact, m.Body, m.CreatedAt, files = attachments.Where(a => a.MessageId == m.Id).Select(File) }),
             notes = await db.Notes.Where(n => n.SupportTicketId == id).OrderByDescending(n => n.CreatedAt).ToListAsync(),
-            attachments = attachments.Select(File),
+            attachments = attachments.OrderByDescending(a => a.CreatedAt).Select(a => new { file = File(a), by = a.FromCustomer ? t.Name : names.GetValueOrDefault(a.UserId ?? 0, "Support") }),
             watchers, teamOf,
             me = me.Id, manager = await IsManager(me),
             agents = await db.RangerAgents.Where(a => a.Active && (company == null || a.User!.Company == company)).OrderBy(a => a.User!.Name)
-                .Select(a => new { a.UserId, a.User!.Name, team = a.Team }).ToListAsync(),
+                .Select(a => new { a.UserId, a.User!.Name, team = a.Team, a.Level }).ToListAsync(),
+            history = c == null ? 0 : await db.SupportTickets.CountAsync(x => x.CustomerId == c.Id),
             noteCategories = Corral.NoteCategories, priorities = Corral.Priorities,
             lists = Lists(),
         });
@@ -308,9 +311,9 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
         }
         return Ok(new
         {
-            ticket = new { t!.Id, t.Number, t.Subject, t.Name },
+            ticket = new { t!.Id, t.Number, t.Subject, t.Name, t.CustomerId, account = await db.Customers.Where(c => c.Id == t.CustomerId).Select(c => c.Account).FirstOrDefaultAsync() },
             file = File(a), by = a.FromCustomer ? t.Name : await db.Users.Where(u => u.Id == a.UserId).Select(u => u.Name).FirstOrDefaultAsync(),
-            message = message == null ? null : new { message.Id, message.Kind, message.Author, message.Body, message.CreatedAt },
+            message = message == null ? null : new { message.Id, message.Kind, message.Author, message.Via, message.Body, message.CreatedAt },
             text, exists = System.IO.File.Exists(full),
         });
     }
@@ -349,7 +352,7 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
                 var good = mine.Count(t => t.RatedAt >= since && t.Rating == "good");
                 return new
                 {
-                    a.Id, a.UserId, a.User!.Name, a.User.Email, a.User.Company, a.Team, a.Level, a.Active, addedBy = a.AddedBy?.Name, a.CreatedAt,
+                    a.Id, a.UserId, a.User!.Name, a.User.Email, a.User.Company, a.User.Title, a.Team, a.Level, a.Active, addedBy = a.AddedBy?.Name, a.CreatedAt,
                     open = mine.Count(t => Ranger.Active.Contains(t.Status)), solved = mine.Count(t => t.SolvedAt >= since),
                     approval = new { rated, good, pct = rated == 0 ? (double?)null : Math.Round(100.0 * good / rated, 1) },
                 };
@@ -367,12 +370,12 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
         return new
         {
             people = await db.Users.Where(u => u.Active && !db.RangerAgents.Any(a => a.UserId == u.Id) && (company == null || u.Company == company))
-                .OrderBy(u => u.Name).Select(u => new { u.Id, u.Name, u.Email, role = u.Role!.Name, u.Company }).ToListAsync(),
+                .OrderBy(u => u.Name).Select(u => new { u.Id, u.Name, u.Email, role = u.Role!.Name, u.Company, u.Title }).ToListAsync(),
             manager = await IsManager(me), company, lists = Lists(),
         };
     }
 
-    public record AgentInput(string? Who, int? UserId, string? Name, string? Email, string? Password, string? Company, string? Team, string? Level);
+    public record AgentInput(string? Who, int? UserId, string? Name, string? Email, string? Password, string? Company, string? Team, string? Level, string? Title);
 
     /// <summary>Add someone already in the admin, or a new person with a temporary password. Being on the team gives them Ranger.</summary>
     [HttpPost("team")]
@@ -401,7 +404,7 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
             user = new User
             {
                 Name = input.Name.Trim(), Email = email, PasswordHash = Passwords.Hash(input.Password!), RoleId = role.Id,
-                Company = team == "third_party" ? companyName : null,
+                Company = team == "third_party" ? companyName : null, Title = string.IsNullOrWhiteSpace(input.Title) ? null : input.Title.Trim(),
             };
             db.Users.Add(user);
             await db.SaveChangesAsync();
@@ -435,7 +438,7 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
         var replied = await mine.Where(t => t.FirstResponseAt != null && t.CreatedAt >= DateTime.UtcNow.AddDays(-90)).Select(t => new { t.CreatedAt, t.FirstResponseAt }).ToListAsync();
         return Ok(new
         {
-            agent = new { a.Id, a.UserId, a.User!.Name, a.User.Email, a.User.Company, role = a.User.Role!.Name, a.Team, a.Level, a.Active, addedBy = a.AddedBy?.Name, a.CreatedAt },
+            agent = new { a.Id, a.UserId, a.User!.Name, a.User.Email, a.User.Company, a.User.Title, a.User.Department, role = a.User.Role!.Name, a.Team, a.Level, a.Active, addedBy = a.AddedBy?.Name, a.CreatedAt },
             approval,
             firstReplyMinutes = replied.Count == 0 ? (double?)null : Math.Round(replied.Average(t => (t.FirstResponseAt!.Value - t.CreatedAt).TotalMinutes)),
             weeks = await Weeks(mine),
@@ -488,11 +491,11 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
         var rated = db.SupportTickets.Where(t => t.RatedAt >= since);
         var teams = new List<object>();
         foreach (var (team, label) in Ranger.Teams) teams.Add(new { team, label, approval = await Approval(rated.Where(t => db.RangerAgents.Any(a => a.Team == team && a.UserId == t.AssignedToId))) });
-        var people = new List<(int Id, string Name, string Team, ApprovalStats A)>();
+        var people = new List<(int Id, string Name, string Team, string? Company, ApprovalStats A)>();
         foreach (var a in await db.RangerAgents.Include(x => x.User).ToListAsync())
         {
             var ap = await Approval(rated.Where(t => t.AssignedToId == a.UserId));
-            if (ap.Rated > 0) people.Add((a.Id, a.User!.Name, a.Team, ap));
+            if (ap.Rated > 0) people.Add((a.Id, a.User!.Name, a.Team, a.User.Company, ap));
         }
         var weeks = new List<object>();
         foreach (var (from, until) in WeekRanges())
@@ -506,7 +509,7 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
         return new
         {
             days = Days(days), overall = await Approval(rated), teams, weeks,
-            people = people.OrderByDescending(p => p.A.Pct).ThenByDescending(p => p.A.Rated).Select(p => new { p.Id, p.Name, p.Team, approval = p.A }),
+            people = people.OrderByDescending(p => p.A.Pct).ThenByDescending(p => p.A.Rated).Select(p => new { p.Id, p.Name, p.Team, p.Company, approval = p.A }),
             page, total = await comments.CountAsync(),
             comments = await comments.OrderByDescending(t => t.RatedAt).Skip((page - 1) * 10).Take(10)
                 .Select(t => new { t.Id, number = "RT-" + (10000 + t.Id), t.Subject, t.Name, t.Rating, t.RatingComment, t.RatedAt, agent = t.AssignedTo!.Name }).ToListAsync(),
@@ -532,7 +535,7 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
             var handled = HandledBy(db.SupportTickets, u.Id);
             rows.Add(new
             {
-                u.Id, u.Name, u.Email, role = u.Role!.Name, u.Company, u.Active,
+                u.Id, u.Name, u.Email, u.Title, role = u.Role!.Name, u.Company, u.Active,
                 agent = agents.TryGetValue(u.Id, out var a) ? new { a.Id, a.Team, a.Level, a.Active } : null,
                 handled = await handled.CountAsync(),
                 open = await db.SupportTickets.CountAsync(t => t.AssignedToId == u.Id && Ranger.Active.Contains(t.Status)),
@@ -559,7 +562,7 @@ public class RangerController(AppDbContext db, IConfiguration config, IWebHostEn
             .Concat(db.TicketMessages.Where(m => ticketIds.Contains(m.TicketId) && m.UserId == id && m.Kind == "note").Select(m => m.TicketId)).ToListAsync();
         return Ok(new
         {
-            user = new { u.Id, u.Name, u.Email, role = u.Role!.Name, u.Company, u.Active },
+            user = new { u.Id, u.Name, u.Email, u.Title, role = u.Role!.Name, u.Company, u.Active },
             agent = await db.RangerAgents.Where(a => a.UserId == id).Select(a => new { a.Id, a.Team, a.Level, a.Active }).FirstOrDefaultAsync(),
             stats = new
             {

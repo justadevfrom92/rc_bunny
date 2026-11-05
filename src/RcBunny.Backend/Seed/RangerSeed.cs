@@ -120,13 +120,14 @@ public static partial class Seeder
 
         // Website Contact Us messages
         db.ContactMessages.AddRange(
-            new ContactMessage { Name = "Jordan Lee", Email = "jordan@example.com", Topic = "Billing", Message = "Can I change my due date?", CreatedAt = DateTime.UtcNow.AddDays(-2) },
-            new ContactMessage { Name = "Sam Ortiz", Email = "sam@example.com", Phone = "(555) 555-0199", Topic = "New service", Message = "Moving to Dallas next month, which plan should I pick?", CreatedAt = DateTime.UtcNow.AddDays(-1) },
-            new ContactMessage { Name = customers[5].Name, Email = customers[5].Email ?? "", Topic = "My plan", Message = "Is there a plan with free nights?", CreatedAt = DateTime.UtcNow.AddHours(-6) },
+            new ContactMessage { Name = "Jordan Lee", Email = "jordan@example.com", Topic = "billing", Message = "Can I change my due date?", Ip = "203.0.113.24", CreatedAt = DateTime.UtcNow.AddDays(-2) },
+            new ContactMessage { Name = "Sam Ortiz", Email = "sam@example.com", Phone = "(555) 555-0199", Topic = "signup", Message = "Moving to Dallas next month, which plan should I pick?", CreatedAt = DateTime.UtcNow.AddDays(-1) },
+            new ContactMessage { Name = customers[5].Name, Email = customers[5].Email ?? "", Topic = "general", Message = "Is there a plan with free nights?", CreatedAt = DateTime.UtcNow.AddHours(-6) },
             new ContactMessage
             {
-                Name = "Taylor Kim", Email = "taylor@example.com", Topic = "Something else", Message = "Do you serve Houston?", CreatedAt = DateTime.UtcNow.AddDays(-6),
+                Name = "Taylor Kim", Email = "taylor@example.com", Topic = "general", Message = "Do you serve Houston?", CreatedAt = DateTime.UtcNow.AddDays(-6),
                 Reply = "Yes! We serve the CenterPoint area around Houston.", RepliedAt = DateTime.UtcNow.AddDays(-5), RepliedById = csr.Id, HandledAt = DateTime.UtcNow.AddDays(-5), HandledById = csr.Id,
+                Resolution = "Resolved", ResolvedById = csr.Id, ResolvedAt = DateTime.UtcNow.AddDays(-5),
             });
         await db.SaveChangesAsync();
     }

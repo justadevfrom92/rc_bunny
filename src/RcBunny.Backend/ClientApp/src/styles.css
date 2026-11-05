@@ -111,3 +111,16 @@ tfoot th { color: var(--ink); font-size: .85rem; text-transform: none; letter-sp
 .preview { max-width: 100%; max-height: 600px; border: 1px solid var(--line); border-radius: 8px; }
 
 @media print { .sidebar, .topbar, .no-print { display: none !important; } .main { margin-left: 0; } }
+
+/* ebunny's components/bar-chart.blade.php and components/chart-tip.blade.php (their own <style>, copied as is) */
+.bc { display: grid; grid-template-columns: repeat(var(--bc-n), minmax(0, 1fr)); gap: 4px; height: var(--bc-h); align-items: stretch; }
+.bc-col { display: flex; flex-direction: column; align-items: center; min-width: 0; outline: none; cursor: default; }
+.bc-val { font-size: .68rem; font-weight: 600; line-height: 1.3; color: inherit; white-space: nowrap; }
+.bc-track { flex: 1; width: 100%; display: flex; align-items: flex-end; border-bottom: 1px solid rgba(127,127,127,.35); }
+.bc-track b { display: block; width: 100%; min-height: 2px; border-radius: 3px 3px 0 0; background: var(--bc-color, #00AEEF); transition: filter .1s; }
+.bc-col:hover b, .bc-col:focus-visible b { filter: brightness(.85); }
+.bc-col:focus-visible { box-shadow: 0 0 0 2px #00AEEF; border-radius: 3px; }
+.bc-lab { font-size: .66rem; line-height: 1.2; height: 1.4em; padding-top: 3px; opacity: .75; white-space: nowrap; }
+@media (max-width: 600px) { .bc-val { font-size: .56rem; } .bc { gap: 2px; } }
+.chart-tip { position: fixed; z-index: 9999; pointer-events: none; background: #102247; color: #fff; font: 600 12px/1.3 system-ui, sans-serif; padding: 6px 9px; border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.25); white-space: nowrap; transform: translate(-50%, calc(-100% - 8px)); }
+.chart-tip[hidden] { display: none; }

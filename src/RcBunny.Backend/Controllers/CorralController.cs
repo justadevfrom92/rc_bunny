@@ -225,6 +225,7 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
             case "contact" when await db.ContactLogs.FindAsync(id) is { } log: (log.Resolution, log.ResolvedBy) = (input.Resolution, who); break;
             case "message" when await db.ContactMessages.FindAsync(id) is { } msg:
                 var me = await Me();
+                (msg.Resolution, msg.ResolvedById, msg.ResolvedAt) = (input.Resolution, me.Id, DateTime.UtcNow);
                 (msg.HandledAt, msg.HandledById) = input.Resolution == "Resolved" ? ((DateTime?)DateTime.UtcNow, (int?)me.Id) : (null, null);
                 break;
             default: return NotFound();

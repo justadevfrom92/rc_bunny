@@ -13,11 +13,11 @@ import Integrations from './Integrations';
 import Record from '../Record';
 
 const menu: Menu = [
-  { heading: 'Heartbeat', links: [['Overview', 'heartbeat'], ['Checks', 'heartbeat/checks'], ['Control Log', 'heartbeat/log']] },
+  { heading: 'Heartbeat', links: [['Overview', 'heartbeat', { badge: 'health_problems' }], ['Checks', 'heartbeat/checks'], ['Control Log', 'heartbeat/log']] },
   { heading: 'Access', links: [['Staff Directory', 'users'], ['Roles', 'roles']] },
-  { heading: 'Config', links: [['Timeline', 'timeline'], ['Crons', 'jobs'], ['Cached Tables', 'cached-tables']] },
+  { heading: 'Config', links: [['Timeline', 'timeline'], ['Crons', 'jobs', { badge: 'failed_jobs' }], ['Cached Tables', 'cached-tables']] },
   { heading: 'Markets', links: [['View Markets', 'markets'], ['Add a Market', 'markets/create']] },
-  { heading: 'APIs', links: [['APIs Overview', 'integrations']] },
+  { heading: 'APIs', links: [['All APIs', 'integrations']] },
 ];
 
 export default function Sheriff() {

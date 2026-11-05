@@ -1,8 +1,8 @@
-import { Link } from 'react-router';
-import { dateTime } from '../../api';
-import { Pill } from '../../ui';
+import { type MouseEvent } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { AccountNo, age } from '../../ui';
 
-// Ranger's lists as the API sends them, and the small pieces every Ranger page uses.
+// Ranger's lists as the API sends them, and the small pieces every Ranger page uses (ebunny's backend/ranger/_*.blade.php).
 
 export interface Lists {
   statuses: Record<string, { label: string; tone: string }>;
@@ -17,59 +17,53 @@ export interface Row {
   status: string; priority: string; assignedToId: number | null; assignedTo: string | null; createdAt: string; updatedAt: string; managerRequestedAt: string | null; rating: string | null;
 }
 
-export const StatusPill = ({ lists, value }: { lists: Lists; value: string }) => <Pill tone={lists.statuses[value]?.tone}>{lists.statuses[value]?.label ?? value}</Pill>;
-export const PriorityPill = ({ lists, value }: { lists: Lists; value: string }) => <Pill tone={lists.priorities[value]?.tone}>{lists.priorities[value]?.label ?? value}</Pill>;
+export const StatusPill = ({ lists, value }: { lists: Lists; value: string }) => <span className={`pill ${lists.statuses[value]?.tone ?? ''}`}>{lists.statuses[value]?.label ?? value}</span>;
+export const PriorityPill = ({ lists, value }: { lists: Lists; value: string }) => <span className={`pill ${lists.priorities[value]?.tone ?? ''}`}>{lists.priorities[value]?.label ?? value}</span>;
+export const TeamPill = ({ lists, team }: { lists: Lists; team: string }) => <span className={`pill ${team === 'office' ? 'info' : 'warn'}`}>{lists.teams[team]}</span>;
 
-/** "92% (23 of 25)", or "No ratings" */
-export const ApprovalText = ({ a }: { a: Approval }) =>
-  a.pct === null ? <span className="muted">No ratings</span> : <><b>{a.pct}%</b> <span className="muted">({a.good} of {a.rated})</span></>;
+const tone = (pct: number) => (pct >= 90 ? 'ok' : pct >= 75 ? 'warn' : 'bad');
+const pctText = (pct: number) => `${Math.round(pct * 10) / 10}%`;
 
-/** A big number card for approval. */
-export const ApprovalCard = ({ label, a }: { label: string; a: Approval }) => (
-  <div className="card"><span className="muted">{label}</span><strong>{a.pct === null ? '—' : `${a.pct}%`}</strong><small className="muted">{a.rated} rated</small></div>
+/** ebunny's ranger/_approval: the %, a green/red bar and the counts. */
+export const ApprovalText = ({ a }: { a: Approval }) => a.pct === null ? <span className="muted">No ratings yet</span> : (
+  <span className="ap" title={`${a.good} 👍 and ${a.rated - a.good} 👎 = ${a.pct}% approval`}>
+    <b className={`approval ${tone(a.pct)}`}>{pctText(a.pct)}</b><span className="ap-split"><span style={{ width: `${a.pct}%` }} /></span><span className="ap-n">👍 {a.good} · 👎 {a.rated - a.good}</span>
+  </span>
 );
 
-/** The ticket table used on the dashboard, the lists, a team member and an employee. */
-export function TicketTable({ rows, lists, empty = 'No tickets here.' }: { rows: Row[]; lists: Lists; empty?: string }) {
-  if (rows.length === 0) return <p className="muted">{empty}</p>;
+/** ebunny's ranger/_approval-card: a panel with the big %, the bar and what it's out of. */
+export const ApprovalCard = ({ title, a, note }: { title: string; a: Approval; note?: string }) => (
+  <div className="panel"><div className="panel-head"><h2>{title}</h2>{note && <span className="help">{note}</span>}</div><div className="panel-body ap-card">
+    {a.pct === null ? <span className="muted">No ratings yet</span> : <>
+      <b className={`approval ${tone(a.pct)}`}>{pctText(a.pct)}</b>
+      <span className="ap-split" aria-hidden="true"><span style={{ width: `${a.pct}%` }} /></span>
+      <div className="ap-legend"><span>👍 {a.good.toLocaleString()} helped</span><span>👎 {(a.rated - a.good).toLocaleString()} didn't</span></div>
+      <span className="help">{a.rated.toLocaleString()} rated {a.rated === 1 ? 'ticket' : 'tickets'}</span>
+    </>}
+  </div></div>
+);
+
+/** ebunny's approval % with only the bar (By Team Member). */
+export const ApprovalBar = ({ a }: { a: Approval }) => a.pct === null ? <span className="muted">—</span> : <><b className={`approval ${tone(a.pct)}`}>{pctText(a.pct)}</b> <span className="ap-split"><span style={{ width: `${a.pct}%` }} /></span></>;
+
+/** ebunny's ranger/_row: one ticket in a list; the whole row opens it. */
+export function TicketRow({ t, lists, compact }: { t: Row; lists: Lists; compact?: boolean }) {
+  const navigate = useNavigate();
+  const stop = (e: MouseEvent) => e.stopPropagation();
   return (
-    <div className="scroll">
-      <table>
-        <thead><tr><th>Ticket</th><th>Customer</th><th>Topic</th><th>Status</th><th>Priority</th><th>Owner</th><th>Opened</th><th>Last activity</th></tr></thead>
-        <tbody>
-          {rows.map((t) => (
-            <tr key={t.id}>
-              <td><Link to={`/ranger/tickets/${t.id}`}><span className="mono">{t.number}</span> {t.subject}</Link>
-                {t.managerRequestedAt && <> <Pill tone="warn">Manager requested</Pill></>}</td>
-              <td>{t.name}{t.account && <div className="muted">#{t.account}</div>}</td>
-              <td>{lists.topics[t.topic] ?? t.topic}<div className="muted">{lists.channels[t.channel]} {t.channel}</div></td>
-              <td><StatusPill lists={lists} value={t.status} /></td>
-              <td><PriorityPill lists={lists} value={t.priority} /></td>
-              <td>{t.assignedTo ?? <span className="muted">Unassigned</span>}</td>
-              <td className="nowrap">{dateTime(t.createdAt)}</td>
-              <td className="nowrap">{dateTime(t.updatedAt)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <tr className="click" onClick={() => navigate(`/ranger/tickets/${t.id}`)}>
+      <td className="nowrap"><Link className="mono" to={`/ranger/tickets/${t.id}`}>{t.number}</Link><div className="help">{lists.channels[t.channel] ?? ''} {t.channel} · {age(t.createdAt)} ago</div></td>
+      <td className="wrap"><b>{t.subject}</b><div className="help">{lists.topics[t.topic] ?? t.topic}</div></td>
+      <td>{t.name}{t.customerId && <div className="help" onClick={stop}><AccountNo id={t.customerId} account={t.account} /></div>}</td>
+      <td><StatusPill lists={lists} value={t.status} />{t.priority !== 'normal' && <> <PriorityPill lists={lists} value={t.priority} /></>}</td>
+      {!compact && <>
+        <td onClick={stop}>{t.assignedToId ? <Link to={`/ranger/employees/${t.assignedToId}`}>{t.assignedTo}</Link> : '—'}</td>
+        <td className="nowrap">{t.rating ? (t.rating === 'good' ? '👍' : '👎') : <span className="muted">—</span>}</td>
+      </>}
+    </tr>
   );
 }
 
-/** Approval for each of the last 12 weeks, as a simple bar row. */
-export function WeekBars({ weeks }: { weeks: { week: string; approval: Approval }[] }) {
-  return (
-    <table>
-      <thead><tr><th>Week of</th><th>Approval</th><th></th></tr></thead>
-      <tbody>
-        {weeks.map((w) => (
-          <tr key={w.week}>
-            <td className="nowrap">{new Date(w.week).toLocaleDateString('en-US')}</td>
-            <td><ApprovalText a={w.approval} /></td>
-            <td style={{ width: '50%' }}>{w.approval.pct !== null && <div className="bar"><span style={{ width: `${w.approval.pct}%` }} /></div>}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
+/** "30 days", "90 days", "1 year" chips (ebunny's chip-links). */
+export const dayChoices = [30, 90, 365];
+export const daysLabel = (d: number) => (d === 365 ? '1 year' : `${d} days`);

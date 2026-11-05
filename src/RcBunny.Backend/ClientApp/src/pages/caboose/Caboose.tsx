@@ -11,9 +11,9 @@ import Journal from './Journal';
 import Channels, { ChannelForm, PromoForm } from './Channels';
 
 const menu: Menu = [
-  { heading: 'Finance', links: [['Dashboard', ''], ['Payments', 'payments'], ['Credits & Debits', 'credits-debits'], ['Refunds', 'refunds'], ['Deposits', 'deposits']] },
+  { heading: 'Finance', links: [['Dashboard', ''], ['Payments', 'payments'], ['Credits & Debits', 'credits-debits', { badge: 'ledger_pending' }], ['Refunds', 'refunds', { badge: 'refunds_pending' }], ['Deposits', 'deposits']] },
   { heading: 'Accounting', links: [['Receivables Aging', 'aging'], ['Journal', 'journal']] },
-  { heading: 'Tracking', links: [['MSIDs & Promo Codes', 'channels', ['promos']]] },
+  { heading: 'Tracking', links: [['MSIDs & Promo Codes', 'channels', { also: ['promos'] }]] },
 ];
 
 export default function Caboose() {

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router';
 
 /** A coloured label: ok (green), warn (amber), bad (red), info (blue) or plain. */
@@ -174,4 +174,23 @@ export function age(from: string, to?: string | null) {
   const units: [number, string][] = [[31536000, 'year'], [2592000, 'month'], [604800, 'week'], [86400, 'day'], [3600, 'hour'], [60, 'minute'], [1, 'second']];
   for (const [n, u] of units) if (s >= n) { const k = Math.floor(s / n); return `${k} ${u}${k === 1 ? '' : 's'}`; }
   return '1 second';
+}
+
+/** ebunny's components/bar-chart: the amount on every bar, the label under it, and "label: amount" on hover. */
+export function BarChart({ bars, unit = '', decimals = 0, height = 170 }: { bars: { label: string; value: number; tip?: string }[]; unit?: string; decimals?: number; height?: number }) {
+  const top = Math.max(1, ...bars.map((b) => b.value));
+  const fmt = (v: number) => v.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const step = Math.max(1, Math.ceil(bars.length / 16)); // thin out column labels when there are many bars
+  const say = (b: { label: string; value: number; tip?: string }) => `${b.tip ?? b.label}: ${fmt(b.value)}${unit ? ' ' + unit : ''}`;
+  return (
+    <div className="bc" style={{ '--bc-n': Math.max(1, bars.length), '--bc-h': `${height}px` } as CSSProperties} role="img" aria-label={bars.map(say).join('; ')}>
+      {bars.map((b, i) => (
+        <div key={i} className="bc-col" tabIndex={0} data-tip={say(b)}>
+          <span className="bc-val">{fmt(b.value)}</span>
+          <span className="bc-track"><b style={{ height: `${Math.round((b.value / top) * 1000) / 10}%` }} /></span>
+          <span className="bc-lab">{i % step === 0 ? b.label : ''}</span>
+        </div>
+      ))}
+    </div>
+  );
 }

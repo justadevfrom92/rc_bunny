@@ -1,36 +1,39 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { dateTime, useLoad } from '../../api';
-import { Pill } from '../../ui';
+import { EmptyRow, PageHead } from '../../ui';
 import type { Lists } from './shared';
 
 interface Person {
-  id: number; name: string; email: string; role: string; company: string | null; active: boolean;
+  id: number; name: string; email: string; title: string | null; role: string; company: string | null; active: boolean;
   agent: { id: number; team: string; level: string; active: boolean } | null; handled: number; open: number; last: string | null;
 }
 
-/** Everyone who has handled a ticket (owned, replied or noted): the ticket team and anyone else. */
+/** Ranger → Employees (ebunny's ranger/people): everyone who has handled a ticket. */
 export default function Employees() {
   const { data, error } = useLoad<{ people: Person[]; lists: Lists }>('/api/ranger/employees');
-  if (error) return <p className="error">{error}</p>;
-  if (!data) return <p>Loading…</p>;
-  const l = data.lists;
+  const navigate = useNavigate();
+  if (error) return <div className="flash bad">{error}</div>;
+  if (!data) return <div className="empty">Loading…</div>;
+  const l = data.lists, n = data.people.length;
   return (
     <>
-      <h1>Employees</h1>
-      <p className="muted">Everyone who has owned, answered or written a note on a ticket.</p>
-      <table>
-        <thead><tr><th>Name</th><th>Role</th><th>Ticket team</th><th className="num">Handled</th><th className="num">Open</th><th>Last activity</th></tr></thead>
-        <tbody>
-          {data.people.map((p) => (
-            <tr key={p.id} className={p.active ? '' : 'inactive'}>
-              <td><Link to={`/ranger/employees/${p.id}`}>{p.name}</Link><div className="muted">{p.email}</div></td>
-              <td>{p.role}{p.company && <div className="muted">{p.company}</div>}</td>
-              <td>{p.agent ? <Link to={`/ranger/team/${p.agent.id}`}>{l.teams[p.agent.team]} · {l.levels[p.agent.level]}</Link> : <Pill>Not on the team</Pill>}</td>
-              <td className="num">{p.handled}</td><td className="num">{p.open}</td><td className="nowrap">{p.last ? dateTime(p.last) : '—'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <PageHead title="Employees" sub="Everyone who has owned, replied to or written a note on a ticket. Open someone to see every ticket they handled." />
+      <div className="panel"><div className="panel-head"><h2>{n} {n === 1 ? 'employee' : 'employees'}</h2></div>
+        <div className="table-wrap"><table data-page="10">
+          <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Ticket Team</th><th className="num">Tickets Handled</th><th className="num">Open Now</th><th>Last Ticket Activity</th></tr></thead>
+          <tbody>
+            {data.people.map((p) => (
+              <tr key={p.id} className="click" onClick={() => navigate(`/ranger/employees/${p.id}`)}><td className="nowrap"><Link to={`/ranger/employees/${p.id}`}><b>#{p.id}</b></Link></td>
+                <td><b>{p.name}</b><div className="help">{p.title ?? p.email}</div></td>
+                <td>{p.role ?? '—'}</td>
+                <td>{p.agent ? `${l.teams[p.agent.team]} · ${l.levels[p.agent.level]}` : <span className="muted">Not on the team</span>}</td>
+                <td className="num">{p.handled.toLocaleString()}</td><td className="num">{p.open.toLocaleString()}</td>
+                <td className="nowrap">{p.last ? dateTime(p.last) : '—'}</td></tr>
+            ))}
+            {n === 0 && <EmptyRow cols={7}>Nobody has handled a ticket yet.</EmptyRow>}
+          </tbody>
+        </table></div>
+      </div>
     </>
   );
 }

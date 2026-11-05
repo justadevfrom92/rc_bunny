@@ -3,7 +3,8 @@ import { Link, NavLink, useLocation } from 'react-router';
 import { api } from './api';
 import { useAuth } from './auth';
 
-export type Menu = { heading?: string; links: [label: string, path: string, also?: string[]][] }[];
+/** A menu: groups of [label, path, options]. also: other paths that belong to the link; badge: the count shown next to it (ebunny's AdminMenu::badge keys). */
+export type Menu = { heading?: string; links: [label: string, path: string, options?: { also?: string[]; badge?: string }][] }[];
 
 /** The admin apps: name, launcher text, icon and home page. Same as ebunny's config/admin.php. */
 /** perm: the permission that opens it, when it isn't the app's own key (Astro needs "plans"). */
@@ -38,10 +39,13 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
   const [open, setOpen] = useState(false);
   const info = apps[app];
   useEffect(() => setOpen(false), [pathname]);
+  // The counts next to menu links, fresh on every page like ebunny's
+  const [badges, setBadges] = useState<Record<string, number>>({});
+  useEffect(() => { api.get<Record<string, number>>('/api/menu/badges').then(setBadges, () => {}); }, [pathname]);
 
   // The menu item for this page: the longest link the address starts with
   // (a link can also own other paths, e.g. Caboose's promos/ pages belong to MSIDs & Promo Codes)
-  const links = menu.flatMap((g) => g.links.map(([label, to, also = []]) => ({ label, url: `/${app}/${to}`.replace(/\/$/, ''), also: also.map((a) => `/${app}/${a}`) })));
+  const links = menu.flatMap((g) => g.links.map(([label, to, o]) => ({ label, url: `/${app}/${to}`.replace(/\/$/, ''), also: (o?.also ?? []).map((a) => `/${app}/${a}`) })));
   const under = (pathname: string, url: string) => pathname === url || pathname.startsWith(url + '/');
   const active = links.filter((l) => under(pathname, l.url) || l.also.some((a) => under(pathname, a))).sort((a, b) => b.url.length - a.url.length)[0];
   const exact = active && pathname === active.url;
@@ -59,10 +63,11 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
           {menu.map((group, i) => (
             <Fragment key={i}>
               {group.heading ? <h4>{group.heading}</h4> : i > 0 && <div className="menu-gap" />}
-              {group.links.map(([label, to]) => {
+              {group.links.map(([label, to, o]) => {
                 const url = `/${app}/${to}`.replace(/\/$/, '');
                 const on = active?.url === url;
-                return <NavLink key={to} to={url} className={on ? 'on' : ''} aria-current={on ? 'page' : undefined} end>{label}</NavLink>;
+                const n = o?.badge ? badges[o.badge] : 0;
+                return <NavLink key={to} to={url} className={on ? 'on' : ''} aria-current={on ? 'page' : undefined} end>{label}{n ? <span className="count hot">{n}</span> : null}</NavLink>;
               })}
             </Fragment>
           ))}

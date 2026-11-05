@@ -17,11 +17,13 @@ public class MessagesController(AppDbContext db, IConfiguration config) : Contro
     [HttpGet]
     public async Task<object> List(string? topic)
     {
+        topic = topic != null && ContactMessage.Topics.ContainsKey(topic) ? topic : null;
         var q = db.ContactMessages.Where(m => topic == null || m.Topic == topic);
         return new
         {
             topic,
-            counts = await db.ContactMessages.Where(m => m.HandledAt == null).GroupBy(m => m.Topic).Select(g => new { topic = g.Key, n = g.Count() }).ToListAsync(),
+            topics = ContactMessage.Topics,
+            counts = await db.ContactMessages.Where(m => m.HandledAt == null).GroupBy(m => m.Topic).Select(g => new { topic = g.Key, n = g.Count() }).ToDictionaryAsync(x => x.topic, x => x.n),
             open = await Rows(q.Where(m => m.HandledAt == null).OrderBy(m => m.CreatedAt)),
             handled = await Rows(q.Where(m => m.HandledAt != null).OrderByDescending(m => m.HandledAt).Take(25)),
         };
@@ -30,22 +32,25 @@ public class MessagesController(AppDbContext db, IConfiguration config) : Contro
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Show(int id)
     {
-        var m = await db.ContactMessages.Include(x => x.HandledBy).Include(x => x.RepliedBy).FirstOrDefaultAsync(x => x.Id == id);
+        var m = await db.ContactMessages.Include(x => x.HandledBy).Include(x => x.RepliedBy).Include(x => x.ResolvedBy).FirstOrDefaultAsync(x => x.Id == id);
         if (m is null) return NotFound();
         var c = await Match(m);
         var email = m.Email.ToLower();
+        var others = await db.ContactMessages.Where(x => x.Id != id && (x.Email.ToLower() == email || (c != null && x.CustomerId == c.Id)))
+            .OrderByDescending(x => x.CreatedAt).Take(5).ToListAsync();
         return Ok(new
         {
             message = new
             {
-                m.Id, m.Name, m.Email, m.Phone, m.Topic, m.Message, m.CreatedAt, m.HandledAt, handledBy = m.HandledBy?.Name,
-                m.Reply, m.RepliedAt, repliedBy = m.RepliedBy?.Name,
+                m.Id, m.Name, m.Email, m.Phone, m.Topic, topicLabel = m.TopicLabel, m.Message, m.Ip, m.CreatedAt, m.HandledAt, handledBy = m.HandledBy?.Name,
+                m.Reply, m.RepliedAt, repliedBy = m.RepliedBy?.Name, m.Resolution, resolvedBy = m.ResolvedBy?.Name, m.ResolvedAt,
             },
-            customer = c == null ? null : new { c.Id, c.Account, c.Name, c.Email, c.Phone, c.Status },
-            others = await db.ContactMessages.Where(x => x.Id != id && (x.Email.ToLower() == email || (c != null && x.CustomerId == c.Id)))
-                .OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.Topic, x.Message, x.CreatedAt, x.HandledAt }).ToListAsync(),
-            tickets = c == null ? null : await db.SupportTickets.Where(t => t.CustomerId == c.Id).OrderByDescending(t => t.CreatedAt).Take(5)
-                .Select(t => new { t.Id, number = "RT-" + (10000 + t.Id), t.Subject, t.Status }).ToListAsync(),
+            customer = c == null ? null : new
+            {
+                c.Id, c.Account, c.Name, c.Status, c.Balance, plan = await db.Plans.Where(p => p.Id == c.PlanId).Select(p => p.Name).FirstOrDefaultAsync(),
+                byEmail = c.Email != null && c.Email.ToLower() == email,
+            },
+            others = others.Select(x => new { x.Id, topicLabel = x.TopicLabel, x.CreatedAt, x.HandledAt }),
         });
     }
 
@@ -81,23 +86,6 @@ public class MessagesController(AppDbContext db, IConfiguration config) : Contro
         return Ok(new { message = m.HandledAt != null ? "Marked as handled" : "Reopened" });
     }
 
-    /// <summary>Turn a message into a ticket, so it can be worked and answered in Ranger.</summary>
-    [HttpPost("{id:int}/ticket")]
-    public async Task<IActionResult> MakeTicket(int id)
-    {
-        var m = await db.ContactMessages.FindAsync(id);
-        if (m is null) return NotFound();
-        var me = (await Permissions.CurrentAsync(HttpContext))!;
-        var c = await Match(m);
-        var ticket = new SupportTicket { CustomerId = c?.Id, Name = m.Name, Email = m.Email, Subject = $"{m.Topic} (from the website)", Channel = "Email", CreatedAt = m.CreatedAt };
-        db.SupportTickets.Add(ticket);
-        await db.SaveChangesAsync();
-        db.TicketMessages.Add(new TicketMessage { TicketId = ticket.Id, Kind = "customer", Author = m.Name, Via = "email", Contact = m.Email, Body = m.Message, CreatedAt = m.CreatedAt });
-        (m.HandledAt, m.HandledById, m.CustomerId) = (DateTime.UtcNow, me.Id, c?.Id);
-        await db.SaveChangesAsync();
-        return Ok(new { ticket.Id, message = $"Ticket {ticket.Number} made." });
-    }
-
     /// <summary>The account this message is probably about: the one it was matched to, else the same email, else the same phone number.</summary>
     private async Task<Customer?> Match(ContactMessage m)
     {
@@ -111,8 +99,9 @@ public class MessagesController(AppDbContext db, IConfiguration config) : Contro
         return await db.Customers.FirstOrDefaultAsync(c => c.Phone != null && EF.Functions.Like(c.Phone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", ""), last10));
     }
 
-    private static Task<List<Row>> Rows(IQueryable<ContactMessage> q) =>
-        q.Select(m => new Row(m.Id, m.Name, m.Email, m.Phone, m.Topic, m.Message, m.CreatedAt, m.HandledAt, m.HandledBy!.Name, m.RepliedAt, m.CustomerId)).ToListAsync();
+    private static async Task<List<Row>> Rows(IQueryable<ContactMessage> q) =>
+        (await q.Include(m => m.HandledBy).ToListAsync())
+            .Select(m => new Row(m.Id, m.Name, m.Email, m.Phone, m.TopicLabel, m.Message, m.CreatedAt, m.HandledAt, m.HandledBy?.Name, m.RepliedAt, m.Resolution)).ToList();
 
-    public record Row(int Id, string Name, string Email, string? Phone, string Topic, string Message, DateTime CreatedAt, DateTime? HandledAt, string? HandledBy, DateTime? RepliedAt, int? CustomerId);
+    public record Row(int Id, string Name, string Email, string? Phone, string Topic, string Message, DateTime CreatedAt, DateTime? HandledAt, string? HandledBy, DateTime? RepliedAt, string? Resolution);
 }

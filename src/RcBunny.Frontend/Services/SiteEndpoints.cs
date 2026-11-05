@@ -49,7 +49,7 @@ public static class SiteEndpoints
         app.MapGet("/site/components", () => Results.Json(new { }));
 
         // Contact Us form → Ranger → Web Messages
-        app.MapPost("/contact", async (ContactInput input, AppDbContext db) =>
+        app.MapPost("/contact", async (ContactInput input, AppDbContext db, HttpContext http) =>
         {
             if (string.IsNullOrWhiteSpace(input.First) || string.IsNullOrWhiteSpace(input.Last) || string.IsNullOrWhiteSpace(input.Email)
                 || !input.Email.Contains('@') || string.IsNullOrWhiteSpace(input.Topic) || string.IsNullOrWhiteSpace(input.Message))
@@ -58,6 +58,7 @@ public static class SiteEndpoints
             {
                 Name = $"{input.First.Trim()} {input.Last.Trim()}", Email = input.Email.Trim(), Phone = input.Phone?.Trim(),
                 Topic = input.Topic.Trim(), Message = input.Message.Trim()[..Math.Min(5000, input.Message.Trim().Length)],
+                Ip = http.Connection.RemoteIpAddress?.ToString(),
             });
             await db.SaveChangesAsync();
             return Results.Json(new { ok = true }, statusCode: 201);

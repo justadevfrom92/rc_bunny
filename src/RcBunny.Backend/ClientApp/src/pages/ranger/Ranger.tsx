@@ -15,8 +15,8 @@ import Employees from './Employees';
 import Employee from './Employee';
 
 const menu: Menu = [
-  { heading: 'Tickets', links: [['Dashboard', ''], ['Tickets', 'tickets']] },
-  { heading: 'Website', links: [['Web Messages', 'messages']] },
+  { heading: 'Tickets', links: [['Dashboard', ''], ['Tickets', 'tickets', { badge: 'ranger_unassigned' }]] },
+  { heading: 'Website', links: [['Web Messages', 'messages', { badge: 'messages' }]] },
   { heading: 'Team', links: [['Ticket Team', 'team'], ['Add a Team Member', 'team/add'], ['Approval Ratings', 'satisfaction'], ['Employees', 'employees']] },
 ];
 

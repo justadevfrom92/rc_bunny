@@ -16,19 +16,19 @@ import { FollowUps, Lead, LeadForm, Leads, Partner, PartnerForm, Partners, Pipel
 
 // The Corral menu, in ebunny's order. Exceptions lists every work queue.
 const menu: Menu = [
-  { links: [['Customer Search', ''], ['ESIID Lookup', 'esiid'], ['Create Order', 'orders/create'], ['Create Order - Biz', 'orders/create-biz'], ['SMS', 'sms'], ['Phone Calls', 'calls']] },
-  { heading: 'CRM', links: [['Pipeline', 'crm'], ['Leads', 'crm/leads'], ['Follow-ups', 'crm/follow-ups'], ['Partners & Brokers', 'crm/partners']] },
+  { links: [['Customer Search', ''], ['ESIID Lookup', 'esiid'], ['Create Order', 'orders/create'], ['Create Order - Biz', 'orders/create-biz'], ['SMS', 'sms', { badge: 'sms' }], ['Phone Calls', 'calls']] },
+  { heading: 'CRM', links: [['Pipeline', 'crm'], ['Leads', 'crm/leads'], ['Follow-ups', 'crm/follow-ups', { badge: 'crm_due' }], ['Partners & Brokers', 'crm/partners']] },
   { heading: 'Products', links: [['Products', 'products'], ['New Product', 'products/new'], ['Product Orders', 'products/orders']] },
   { links: [['ERCOT', 'ercot']] },
   {
     heading: 'Exceptions',
-    links: [['Overview', 'queues'], ...([
+    links: [['All Exceptions', 'queues', { badge: 'queues' }], ...([
       ['ERCOT Exceptions', 'ercot-exceptions'], ['Duplicate IPs', 'duplicate-ips'], ['Duplicated Payments', 'duplicated-payments'],
       ['Unapplied Deposits', 'unapplied-deposits'], ['Unapplied Payments', 'unapplied-payments'], ['Unapplied Credits', 'unapplied-credits'],
       ['Unapplied Debits', 'unapplied-debits'], ['Unapplied Plan Changes', 'unapplied-plan-changes'], ['Unapplied Transfers', 'unapplied-transfers'],
       ['Unbilled Orders', 'unbilled-orders'], ['Unprocessed Autopays', 'unprocessed-autopays'], ['Unprocessed Bills', 'unprocessed-bills'],
       ['Unprocessed Orders', 'unprocessed-orders'],
-    ] as [string, string][]).map(([label, key]) => [label, `queues/${key}`] as [string, string])],
+    ] as [string, string][]).map(([label, key]) => [label, `queues/${key}`, { badge: `queue:${key}` }] as [string, string, { badge: string }])],
   },
 ];
 

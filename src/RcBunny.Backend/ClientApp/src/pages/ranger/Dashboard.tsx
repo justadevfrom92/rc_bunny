@@ -1,6 +1,7 @@
-import { Link } from 'react-router';
-import { dateTime, useLoad } from '../../api';
-import { ApprovalCard, TicketTable, type Approval, type Lists, type Row } from './shared';
+import { Link, useNavigate } from 'react-router';
+import { useLoad } from '../../api';
+import { EmptyRow, PageHead, age } from '../../ui';
+import { ApprovalCard, TicketRow, type Approval, type Lists, type Row } from './shared';
 
 interface Data {
   counts: { new: number; unassigned: number; open: number; solvedToday: number };
@@ -9,50 +10,45 @@ interface Data {
   managerRequests: { id: number; number: string; subject: string; name: string; managerRequestedAt: string; requestedBy: string | null; managerRequestNote: string | null }[];
 }
 
-/** The day's numbers, approval for the last 30 days, manager requests, and every open ticket, most urgent first. */
+/** Ranger's dashboard (ebunny's ranger/dashboard): the day's numbers, approval and manager requests for managers, and every open ticket. */
 export default function Dashboard() {
   const { data, error } = useLoad<Data>('/api/ranger/dashboard');
-  if (error) return <p className="error">{error}</p>;
-  if (!data) return <p>Loading…</p>;
+  const navigate = useNavigate();
+  if (error) return <div className="flash bad">{error}</div>;
+  if (!data) return <div className="empty">Loading…</div>;
   const c = data.counts;
-
   return (
     <>
-      <h1>Ranger</h1>
-      <div className="stats">
-        <Link className="card" to="/ranger/tickets?view=active&status=new"><span className="muted">New</span><strong>{c.new}</strong></Link>
-        <Link className="card" to="/ranger/tickets?view=unassigned"><span className="muted">Unassigned</span><strong>{c.unassigned}</strong></Link>
-        <Link className="card" to="/ranger/tickets?view=active"><span className="muted">Open</span><strong>{c.open}</strong></Link>
-        <Link className="card" to="/ranger/tickets?view=done"><span className="muted">Solved today</span><strong>{c.solvedToday}</strong></Link>
+      <PageHead title="Ranger" sub="Support tickets customers open from My Account." actions={<Link className="btn cyan" to="/ranger/tickets?view=unassigned">Pick Up a Ticket</Link>} />
+      <div className="grid-4 stat-row">
+        <Link className="stat" to="/ranger/tickets?status=new"><span>New</span><strong>{c.new}</strong><small>not answered yet</small></Link>
+        <Link className={`stat${c.unassigned ? ' alert' : ''}`} to="/ranger/tickets?view=unassigned"><span>Unassigned</span><strong>{c.unassigned}</strong><small>nobody has it</small></Link>
+        <Link className="stat" to="/ranger/tickets"><span>Open</span><strong>{c.open}</strong><small>new, open or waiting</small></Link>
+        <Link className="stat" to="/ranger/tickets?view=done"><span>Solved Today</span><strong>{c.solvedToday}</strong></Link>
       </div>
-      <h2>Approval · last 30 days</h2>
-      <div className="stats">
-        <ApprovalCard label="Overall" a={data.overall} />
-        {data.teams.map((t) => <ApprovalCard key={t.team} label={t.label} a={t.approval} />)}
-        <Link className="card" to="/ranger/satisfaction"><span className="muted">More</span><strong>→</strong><small className="muted">Satisfaction</small></Link>
-      </div>
-
-      {data.managerRequests.length > 0 && (
-        <section className="card">
-          <h2>Manager Requests</h2>
-          <table>
-            <thead><tr><th>Ticket</th><th>Asked by</th><th>Why</th><th>When</th></tr></thead>
-            <tbody>
-              {data.managerRequests.map((r) => (
-                <tr key={r.id}>
-                  <td><Link to={`/ranger/tickets/${r.id}`}><span className="mono">{r.number}</span> {r.subject}</Link><div className="muted">{r.name}</div></td>
-                  <td>{r.requestedBy ?? '—'}</td><td>{r.managerRequestNote ?? <span className="muted">—</span>}</td><td className="nowrap">{dateTime(r.managerRequestedAt)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-      )}
-
-      <section className="card">
-        <h2>Open Tickets <span className="muted">· most urgent first</span></h2>
-        <TicketTable rows={data.open} lists={data.lists} empty="Nothing open. Nice work!" />
-      </section>
+      {data.manager && <>
+        <div className="grid-3">
+          <ApprovalCard title="Approval — Everyone" a={data.overall} note="last 30 days" />
+          {data.teams.map((t) => <ApprovalCard key={t.team} title={`Approval — ${t.label}`} a={t.approval} note="last 30 days" />)}
+        </div>
+        <div className="panel"><div className="panel-head"><h2>Manager Requests</h2><span className="muted">agents asking for a manager's help</span></div><div className="table-wrap"><table data-page="10">
+          <thead><tr><th>Ticket</th><th>Subject</th><th>Asked By</th><th>Why</th><th>Asked</th></tr></thead>
+          <tbody>
+            {data.managerRequests.map((t) => (
+              <tr key={t.id} className="click" onClick={() => navigate(`/ranger/tickets/${t.id}`)}><td><Link className="mono" to={`/ranger/tickets/${t.id}`}>{t.number}</Link></td><td className="wrap">{t.subject}</td>
+                <td>{t.requestedBy ?? '—'}</td><td className="wrap">{t.managerRequestNote ?? '—'}</td><td className="nowrap">{age(t.managerRequestedAt)} ago</td></tr>
+            ))}
+            {data.managerRequests.length === 0 && <EmptyRow cols={5}>Nobody needs a manager right now.</EmptyRow>}
+          </tbody>
+        </table></div></div>
+      </>}
+      <div className="panel"><div className="panel-head"><h2>Open Tickets</h2><Link className="btn sm ghost" to="/ranger/tickets">All Tickets</Link></div><div className="table-wrap"><table data-page="10">
+        <thead><tr><th>Ticket</th><th>Subject</th><th>Customer</th><th>Status</th><th>Owner</th><th>Rating</th></tr></thead>
+        <tbody>
+          {data.open.map((t) => <TicketRow key={t.id} t={t} lists={data.lists} />)}
+          {data.open.length === 0 && <EmptyRow cols={6}>No open tickets. Nice.</EmptyRow>}
+        </tbody>
+      </table></div></div>
     </>
   );
 }

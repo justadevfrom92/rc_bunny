@@ -101,6 +101,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<TicketWatcher>().HasIndex(w => new { w.TicketId, w.UserId }).IsUnique();
         m.Entity<ContactMessage>().HasOne(x => x.HandledBy).WithMany().HasForeignKey(x => x.HandledById).OnDelete(DeleteBehavior.NoAction);
         m.Entity<ContactMessage>().HasOne(x => x.RepliedBy).WithMany().HasForeignKey(x => x.RepliedById).OnDelete(DeleteBehavior.NoAction);
+        m.Entity<ContactMessage>().HasOne(x => x.ResolvedBy).WithMany().HasForeignKey(x => x.ResolvedById).OnDelete(DeleteBehavior.NoAction);
         m.Entity<HeartbeatControl>().HasIndex(h => h.Key).IsUnique();
         m.Entity<Msid>().HasIndex(x => x.Code).IsUnique();
         m.Entity<PromoCode>().HasIndex(x => x.Code).IsUnique();

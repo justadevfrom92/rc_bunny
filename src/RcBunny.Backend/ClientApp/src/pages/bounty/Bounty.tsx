@@ -11,7 +11,7 @@ import Record from '../Record';
 
 const menu: Menu = [
   { heading: 'Rewards', links: [['Dashboard', ''], ['Offers', 'offers'], ['Earning Rules', 'rules']] },
-  { heading: 'Members', links: [['Redemptions', 'redemptions'], ['Members', 'members'], ['Monthly Drawing', 'drawing'], ['Drawing Winners', 'winners']] },
+  { heading: 'Members', links: [['Redemptions', 'redemptions', { badge: 'redemptions_open' }], ['Members', 'members'], ['Monthly Drawing', 'drawing'], ['Drawing Winners', 'winners']] },
 ];
 
 export default function Bounty() {
