@@ -486,7 +486,7 @@ public class CustomersController(AppDbContext db, IConfiguration config, IWebHos
         return Ok(new
         {
             file = new { file.Id, file.Name, file.Kind, file.CreatedAt, file.Regenerated, upload = file.Path != null },
-            customer = new { c.Id, c.Account, c.Name, c.Email },
+            customer = new { c.Id, c.Account, c.Name, c.Email, c.Language },
             lang, languages = Documents.Languages,
             doc = doc == null ? null : new { doc.Title, doc.Paragraphs, rows = doc.Rows.Select(r => new { r.Label, r.Value }) },
             sent = await db.ContactLogs.Where(l => l.CustomerId == c.Id && l.Channel == "Email" && l.Template.StartsWith("Customer File: " + file.Name))
