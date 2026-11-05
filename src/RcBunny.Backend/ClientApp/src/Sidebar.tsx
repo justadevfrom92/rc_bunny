@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router';
 import { api } from './api';
 import { useAuth } from './auth';
 
-export type Menu = { heading?: string; links: [label: string, path: string][] }[];
+export type Menu = { heading?: string; links: [label: string, path: string, also?: string[]][] }[];
 
 /** The admin apps: name, launcher text, icon and home page. Same as ebunny's config/admin.php. */
 /** perm: the permission that opens it, when it isn't the app's own key (Astro needs "plans"). */
@@ -40,8 +40,10 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
   useEffect(() => setOpen(false), [pathname]);
 
   // The menu item for this page: the longest link the address starts with
-  const links = menu.flatMap((g) => g.links.map(([label, to]) => ({ label, url: `/${app}/${to}`.replace(/\/$/, '') })));
-  const active = links.filter((l) => pathname === l.url || pathname.startsWith(l.url + '/')).sort((a, b) => b.url.length - a.url.length)[0];
+  // (a link can also own other paths, e.g. Caboose's promos/ pages belong to MSIDs & Promo Codes)
+  const links = menu.flatMap((g) => g.links.map(([label, to, also = []]) => ({ label, url: `/${app}/${to}`.replace(/\/$/, ''), also: also.map((a) => `/${app}/${a}`) })));
+  const under = (pathname: string, url: string) => pathname === url || pathname.startsWith(url + '/');
+  const active = links.filter((l) => under(pathname, l.url) || l.also.some((a) => under(pathname, a))).sort((a, b) => b.url.length - a.url.length)[0];
   const exact = active && pathname === active.url;
 
   return (

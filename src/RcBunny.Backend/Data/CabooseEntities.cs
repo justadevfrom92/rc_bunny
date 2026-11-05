@@ -37,6 +37,8 @@ public class Refund
     public string? DecidedBy { get; set; }
     public DateTime? DecidedAt { get; set; }
     public string? DecisionNote { get; set; }
+    /// <summary>How it's sent: Check, Card or ACH.</summary>
+    public string Method { get; set; } = "Check";
     public string? CheckNumber { get; set; }
     public DateTime? PaidAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

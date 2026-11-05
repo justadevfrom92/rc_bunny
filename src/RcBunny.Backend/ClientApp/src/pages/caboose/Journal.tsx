@@ -1,34 +1,47 @@
 import { useState } from 'react';
-import { date, money, useLoad } from '../../api';
+import { useLoad } from '../../api';
 import { DateInput } from '../../fields';
+import { EmptyRow, PageHead, Panel } from '../../ui';
 
-interface Line { date: string; debit: string; credit: string; amount: number; memo: string }
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
+const n2 = (v: number) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-/** The daily double-entry journal for the accounting system. Download it as CSV to import. */
+/** Caboose → Journal (ebunny's caboose/journal): the daily double-entry journal, with Download CSV. */
 export default function Journal() {
-  const [start, setStart] = useState(iso(new Date(Date.now() - 7 * 864e5)));
+  const [start, setStart] = useState(iso(new Date(Date.now() - 7 * 86400000)));
   const [end, setEnd] = useState(iso(new Date()));
-  const url = `/api/caboose/journal?start=${start}&end=${end}`;
-  const { data, error } = useLoad<{ lines: Line[]; total: number }>(url);
-
+  const [range, setRange] = useState({ start, end });
+  const { data, error } = useLoad<any>(`/api/caboose/journal?start=${range.start}&end=${range.end}`);
+  if (error) return <div className="flash bad">{error}</div>;
+  // Each journal entry is two lines: the debit and the credit
+  const lines = (data?.lines ?? []).flatMap((l: any, i: number) => {
+    const je = `JE-${l.date.replace(/-/g, '')}-${i + 1}`;
+    return [{ je, date: l.date, account: l.debit, debit: l.amount, credit: 0, memo: l.memo }, { je, date: l.date, account: l.credit, debit: 0, credit: l.amount, memo: l.memo }];
+  });
+  const debits = lines.reduce((t: number, l: any) => t + l.debit, 0), credits = lines.reduce((t: number, l: any) => t + l.credit, 0);
   return (
     <>
-      <h1>Journal</h1>
-      <div className="row">
-        <DateInput value={start} onChange={setStart} />
-        <DateInput value={end} onChange={setEnd} />
-        <a className="button" href={`${url}&format=csv`}>Download CSV</a>
-      </div>
-      {error && <p className="error">{error}</p>}
-      {!data ? <p>Loading…</p> : data.lines.length === 0 ? <p className="muted">Nothing in these dates.</p> : (
-        <table>
-          <thead><tr><th>Date</th><th>Debit</th><th>Credit</th><th className="num">Amount</th><th>Memo</th></tr></thead>
-          <tbody>{data.lines.map((l, i) => <tr key={i}><td>{date(l.date)}</td><td>{l.debit}</td><td>{l.credit}</td><td className="num">{money(l.amount)}</td><td>{l.memo}</td></tr>)}</tbody>
-          <tfoot><tr><th colSpan={3}>Total</th><th className="num">{money(data.total)}</th><th /></tr></tfoot>
-        </table>
-      )}
+      <PageHead title="Journal" sub="Daily double-entry journal of bills, payments, deposits, credits and refunds, for import into the accounting system." />
+      <div className="banner-note">QuickBooks isn't connected (Sheriff → APIs). Download the journal and import it.</div>
+      <form className="panel" onSubmit={(e) => { e.preventDefault(); setRange({ start, end }); }}><div className="panel-body form-row">
+        <div className="field"><label htmlFor="start">From</label><DateInput id="start" value={start} onChange={setStart} /></div>
+        <div className="field"><label htmlFor="end">To</label><DateInput id="end" value={end} onChange={setEnd} /></div>
+        <button className="btn">Show</button>
+        <a className="btn ghost" href={`/api/caboose/journal?start=${start}&end=${end}&format=csv`}>Download CSV</a>
+      </div></form>
+      <Panel title="Entries" right={<span className={Math.abs(debits - credits) < 0.005 ? 'muted' : ''}>Debits ${n2(debits)} · Credits ${n2(credits)}{Math.abs(debits - credits) < 0.005 ? ' · balanced' : ' · NOT BALANCED'}</span>}>
+        <div className="table-wrap"><table>
+          <thead><tr><th>Entry</th><th>Date</th><th>Account</th><th className="num">Debit</th><th className="num">Credit</th><th>Memo</th></tr></thead>
+          <tbody>
+            {lines.map((l: any, i: number) => (
+              <tr key={i}><td className="nowrap"><b>{l.je}</b></td><td>{l.date}</td><td>{l.account}</td><td className="num">{l.debit ? n2(l.debit) : ''}</td><td className="num">{l.credit ? n2(l.credit) : ''}</td><td className="help">{l.memo}</td></tr>
+            ))}
+            {data && lines.length === 0 && <EmptyRow cols={6}>No activity in this range.</EmptyRow>}
+          </tbody>
+        </table></div>
+      </Panel>
     </>
   );
 }

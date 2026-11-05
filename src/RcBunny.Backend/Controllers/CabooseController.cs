@@ -24,8 +24,18 @@ public class CabooseController(AppDbContext db) : ControllerBase
     {
         var since = DateOnly.FromDateTime(DateTime.Today.AddDays(-30));
         var paid = await db.Payments.Where(p => p.Status == "Success" && p.PaidOn >= since).ToListAsync();
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var monthStart = new DateOnly(today.Year, today.Month, 1);
+        var month = await db.Payments.Where(p => p.Status == "Success" && p.PaidOn >= monthStart).Select(p => new { p.PaidOn, p.Amount }).ToListAsync();
+        var balances = await db.Customers.Select(c => c.Balance).ToListAsync();
         return new
         {
+            today = month.Where(p => p.PaidOn == today).Sum(p => p.Amount),
+            month = month.Sum(p => p.Amount),
+            receivable = balances.Where(b => b > 0).Sum(),
+            credits = balances.Where(b => b < 0).Sum(),
+            pendingPayments = await db.Payments.CountAsync(p => p.Status == "Pending"),
+            refundsWaiting = await db.Refunds.CountAsync(r => r.Status == "requested"),
             paid30 = paid.Sum(p => p.Amount),
             payments30 = paid.Count,
             byMethod = paid.GroupBy(p => p.Method.StartsWith("Card") ? "Card" : p.Method).Select(g => new { method = g.Key, total = g.Sum(p => p.Amount), count = g.Count() }),
@@ -53,7 +63,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
         return new { start = from, end = to, rows, total = rows.Where(r => r.Status == "Success").Sum(r => r.Amount) };
     }
 
-    public record NewPayment(string Account, decimal Amount, string Method, string Kind);
+    public record NewPayment(string Account, decimal Amount, string Method, string Kind, string? Reference = null);
 
     /// <summary>Record a payment taken by phone, mail or in person. A deposit payment goes toward the deposit, not the balance.</summary>
     [HttpPost("payments")]
@@ -67,6 +77,7 @@ public class CabooseController(AppDbContext db) : ControllerBase
         {
             CustomerId = customer.Id, PaidOn = DateOnly.FromDateTime(DateTime.Today), Amount = input.Amount,
             Method = string.IsNullOrWhiteSpace(input.Method) ? "Check" : input.Method.Trim(), Kind = deposit ? "Deposit" : "Balance Payment", Source = "Finance",
+            Confirmation = string.IsNullOrWhiteSpace(input.Reference) ? null : input.Reference.Trim(),
         });
         if (deposit) { customer.DepositHeld += input.Amount; customer.DepositDue = Math.Max(0, customer.DepositDue - input.Amount); }
         else customer.Balance -= input.Amount;
@@ -86,6 +97,27 @@ public class CabooseController(AppDbContext db) : ControllerBase
     private Task<List<object>> LedgerRows(IQueryable<LedgerEntry> query) => query
         .Select(e => (object)new { e.Id, e.CustomerId, account = e.Customer!.Account, customer = e.Customer.Name, e.Kind, e.Amount, e.Description, e.Status, e.RequestedBy, e.DecidedBy, e.DecidedAt, e.DecisionNote, e.CreatedAt })
         .ToListAsync();
+
+    /// <summary>One credit or debit (ebunny's caboose/ledger-show): the account, what applying does, and its history.</summary>
+    [HttpGet("ledger/{id:int}")]
+    public async Task<IActionResult> LedgerEntry(int id)
+    {
+        var e = await db.LedgerEntries.Include(x => x.Customer).FirstOrDefaultAsync(x => x.Id == id);
+        if (e is null) return NotFound();
+        var c = e.Customer!;
+        return Ok(new
+        {
+            entry = new { e.Id, e.Kind, e.Amount, e.Description, e.Status, e.RequestedBy, e.DecidedBy, e.DecidedAt, e.DecisionNote, e.CreatedAt },
+            customer = new { c.Id, c.Account, c.Name, c.Status, c.Balance, c.DepositHeld, c.Autopay },
+            after = c.Balance + (e.Kind == "debit" ? e.Amount : -e.Amount),
+            others = await db.LedgerEntries.Where(x => x.CustomerId == c.Id && x.Id != id).OrderByDescending(x => x.CreatedAt).Take(20)
+                .Select(x => new { x.Id, x.Kind, x.Amount, x.Description, x.Status, x.RequestedBy, x.CreatedAt }).ToListAsync(),
+            bills = await db.Bills.Where(b => b.CustomerId == c.Id).OrderByDescending(b => b.BilledOn).Take(5).Select(b => new { b.Id, b.BilledOn, b.Invoice, b.Reference, b.Amount, b.BalanceAfter }).ToListAsync(),
+            payments = await db.Payments.Where(p => p.CustomerId == c.Id).OrderByDescending(p => p.PaidOn).Take(5).Select(p => new { p.Id, p.PaidOn, p.Method, p.Source, p.Amount, p.Status }).ToListAsync(),
+            notes = await db.Notes.Where(n => n.CustomerId == c.Id && (n.Body.Contains("Credit") || n.Body.Contains("Debit") || n.Body.Contains("credit") || n.Body.Contains("debit")))
+                .OrderByDescending(n => n.CreatedAt).Take(10).Select(n => new { n.Id, n.CreatedAt, n.Author, n.Body }).ToListAsync(),
+        });
+    }
 
     public record NewLedgerEntry(string Account, string Kind, decimal Amount, string Reason);
 
@@ -134,10 +166,30 @@ public class CabooseController(AppDbContext db) : ControllerBase
     };
 
     private Task<List<object>> RefundRows(IQueryable<Refund> query) => query
-        .Select(r => (object)new { r.Id, r.CustomerId, account = r.Customer!.Account, customer = r.Customer.Name, r.Kind, r.Amount, r.Reason, r.Status, r.RequestedBy, r.DecidedBy, r.DecisionNote, r.CheckNumber, r.PaidAt, r.CreatedAt })
+        .Select(r => (object)new { r.Id, r.CustomerId, account = r.Customer!.Account, customer = r.Customer.Name, r.Kind, r.Amount, r.Reason, r.Method, r.Status, r.RequestedBy, r.DecidedBy, r.DecidedAt, r.DecisionNote, r.CheckNumber, r.PaidAt, r.CreatedAt })
         .ToListAsync();
 
-    public record NewRefund(string Account, string Kind, decimal Amount, string Reason);
+    /// <summary>One refund (ebunny's caboose/refund-show): its progress, the account and the next step.</summary>
+    [HttpGet("refunds/{id:int}")]
+    public async Task<IActionResult> RefundShow(int id)
+    {
+        var r = await db.Refunds.Include(x => x.Customer).FirstOrDefaultAsync(x => x.Id == id);
+        if (r is null) return NotFound();
+        var c = r.Customer!;
+        var me = (await Permissions.CurrentAsync(HttpContext))!;
+        return Ok(new
+        {
+            refund = new { r.Id, r.Kind, r.Amount, r.Reason, r.Method, r.Status, r.RequestedBy, r.DecidedBy, r.DecidedAt, r.DecisionNote, r.CheckNumber, r.PaidAt, r.CreatedAt },
+            customer = new { c.Id, c.Account, c.Name, c.Status, c.Balance, c.DepositHeld },
+            limit = r.Kind == "deposit" ? c.DepositHeld : Math.Max(0, -c.Balance),
+            canDecide = me.Permissions.Contains("refunds"),
+            others = await db.Refunds.Where(x => x.CustomerId == c.Id && x.Id != id).OrderByDescending(x => x.CreatedAt).Select(x => new { x.Id, x.Kind, x.Amount, x.Status, x.CreatedAt }).ToListAsync(),
+            payments = await db.Payments.Where(p => p.CustomerId == c.Id).OrderByDescending(p => p.PaidOn).Take(5).Select(p => new { p.Id, p.PaidOn, p.Method, p.Source, p.Amount, p.Status }).ToListAsync(),
+            notes = await db.Notes.Where(n => n.CustomerId == c.Id && n.Body.Contains("Refund")).OrderByDescending(n => n.CreatedAt).Take(10).Select(n => new { n.Id, n.CreatedAt, n.Author, n.Body }).ToListAsync(),
+        });
+    }
+
+    public record NewRefund(string Account, string Kind, decimal Amount, string Reason, string? Method = null);
 
     /// <summary>Ask for a refund. It can't be more than the credit balance (or the deposit held).</summary>
     [HttpPost("refunds")]
@@ -149,7 +201,8 @@ public class CabooseController(AppDbContext db) : ControllerBase
         var limit = deposit ? customer.DepositHeld : Math.Max(0, -customer.Balance);
         if (input.Amount <= 0 || input.Amount > limit)
             return BadRequest(new { error = $"The most that can be refunded is {limit:C} ({(deposit ? "deposit held" : "credit balance")})." });
-        db.Refunds.Add(new Refund { CustomerId = customer.Id, Kind = deposit ? "deposit" : "balance", Amount = input.Amount, Reason = input.Reason?.Trim() ?? "", RequestedBy = await MyName() });
+        db.Refunds.Add(new Refund { CustomerId = customer.Id, Kind = deposit ? "deposit" : "balance", Amount = input.Amount, Reason = input.Reason?.Trim() ?? "", RequestedBy = await MyName(),
+            Method = input.Method is "Card" or "ACH" ? input.Method : "Check" });
         await Note(customer.Id, $"Refund of {input.Amount:C} requested ({(deposit ? "deposit" : "credit balance")}).");
         return Ok();
     }
@@ -203,12 +256,12 @@ public class CabooseController(AppDbContext db) : ControllerBase
     private async Task<(List<object> accounts, List<object> summary)> Aging()
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
-        var owing = await db.Customers.Where(c => c.Balance > 0).Select(c => new { c.Id, c.Account, c.Name, c.Status, c.Balance, c.DueDate }).ToListAsync();
+        var owing = await db.Customers.Where(c => c.Balance > 0).Select(c => new { c.Id, c.Account, c.Name, c.Status, c.Balance, c.DueDate, market = c.Market!.Code }).ToListAsync();
         var rows = owing.Select(c =>
         {
             var days = c.DueDate is { } d && d < today ? today.DayNumber - d.DayNumber : 0;
             var bucket = days switch { 0 => AgingBuckets[0], <= 30 => AgingBuckets[1], <= 60 => AgingBuckets[2], <= 90 => AgingBuckets[3], _ => AgingBuckets[4] };
-            return new { c.Id, c.Account, c.Name, c.Status, c.Balance, c.DueDate, daysPastDue = days, bucket };
+            return new { c.Id, c.Account, c.Name, c.Status, c.Balance, c.DueDate, c.market, daysPastDue = days, bucket };
         }).OrderByDescending(r => r.daysPastDue).ThenByDescending(r => r.Balance).ToList();
         var summary = AgingBuckets.Select(b => (object)new { bucket = b, accounts = rows.Count(r => r.bucket == b), total = rows.Where(r => r.bucket == b).Sum(r => r.Balance) }).ToList();
         return (rows.Cast<object>().ToList(), summary);
