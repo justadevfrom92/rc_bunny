@@ -337,6 +337,11 @@ public class CustomersController(AppDbContext db, IConfiguration config, IWebHos
         {
             c.Id, c.Account, c.Name, c.Stars,
             offers = await db.RewardOffers.Where(o => o.Active).OrderBy(o => o.Position).Select(o => new { o.Id, o.Name, o.Description, o.Stars, o.Effect }).ToListAsync(),
+            // Star history, with this account's monthly drawing entries in among them
+            history = (await db.StarEntries.Where(e => e.CustomerId == id).Select(e => new { record = "star_entry", e.Id, at = e.CreatedAt, e.Reason, e.Stars, drawing = false }).ToListAsync())
+                .Concat((await db.DrawingEntries.Where(d => d.CustomerId == id).ToListAsync())
+                    .Select(d => new { record = "drawing_entry", d.Id, at = d.CreatedAt, Reason = $"Entered the {d.Month} drawing", Stars = 0, drawing = true }))
+                .OrderByDescending(e => e.at),
         });
     }
 
@@ -551,9 +556,9 @@ public class CustomersController(AppDbContext db, IConfiguration config, IWebHos
         if (action is null || c is null) return NotFound();
         return Ok(new
         {
-            action, customer = new { c.Id, c.Account, c.Name, c.Phone },
-            methods = await db.PaymentMethods.Where(m => m.CustomerId == id && m.RemovedAt == null).Select(m => new { m.Id, m.Type, m.Last4, m.Nickname }).ToListAsync(),
-            payments = await db.Payments.Where(p => p.CustomerId == id).OrderByDescending(p => p.PaidOn).Select(p => new { p.Id, p.Reference, p.PaidOn, p.Amount, p.Status }).ToListAsync(),
+            action, customer = new { c.Id, c.Account, c.Name, c.Phone, c.Balance },
+            methods = await db.PaymentMethods.Where(m => m.CustomerId == id && m.RemovedAt == null).Select(m => new { m.Id, m.Type, m.Last4, m.Nickname, m.Autopay }).ToListAsync(),
+            payments = await db.Payments.Where(p => p.CustomerId == id).OrderByDescending(p => p.PaidOn).Select(p => new { p.Id, p.Reference, p.PaidOn, p.Amount, p.Method, p.Status }).ToListAsync(),
             templates = Corral.EmailTemplates,
         });
     }
@@ -608,7 +613,7 @@ public class CustomersController(AppDbContext db, IConfiguration config, IWebHos
         };
         if (rows is null) return NotFound();
         var c = await db.Customers.FindAsync(id);
-        return Ok(new { customer = new { c!.Id, c.Account, c.Name }, rows });
+        return Ok(new { customer = new { c!.Id, c.Account, c.Name }, rows, panels = new Dictionary<string, string> { ["balances"] = "Balances", ["actions"] = "Actions", ["flags"] = "Flags" } });
     }
 
     private IQueryable<Note> ActionNotes(int id)
@@ -627,7 +632,7 @@ public class CustomersController(AppDbContext db, IConfiguration config, IWebHos
             customer = new { c.Id, c.Account, c.Name, c.Email, c.Phone, c.MarketingOptIn },
             logs = await db.ContactLogs.Where(l => l.CustomerId == id).OrderByDescending(l => l.CreatedAt).ToListAsync(),
             calls = await db.PhoneCalls.Include(p => p.User).Where(p => p.CustomerId == id).OrderByDescending(p => p.StartedAt)
-                .Select(p => new { p.Id, p.StartedAt, p.Direction, p.Issue, p.DurationSec, answeredBy = p.User!.Name, p.Resolution }).ToListAsync(),
+                .Select(p => new { p.Id, p.StartedAt, p.Direction, p.Phone, p.Issue, p.DurationSec, answeredBy = p.User!.Name, p.Resolution }).ToListAsync(),
         });
     }
 
