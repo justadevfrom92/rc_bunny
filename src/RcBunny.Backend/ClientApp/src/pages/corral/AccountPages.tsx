@@ -83,14 +83,14 @@ export function PanelLog() {
       <PageHead title={title} sub={<>{c.name} · Account <Link className="mono" to={`/corral/customers/${c.id}`}>{c.account}</Link></>}
         actions={<Link className="btn ghost btn-back" to={`/corral/customers/${c.id}#${back}`}>Back to Account</Link>} />
       <div className="chips small" style={{ marginBottom: 14 }}>
-        {Object.entries(data.panels).map(([k, l]) => <Link key={k} className={`chip-link${k === panel ? ' on' : ''}`} to={`/corral/customers/${c.id}/log/${k}`}>{l as string}</Link>)}
+        {Object.entries(data.panels).map(([k, l]) => <Link key={k} className={`chip-link${k === panel ? ' on' : ''}`} to={`/corral/customers/${c.id}/panel-log/${k}`}>{l as string}</Link>)}
       </div>
       <Panel title={`${n.toLocaleString()} ${n === 1 ? 'entry' : 'entries'}`}>
         <div className="table-wrap"><table>
           {panel === 'balances' && <>
             <thead><tr><th>ID</th><th>When</th><th>Type</th><th className="num">Amount</th><th>Description</th><th>Status</th><th>By</th></tr></thead>
             <tbody>
-              {data.rows.map((r: Any) => <tr key={r.record + r.id} className="click" onClick={() => navigate(`/records/${r.record}/${r.id}`)}>
+              {data.rows.map((r: Any) => <tr key={r.record + r.id} className="click" onClick={() => navigate(`/corral/records/${r.record}/${r.id}`)}>
                 <td className="nowrap"><RecordLink type={r.record} id={r.id} /></td><td className="nowrap">{dateTime(r.at)}</td><td>{r.type}</td><td className="num">{moneyParens(r.amount)}</td>
                 <td className="wrap">{r.description}</td><td><span className={`pill ${balanceTone[r.status] ?? ''}`}>{r.status}</span></td><td>{r.by ?? '—'}</td></tr>)}
               {n === 0 && <EmptyRow cols={7}>No credits, debits or payments yet.</EmptyRow>}
@@ -99,7 +99,7 @@ export function PanelLog() {
           {panel === 'actions' && <>
             <thead><tr><th>ID</th><th>When</th><th>Action</th><th>Result</th><th>By</th></tr></thead>
             <tbody>
-              {data.rows.map((x: Any) => <tr key={x.id} className="click" onClick={() => navigate(`/records/note/${x.id}`)}>
+              {data.rows.map((x: Any) => <tr key={x.id} className="click" onClick={() => navigate(`/corral/records/note/${x.id}`)}>
                 <td className="nowrap"><RecordLink type="note" id={x.id} /></td><td className="nowrap">{dateTime(x.createdAt)}</td><td><b>{x.action}</b></td>
                 <td className="wrap">{String(x.body).startsWith(`${x.action}: `) ? x.body.slice(x.action.length + 2) : x.body}</td><td>{x.author ?? '—'}</td></tr>)}
               {n === 0 && <EmptyRow cols={5}>No actions run on this account yet.</EmptyRow>}
@@ -108,7 +108,7 @@ export function PanelLog() {
           {panel === 'flags' && <>
             <thead><tr><th>ID</th><th>Flag</th><th>Added</th><th>By</th><th>Removed</th><th>Status</th></tr></thead>
             <tbody>
-              {data.rows.map((f: Any) => <tr key={f.id} className="click" onClick={() => navigate(`/records/customer_flag/${f.id}`)}>
+              {data.rows.map((f: Any) => <tr key={f.id} className="click" onClick={() => navigate(`/corral/records/customer_flag/${f.id}`)}>
                 <td className="nowrap"><RecordLink type="customer_flag" id={f.id} /></td><td><b>{f.flag}</b></td><td className="nowrap">{dateTime(f.createdAt)}</td><td>{f.author ?? 'System'}</td>
                 <td className="nowrap">{f.removedAt ? dateTime(f.removedAt) : '—'}</td><td><span className={`pill ${f.removedAt ? '' : 'warn'}`}>{f.removedAt ? 'Removed' : 'On the account'}</span></td></tr>)}
               {n === 0 && <EmptyRow cols={6}>No flags yet.</EmptyRow>}
@@ -129,7 +129,7 @@ export function ContactLog() {
   if (error) return <div className="flash bad">{error}</div>;
   if (!data) return <Loading />;
   const c = data.customer;
-  const smsOrRecord = (l: Any) => (l.channel === 'SMS' ? `/corral/sms/${l.id}` : `/records/contact_log/${l.id}`);
+  const smsOrRecord = (l: Any) => (l.channel === 'SMS' ? `/corral/sms/${l.id}` : `/corral/records/contact_log/${l.id}`);
   return (
     <>
       <PageHead title="Contact Log" sub={<>{c.name} · Account <span className="mono">{c.account}</span> · {c.email} · {c.phone}</>}
@@ -162,8 +162,8 @@ export function ContactLog() {
           <thead><tr><th>ID</th><th>Started</th><th>Direction</th><th>Phone</th><th>Agent</th><th className="num">Duration</th><th>Disposition</th><th>Resolution</th></tr></thead>
           <tbody>
             {data.calls.map((p: Any) => (
-              <tr key={p.id} className="click" onClick={() => navigate(`/corral/calls/${p.id}`)}>
-                <td className="nowrap"><Link to={`/corral/calls/${p.id}`}><b>#{p.id}</b></Link></td><td>{dateTime(p.startedAt)}</td><td>{p.direction?.[0]?.toUpperCase()}{p.direction?.slice(1)}</td>
+              <tr key={p.id} className="click" onClick={() => navigate(`/corral/calls/${p.id}/transcript`)}>
+                <td className="nowrap"><Link to={`/corral/calls/${p.id}/transcript`}><b>#{p.id}</b></Link></td><td>{dateTime(p.startedAt)}</td><td>{p.direction?.[0]?.toUpperCase()}{p.direction?.slice(1)}</td>
                 <td className="mono">{p.phone}</td><td>{p.answeredBy ?? '—'}</td><td className="num">{duration(p.durationSec)}</td><td>{p.issue ?? '—'}</td><td><ResolutionPill value={p.resolution} /></td>
               </tr>
             ))}
@@ -191,7 +191,7 @@ export function ApiLog() {
         <thead><tr><th>ID</th><th>Time</th><th>API</th><th>Action</th><th>Status</th><th className="num">Response</th></tr></thead>
         <tbody>
           {data.logs.map((l: Any) => (
-            <tr key={l.id} className="click" onClick={() => navigate(`/records/api_log/${l.id}`)}>
+            <tr key={l.id} className="click" onClick={() => navigate(`/corral/records/api_log/${l.id}`)}>
               <td className="nowrap"><RecordLink type="api_log" id={l.id} /></td><td>{secondsTime(l.createdAt)}</td><td>{l.api}</td><td className="mono">{l.action}</td>
               <td><span className={`pill ${l.status === 'ok' || String(l.status).startsWith('2') ? 'ok' : 'bad'}`}>{l.status}</span></td>
               <td className="num">{l.milliseconds != null ? `${l.milliseconds.toLocaleString()} ms` : '—'}</td>
@@ -240,7 +240,7 @@ export function Stars() {
           <thead><tr><th>ID</th><th>Date</th><th>Reason</th><th className="num">Stars</th></tr></thead>
           <tbody>
             {data.history.map((s: Any) => (
-              <tr key={s.record + s.id} className={`click${s.drawing ? ' drawing-row' : ''}`} onClick={() => navigate(`/records/${s.record}/${s.id}`)}>
+              <tr key={s.record + s.id} className={`click${s.drawing ? ' drawing-row' : ''}`} onClick={() => navigate(`/corral/records/${s.record}/${s.id}`)}>
                 <td className="nowrap"><RecordLink type={s.record} id={s.id} /></td><td>{dateTime(s.at)}</td>
                 <td>{s.reason}{s.drawing && <> <span className="pill info">Drawing</span></>}</td>
                 <td className="num">{s.drawing ? '—' : `${s.stars >= 0 ? '+' : ''}${s.stars}`}</td>
@@ -264,9 +264,7 @@ const stamp = (s: string) => s.replace('T', ' ').slice(0, 19);
 
 /** The account ticket, one of its logs, or a bill's ticket (ebunny's history/ticket): by item type, or one timeline. */
 export function History() {
-  const { id } = useParams();
-  const [params] = useSearchParams();
-  const log = params.get('log'), bill = params.get('bill');
+  const { id, log, bill } = useParams();
   const [view, setView] = useState<'grouped' | 'timeline'>('grouped');
   const { data, error } = useLoad<Any>(`/api/customers/${id}/history?${log ? `log=${log}` : ''}${bill ? `bill=${bill}` : ''}`);
   const navigate = useNavigate();
@@ -281,13 +279,13 @@ export function History() {
     return acc;
   }, {});
   const current = (data.queues ?? []).filter((q: Any) => !q.exitedAt);
-  const open = (h: Any) => navigate(`/records/history_entry/${h.id}`);
+  const open = (h: Any) => navigate(`/corral/records/history_entry/${h.id}`);
 
   return (
     <>
       <PageHead title={data.title} sub={<>created: {ticketTime(c.createdAt)} · id <span className="mono">{c.ticket}</span> · {c.name}</>}
         actions={<><Link className="btn ghost" to={`/corral/customers/${c.id}`}>Back to account</Link>
-          {(log || bill) && <Link className="btn ghost" to={`/corral/customers/${c.id}/history`}>Account ticket</Link>}</>} />
+          {(log || bill) && <Link className="btn ghost" to={`/corral/customers/${c.id}/ticket`}>Account ticket</Link>}</>} />
 
       <div className="chips small" role="tablist" aria-label="Ticket view">
         <button type="button" className={`chip-link${view === 'grouped' ? ' on' : ''}`} role="tab" aria-selected={view === 'grouped'} onClick={() => setView('grouped')}>By Item Type</button>
@@ -302,7 +300,7 @@ export function History() {
               ...(events as Any[]).map((e) => (
                 <tr key={e.id} className="click" onClick={() => open(e)}>
                   <td style={{ width: '10ch' }} className="nowrap">{new Date(e.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })}</td>
-                  <td style={{ width: '22ch' }}><Link className="mono" to={`/records/history_entry/${e.id}`}>{e.model}</Link></td><td className="wrap">{e.summary}</td>
+                  <td style={{ width: '22ch' }}><Link className="mono" to={`/corral/records/history_entry/${e.id}`}>{e.model}</Link></td><td className="wrap">{e.summary}</td>
                   <td className="muted" style={{ width: '14ch' }}>{e.who || 'System'}</td>
                 </tr>
               )),
@@ -318,7 +316,7 @@ export function History() {
               <div className="table-wrap"><table className="hist"><tbody>
                 {g.items.map((h: Any) => (
                   <tr key={h.id} className="click" onClick={() => open(h)}>
-                    <td className="mono" style={{ width: '9ch' }}><Link to={`/records/history_entry/${h.id}`}>{h.id}</Link></td>
+                    <td className="mono" style={{ width: '9ch' }}><Link to={`/corral/records/history_entry/${h.id}`}>{h.id}</Link></td>
                     <td style={{ width: '19ch', whiteSpace: 'nowrap' }}>{stamp(h.createdAt)}</td>
                     <td>{h.summary}</td>
                     <td className="muted" style={{ width: '14ch' }}>{h.who || 'System'}</td>
@@ -333,7 +331,7 @@ export function History() {
 
       {data.logs && data.logs.length > 0 && (
         <Panel title="Logs"><div className="panel-body actions">
-          {data.logs.map((l: Any) => <Link key={l.key} className="btn ghost" to={`/corral/customers/${c.id}/history?log=${l.key}`}>{l.title} <span className="count-pill">{l.count}</span></Link>)}
+          {data.logs.map((l: Any) => <Link key={l.key} className="btn ghost" to={`/corral/customers/${c.id}/logs/${l.key}`}>{l.title} <span className="count-pill">{l.count}</span></Link>)}
         </div></Panel>
       )}
 

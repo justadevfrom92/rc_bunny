@@ -50,7 +50,7 @@ public class LoginModel(AppDbContext db, IWebHostEnvironment env) : PageModel
         await db.SaveChangesAsync();
         var identity = new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, customer.Id.ToString())], CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(new ClaimsPrincipal(identity));
-        return LocalRedirect(Url.IsLocalUrl(returnUrl) ? returnUrl! : "/myaccount");
+        return LocalRedirect(Url.IsLocalUrl(returnUrl) ? returnUrl! : "/myaccount/dashboard");
     }
 }
 
@@ -118,7 +118,7 @@ public class PayModel(AppDbContext db) : PageModel
         db.Notes.Add(new Note { CustomerId = Customer.Id, Author = "My Account", Body = $"Paid {pay:C} online with {with.Label()}." });
         await db.SaveChangesAsync();
         TempData["paid"] = $"Thanks! Your {pay:C} payment is in.";
-        return Redirect("/myaccount");
+        return Redirect("/myaccount/dashboard");
     }
 
     private async Task LoadAsync()
@@ -134,5 +134,18 @@ public class PayModel(AppDbContext db) : PageModel
         if (pastDue > 0) Amounts.Add(("past_due", "Past due amount", pastDue, "Pay this to avoid a late fee or disconnection"));
         if (last != null) Amounts.Add(("last_bill", "Last bill", last.Amount, $"Billed {last.BilledOn:MMM d, yyyy}"));
         Amounts.Add(("other", "Another amount", null, "Pay part of your balance, or extra toward your next bill"));
+    }
+}
+
+/// <summary>A file on one of the customer's own tickets (ebunny's /myaccount/support/{ticket}/files/{attachment}).</summary>
+public class SupportFileModel(AppDbContext db, IConfiguration config, IWebHostEnvironment env) : PageModel
+{
+    public async Task<IActionResult> OnGetAsync(int id, int fileId)
+    {
+        var customerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var file = await db.TicketAttachments.FirstOrDefaultAsync(a => a.Id == fileId && a.TicketId == id && db.SupportTickets.Any(t => t.Id == id && t.CustomerId == customerId));
+        var storage = Path.GetFullPath(Path.Combine(env.ContentRootPath, config["Storage:Root"] ?? "../../storage"));
+        var full = file == null ? null : Path.Combine(storage, file.Path);
+        return file == null || !System.IO.File.Exists(full) ? NotFound() : PhysicalFile(full, file.Mime, file.Name);
     }
 }

@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
+import Record from '../Record';
 import AppShell, { type Menu } from '../../Sidebar';
 import Dashboard from './Dashboard';
 import Tickets from './Tickets';
@@ -14,18 +15,16 @@ import Employees from './Employees';
 import Employee from './Employee';
 
 const menu: Menu = [
-  { heading: 'Tickets', links: [['Dashboard', 'dashboard'], ['Active', 'tickets?view=active'], ['Mine', 'tickets?view=mine'], ['Unassigned', 'tickets?view=unassigned'],
-    ['Manager Requests', 'tickets?view=manager'], ['All Tickets', 'tickets?view=all']] },
+  { heading: 'Tickets', links: [['Dashboard', ''], ['Tickets', 'tickets']] },
   { heading: 'Website', links: [['Web Messages', 'messages']] },
-  { heading: 'Team', links: [['Ticket Team', 'team'], ['Add Someone', 'team/add'], ['Satisfaction', 'satisfaction'], ['Employees', 'employees']] },
+  { heading: 'Team', links: [['Ticket Team', 'team'], ['Add a Team Member', 'team/add'], ['Approval Ratings', 'satisfaction'], ['Employees', 'employees']] },
 ];
 
 export default function Ranger() {
   return (
     <AppShell app="ranger" menu={menu}>
         <Routes>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
           <Route path="tickets" element={<Tickets />} />
           <Route path="tickets/:id" element={<Ticket />} />
           <Route path="tickets/:id/files/:fileId" element={<Attachment />} />
@@ -35,9 +34,9 @@ export default function Ranger() {
           <Route path="team/add" element={<TeamAdd />} />
           <Route path="team/:id" element={<Agent />} />
           <Route path="satisfaction" element={<Satisfaction />} />
-          <Route path="ratings" element={<Navigate to="../satisfaction" replace />} />
           <Route path="employees" element={<Employees />} />
           <Route path="employees/:id" element={<Employee />} />
+          <Route path="records/:type/:id" element={<Record />} />
         </Routes>
     </AppShell>
   );

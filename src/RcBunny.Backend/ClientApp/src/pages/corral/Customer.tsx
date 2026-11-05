@@ -44,7 +44,7 @@ export default function Customer() {
         sub={<>Account <span className="mono">{c.account}</span> · Ticket <span className="mono">{c.ticket}</span> · <Pill tone={data.statusTone}>{c.status}</Pill></>}
         actions={<>
           <button className="btn ghost" onClick={() => run(api.post(`/api/customers/${c.id}/bookmark`))}>{data.bookmarked ? '★ Bookmarked' : '☆ Bookmark'}</button>
-          <Link className="btn ghost" to={`/corral/customers/${c.id}/history`}>Account Ticket</Link>
+          <Link className="btn ghost" to={`/corral/customers/${c.id}/ticket`}>Account Ticket</Link>
         </>} />
       <nav className="jump" aria-label="Sections">
         {[['actions', 'Actions'], ['general', 'General'], ['products', 'Products'], ['address', 'Address'], ['stars', 'Stars'], ['details', 'Details'], ['files', 'Files'],
@@ -58,7 +58,7 @@ export default function Customer() {
 
       {/* Flags · Balances · Actions */}
       <div className="grid-3" id="actions">
-        <Panel id="flags" title="Flags" extra={<Btn ghost to={`/corral/customers/${c.id}/log/flags`}>Log</Btn>}>
+        <Panel id="flags" title="Flags" extra={<Btn ghost to={`/corral/customers/${c.id}/panel-log/flags`}>Log</Btn>}>
           <div className="mini-scroll">
             {data.flags.length === 0 && <p className="muted">No flags.</p>}
             {data.flags.map((f: Any) => (
@@ -72,7 +72,7 @@ export default function Customer() {
           </form>
         </Panel>
 
-        <Panel id="balances" title="Balances" extra={<Btn ghost to={`/corral/customers/${c.id}/log/balances`}>Log</Btn>}>
+        <Panel id="balances" title="Balances" extra={<Btn ghost to={`/corral/customers/${c.id}/panel-log/balances`}>Log</Btn>}>
           <dl className="kv"><dt>Current Balance</dt><dd><b>{moneyParens(c.balance)}</b></dd><dt>Due Date</dt><dd>{c.dueDate ? date(c.dueDate) : '—'}</dd></dl>
           <div className="actions" style={{ margin: '12px 0' }}>
             <Btn to={`/corral/customers/${c.id}/actions/make-payment`}>Make Payment</Btn>
@@ -92,7 +92,7 @@ export default function Customer() {
           </div>
         </Panel>
 
-        <Panel title="Actions" extra={<Btn ghost to={`/corral/customers/${c.id}/log/actions`}>Log</Btn>}>
+        <Panel title="Actions" extra={<Btn ghost to={`/corral/customers/${c.id}/panel-log/actions`}>Log</Btn>}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {(['status', 'service'] as const).map((menu) => (
             <form key={menu} className="form-row" onSubmit={(e) => { e.preventDefault(); go(`actions/${new FormData(e.currentTarget).get('go')}`); }}>
@@ -117,7 +117,7 @@ export default function Customer() {
         <Panel title="Contact Information" extra={<Btn ghost to={`/corral/customers/${c.id}/contact-log`}>Contact Log</Btn>}>
           <ContactInfo c={c} authorized={data.authorizedUsers} onSaved={reload} />
         </Panel>
-        <Panel id="products" title="Products" extra={<Btn ghost to={`/corral/customers/${c.id}/history?log=products`}>Product Log</Btn>}>
+        <Panel id="products" title="Products" extra={<Btn ghost to={`/corral/customers/${c.id}/logs/products`}>Product Log</Btn>}>
           {data.products.length === 0 && <p className="muted">No products.</p>}
           {data.products.map((p: Any) => (
             <div key={p.id} className="row-line"><span><b>{p.product}</b> <span className="help">added {date(p.createdAt)}</span>{p.details && <><br /><span className="help">{p.details}</span></>}</span>
@@ -197,7 +197,7 @@ export default function Customer() {
             <dt>Rate ID</dt><dd className="mono">{c.rateClass ?? '—'}</dd><dt>Rate</dt><dd>{data.term ? `${data.term.rate2000.toFixed(5)}¢ @ 2000 kwh` : '—'}</dd>
             <dt>Term</dt><dd>{data.planTerm == null ? '—' : data.planTerm <= 1 ? 'month-to-month' : `${data.planTerm} months`}</dd>
           </dl>
-          <div className="actions" style={{ marginTop: 12 }}><Btn to={`/corral/orders/new?renew=${c.account}`}>Renew / Change Plan</Btn></div>
+          <div className="actions" style={{ marginTop: 12 }}><Btn to={`/corral/orders/create?renew=${c.account}`}>Renew / Change Plan</Btn></div>
         </Panel>
         <Panel title="Marketing Details">
           <form key={`${c.channel}${c.msid}${c.promoCode}`} onSubmit={(e) => {
@@ -223,7 +223,7 @@ export default function Customer() {
           <input type="file" name="file" required aria-label="File to upload" /><button className="btn sm">Upload</button><span className="help">PDF, image, text or Word, up to 10 MB.</span>
         </form>
         <div className="table-wrap"><table><tbody>
-          {data.files.map((f: Any) => <tr key={f.id} className="click" onClick={() => navigate(`/corral/files/${f.id}`)}><td style={{ width: '18ch' }}>{dateTime(f.createdAt)}</td><td><Link to={`/corral/files/${f.id}`}>{f.name}</Link></td><td className="muted">{f.kind.toUpperCase()}</td></tr>)}
+          {data.files.map((f: Any) => <tr key={f.id} className="click" onClick={() => navigate(`/corral/files/${f.id}/page`)}><td style={{ width: '18ch' }}>{dateTime(f.createdAt)}</td><td><Link to={`/corral/files/${f.id}/page`}>{f.name}</Link></td><td className="muted">{f.kind.toUpperCase()}</td></tr>)}
         </tbody></table></div>
       </Panel>
 
@@ -235,7 +235,7 @@ export default function Customer() {
             <thead><tr><th>ID</th><th>Date</th><th>By</th><th>Category / Action</th><th>Priority</th><th>Note</th></tr></thead>
             <tbody>
               {data.notes.length === 0 && <EmptyRow cols={6}>No notes yet.</EmptyRow>}
-              {data.notes.slice(0, 10).map((n: Any) => <tr key={n.id} className="click" onClick={() => navigate(`/records/note/${n.id}`)}><td className="nowrap"><RecordLink type="note" id={n.id} /></td><td className="nowrap">{dateTime(n.createdAt)}</td><td>{n.author ?? 'System'}</td>
+              {data.notes.slice(0, 10).map((n: Any) => <tr key={n.id} className="click" onClick={() => navigate(`/corral/records/note/${n.id}`)}><td className="nowrap"><RecordLink type="note" id={n.id} /></td><td className="nowrap">{dateTime(n.createdAt)}</td><td>{n.author ?? 'System'}</td>
                 <td>{n.category ?? '—'}{n.action && <div className="help">{n.action}</div>}</td><td>{n.priority ? <Status value={n.priority} /> : '—'}</td><td className="wrap" style={{ minWidth: 180 }}>{n.body}</td></tr>)}
             </tbody>
           </table></div>
@@ -258,7 +258,7 @@ export default function Customer() {
             <thead><tr><th>ID</th><th>Called</th><th>Issue</th><th className="num">Duration</th><th>Answered By</th><th>Resolution</th></tr></thead>
             <tbody>
               {data.calls.length === 0 && <EmptyRow cols={6}>No calls yet.</EmptyRow>}
-              {data.calls.map((p: Any) => <tr key={p.id} className="click" onClick={() => navigate(`/corral/calls/${p.id}`)}><td className="nowrap"><Link to={`/corral/calls/${p.id}`}><b>#{p.id}</b></Link></td><td className="nowrap">{dateTime(p.startedAt)}<br /><span className="help">{p.direction?.[0]?.toUpperCase()}{p.direction?.slice(1)}</span></td>
+              {data.calls.map((p: Any) => <tr key={p.id} className="click" onClick={() => navigate(`/corral/calls/${p.id}/transcript`)}><td className="nowrap"><Link to={`/corral/calls/${p.id}/transcript`}><b>#{p.id}</b></Link></td><td className="nowrap">{dateTime(p.startedAt)}<br /><span className="help">{p.direction?.[0]?.toUpperCase()}{p.direction?.slice(1)}</span></td>
                 <td>{p.issue ?? '—'}</td><td className="num">{duration(p.durationSec)}</td><td>{p.answeredBy ?? '—'}{p.agentId && <><br /><span className="help mono">{p.agentId}</span></>}</td><td><Status value={p.resolution} /></td></tr>)}
             </tbody>
           </table></div>
@@ -283,7 +283,7 @@ export default function Customer() {
             <thead><tr><th>ID</th><th>Date</th><th className="num">Billed</th><th className="num">Paid</th><th>Notes</th></tr></thead>
             <tbody>
               {data.summary.length === 0 && <EmptyRow cols={5}>No billing yet{data.bills.length === 0 && ": service hasn't started, the first bill comes about 30 days after the switch"}.</EmptyRow>}
-              {data.summary.map((s: Any) => <tr key={`${s.type}${s.id}`} className="click" onClick={() => navigate(`/records/${s.type}/${s.id}`)}><td className="nowrap"><RecordLink type={s.type} id={s.id} /><div className="help">{s.type === 'bill' ? 'Bill' : 'Payment'}</div></td>
+              {data.summary.map((s: Any) => <tr key={`${s.type}${s.id}`} className="click" onClick={() => navigate(`/corral/records/${s.type}/${s.id}`)}><td className="nowrap"><RecordLink type={s.type} id={s.id} /><div className="help">{s.type === 'bill' ? 'Bill' : 'Payment'}</div></td>
                 <td>{date(s.date)}</td><td className="num">{s.billed != null ? moneyParens(s.billed) : '-'}</td><td className="num">{s.paid != null ? moneyParens(s.paid) : '-'}</td><td className="mono">{s.note}</td></tr>)}
             </tbody>
           </table></div>
@@ -303,7 +303,7 @@ export default function Customer() {
           <thead><tr><th>Item</th><th>Type</th><th>Period</th><th className="num">Usage</th><th>Invoice Date</th><th>Due Date</th><th>Paid Date</th><th className="num">Amount Billed</th><th className="num">Amount Paid</th><th className="num">Balance</th><th>Invoice</th><th>Ontime</th></tr></thead>
           <tbody>
             {data.bills.length === 0 && <EmptyRow cols={12}>No bills yet: service hasn't started.</EmptyRow>}
-            {data.bills.map((b: Any) => <tr key={b.id}><td className="mono"><Link to={`/corral/customers/${c.id}/history?bill=${b.id}`}>{b.reference}</Link></td><td>{b.billType}</td>
+            {data.bills.map((b: Any) => <tr key={b.id}><td className="mono"><Link to={`/corral/customers/${c.id}/bills/${b.id}/ticket`}>{b.reference}</Link></td><td>{b.billType}</td>
               <td>{b.periodStart && date(b.periodStart)} - {b.periodEnd && date(b.periodEnd)}</td><td className="num">{b.kwh.toLocaleString()}</td><td>{date(b.billedOn)}</td><td>{date(b.dueOn)}</td>
               <td>{b.paidOn ? date(b.paidOn) : '—'}</td><td className="num">{moneyParens(b.amount)}</td><td className="num">{moneyParens(b.amountPaid)}</td><td className="num">{moneyParens(b.balanceAfter)}</td>
               <td className="mono">{b.invoice}</td><td>{b.ontime ? 'Yes' : 'No'}</td></tr>)}
@@ -317,7 +317,7 @@ export default function Customer() {
           <thead><tr><th>Item</th><th>Date</th><th>Time</th><th>Source</th><th>Account</th><th>Type</th><th>Status</th><th className="num">Amount</th><th>Confirmation #</th></tr></thead>
           <tbody>
             {data.payments.length === 0 && <EmptyRow cols={9}>No payments yet{data.bills.length === 0 && ': nothing is due until the first bill'}.</EmptyRow>}
-            {data.payments.map((p: Any) => <tr key={p.id}><td className="mono"><Link to={`/records/payment/${p.id}`}>{p.reference || `#${p.id}`}</Link></td><td>{p.paidOn}</td><td>{p.paidTime ?? ''}</td><td>{p.source}</td>
+            {data.payments.map((p: Any) => <tr key={p.id}><td className="mono"><Link to={`/corral/records/payment/${p.id}`}>{p.reference || `#${p.id}`}</Link></td><td>{p.paidOn}</td><td>{p.paidTime ?? ''}</td><td>{p.source}</td>
               <td>{p.method ?? 'Unknown account'}{p.last4 && <><br /><span className="help">ending {p.last4}</span></>}</td><td>{p.kind}</td><td><Status value={p.status} /></td><td className="num">{moneyParens(p.amount)}</td>
               <td className="mono">{p.confirmation}{p.status === 'Reversed' && p.reversedAt && ` Reversed ${date(p.reversedAt)}`}
                 {o.canRefund && p.status === 'Success' && <> <button className="link-btn" onClick={() => confirm(`Reverse ${p.reference} for ${money(p.amount)}? It goes back on the balance.`) && run(api.post(`/api/customers/payments/${p.id}/reverse`), 'Payment reversed')}>[ reverse ]</button></>}</td></tr>)}
@@ -329,7 +329,7 @@ export default function Customer() {
           <thead><tr><th>Item</th><th>Date</th><th>Type</th><th>Expires</th><th>Nickname</th><th>Vendor</th><th className="num">Total Paid</th><th>Autopay</th><th /></tr></thead>
           <tbody>
             {data.methods.length === 0 && <EmptyRow cols={9}>No payment methods.</EmptyRow>}
-            {data.methods.map((m: Any) => <tr key={m.id} className={m.removedAt ? 'muted' : ''}><td className="mono"><Link to={`/records/payment_method/${m.id}`}>{m.id}</Link></td><td>{date(m.createdAt)}</td>
+            {data.methods.map((m: Any) => <tr key={m.id} className={m.removedAt ? 'muted' : ''}><td className="mono"><Link to={`/corral/records/payment_method/${m.id}`}>{m.id}</Link></td><td>{date(m.createdAt)}</td>
               <td>{m.type} - {m.last4}</td><td>{m.expires ?? '—'}</td><td>{m.nickname}</td><td>{m.vendor}</td><td className="num">{money(data.methodTotals[m.id] ?? 0)}</td><td>{m.autopay ? 'Yes' : ''}</td>
               <td>{m.removedAt ? 'removed' : <>
                 <button className="link-btn" onClick={() => confirm('Remove this payment method?') && run(api.del(`/api/customers/methods/${m.id}`))}>[ remove ]</button>{' '}
@@ -403,9 +403,9 @@ export default function Customer() {
       <div className="panel" id="logs"><div className="panel-head"><h2>Logs</h2></div><div className="panel-body actions">
         <Link className="btn ghost" to={`/corral/customers/${c.id}/api-log`}>API Log</Link>
         <Link className="btn ghost" to={`/corral/customers/${c.id}/contact-log`}>Contact Log</Link>
-        <Link className="btn ghost" to={`/corral/customers/${c.id}/history?log=attributes`}>Attribute Log</Link>
-        <Link className="btn ghost" to={`/corral/customers/${c.id}/history`}>Child Items</Link>
-        {data.logs.map((l: Any) => <Link key={l.key} className="btn ghost" to={`/corral/customers/${c.id}/history?log=${l.key}`}>{l.title} <span className="count-pill">{l.count}</span></Link>)}
+        <Link className="btn ghost" to={`/corral/customers/${c.id}/logs/attributes`}>Attribute Log</Link>
+        <Link className="btn ghost" to={`/corral/customers/${c.id}/ticket`}>Child Items</Link>
+        {data.logs.map((l: Any) => <Link key={l.key} className="btn ghost" to={`/corral/customers/${c.id}/logs/${l.key}`}>{l.title} <span className="count-pill">{l.count}</span></Link>)}
       </div></div>
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { useAuth, type Me } from '../auth';
-import { apps, Brand, initials } from '../Sidebar';
+import { apps, Brand, initials, websiteUrl } from '../Sidebar';
 
 interface TestUser { email: string; name: string; role: string; permissions: string[] }
 
@@ -15,6 +15,7 @@ export default function Login() {
 
   const signIn = (email: string, password: string) => {
     setError('');
+    // After signing in, the /login route sends you on to the page you were going to (?to=…)
     api.post<Me>('/api/login', { email, password }).then(setMe, (err: Error) => setError(err.message));
   };
   const submit = (e: FormEvent<HTMLFormElement>) => {
@@ -32,7 +33,7 @@ export default function Login() {
         <label className="check"><input type="checkbox" name="remember" value="1" /> Keep me signed in</label>
         <div className="err" role="alert">{error}</div>
         <button className="btn cyan">Sign In</button>
-        <a href="/" className="muted" style={{ textAlign: 'center', fontSize: '.85rem' }}>← Back to website</a>
+        <a href={websiteUrl} className="muted" style={{ textAlign: 'center', fontSize: '.85rem' }}>← Back to website</a>
       </form>
       {testUsers.length > 0 && (
         <div className="login test-logins">
@@ -41,7 +42,7 @@ export default function Login() {
           {testUsers.map((u) => (
             <button key={u.email} type="button" className="test-user" onClick={() => signIn(u.email, 'password')}>
               <span className="avatar">{initials(u.name)}</span>
-              <span><b>{u.name}</b><small>{u.role} · {u.permissions.map((p) => apps[p]?.name).filter(Boolean).join(', ') || 'no apps'}</small></span>
+              <span><b>{u.name}</b><small>{u.role} · {Object.entries(apps).filter(([k, a]) => u.permissions.includes(a.perm ?? k)).map(([, a]) => a.name).join(', ') || 'no apps'}</small></span>
             </button>
           ))}
         </div>

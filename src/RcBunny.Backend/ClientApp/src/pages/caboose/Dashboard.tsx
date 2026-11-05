@@ -17,7 +17,7 @@ export default function Dashboard() {
       <h1>Caboose</h1>
       <div className="stats">
         <Link className="card" to="/caboose/payments"><span className="muted">Paid, last 30 days</span><strong>{money(data.paid30)}</strong><small>{data.payments30} payments</small></Link>
-        <Link className="card" to="/caboose/ledger"><span className="muted">Credits & debits waiting</span><strong>{data.pendingLedger}</strong></Link>
+        <Link className="card" to="/caboose/credits-debits"><span className="muted">Credits & debits waiting</span><strong>{data.pendingLedger}</strong></Link>
         <Link className="card" to="/caboose/refunds"><span className="muted">Refunds in progress</span><strong>{data.openRefunds}</strong></Link>
         <Link className="card" to="/caboose/deposits"><span className="muted">Deposits due</span><strong>{money(data.depositsDue)}</strong></Link>
         <Link className="card" to="/caboose/deposits"><span className="muted">Deposits held</span><strong>{money(data.depositsHeld)}</strong></Link>

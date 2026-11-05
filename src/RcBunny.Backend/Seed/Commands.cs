@@ -77,7 +77,7 @@ public static class Commands
         Console.WriteLine();
 
         // Who can sign in (every sample password is "password")
-        Console.WriteLine("ADMIN SIGN-INS · http://localhost:5200 · password: password");
+        Console.WriteLine("ADMIN SIGN-INS · http://localhost:5200/admin · password: password");
         foreach (var u in await db.Users.Include(u => u.Role).Where(u => u.Active).OrderBy(u => u.Id).ToListAsync())
             Console.WriteLine($"  {u.Email,-28} {u.Name,-20} {u.Role!.Name}{(u.Company != null ? " · " + u.Company : "")}");
         Console.WriteLine();

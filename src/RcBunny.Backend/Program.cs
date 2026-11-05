@@ -37,11 +37,19 @@ if (args.FirstOrDefault(a => Commands.Names.Contains(a)) is { } command)
 using (var scope = app.Services.CreateScope())
     await Seeder.RunAsync(scope.ServiceProvider.GetRequiredService<AppDbContext>(), storage);
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
+// The admin's pages are under /admin like ebunny's; its logos and tokens.css are at /shared like ebunny's
+var admin = Path.Combine(app.Environment.WebRootPath ?? Path.Combine(app.Environment.ContentRootPath, "wwwroot"), "admin");
+// Only /admin and /shared are served (anything else left in wwwroot by an older build is never a page)
+if (Directory.Exists(admin))
+{
+    app.UseStaticFiles(new StaticFileOptions { RequestPath = "/admin", FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(admin) });
+    if (Directory.Exists(Path.Combine(admin, "shared")))
+        app.UseStaticFiles(new StaticFileOptions { RequestPath = "/shared", FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(Path.Combine(admin, "shared")) });
+}
 app.UseAuthentication();
 app.MapControllers();
-app.MapFallbackToFile("index.html"); // the React admin handles its own pages
+app.MapGet("/", () => Results.Redirect("/admin"));
+app.MapFallbackToFile("/admin/{**path:nonfile}", "admin/index.html"); // the React admin handles its own pages
 
 app.Run();
 return 0;

@@ -27,7 +27,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/error");
+if (!app.Environment.IsDevelopment())
+    app.UseExceptionHandler(e => e.Run(async ctx =>
+    {
+        ctx.Response.ContentType = "text/html; charset=utf-8";
+        await ctx.Response.WriteAsync($"<!DOCTYPE html><title>Something went wrong | {Site.Name}</title><p>Something went wrong. Please try again, or call us at <a href='{Site.PhoneLink}'>{Site.Phone}</a>.</p>");
+    }));
 app.UseStaticFiles();
 app.UseMiddleware<Maintenance>(); // Sheriff can switch the website off
 app.UseRouting();

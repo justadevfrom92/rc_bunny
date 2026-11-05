@@ -69,7 +69,7 @@ else
             @{ var files = Model.Files.Where(f => f.MessageId == m.Id).ToList(); }
             @if (files.Count > 0)
             {
-              <div class="sp-files">@foreach (var a in files) { <a href="/myaccount/support/@t.Id?handler=File&fileId=@a.Id">@(a.IsImage ? "🖼" : a.IsPdf ? "📄" : "📎") @a.Name <small>@(a.Size >= 1048576 ? $"{a.Size / 1048576.0:0.#} MB" : $"{Math.Max(1, a.Size / 1024)} KB")</small></a> }</div>
+              <div class="sp-files">@foreach (var a in files) { <a href="/myaccount/support/@t.Id/files/@a.Id">@(a.IsImage ? "🖼" : a.IsPdf ? "📄" : "📎") @a.Name <small>@(a.Size >= 1048576 ? $"{a.Size / 1048576.0:0.#} MB" : $"{Math.Max(1, a.Size / 1024)} KB")</small></a> }</div>
             }
           </div>
         }

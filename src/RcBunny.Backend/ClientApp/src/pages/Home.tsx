@@ -1,11 +1,11 @@
 import { Link } from 'react-router';
 import { useAuth } from '../auth';
-import { apps, Brand, Icon, UserMenu } from '../Sidebar';
+import { apps, Brand, Icon, UserMenu, websiteUrl } from '../Sidebar';
 
 /** The launcher: ebunny's "Howdy" page with a tile for each app you can open. */
 export default function Home() {
   const { me, can } = useAuth();
-  const mine = Object.entries(apps).filter(([key]) => can(key));
+  const mine = Object.entries(apps).filter(([key, a]) => can(a.perm ?? key));
   return (
     <div className="launcher">
       <header className="launcher-top"><div className="in">
@@ -18,7 +18,7 @@ export default function Home() {
             <h1>Howdy, {me!.name.split(' ')[0]}</h1>
             <p className="muted">Choose an app. Only the apps you have access to are shown.</p>
           </div>
-          <div className="actions"><a className="btn ghost" href="/" target="_blank" rel="noopener">View website</a></div>
+          <div className="actions"><a className="btn ghost" href={websiteUrl} target="_blank" rel="noopener">View website</a></div>
         </div>
         <div className="tiles">
           {mine.map(([key, a]) => (

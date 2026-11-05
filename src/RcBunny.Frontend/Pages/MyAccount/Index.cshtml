@@ -1,4 +1,4 @@
-@page "/myaccount"
+@page "/myaccount/dashboard"
 @model RcBunny.Frontend.Pages.MyAccount.IndexModel
 @{
     var c = Model.Customer;
@@ -10,7 +10,7 @@
 }
 <div class="ma-cards">
   <div class="ma-stat"><span>Current Balance</span><strong>@c.Balance.ToString("C")</strong><small>@(c.DueDate is { } due ? $"Due {due:MMM d, yyyy}" : "Nothing due")</small>
-    <a class="btn btn-block" href="/myaccount/pay">Pay Bill</a></div>
+    <a class="btn btn-block" href="/myaccount/bill-and-payments/pay-bill">Pay Bill</a></div>
   <div class="ma-stat"><span>Plan</span><strong class="sm">@(c.Plan?.Name ?? "—")</strong><small>@c.Status</small>
     <a class="btn btn-outline btn-block" href="/plans.html">See Plans</a></div>
   <div class="ma-stat"><span>Rewards</span><strong>@c.Stars.ToString("N0") ★</strong><small>stars to spend</small>

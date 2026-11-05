@@ -5,7 +5,7 @@ A simple C# version of ebunny: two projects that share one database.
 | Project | What it is | Address |
 | --- | --- | --- |
 | `src/RcBunny.Frontend` | Public website and customer My Account. Razor Pages with ebunny's markup, style.css and main.js. | http://localhost:5100 |
-| `src/RcBunny.Backend` | Employee admin. A plain Web API plus a React + TypeScript app in `ClientApp`. | http://localhost:5200 |
+| `src/RcBunny.Backend` | Employee admin. A plain Web API plus a React + TypeScript app in `ClientApp`. | http://localhost:5200/admin |
 
 ## Run it
 
@@ -35,7 +35,7 @@ The first build of each project runs `npm install` and `npm run build` for its R
 | Where | Sign in |
 | --- | --- |
 | Website: http://localhost:5100 | My Account: `demo.customer` / `password` |
-| Admin: http://localhost:5200 | Click a sample employee on the sign-in page. Every password is `password`. |
+| Admin: http://localhost:5200/admin | Click a sample employee on the sign-in page. Every password is `password`. |
 
 Sample employees:
 

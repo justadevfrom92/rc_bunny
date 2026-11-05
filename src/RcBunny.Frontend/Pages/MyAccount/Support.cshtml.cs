@@ -60,14 +60,6 @@ public class SupportModel(AppDbContext db, IConfiguration config, IWebHostEnviro
         return Redirect($"/myaccount/support/{id}");
     }
 
-    /// <summary>The file itself (only the customer's own tickets).</summary>
-    public async Task<IActionResult> OnGetFileAsync(int id, int fileId)
-    {
-        var file = await db.TicketAttachments.FirstOrDefaultAsync(a => a.Id == fileId && a.TicketId == id && db.SupportTickets.Any(t => t.Id == id && t.CustomerId == CustomerId));
-        var full = file == null ? null : Path.Combine(Storage, file.Path);
-        return file == null || !System.IO.File.Exists(full) ? NotFound() : PhysicalFile(full, file.Mime, file.Name);
-    }
-
     /// <summary>The customer's message (it moves a waiting or solved ticket back to us), with up to 5 files.</summary>
     private async Task PostAsync(SupportTicket ticket, string message, List<IFormFile>? files)
     {

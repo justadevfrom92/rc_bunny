@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 /** A coloured label: ok (green), warn (amber), bad (red), info (blue) or plain. */
 export function Pill({ tone, children }: { tone?: string; children: ReactNode }) {
@@ -47,8 +47,11 @@ export function useRun(reload?: () => void): [(action: Promise<unknown>, done?: 
   return [run, bar];
 }
 
-/** The ID column: "#12" linking to the record's page. */
-export const RecordLink = ({ type, id }: { type: string; id: number }) => <Link to={`/records/${type}/${id}`}><b>#{id}</b></Link>;
+/** The ID column: "#12" linking to the record's page, in the app you're in (ebunny's /admin/{app}/records/{type}/{id}). */
+export function RecordLink({ type, id }: { type: string; id: number }) {
+  const app = useLocation().pathname.split('/')[1] || 'corral';
+  return <Link to={`/${app}/records/${type}/${id}`}><b>#{id}</b></Link>;
+}
 
 /** Minutes:seconds from seconds. */
 export const duration = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;

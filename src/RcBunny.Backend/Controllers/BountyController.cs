@@ -114,27 +114,28 @@ public class BountyController(AppDbContext db) : ControllerBase
 
     // ---- Members ----------------------------------------------------------------------------------------------
 
+    /// <summary>
+    /// Members (ebunny's bounty/members): search by account, name or email; the top members; and one member (?account=)
+    /// with their star history (and drawing entries) to adjust.
+    /// </summary>
     [HttpGet("members")]
-    public async Task<object> Members(string? q)
+    public async Task<object> Members(string? q, string? account)
     {
-        var query = db.Customers.Where(c => c.Stars > 0 || db.StarEntries.Any(e => e.CustomerId == c.Id));
-        if (!string.IsNullOrWhiteSpace(q)) query = query.Where(c => EF.Functions.Like(c.Account, $"%{q.Trim()}%") || EF.Functions.Like(c.Name, $"%{q.Trim()}%"));
-        return await query.OrderByDescending(c => c.Stars).Take(100).Select(c => new { c.Id, c.Account, c.Name, c.Stars, c.Status }).ToListAsync();
-    }
-
-    [HttpGet("members/{id:int}")]
-    public async Task<IActionResult> Member(int id)
-    {
-        var c = await db.Customers.FindAsync(id);
-        if (c is null) return NotFound();
-        return Ok(new
+        q = q?.Trim() ?? "";
+        var results = q == "" ? [] : await db.Customers
+            .Where(c => EF.Functions.Like(c.Account, $"%{q}%") || EF.Functions.Like(c.Name, $"%{q}%") || EF.Functions.Like(c.Email!, $"%{q}%"))
+            .OrderBy(c => c.Name).Take(25).Select(c => new { c.Id, c.Account, c.Name, c.Status, c.Stars }).ToListAsync();
+        var member = string.IsNullOrEmpty(account) ? null : await db.Customers.FirstOrDefaultAsync(c => c.Account == account);
+        return new
         {
-            c.Id, c.Account, c.Name, c.Stars, c.Status,
-            history = await db.StarEntries.Where(e => e.CustomerId == id).OrderByDescending(e => e.CreatedAt).ToListAsync(),
-            offers = await db.RewardOffers.Where(o => o.Active).OrderBy(o => o.Position).Select(o => new { o.Id, o.Name, o.Stars }).ToListAsync(),
-            rules = await db.RewardRules.Where(r => r.Active && r.Event == "manual").Select(r => new { r.Id, r.Name, r.Stars }).ToListAsync(),
-            inDrawing = await db.DrawingEntries.AnyAsync(e => e.CustomerId == id && e.Month == ThisMonth),
-        });
+            q, results,
+            top = await db.Customers.Where(c => c.Stars > 0).OrderByDescending(c => c.Stars).Take(10).Select(c => new { c.Id, c.Account, c.Name, c.Status, c.Stars }).ToListAsync(),
+            member = member == null ? null : new { member.Id, member.Account, member.Name, member.Stars },
+            history = member == null ? [] : (await db.StarEntries.Where(e => e.CustomerId == member.Id).Select(e => new { record = "star_entry", e.Id, at = e.CreatedAt, e.Reason, e.Stars, drawing = false }).ToListAsync())
+                .Concat((await db.DrawingEntries.Where(d => d.CustomerId == member.Id).ToListAsync())
+                    .Select(d => new { record = "drawing_entry", d.Id, at = d.CreatedAt, Reason = $"Entered the {d.Month} drawing", Stars = 0, drawing = true }))
+                .OrderByDescending(e => e.at).ToList(),
+        };
     }
 
     public record Adjustment(int Stars, string Reason, int? RuleId);
@@ -162,11 +163,6 @@ public class BountyController(AppDbContext db) : ControllerBase
     }
 
     public record RedeemInput(int OfferId);
-
-    /// <summary>Redeem an offer for a customer on the phone.</summary>
-    [HttpPost("members/{id:int}/redeem")]
-    public async Task<IActionResult> Redeem(int id, RedeemInput input) =>
-        await Rewards.RedeemAsync(db, id, input.OfferId, await MyName()) is { } problem ? BadRequest(new { error = problem.Replace("You have", "They have").Replace("You're", "They're") }) : Ok();
 
     // ---- Monthly drawing --------------------------------------------------------------------------------------
 

@@ -30,7 +30,7 @@
   <Target Name="InstallClientApp" BeforeTargets="BuildClientApp" Inputs="ClientApp/package-lock.json" Outputs="ClientApp/node_modules/.package-lock.json">
     <Exec Command="npm install" WorkingDirectory="ClientApp" />
   </Target>
-  <Target Name="BuildClientApp" BeforeTargets="Build" Inputs="@(ClientAppFiles)" Outputs="wwwroot/index.html">
+  <Target Name="BuildClientApp" BeforeTargets="Build" Inputs="@(ClientAppFiles)" Outputs="wwwroot/admin/index.html">
     <Exec Command="npm run build" WorkingDirectory="ClientApp" />
   </Target>
 

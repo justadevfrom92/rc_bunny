@@ -36,7 +36,7 @@ export default function EsiidLookup() {
                 <tr key={c.id}><td className="mono">{c.esiid ?? '—'}</td><td>{c.address}, {c.city} {c.zip}</td><td>{c.market}</td>
                   <td>{c.type === 'Residential' ? 'Residential' : 'Small Non-Residential'}</td>
                   <td><Link to={`/corral/customers/${c.id}`}>{c.name}</Link></td>
-                  <td>{c.esiid && <Link className="btn sm" to={`/corral/orders/new?esiid=${c.esiid}`}>Start Order</Link>}</td></tr>
+                  <td>{c.esiid && <Link className="btn sm" to={`/corral/orders/create?esiid=${c.esiid}`}>Start Order</Link>}</td></tr>
               ))}
               {data.results.length === 0 && <EmptyRow cols={6}>No premises found. Check the spelling or try just the house number and street name.</EmptyRow>}
             </tbody>

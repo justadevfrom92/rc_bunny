@@ -6,14 +6,18 @@ import { useAuth } from './auth';
 export type Menu = { heading?: string; links: [label: string, path: string][] }[];
 
 /** The admin apps: name, launcher text, icon and home page. Same as ebunny's config/admin.php. */
-export const apps: Record<string, { name: string; desc: string; icon: string; home: string }> = {
-  corral: { name: 'Corral', icon: 'users', home: '/corral/customers', desc: 'Customer service and CRM: search accounts, create orders, work exception queues, the sales pipeline of leads, follow-ups and partners.' },
-  ranger: { name: 'Ranger', icon: 'ticket', home: '/ranger/dashboard', desc: 'Support tickets customers open from My Account and messages from the website contact form: the queue, replies and notes, take over and join in for managers, the ticket team (in-office and 3rd party) and approval ratings.' },
-  plans: { name: 'Astro', icon: 'chart', home: '/plans', desc: 'Plans and pricing: plans, plan groups, rates, TDSP fees, term discounts, ETFs and Build Your Own Plan products.' },
-  caboose: { name: 'Caboose', icon: 'train', home: '/caboose/dashboard', desc: 'Finance: payments, credits and debits approval, refunds, deposits, receivables aging, the journal export, MSIDs and promo codes.' },
-  bounty: { name: 'Bounty', icon: 'gift', home: '/bounty/dashboard', desc: 'Rewards: offers, how stars are earned, redemptions to fulfil, member balances and the monthly drawing.' },
-  sheriff: { name: 'Sheriff', icon: 'star', home: '/sheriff', desc: 'Settings: the staff directory (profiles, permissions, log in as), roles, markets, API integrations, scheduled jobs, cron automations and the timeline of everything that ran.' },
+/** perm: the permission that opens it, when it isn't the app's own key (Astro needs "plans"). */
+export const apps: Record<string, { name: string; desc: string; icon: string; home: string; perm?: string }> = {
+  corral: { name: 'Corral', icon: 'users', home: '/corral', desc: 'Customer service and CRM: search accounts, create orders, work exception queues, the sales pipeline of leads, follow-ups and partners.' },
+  ranger: { name: 'Ranger', icon: 'ticket', home: '/ranger', desc: 'Support tickets customers open from My Account and messages from the website contact form: the queue, replies and notes, take over and join in for managers, the ticket team (in-office and 3rd party) and approval ratings.' },
+  astro: { name: 'Astro', icon: 'chart', home: '/astro/rates', perm: 'plans', desc: 'Plans and pricing: plans, plan groups, rates, TDSP fees, term discounts, ETFs and Build Your Own Plan products.' },
+  caboose: { name: 'Caboose', icon: 'train', home: '/caboose', desc: 'Finance: payments, credits and debits approval, refunds, deposits, receivables aging, the journal export, MSIDs and promo codes.' },
+  bounty: { name: 'Bounty', icon: 'gift', home: '/bounty', desc: 'Rewards: offers, how stars are earned, redemptions to fulfil, member balances and the monthly drawing.' },
+  sheriff: { name: 'Sheriff', icon: 'star', home: '/sheriff/users', desc: 'Settings: the staff directory (profiles, permissions, log in as), roles, markets, API integrations, scheduled jobs, cron automations and the timeline of everything that ran.' },
 };
+
+/** The public website (it runs on its own address): set VITE_WEBSITE_URL when building for another server. */
+export const websiteUrl: string = import.meta.env.VITE_WEBSITE_URL || 'http://localhost:5100/';
 
 export const env = ['localhost', '127.0.0.1'].includes(location.hostname) ? 'LOCAL' : 'PRODUCTION';
 
@@ -61,7 +65,7 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
             </Fragment>
           ))}
         </nav>
-        <div className="side-foot"><a className="side-website" href="/" target="_blank" rel="noopener">Website</a></div>
+        <div className="side-foot"><a className="side-website" href={websiteUrl} target="_blank" rel="noopener">Website</a></div>
       </aside>
       <div className="main">
         <header className="topbar">
@@ -71,7 +75,7 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
           <div className="crumbs">
             <Link to={info.home}>{info.name}</Link> /{' '}
             {active && !exact && <><Link to={active.url}>{active.label}</Link> / </>}
-            <a href={pathname} aria-current="page"><b>{exact ? active.label : active ? 'Details' : info.name}</b></a>
+            <Link to={pathname} aria-current="page"><b>{exact ? active.label : active ? 'Details' : info.name}</b></Link>
           </div>
           <UserMenu />
         </header>

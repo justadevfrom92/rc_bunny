@@ -9,11 +9,12 @@ import Crons from './Crons';
 import Caches from './Caches';
 import Markets from './Markets';
 import Integrations from './Integrations';
+import Record from '../Record';
 
 const menu: Menu = [
   { heading: 'Heartbeat', links: [['Overview', 'heartbeat'], ['Checks', 'heartbeat/checks'], ['Control Log', 'heartbeat/log']] },
-  { heading: 'Access', links: [['Staff Directory', 'staff'], ['Roles', 'roles']] },
-  { heading: 'Config', links: [['Timeline', 'timeline'], ['Crons', 'crons'], ['Caches', 'caches']] },
+  { heading: 'Access', links: [['Staff Directory', 'users'], ['Roles', 'roles']] },
+  { heading: 'Config', links: [['Timeline', 'timeline'], ['Crons', 'jobs'], ['Cached Tables', 'cached-tables']] },
   { heading: 'Markets', links: [['View Markets', 'markets']] },
   { heading: 'APIs', links: [['Integrations', 'integrations']] },
 ];
@@ -22,17 +23,18 @@ export default function Sheriff() {
   return (
     <AppShell app="sheriff" menu={menu}>
         <Routes>
-          <Route index element={<Navigate to="staff" replace />} />
+          <Route index element={<Navigate to="users" replace />} />
           <Route path="heartbeat" element={<Heartbeat />} />
           <Route path="heartbeat/checks" element={<Checks />} />
           <Route path="heartbeat/log" element={<Timeline category="heartbeat" title="Control Log" />} />
-          <Route path="staff" element={<Staff />} />
+          <Route path="users" element={<Staff />} />
           <Route path="roles" element={<Roles />} />
           <Route path="timeline" element={<Timeline />} />
-          <Route path="crons" element={<Crons />} />
-          <Route path="caches" element={<Caches />} />
+          <Route path="jobs" element={<Crons />} />
+          <Route path="cached-tables" element={<Caches />} />
           <Route path="markets" element={<Markets />} />
           <Route path="integrations" element={<Integrations />} />
+          <Route path="records/:type/:id" element={<Record />} />
         </Routes>
     </AppShell>
   );

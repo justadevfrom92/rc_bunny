@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
+import Record from '../Record';
 import AppShell, { type Menu } from '../../Sidebar';
 import Customers from './Customers';
 import Customer from './Customer';
@@ -15,7 +16,7 @@ import { FollowUps, Lead, LeadForm, Leads, Partner, PartnerForm, Partners, Pipel
 
 // The Corral menu, in ebunny's order. Exceptions lists every work queue.
 const menu: Menu = [
-  { links: [['Customer Search', 'customers'], ['ESIID Lookup', 'esiid'], ['Create Order', 'orders/new'], ['Create Order - Biz', 'orders/new-biz'], ['SMS', 'sms'], ['Phone Calls', 'calls']] },
+  { links: [['Customer Search', ''], ['ESIID Lookup', 'esiid'], ['Create Order', 'orders/create'], ['Create Order - Biz', 'orders/create-biz'], ['SMS', 'sms'], ['Phone Calls', 'calls']] },
   { heading: 'CRM', links: [['Pipeline', 'crm'], ['Leads', 'crm/leads'], ['Follow-ups', 'crm/follow-ups'], ['Partners & Brokers', 'crm/partners']] },
   { heading: 'Products', links: [['Products', 'products'], ['New Product', 'products/new'], ['Product Orders', 'products/orders']] },
   { links: [['ERCOT', 'ercot']] },
@@ -35,25 +36,26 @@ export default function Corral() {
   return (
     <AppShell app="corral" menu={menu}>
         <Routes>
-          <Route index element={<Navigate to="customers" replace />} />
-          <Route path="customers" element={<Customers />} />
+          <Route index element={<Customers />} />
           <Route path="customers/:id" element={<Customer />} />
           <Route path="customers/:id/actions/:key" element={<ActionForm />} />
-          <Route path="customers/:id/log/:panel" element={<PanelLog />} />
+          <Route path="customers/:id/panel-log/:panel" element={<PanelLog />} />
           <Route path="customers/:id/contact-log" element={<ContactLog />} />
           <Route path="customers/:id/api-log" element={<ApiLog />} />
           <Route path="customers/:id/stars" element={<Stars />} />
-          <Route path="customers/:id/history" element={<History />} />
+          <Route path="customers/:id/ticket" element={<History />} />
+          <Route path="customers/:id/logs/:log" element={<History />} />
+          <Route path="customers/:id/bills/:bill/ticket" element={<History />} />
           <Route path="customers/:id/order-products" element={<OrderFor />} />
-          <Route path="files/:id" element={<FilePage />} />
+          <Route path="files/:id/page" element={<FilePage />} />
           <Route path="esiid" element={<EsiidLookup />} />
-          <Route path="orders/new" element={<CreateOrder business={false} />} />
-          <Route path="orders/new-biz" element={<CreateOrder business />} />
+          <Route path="orders/create" element={<CreateOrder business={false} />} />
+          <Route path="orders/create-biz" element={<CreateOrder business />} />
           <Route path="sms" element={<Sms />} />
           <Route path="sms/new" element={<SmsNew />} />
           <Route path="sms/:id" element={<SmsMessage />} />
           <Route path="calls" element={<Calls />} />
-          <Route path="calls/:id" element={<CallTranscript />} />
+          <Route path="calls/:id/transcript" element={<CallTranscript />} />
           <Route path="contacts/new" element={<NewContact />} />
           <Route path="crm" element={<Pipeline />} />
           <Route path="crm/leads" element={<Leads />} />
@@ -73,6 +75,7 @@ export default function Corral() {
           <Route path="ercot" element={<Ercot />} />
           <Route path="queues" element={<Queues />} />
           <Route path="queues/:key" element={<Queue />} />
+          <Route path="records/:type/:id" element={<Record />} />
         </Routes>
     </AppShell>
   );

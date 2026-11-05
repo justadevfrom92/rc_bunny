@@ -13,8 +13,6 @@ public static class SiteEndpoints
 {
     public static void MapSite(this WebApplication app)
     {
-        app.MapGet("/plans", () => Results.Redirect("/plans.html"));
-        app.MapGet("/contact", () => Results.Redirect("/contact-us.html"));
 
         // /shared/config/brand.js — the brand settings
         app.MapGet("/shared/config/brand.js", () => Script("ET.brand = " + JsonSerializer.Serialize(Brand) + ";"));
@@ -65,8 +63,8 @@ public static class SiteEndpoints
             return Results.Json(new { ok = true }, statusCode: 201);
         });
 
-        // The footer's Admin button: the admin runs on its own address
-        app.MapMethods("/admin/{**rest}", ["GET", "POST"], () => Results.Redirect(Site.AdminUrl));
+        // /admin is the admin, like on ebunny; here the admin runs as its own app, so /admin/... goes to the same page there
+        app.MapMethods("/admin/{**rest}", ["GET", "POST"], (string? rest) => Results.Redirect($"{Site.AdminUrl}/admin{(string.IsNullOrEmpty(rest) ? "" : "/" + rest)}"));
     }
 
     public record ContactInput(string? First, string? Last, string? Email, string? Phone, string? Topic, string? Message);

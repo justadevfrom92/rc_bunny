@@ -8,8 +8,8 @@
     var here = Context.Request.Path.Value ?? "";
     var menu = new (string Heading, (string Label, string Url)[] Items)[]
     {
-        ("Account", [("Dashboard", "/myaccount"), ("Support Tickets", "/myaccount/support")]),
-        ("Bills", [("Pay Bill", "/myaccount/pay")]),
+        ("Account", [("Dashboard", "/myaccount/dashboard"), ("Support Tickets", "/myaccount/support")]),
+        ("Bills", [("Pay Bill", "/myaccount/bill-and-payments/pay-bill")]),
         ("Rewards", [("My Rewards", "/myaccount/rewards")]),
     };
 }

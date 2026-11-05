@@ -41,8 +41,8 @@ export function Calls() {
               <thead><tr><th>ID</th><th>Called</th><th>Account</th><th>Issue</th><th className="num">Duration</th><th>Answered By</th><th>Resolution</th></tr></thead>
               <tbody>
                 {data?.rows.map((p: any) => (
-                  <tr key={p.id} className="click" onClick={() => navigate(`/corral/calls/${p.id}`)}>
-                    <td className="nowrap"><Link to={`/corral/calls/${p.id}`}><b>#{p.id}</b></Link></td>
+                  <tr key={p.id} className="click" onClick={() => navigate(`/corral/calls/${p.id}/transcript`)}>
+                    <td className="nowrap"><Link to={`/corral/calls/${p.id}/transcript`}><b>#{p.id}</b></Link></td>
                     <td className="nowrap">{dateTime(p.startedAt)}<br /><span className="help">{cap(p.direction)}</span></td>
                     <td>{p.customerId && <><Link to={`/corral/customers/${p.customerId}`}>{p.account}</Link><br /><span className="help">{p.customer}</span><br /></>}<span className="help mono">{p.phone}</span></td>
                     <td>{p.issue ?? '—'}</td><td className="num">{duration(p.durationSec)}</td>
