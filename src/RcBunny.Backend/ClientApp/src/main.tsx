@@ -11,6 +11,7 @@ import Ranger from './pages/ranger/Ranger';
 import Sheriff from './pages/sheriff/Sheriff';
 import Caboose from './pages/caboose/Caboose';
 import Bounty from './pages/bounty/Bounty';
+import Walker from './pages/walker/Walker';
 import './admin.css';
 import './styles.css';
 import { enhancePages } from './enhance';
@@ -39,6 +40,7 @@ function App() {
       <Route path="/lando/*" element={<RequirePermission permission="lando"><Lando /></RequirePermission>} />
       <Route path="/astro/*" element={<RequirePermission permission="plans"><Astro /></RequirePermission>} />
       <Route path="/ranger/*" element={<RequirePermission permission="ranger"><Ranger /></RequirePermission>} />
+      <Route path="/walker/*" element={<RequirePermission permission="walker"><Walker /></RequirePermission>} />
       <Route path="/caboose/*" element={<RequirePermission permission="caboose"><Caboose /></RequirePermission>} />
       <Route path="/bounty/*" element={<RequirePermission permission="bounty"><Bounty /></RequirePermission>} />
       <Route path="/sheriff/*" element={<RequirePermission permission="sheriff"><Sheriff /></RequirePermission>} />

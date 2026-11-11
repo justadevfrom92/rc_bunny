@@ -69,6 +69,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<DrawingEntry> DrawingEntries => Set<DrawingEntry>();
     public DbSet<DrawingWinner> DrawingWinners => Set<DrawingWinner>();
 
+    // Walker
+    public DbSet<ReportRun> ReportRuns => Set<ReportRun>();
+    public DbSet<SavedReport> SavedReports => Set<SavedReport>();
+    public DbSet<ReportColumn> ReportColumns => Set<ReportColumn>();
+    public DbSet<ReportUpload> ReportUploads => Set<ReportUpload>();
+
     // Lando
     public DbSet<Website> Sites => Set<Website>();
     public DbSet<Template> Templates => Set<Template>();
@@ -120,6 +126,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<DrawingEntry>().HasIndex(x => new { x.Month, x.CustomerId }).IsUnique(); // one entry per person per month
         m.Entity<DrawingWinner>().HasIndex(x => x.Month).IsUnique();                     // one winner per month
         m.Entity<Page>().HasIndex(p => new { p.SiteId, p.Path }).IsUnique();
+        m.Entity<ReportColumn>().HasIndex(c => c.Report).IsUnique();
+        m.Entity<ReportRun>().HasIndex(r => r.Report);
         m.Entity<ContentBlock>().HasIndex(b => b.Slug).IsUnique();
         m.Entity<PageComponent>().HasOne(c => c.Block).WithMany().HasForeignKey(c => c.ContentBlockId);
         m.Entity<SiteVisit>().HasIndex(v => v.CreatedAt);

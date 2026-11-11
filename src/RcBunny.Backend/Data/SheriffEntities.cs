@@ -42,4 +42,8 @@ public class JobRun
     public string Message { get; set; } = "";
     /// <summary>Who pressed "Run now" (empty when the schedule ran it).</summary>
     public string? RunBy { get; set; }
+    /// <summary>OK, Warning or Failed (ETL feeds); empty means OK or Failed by Ok.</summary>
+    public string? Status { get; set; }
+    public int? DurationMs { get; set; }
+    public string StatusLabel => Status ?? (Ok ? "OK" : "Failed");
 }

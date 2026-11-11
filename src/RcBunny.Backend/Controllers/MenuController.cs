@@ -34,8 +34,12 @@ public class MenuController(AppDbContext db) : ControllerBase
         counts["redemptions_open"] = await db.StarEntries.CountAsync(s => s.OfferId != null && s.Fulfillment == "pending");
 
         // Crons whose latest run failed, and health checks whose latest result is bad
-        var runs = await db.JobRuns.GroupBy(r => r.Job).Select(g => g.OrderByDescending(r => r.StartedAt).First().Ok).ToListAsync();
-        counts["failed_jobs"] = runs.Count(ok => !ok);
+        var runs = (await db.JobRuns.ToListAsync()).GroupBy(r => r.Job).Select(g => g.MaxBy(r => r.StartedAt)!).ToList();
+        counts["failed_jobs"] = runs.Count(r => !r.Job.StartsWith("etl:") && !r.Ok);
+        // Walker: ETL feeds whose latest run failed, and report runs that failed or never finished
+        counts["etl_failed"] = runs.Count(r => r.Job.StartsWith("etl:") && r.StatusLabel == "Failed");
+        var cut = DateTime.UtcNow.AddMinutes(-ReportRun.TimeoutMinutes);
+        counts["report_problems"] = await db.ReportRuns.CountAsync(r => r.Status == "failed" || ((r.Status == "queued" || r.Status == "running") && (r.StartedAt ?? r.CreatedAt) < cut));
         var checks = await db.HealthChecks.GroupBy(c => c.Name).Select(g => g.OrderByDescending(c => c.CheckedAt).First().Ok).ToListAsync();
         counts["health_problems"] = checks.Count(ok => !ok);
 

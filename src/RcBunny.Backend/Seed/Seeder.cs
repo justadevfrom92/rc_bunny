@@ -17,7 +17,7 @@ public static partial class Seeder
         var password = Passwords.Hash("password");
 
         // Staff and what each role can do: ebunny's roles and staff (Seed/data/roles.json, users.json). ebunny's Astro is
-        // our "plans" permission; its apps we don't have yet (Walker, Rodeo, Deputy) are left out.
+        // our "plans" permission; its apps we don't have yet (Rodeo, Deputy) are left out.
         string Perms(JsonNode? list) => string.Join(",", (list?.AsArray() ?? []).Select(p => p!.ToString() == "astro" ? "plans" : p!.ToString())
             .Where(Permissions.All.ContainsKey).Distinct());
         var roles = Load("roles").Select(r => new Role { Name = S(r, "name"), Permissions = Perms(r["perms"]) }).ToDictionary(r => r.Name);
@@ -160,6 +160,9 @@ public static partial class Seeder
         db.DrawingWinners.Add(new DrawingWinner { Month = DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM"), CustomerId = members[2].Id, Prize = "$500 bill credit", DrawnBy = "Admin Demo", DrawnAt = DateTime.UtcNow.AddDays(-20) });
 
         await db.SaveChangesAsync();
+
+        // Walker: report runs (run last, so the sample reports see everything), files, ETL feed runs and saved reports (Seed/WalkerSeed.cs)
+        await SeedWalkerAsync(db, await db.Users.FirstAsync(u => u.Email == "admin@example.com"), storageRoot);
     }
 
     /// <summary>

@@ -44,7 +44,7 @@ Sample employees:
 | admin@example.com | Administrator (ticket team manager) | everything |
 | csr@example.com | Customer Service (on the ticket team) | Corral, Ranger, Bounty |
 | pricing@example.com | Pricing | Astro (plans and rates), Lando (the website) |
-| finance@example.com | Finance | Corral, Caboose, and approving refunds, credits and debits |
+| finance@example.com | Finance | Corral, Caboose, Walker (reports and files), and approving refunds, credits and debits |
 
 ## Database commands (like `php artisan migrate`)
 
@@ -93,6 +93,11 @@ Both migrate commands finish by printing the `db:show` list. Every sample passwo
   - Site Health, Visitors (every page view, by date, IP, page or visitor), Blocked IPs and Blocked Areas (the website shows "Not available" instead), Cookie Consents (every cookie banner choice and the cookies the browser had).
   - Pages: every website page. Built-in pages (home, plans, Build Your Own Plan, business, contact us) take components in their top zone; the rest are built from content blocks on a template and shown at their own path (e.g. /locations/houston), with a price grid, redirects and an AMP version. Each page has its Activity and Edits. Rebuild Sitemap writes /sitemap.xml.
   - Page Templates, Content Blocks (HTML with [[widgets]]; a block with {{variables}} is a module each page fills in), and the Style Guide (every CSS variable; try a color in your browser for 5 days, copy the changed CSS).
+- Walker (files and reports):
+  - Report Status: every report run, Running, Errors & Did Not Finish (still running after 60 minutes) and Completed; it updates live. A run's page shows its settings, its file and the first rows.
+  - Run a Report: the report library (orders, notes, phonecalls, contacts, exceptions, payments, bills, receivables, ERCOT, stars). Reports run in the background and save Excel, CSV, tab-separated or JSON files under storage/reports. Each report's Export Columns pick the file's columns by model key (customer.name), or as a key array.
+  - Saved Reports (a report's settings, kept to run again; yours and shared ones), and Orders, Notes and Phonecalls (the customer service reports with your own runs).
+  - Files: upload and preview Excel, CSV, PDF, text and zip files in folders (ETL, Legal Documents, Customer Templates, Finance, Utility / ERCOT, Vendor…). ETL Feeds: the scheduled files in and out, with every run and its errors.
 - Caboose (finance):
   - Dashboard: money in over the last 30 days, what's waiting for approval, deposits, aging.
   - Payments: everything paid, by date, status or account. Record a payment taken by check, money order, cash or card; a "Deposit" payment goes toward the deposit instead of the balance.
@@ -131,13 +136,14 @@ src/RcBunny.Backend/
   Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords, Rewards (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
   Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
-                          Ranger's: Ranger, Messages; Lando; Astro; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
+                          Ranger's: Ranger, Messages; Lando; Astro; Walker; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
+  Walker/Reports.cs       Walker's reports: their filters, queries and columns, and the background run that writes the file
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
   ClientApp/src/          main.tsx (routes), api.ts, auth.tsx, pages/*.tsx; admin.css is ebunny's admin.css unchanged,
                           styles.css gives our pages' own class names the same look
-                          pages/corral, pages/ranger, pages/lando, pages/astro, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes
-                          (Corral.tsx, Ranger.tsx, Lando.tsx, Astro.tsx, Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
+                          pages/corral, pages/ranger, pages/lando, pages/astro, pages/walker, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes
+                          (Corral.tsx, Ranger.tsx, Lando.tsx, Astro.tsx, Walker.tsx, Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
 src/RcBunny.Frontend/
   Program.cs              customer sign-in, the site's pages and My Account
   Services/SiteEndpoints.cs  what main.js asks the server for: /shared/config/brand.js and catalog.js (plans, rates,

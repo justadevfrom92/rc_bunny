@@ -14,7 +14,7 @@ namespace RcBunny.Controllers;
 [Route("api/records")]
 public class RecordsController(AppDbContext db) : ControllerBase
 {
-    /// <summary>type → (table, label, the permission that opens it).</summary>
+    /// <summary>type → (table, label, the permission that opens it; "a|b" means either).</summary>
     public static readonly Dictionary<string, (Type Type, string Label, string Permission)> Types = new()
     {
         ["note"] = (typeof(Note), "Note", "corral"),
@@ -35,7 +35,7 @@ public class RecordsController(AppDbContext db) : ControllerBase
         ["history_entry"] = (typeof(HistoryEntry), "History Entry", "corral"),
         ["crm_activity"] = (typeof(CrmActivity), "CRM Activity", "corral"),
         ["work_item"] = (typeof(WorkItem), "Work Item", "corral"),
-        ["job_run"] = (typeof(JobRun), "Job Run", "sheriff"),
+        ["job_run"] = (typeof(JobRun), "Job Run", "sheriff|walker"),
         ["health_check"] = (typeof(HealthCheck), "Heartbeat Check", "sheriff"),
         ["audit_entry"] = (typeof(AuditEntry), "Timeline Entry", "sheriff"),
         ["site_visit"] = (typeof(SiteVisit), "Site Visit", "lando"),
@@ -151,7 +151,7 @@ public class RecordsController(AppDbContext db) : ControllerBase
         var me = await Permissions.CurrentAsync(HttpContext);
         if (me is null) return (null, null, Unauthorized());
         if (!Types.TryGetValue(type, out var t)) return (null, me, NotFound());
-        if (!me.Permissions.Contains(t.Permission)) return (null, me, StatusCode(403));
+        if (!t.Permission.Split('|').Any(me.Permissions.Contains)) return (null, me, StatusCode(403));
         (db.ActorName, db.ActorId) = (me.Name, me.Id);
         var entity = await db.FindAsync(t.Type, id);
         return entity is null ? (null, me, NotFound()) : (entity, me, null);
