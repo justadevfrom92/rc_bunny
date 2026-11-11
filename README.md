@@ -43,7 +43,7 @@ Sample employees:
 | --- | --- | --- |
 | admin@example.com | Administrator (ticket team manager) | everything |
 | csr@example.com | Customer Service (on the ticket team) | Corral, Ranger, Bounty |
-| pricing@example.com | Pricing | Plans & Rates |
+| pricing@example.com | Pricing | Astro (plans and rates), Lando (the website) |
 | finance@example.com | Finance | Corral, Caboose, and approving refunds, credits and debits |
 
 ## Database commands (like `php artisan migrate`)
@@ -86,8 +86,13 @@ Both migrate commands finish by printing the `db:show` list. Every sample passwo
 - Ranger (support tickets):
   - Dashboard (unassigned, mine, by status, approval) and Tickets (filter by status and by who has them).
   - A ticket: reply to the customer or add an internal note the customer never sees, change status and priority, pick it up. Ticket team managers can also assign it to anyone or take it over.
-  - Web Messages from the website, with "Make a ticket".
+  - Web Messages from the website: reply (logged on the matching account), resolution, Mark Handled.
   - Ticket Team (in-office or 3rd party, managers), Approval Ratings, Employees.
+- Lando (the website):
+  - Dashboard: who is on the website now (pages check in every minute), views by hour, site health, top pages, who was turned away, the latest website changes.
+  - Site Health, Visitors (every page view, by date, IP, page or visitor), Blocked IPs and Blocked Areas (the website shows "Not available" instead), Cookie Consents (every cookie banner choice and the cookies the browser had).
+  - Pages: every website page. Built-in pages (home, plans, Build Your Own Plan, business, contact us) take components in their top zone; the rest are built from content blocks on a template and shown at their own path (e.g. /locations/houston), with a price grid, redirects and an AMP version. Each page has its Activity and Edits. Rebuild Sitemap writes /sitemap.xml.
+  - Page Templates, Content Blocks (HTML with [[widgets]]; a block with {{variables}} is a module each page fills in), and the Style Guide (every CSS variable; try a color in your browser for 5 days, copy the changed CSS).
 - Caboose (finance):
   - Dashboard: money in over the last 30 days, what's waiting for approval, deposits, aging.
   - Payments: everything paid, by date, status or account. Record a payment taken by check, money order, cash or card; a "Deposit" payment goes toward the deposit instead of the balance.
@@ -126,17 +131,20 @@ src/RcBunny.Backend/
   Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords, Rewards (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
   Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
-                          Ranger's: Ranger, Messages; Caboose; Bounty; Sheriff's: Staff, Sheriff
+                          Ranger's: Ranger, Messages; Lando; Astro; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
   ClientApp/src/          main.tsx (routes), api.ts, auth.tsx, pages/*.tsx; admin.css is ebunny's admin.css unchanged,
                           styles.css gives our pages' own class names the same look
-                          pages/corral, pages/ranger, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes (Corral.tsx, Ranger.tsx,
-                          Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
+                          pages/corral, pages/ranger, pages/lando, pages/astro, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes
+                          (Corral.tsx, Ranger.tsx, Lando.tsx, Astro.tsx, Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
 src/RcBunny.Frontend/
   Program.cs              customer sign-in, the site's pages and My Account
   Services/SiteEndpoints.cs  what main.js asks the server for: /shared/config/brand.js and catalog.js (plans, rates,
-                          fees from the database), /site/session, the Contact Us form
+                          fees from the database), /site/session (the page view Lando counts, and blocking), /site/ping,
+                          /site/consent, /site/components, /sitemap.xml, /amp/<page>, the Contact Us form
+  Services/SiteContent.cs Lando content as HTML: [[block]] codes, widgets, zones, price grids
+  Pages/LandoPage.cshtml  any other path: the Lando page there (redirects, drafts and unknown paths are 404)
   Services/Maintenance.cs the "we'll be right back" page when Sheriff switches the website off
   Pages/                  Index, Plans, BuildYourOwnPlan, Business, ContactUs (ebunny's pages, at the same addresses: /plans.html…),
                           MyAccount/* (Login, Dashboard, Pay, Rewards, Support), Shared/_Layout and _MyAccount (ebunny's frame)

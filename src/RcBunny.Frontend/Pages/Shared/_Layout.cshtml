@@ -1,6 +1,6 @@
 @* The website layout for every page, same as ebunny's frontend/layouts/main.blade.php: style.css, and the header and
    footer filled in by main.js. Pages set ViewData["Title"] (or ["FullTitle"]), ["Description"], and ["NoHeading"]
-   when they have their own h1. *@
+   when they have their own h1, and ["DataPage"], ["DataPromo"], ["DataRep"], ["DataMarket"] for the body (Lando pages). *@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +14,7 @@
   <script src="/shared/password-toggle.js" defer></script>
   <script src="/shared/datepicker.js" defer></script>
 </head>
-<body>
+<body data-page="@ViewData["DataPage"]" data-promo="@ViewData["DataPromo"]" data-rep="@ViewData["DataRep"]" data-market="@ViewData["DataMarket"]">
   <div id="site-header"></div>
   @await RenderSectionAsync("Notice", required: false)
 

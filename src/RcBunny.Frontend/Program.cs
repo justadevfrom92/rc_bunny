@@ -9,10 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAppDatabase(builder.Configuration);
 builder.Services.AddMemoryCache();
+builder.Services.AddScoped<SiteContent>(); // Lando pages and components
 builder.Services.AddRazorPages(o =>
 {
     o.Conventions.AuthorizeFolder("/MyAccount").AllowAnonymousToPage("/MyAccount/Login");
     o.Conventions.AddPageRoute("/Index", "index.html"); // main.js links home as index.html
+    // The built-in pages also answer on their Lando page paths, like ebunny's (Cms.Files)
+    o.Conventions.AddPageRoute("/Plans", "plans");
+    o.Conventions.AddPageRoute("/BuildYourOwnPlan", "byop");
+    o.Conventions.AddPageRoute("/Business", "business");
+    o.Conventions.AddPageRoute("/ContactUs", "contact-us");
 });
 
 

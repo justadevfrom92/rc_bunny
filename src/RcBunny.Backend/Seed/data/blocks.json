@@ -1,0 +1,51 @@
+[
+ {
+  "id": 8,
+  "name": "BYOP - Header Tabs",
+  "site": "energytexas.com",
+  "updated": "2026-08-14",
+  "html": "<h1 class=\"content-center\">Build Your Own Plan</h1>\n<div id=\"plan-tabs\" class=\"nav inner-col\">\n  <ul>\n    <li class=\"active\" tab=\"started\"><a><span>1</span><span class=\"desktop-only\">Get Started</span></a></li>\n    <li tab=\"lower\"><a><span>2</span><span class=\"desktop-only\">Lower Your Bill</span></a></li>\n    <li tab=\"less\"><a><span>3</span><span class=\"desktop-only\">Using Less</span></a></li>\n    <li tab=\"savings\"><a><span>4</span><span class=\"desktop-only\">Save More</span></a></li>\n    <li tab=\"protection\"><a><span>5</span><span class=\"desktop-only\">Protectin'</span></a></li>\n    <li tab=\"thanks\"><a><span>6</span><span class=\"desktop-only\">Thank You</span></a></li>\n  </ul>\n</div>"
+ },
+ {
+  "id": 16,
+  "name": "BYOP - Form Tabs",
+  "site": "energytexas.com",
+  "updated": "2026-08-14",
+  "html": "<div class=\"tab started hidden\">\n  <h2>Let's Get Started</h2>\n  [[checkout|type=range|model=ItemElectricity_model|field=plan_term|value=12|min=1|max=36|label=First, Choose Your Plan Length:]]\n  [[checkout|type=checkbox|model=ItemProductAutopay_model|field=autopay]]\n  [[checkout|type=checkbox|model=ItemProductPaperless_model|field=paperless]]\n</div>"
+ },
+ {
+  "id": 21,
+  "name": "Home - Hero",
+  "site": "energytexas.com",
+  "updated": "2026-09-02",
+  "html": "<section class=\"hero\">\n  <h1>Power that's <em>bigger</em> than Texas.</h1>\n  [[zip_form]]\n</section>"
+ },
+ {
+  "id": 22,
+  "name": "Home - Featured Plans",
+  "site": "energytexas.com",
+  "updated": "2026-09-02",
+  "html": "[[plans|group=featured|limit=3]]"
+ },
+ {
+  "id": 30,
+  "name": "Footer - Links",
+  "site": "energytexas.com",
+  "updated": "2026-06-20",
+  "html": "<ul class=\"footer-4-cols\">\n  <li><a href=\"/plans\">Residential Plans</a></li>\n  <li><a href=\"/byop\">Build Your Own Plan</a></li>\n</ul>"
+ },
+ {
+  "id": 31,
+  "name": "Footer - Legal",
+  "site": "energytexas.com",
+  "updated": "2026-06-20",
+  "html": "<p>&copy; [[year]] Energy Texas. All rights reserved.</p>"
+ },
+ {
+  "id": 40,
+  "name": "Rewards - Promo Band",
+  "site": "energytexas.com",
+  "updated": "2026-07-11",
+  "html": "<div class=\"rewards-band\">Earn Rangler Rewards stars on every on-time payment.</div>"
+ }
+]

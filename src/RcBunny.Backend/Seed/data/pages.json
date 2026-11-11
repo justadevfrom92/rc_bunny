@@ -1,0 +1,421 @@
+[
+ {
+  "id": 1000,
+  "path": "/",
+  "title": "Home",
+  "redirect": "",
+  "template": "default",
+  "status": "Published"
+ },
+ {
+  "id": 1001,
+  "path": "404",
+  "title": "404",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Sorry, we couldn't find that page. Try the <a href=\"/plans.html\">plans page</a> or call us at [[phone]].</p>"
+ },
+ {
+  "id": 1002,
+  "path": "about-us",
+  "title": "About Us",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>We're a Texas retail electricity provider built around simple plans, fair prices and friendly local support.</p><p>Every plan comes with clear Electricity Facts Labels, no hidden fees and rewards for paying on time.</p>"
+ },
+ {
+  "id": 1003,
+  "path": "business",
+  "title": "Business",
+  "redirect": "/business/plans",
+  "template": "default",
+  "status": "Published"
+ },
+ {
+  "id": 1004,
+  "path": "business/plans",
+  "title": "Business Plans",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Fixed and variable plans for small businesses, with one bill for every location.</p>[[plans|group=business]]"
+ },
+ {
+  "id": 1005,
+  "path": "byop",
+  "title": "Build Your Own Plan",
+  "redirect": "",
+  "template": "default",
+  "status": "Published"
+ },
+ {
+  "id": 1006,
+  "path": "careers",
+  "title": "Careers",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>We're growing. Join a team that cares about customers and keeps things simple.</p><ul><li><a href=\"/careers/lead-developer\">Lead Developer</a></li><li><a href=\"/careers/staff-accountant\">Staff Accountant</a></li></ul>"
+ },
+ {
+  "id": 1007,
+  "path": "careers/lead-developer",
+  "title": "Lead Developer",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Lead our web and customer-account development. Experience with PHP/Laravel and plain JavaScript preferred.</p><p>Send your resume through the <a href=\"/contact-us.html\">contact page</a>.</p>"
+ },
+ {
+  "id": 1008,
+  "path": "careers/staff-accountant",
+  "title": "Staff Accountant",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Help close the books each month and support billing reconciliation. CPA track welcome.</p><p>Send your resume through the <a href=\"/contact-us.html\">contact page</a>.</p>"
+ },
+ {
+  "id": 1009,
+  "path": "checkout",
+  "title": "Checkout",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published",
+  "content": "<p>Finish signing up for your new plan.</p>"
+ },
+ {
+  "id": 1010,
+  "path": "checkout/accepted",
+  "title": "Accepted",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published"
+ },
+ {
+  "id": 1011,
+  "path": "checkout/deposit",
+  "title": "Deposit",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published"
+ },
+ {
+  "id": 1012,
+  "path": "checkout/alternatives",
+  "title": "Deposit Alternatives",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published"
+ },
+ {
+  "id": 1013,
+  "path": "checkout/error",
+  "title": "Error",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published"
+ },
+ {
+  "id": 1014,
+  "path": "checkout/frozen",
+  "title": "Frozen",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published"
+ },
+ {
+  "id": 1015,
+  "path": "checkout/save",
+  "title": "Save",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published"
+ },
+ {
+  "id": 1016,
+  "path": "checkout/start-call",
+  "title": "Start Call",
+  "redirect": "",
+  "template": "checkout",
+  "status": "Published"
+ },
+ {
+  "id": 1017,
+  "path": "come-back",
+  "title": "Come Back",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>We'd love to have you back. Enter your zip code to see today's plans.</p>[[zip_form]]"
+ },
+ {
+  "id": 1018,
+  "path": "contact-us",
+  "title": "Contact Us",
+  "redirect": "",
+  "template": "default",
+  "status": "Published"
+ },
+ {
+  "id": 1019,
+  "path": "ecobee",
+  "title": "ecobee",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Pair an ecobee smart thermostat with your plan and save on heating and cooling.</p>"
+ },
+ {
+  "id": 1020,
+  "path": "epicenter",
+  "title": "Epicenter",
+  "redirect": "/plans?msid=130001",
+  "template": "default",
+  "status": "Published"
+ },
+ {
+  "id": 1021,
+  "path": "experience-energy-savings-with-peak-perks-plus",
+  "title": "Peak Perks Plus",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Peak Perks Plus pays you to save energy during peak demand hours. Enroll in My Account.</p>"
+ },
+ {
+  "id": 1022,
+  "path": "freedom-flex",
+  "title": "Freedom Flex",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Freedom Flex lets you lock in a fixed rate with the option to renew early when rates drop.</p>[[plans|group=resi|limit=3]]"
+ },
+ {
+  "id": 1023,
+  "path": "get-to-learnin",
+  "title": "Get to Learnin'",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Tips and guides for understanding your bill, saving energy and choosing a plan.</p><ul><li><a href=\"/get-to-learnin/how-to-read-a-texas-electricity-facts-label\">How to read an Electricity Facts Label</a></li><li><a href=\"/get-to-learnin/how-to-keep-your-cool-in-extreme-heat\">Keep your cool in extreme heat</a></li><li><a href=\"/get-to-learnin/what-is-energy-choice\">What is energy choice?</a></li><li><a href=\"/get-to-learnin/how-solar-energy-works\">How solar energy works</a></li></ul>"
+ },
+ {
+  "id": 1024,
+  "path": "get-to-learnin/how-to-read-a-texas-electricity-facts-label",
+  "title": "How to Read an EFL",
+  "redirect": "",
+  "template": "article",
+  "status": "Published",
+  "content": "<p>Every Texas plan has an Electricity Facts Label (EFL) showing the average price at 500, 1,000 and 2,000 kWh, the contract term and any fees.</p><p>Compare plans at the usage closest to your own monthly kWh.</p>"
+ },
+ {
+  "id": 1025,
+  "path": "get-to-learnin/how-to-keep-your-cool-in-extreme-heat",
+  "title": "Keep Your Cool in Extreme Heat",
+  "redirect": "",
+  "template": "article",
+  "status": "Published",
+  "content": "<p>Set your thermostat to 78°F when home, close blinds during the afternoon and run ceiling fans counter-clockwise.</p>"
+ },
+ {
+  "id": 1026,
+  "path": "get-to-learnin/what-is-energy-choice",
+  "title": "What Is Energy Choice",
+  "redirect": "",
+  "template": "article",
+  "status": "Published",
+  "content": "<p>In deregulated areas of Texas you choose your electricity provider, while your local utility still delivers power and handles outages.</p>"
+ },
+ {
+  "id": 1027,
+  "path": "get-to-learnin/how-solar-energy-works",
+  "title": "How Solar Energy Works",
+  "redirect": "",
+  "template": "article",
+  "status": "Published",
+  "content": "<p>Solar panels turn sunlight into DC power; an inverter converts it to AC for your home. Extra power can be sold back with a buyback plan.</p>"
+ },
+ {
+  "id": 1028,
+  "path": "giddy-up",
+  "title": "Giddy Up",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Pick your own due date so your bill lines up with payday.</p>"
+ },
+ {
+  "id": 1029,
+  "path": "historical-efls",
+  "title": "Historical EFLs",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Electricity Facts Labels for plans no longer offered are available on request. Call [[phone]].</p>"
+ },
+ {
+  "id": 1030,
+  "path": "locations",
+  "title": "Locations",
+  "redirect": "/",
+  "template": "default",
+  "status": "Published"
+ },
+ {
+  "id": 1031,
+  "path": "locations/houston",
+  "title": "Houston",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>We serve Houston and the CenterPoint service area.</p>[[zip_form]]"
+ },
+ {
+  "id": 1032,
+  "path": "locations/dallas",
+  "title": "Dallas",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>We serve Dallas and the Oncor service area.</p>[[zip_form]]"
+ },
+ {
+  "id": 1033,
+  "path": "locations/fort-worth",
+  "title": "Fort Worth",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>We serve Fort Worth and the Oncor service area.</p>[[zip_form]]"
+ },
+ {
+  "id": 1034,
+  "path": "locations/corpus-christi",
+  "title": "Corpus Christi",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>We serve Corpus Christi and the AEP Central service area.</p>[[zip_form]]"
+ },
+ {
+  "id": 1035,
+  "path": "military-and-first-responders",
+  "title": "Military & First Responders",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Thank you for your service. Military members and first responders get the deposit waived on any plan.</p>"
+ },
+ {
+  "id": 1036,
+  "path": "monthly-drawing-official-rules",
+  "title": "Monthly Drawing Rules",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>No purchase necessary. One entry per account per month. Winners are drawn on the first business day of the following month.</p>"
+ },
+ {
+  "id": 1037,
+  "path": "myaccount",
+  "title": "My Account",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published",
+  "content": "<p>Sign in to pay your bill, view usage and manage your plan.</p>"
+ },
+ {
+  "id": 1038,
+  "path": "myaccount/dashboard",
+  "title": "Dashboard",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1039,
+  "path": "myaccount/pay-bill",
+  "title": "Pay Bill",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1040,
+  "path": "myaccount/autopay",
+  "title": "AutoPay",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1041,
+  "path": "myaccount/paperless-billing",
+  "title": "Paperless Billing",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1042,
+  "path": "myaccount/rewards",
+  "title": "Rewards",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1043,
+  "path": "myaccount/renew-plan",
+  "title": "Renew Plan",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1044,
+  "path": "myaccount/peak-perks",
+  "title": "Peak Perks",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1045,
+  "path": "myaccount/login",
+  "title": "Login",
+  "redirect": "",
+  "template": "myaccount",
+  "status": "Published"
+ },
+ {
+  "id": 1046,
+  "path": "plans",
+  "title": "Plans",
+  "redirect": "",
+  "template": "default",
+  "status": "Published"
+ },
+ {
+  "id": 1047,
+  "path": "promo",
+  "title": "Promo",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Limited-time offer: enter your zip code to see promotional plans.</p>[[zip_form]]"
+ },
+ {
+  "id": 1048,
+  "path": "refer-a-friend",
+  "title": "Refer a Friend",
+  "redirect": "",
+  "template": "default",
+  "status": "Published",
+  "content": "<p>Refer a friend and you both get a bill credit when they start service.</p>"
+ }
+]

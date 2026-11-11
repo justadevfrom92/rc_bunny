@@ -69,6 +69,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<DrawingEntry> DrawingEntries => Set<DrawingEntry>();
     public DbSet<DrawingWinner> DrawingWinners => Set<DrawingWinner>();
 
+    // Lando
+    public DbSet<Website> Sites => Set<Website>();
+    public DbSet<Template> Templates => Set<Template>();
+    public DbSet<BlockCategory> BlockCategories => Set<BlockCategory>();
+    public DbSet<ContentBlock> ContentBlocks => Set<ContentBlock>();
+    public DbSet<Page> Pages => Set<Page>();
+    public DbSet<PageComponent> PageComponents => Set<PageComponent>();
+    public DbSet<SiteVisit> SiteVisits => Set<SiteVisit>();
+    public DbSet<SiteBlock> SiteBlocks => Set<SiteBlock>();
+    public DbSet<CookieConsent> CookieConsents => Set<CookieConsent>();
+
     /// <summary>Who is making changes through this context (the signed-in employee), for history. Empty = the system.</summary>
     public string? ActorName { get; set; }
     public int? ActorId { get; set; }
@@ -108,6 +119,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<StarEntry>().HasIndex(x => x.PaymentId);
         m.Entity<DrawingEntry>().HasIndex(x => new { x.Month, x.CustomerId }).IsUnique(); // one entry per person per month
         m.Entity<DrawingWinner>().HasIndex(x => x.Month).IsUnique();                     // one winner per month
+        m.Entity<Page>().HasIndex(p => new { p.SiteId, p.Path }).IsUnique();
+        m.Entity<ContentBlock>().HasIndex(b => b.Slug).IsUnique();
+        m.Entity<PageComponent>().HasOne(c => c.Block).WithMany().HasForeignKey(c => c.ContentBlockId);
+        m.Entity<SiteVisit>().HasIndex(v => v.CreatedAt);
+        m.Entity<SiteVisit>().HasIndex(v => v.SeenAt);
+        m.Entity<SiteVisit>().HasIndex(v => v.Visitor);
+        m.Entity<SiteBlock>().HasIndex(b => new { b.Type, b.Value }).IsUnique();
+        m.Entity<CookieConsent>().HasIndex(k => k.Visitor);
     }
 
     // ---- History: every change to the tables in Tracked is written to History automatically ----------------
@@ -135,6 +154,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         [typeof(Market)] = ("Market_model", "Admin Changes"),
         [typeof(User)] = ("User_model", "Admin Changes"),
         [typeof(Role)] = ("Role_model", "Admin Changes"),
+        [typeof(Page)] = ("Page_model", "Website"),
+        [typeof(PageComponent)] = ("PageComponent_model", "Website"),
+        [typeof(ContentBlock)] = ("ContentBlock_model", "Website"),
+        [typeof(Template)] = ("Template_model", "Website"),
+        [typeof(SiteBlock)] = ("SiteBlock_model", "Website"),
     };
 
     private static readonly HashSet<string> Hidden = ["PasswordHash", "UpdatedAt"];

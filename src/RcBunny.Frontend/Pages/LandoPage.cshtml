@@ -1,0 +1,80 @@
+@page "/{**path}"
+@model LandoPageModel
+@* A website page built in Lando: same markup as ebunny's frontend/page.blade.php *@
+@{
+    var p = Model.Item;
+    ViewData["Title"] = p.Title;
+    if (p.HtmlTitle != null) ViewData["FullTitle"] = p.HtmlTitle;
+    ViewData["Description"] = p.MetaDescription;
+    ViewData["Heading"] = Model.Heading;
+    ViewData["Eyebrow"] = p.MarketLabel;
+    // Orders started on the page carry these (ebunny's body-attrs)
+    ViewData["DataPage"] = p.Path; ViewData["DataPromo"] = p.PromoCode; ViewData["DataRep"] = p.RepId; ViewData["DataMarket"] = Model.Market?.Code;
+    var zones = Model.Zones;
+    var content = Model.Content;
+}
+@section Head {
+  @if (p.MetaKeywords != null) { <meta name="keywords" content="@p.MetaKeywords"> }
+  @if (p.NoIndex) { <meta name="robots" content="noindex"> }
+  @if (p.Canonical) { <link rel="canonical" href="@($"{Request.Scheme}://{Request.Host}{SiteContent.Url(p)}")"> }
+  @if (Model.HasAmp) { <link rel="amphtml" href="/amp/@p.Path"> }
+  @Html.Raw(p.HeadContent)
+}
+
+    @if (zones["top"] != "") { <section class="section cms-zone" data-zone="top"><div class="wrap">@Html.Raw(zones["top"])</div></section> }
+
+    <section class="section">
+      <div class="wrap" style="@(zones["sidebar"] != "" ? "display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:40px;align-items:start" : null)">
+        <div class="cms-content">
+          @Html.Raw(content["primary"])
+          @Html.Raw(content["secondary"])
+          @Html.Raw(content["auxiliary"])
+          @if (Model.Grid is { } grid)
+          {
+            <div class="price-grid">
+              <h2>@(grid.Header ?? "Plans" + (p.MarketLabel != null ? " for " + p.MarketLabel : grid.Market != null ? " in " + grid.Market.Name : ""))</h2>
+              @if (grid.Rows.Count == 0)
+              {
+                <p>No plans are priced here yet.</p>
+              }
+              else if (grid.Type == "table")
+              {
+                <div style="overflow-x:auto"><table class="price-table">
+                  <thead><tr><th>Plan</th><th>Term</th><th>500 kWh</th><th>1,000 kWh</th><th>2,000 kWh</th><th></th></tr></thead>
+                  <tbody>
+                  @foreach (var r in grid.Rows)
+                  {
+                    <tr><td><a href="/plans/@r.Page"><b>@r.Plan.Name</b></a></td><td>@(r.Plan.TermMonths <= 1 ? "Month-to-month" : $"{r.Plan.TermMonths} months")</td>
+                      @foreach (var kwh in new[] { 500, 1000, 2000 }) { <td>@r.Avg[kwh].ToString("0.0")¢</td> }
+                      <td class="nowrap"><a class="btn" href="/checkout?plan=@Uri.EscapeDataString(r.Plan.Code)">Sign Up</a> <a href="/plans/@r.Page">Details</a></td></tr>
+                  }
+                  </tbody>
+                </table></div>
+              }
+              else
+              {
+                <div class="plan-grid">
+                @foreach (var r in grid.Rows)
+                {
+                  <div class="plan">
+                    <div class="plan-top">
+                      <span class="plan-term">@(r.Plan.TermMonths <= 1 ? "Month-to-month" : $"{r.Plan.TermMonths} months")</span>
+                      <h3><a class="plan-name" href="/plans/@r.Page">@r.Plan.Name</a></h3>
+                      <div class="plan-rate"><strong>@r.Price.ToString("0.0")¢</strong><span>per kWh</span></div>
+                      <p class="plan-rate-note">@grid.Formula</p>
+                    </div>
+                    <div class="plan-body"><a class="btn btn-block" href="/checkout?plan=@Uri.EscapeDataString(r.Plan.Code)">Sign Up</a><a class="btn btn-outline btn-block plan-details" href="/plans/@r.Page">Plan Details</a></div>
+                  </div>
+                }
+                </div>
+              }
+              <p class="price-note">@grid.Formula@(grid.Market != null ? " · " + grid.Market.Name : ""). Includes TDSP delivery charges. See each plan's Electricity Facts Label.</p>
+            </div>
+          }
+          @if (zones["main"] != "") { <div class="cms-zone" data-zone="main">@Html.Raw(zones["main"])</div> }
+        </div>
+        @if (zones["sidebar"] != "") { <aside class="cms-zone" data-zone="sidebar">@Html.Raw(zones["sidebar"])</aside> }
+      </div>
+    </section>
+
+    @if (zones["bottom"] != "") { <section class="section cms-zone" data-zone="bottom"><div class="wrap">@Html.Raw(zones["bottom"])</div></section> }

@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Corral from './pages/corral/Corral';
 import Astro from './pages/astro/Astro';
+import Lando from './pages/lando/Lando';
 import Ranger from './pages/ranger/Ranger';
 import Sheriff from './pages/sheriff/Sheriff';
 import Caboose from './pages/caboose/Caboose';
@@ -16,6 +17,13 @@ import { enhancePages } from './enhance';
 
 // ebunny's admin.js table paging (10 rows at a time)
 enhancePages();
+
+// Style Guide changes an employee made, kept in this browser for 5 days and applied to every admin page here (ebunny's partials/head)
+try {
+  const s = JSON.parse(localStorage.getItem('et-admin-local-styles') || 'null');
+  if (s?.vars && s.expires < Date.now()) localStorage.removeItem('et-admin-local-styles');
+  else if (s?.vars) for (const [n, v] of Object.entries(s.vars)) document.documentElement.style.setProperty(n, v as string);
+} catch { /* storage blocked */ }
 
 function App() {
   const { me } = useAuth();
@@ -28,6 +36,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Navigate to={new URLSearchParams(location.search).get('to') ?? '/'} replace />} />
       <Route path="/corral/*" element={<RequirePermission permission="corral"><Corral /></RequirePermission>} />
+      <Route path="/lando/*" element={<RequirePermission permission="lando"><Lando /></RequirePermission>} />
       <Route path="/astro/*" element={<RequirePermission permission="plans"><Astro /></RequirePermission>} />
       <Route path="/ranger/*" element={<RequirePermission permission="ranger"><Ranger /></RequirePermission>} />
       <Route path="/caboose/*" element={<RequirePermission permission="caboose"><Caboose /></RequirePermission>} />

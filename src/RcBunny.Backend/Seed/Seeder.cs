@@ -17,7 +17,7 @@ public static partial class Seeder
         var password = Passwords.Hash("password");
 
         // Staff and what each role can do: ebunny's roles and staff (Seed/data/roles.json, users.json). ebunny's Astro is
-        // our "plans" permission; its apps we don't have yet (Lando, Walker, Rodeo, Deputy) are left out.
+        // our "plans" permission; its apps we don't have yet (Walker, Rodeo, Deputy) are left out.
         string Perms(JsonNode? list) => string.Join(",", (list?.AsArray() ?? []).Select(p => p!.ToString() == "astro" ? "plans" : p!.ToString())
             .Where(Permissions.All.ContainsKey).Distinct());
         var roles = Load("roles").Select(r => new Role { Name = S(r, "name"), Permissions = Perms(r["perms"]) }).ToDictionary(r => r.Name);
@@ -97,6 +97,9 @@ public static partial class Seeder
 
         // Ranger: the ticket team (in-office and a 3rd-party company), tickets, and website messages (Seed/RangerSeed.cs)
         await SeedRangerAsync(db, adminUser, await db.Users.FirstAsync(u => u.Email == "csr@example.com"), service, password, storageRoot);
+
+        // Lando: the website's pages, content blocks, visits and cookie choices (Seed/LandoSeed.cs)
+        await SeedLandoAsync(db, adminUser);
 
         // Sheriff: the website's maintenance switch
         db.HeartbeatControls.Add(new HeartbeatControl { Key = "website", Name = "Website" });

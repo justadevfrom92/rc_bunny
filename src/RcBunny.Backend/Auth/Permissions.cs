@@ -19,6 +19,7 @@ public static class Permissions
         ["caboose"] = "Caboose: payments, credits and debits, refunds, deposits, aging, the journal, MSIDs and promo codes",
         ["bounty"] = "Bounty: reward offers, earning rules, redemptions, members and the monthly drawing",
         ["ranger"] = "Ranger: support tickets and website messages",
+        ["lando"] = "Lando: the website's pages, content blocks, visitors, blocking and cookie choices",
         ["sheriff"] = "Sheriff: staff, roles, heartbeat, crons, markets and integrations",
     };
 

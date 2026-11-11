@@ -38,6 +38,8 @@ public class RecordsController(AppDbContext db) : ControllerBase
         ["job_run"] = (typeof(JobRun), "Job Run", "sheriff"),
         ["health_check"] = (typeof(HealthCheck), "Heartbeat Check", "sheriff"),
         ["audit_entry"] = (typeof(AuditEntry), "Timeline Entry", "sheriff"),
+        ["site_visit"] = (typeof(SiteVisit), "Site Visit", "lando"),
+        ["history_item"] = (typeof(HistoryEntry), "History Entry", "lando"),
     };
 
     private static readonly HashSet<string> NotEditable = ["Id", "CustomerId", "CreatedAt", "UpdatedAt", "PasswordHash", "Changes"];

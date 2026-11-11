@@ -11,6 +11,7 @@ export type Menu = { heading?: string; links: [label: string, path: string, opti
 export const apps: Record<string, { name: string; desc: string; icon: string; home: string; perm?: string }> = {
   corral: { name: 'Corral', icon: 'users', home: '/corral', desc: 'Customer service and CRM: search accounts, create orders, work exception queues, the sales pipeline of leads, follow-ups and partners.' },
   ranger: { name: 'Ranger', icon: 'ticket', home: '/ranger', desc: 'Support tickets customers open from My Account and messages from the website contact form: the queue, replies and notes, take over and join in for managers, the ticket team (in-office and 3rd party) and approval ratings.' },
+  lando: { name: 'Lando', icon: 'layout', home: '/lando', desc: 'Website CMS: site health and visitors, pages, page templates and content blocks.' },
   astro: { name: 'Astro', icon: 'chart', home: '/astro/plans', perm: 'plans', desc: 'Plans and pricing: plans, plan groups, rates, TDSP fees, term discounts, ETFs and Build Your Own Plan products.' },
   caboose: { name: 'Caboose', icon: 'train', home: '/caboose', desc: 'Finance: payments, credits and debits approval, refunds, deposits, receivables aging, the journal export, MSIDs and promo codes.' },
   bounty: { name: 'Bounty', icon: 'gift', home: '/bounty', desc: 'Rewards: offers, how stars are earned, redemptions to fulfil, member balances and the monthly drawing.' },
@@ -127,6 +128,7 @@ export function Icon({ name }: { name: string }) {
   switch (name) {
     case 'ticket': return <svg {...p} strokeLinejoin="round"><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v3a2 2 0 000 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a2 2 0 000-4z" /><path d="M14 5v14" strokeDasharray="2 2" /></svg>;
     case 'users': return <svg {...p} strokeLinecap="round"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0113 0M16 4.5a3.5 3.5 0 010 7M18 14a5.5 5.5 0 013.5 6" /></svg>;
+    case 'layout': return <svg {...p} strokeLinecap="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9h18M8 13h8M8 16h5" /></svg>;
     case 'chart': return <svg {...p} strokeLinecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg>;
     case 'star': return <svg {...p} strokeLinejoin="round"><path d="M12 2l2.4 5 5.6.6-4.2 3.8 1.2 5.5L12 14l-5 2.9 1.2-5.5L4 7.6 9.6 7z" /><path d="M12 14v8" /></svg>;
     case 'train': return <svg {...p} strokeLinejoin="round"><path d="M3 9h18v8H3zM8 9V5h8v4M10 5V3h4v2" /><path d="M6 12h3M15 12h3M1 17h2M21 17h2" /><circle cx="7" cy="19" r="2" /><circle cx="17" cy="19" r="2" /></svg>;
