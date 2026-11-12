@@ -33,6 +33,9 @@ public static partial class Seeder
             if (perms.Contains("walker"))
                 foreach (var up in await db.ReportUploads.OrderByDescending(x => x.Id).Take(2).ToListAsync())
                     items.Add(("file", $"New file in {up.Category}: {up.Title}", $"Added by {(await db.Users.FindAsync(up.UserId))?.Name ?? "someone"}", $"/admin/walker/uploads/{up.Id}", up.CreatedAt));
+            if (perms.Contains("rodeo"))
+                foreach (var c in await db.Campaigns.Where(c => c.Status == "sent").OrderByDescending(c => c.SentAt).Take(2).ToListAsync())
+                    items.Add(("campaign", $"Campaign sent: {c.Name}", $"{c.Recipients:N0} sent, {c.Skipped:N0} skipped", $"/admin/rodeo/campaigns/{c.Id}", c.SentAt));
             for (var i = 0; i < items.Count; i++)
             {
                 var (kind, title, body, url, when) = items[i];

@@ -10,7 +10,8 @@ namespace RcBunny.Services;
 public sealed class SimplePdf
 {
     private readonly List<StringBuilder> pages = [new()];
-    private StringBuilder Page => pages[^1];
+    private int current;
+    private StringBuilder Page => pages[current];
     public const double Width = 612, Height = 792;
 
     private static string Esc(string s)
@@ -27,10 +28,11 @@ public sealed class SimplePdf
 
     private static string N(double v) => v.ToString("0.##", CultureInfo.InvariantCulture);
 
-    /// <summary>Text with its top-left at (x, y) from the top of the page.</summary>
-    public SimplePdf Text(double x, double y, string text, double size = 11, bool bold = false, string color = "#262626")
+    /// <summary>Text with its top-left at (x, y) from the top of the page; right = true puts its right edge at x.</summary>
+    public SimplePdf Text(double x, double y, string text, double size = 11, bool bold = false, string color = "#262626", bool right = false)
     {
         var (r, g, b) = Rgb(color);
+        if (right) x -= Measure(text, size, bold);
         Page.Append($"BT /{(bold ? "F2" : "F1")} {N(size)} Tf {N(r)} {N(g)} {N(b)} rg {N(x)} {N(Height - y - size)} Td ({Esc(text)}) Tj ET\n");
         return this;
     }
@@ -74,7 +76,21 @@ public sealed class SimplePdf
         return this;
     }
 
-    public SimplePdf NewPage() { pages.Add(new StringBuilder()); return this; }
+    public SimplePdf NewPage() { pages.Add(new StringBuilder()); current = pages.Count - 1; return this; }
+
+    /// <summary>Draw on an earlier page (e.g. page numbers once the page count is known).</summary>
+    public SimplePdf OnPage(int index) { current = index; return this; }
+
+    // Helvetica's character widths (per 1000 units) for the printable ASCII range, regular and bold
+    private static readonly int[] Regular = [278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556, 1015, 667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469, 556, 333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556, 556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584];
+    private static readonly int[] Bold = [278, 333, 474, 556, 556, 889, 722, 238, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 333, 333, 584, 584, 584, 611, 975, 722, 722, 722, 722, 667, 611, 778, 722, 278, 556, 722, 611, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 333, 278, 333, 584, 556, 333, 556, 611, 556, 611, 556, 333, 611, 611, 278, 278, 556, 278, 889, 611, 611, 611, 611, 389, 556, 333, 611, 556, 778, 556, 556, 500, 389, 280, 389, 584];
+
+    /// <summary>How wide text is in points.</summary>
+    public static double Measure(string text, double size, bool bold = false)
+    {
+        var widths = bold ? Bold : Regular;
+        return text.Sum(ch => ch is >= ' ' and <= '~' ? widths[ch - ' '] : 556) * size / 1000.0;
+    }
 
     public int PageCount => pages.Count;
 

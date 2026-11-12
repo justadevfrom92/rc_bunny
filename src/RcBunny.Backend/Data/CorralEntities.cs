@@ -106,7 +106,15 @@ public class ContactLog
     public string? Resolution { get; set; }
     public string? ResolvedBy { get; set; }
     public string? Who { get; set; }
+    /// <summary>The employee who sent it (null for the system).</summary>
+    public int? UserId { get; set; }
+    /// <summary>The Rodeo campaign it went out in.</summary>
+    public int? CampaignId { get; set; }
     public DateTime? SentAt { get; set; }
+    /// <summary>Email tracking: opened, a link clicked, or dropped (bounced).</summary>
+    public DateTime? OpenedAt { get; set; }
+    public DateTime? ClickedAt { get; set; }
+    public DateTime? DroppedAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 

@@ -1,0 +1,50 @@
+[
+ {
+  "name": "Payment Reminder Letter",
+  "category": "Collections",
+  "title": "Payment Reminder",
+  "body": "Hi {{first_name}},\n\nOur records show a balance of {{balance}} on account {{account}}. If you have already paid, thank you, and please disregard this letter.\n\n| Balance due | {{balance}} |\n| Latest bill | {{last_bill}} |\n| Due date | {{due_date}} |\n\n## Ways to pay\n- Online in My Account, any time\n- By phone at {{phone}}\n- Set up AutoPay so you never miss a due date\n\nIf you're having trouble paying, call us. We can set up a payment arrangement."
+ },
+ {
+  "name": "Disconnection Notice",
+  "category": "Collections",
+  "title": "Disconnection Notice",
+  "body": "**This notice is about electric service at {{address}}, {{city}}.**\n\nDear {{name}},\n\nYour account {{account}} is past due. To avoid disconnection, please pay {{balance}} by the date below.\n\n| Amount needed to avoid disconnection | {{balance}} |\n| Pay by | {{due_date}} |\n\n## What happens next\n- If payment is received by the date above, your service continues as normal.\n- If not, your service may be disconnected on or after that date.\n- A reconnection fee may apply after a disconnection.\n\n## Help paying your bill\nYou may qualify for a deferred payment plan or energy assistance programs. Call {{phone}} to talk about your options before the date above.\n\n---\n\n## Your rights\nYou can ask for a copy of your bill history at any time. If you think this notice is wrong, call us before the date above so we can review your account. You may also contact the Public Utility Commission of Texas.\n\n**Medical needs:** if someone at this address depends on electric-powered medical equipment, call us right away. You may qualify for a critical care designation."
+ },
+ {
+  "name": "Welcome Letter",
+  "category": "Welcome",
+  "title": "Welcome to {{brand}}",
+  "body": "Welcome, {{first_name}}!\n\nThank you for choosing {{brand}}. Your service at {{address}} is set up on the {{plan}} plan.\n\n| Account number | {{account}} |\n| Plan | {{plan}} |\n| ESIID | {{esiid}} |\n\n## Get started\n- Sign in to My Account to see your usage and bills\n- Turn on AutoPay and paperless billing\n- Earn Rangler Rewards stars for paying on time\n\nWe're glad you're here."
+ },
+ {
+  "name": "Deposit Request",
+  "category": "Billing",
+  "title": "Deposit Request",
+  "body": "Hi {{first_name}},\n\nBased on the credit review for account {{account}}, a deposit is needed to start or keep service. The deposit is credited back after 12 months of on-time payments.\n\n| Deposit amount | $150.00 |\n| Account | {{account}} |\n\nYou can pay the deposit in My Account or by calling {{phone}}."
+ },
+ {
+  "name": "Final Bill Notice",
+  "category": "Billing",
+  "title": "Your Final Bill",
+  "body": "Hi {{first_name}},\n\nYour service at {{address}} has ended. This is your final bill for account {{account}}.\n\n| Final amount due | {{balance}} |\n| Due date | {{due_date}} |\n\nAny deposit on file has been applied to this balance. If you have a credit, we'll mail a refund check to the address we have on file.\n\nThank you for being a {{brand}} customer."
+ },
+ {
+  "name": "Contract Renewal Notice",
+  "category": "Service",
+  "title": "Your Contract Is Ending Soon",
+  "body": "Hi {{first_name}},\n\nYour {{plan}} contract for {{address}} ends soon. Pick a new plan to keep a fixed rate.\n\n## Your options\n- Renew in My Account in a few minutes\n- Call {{phone}} and we'll help you pick a plan\n- Do nothing: you'll move to a month-to-month variable rate\n\n| Account | {{account}} |\n| Current plan | {{plan}} |"
+ },
+ {
+  "name": "Terms of Service Summary",
+  "category": "Legal",
+  "title": "Terms of Service Summary",
+  "body": "# About this summary\nThis is a short summary of the terms for account {{account}}. The full Terms of Service, Your Rights as a Customer and the Electricity Facts Label for {{plan}} are in My Account.\n\n# Billing\nBills are issued monthly and are due 16 days after they are issued. Late payments may carry a fee. You can pay online, by phone, by mail or with AutoPay.\n\n# Deposits\nA deposit may be required based on your credit history or payment history with us. Deposits are credited back after 12 months of on-time payments, or when service ends.\n\n# Your contract\nFixed-rate plans keep the same energy rate for the contract term, except for changes in delivery charges or taxes. Ending a fixed-rate contract early may carry a cancellation fee, which is waived if you move and give us a forwarding address.\n\n# Ending service\nYou can end service at any time. Your final bill includes usage up to the end date. Any credit is refunded within 10 business days.\n\n# Disconnection\nService may be disconnected for non-payment after written notice. You will always get at least 10 days' notice. Disconnection will not happen on a weekend or holiday, or during extreme weather.\n\n# Your privacy\nWe do not sell your personal information. We share it only to provide your service, as required by law, or with your permission.\n\n# Complaints\nIf you have a complaint, call {{phone}} first. If we can't resolve it, you may contact the Public Utility Commission of Texas.\n\n---\n\n**Questions?** Call {{phone}} or visit My Account."
+ },
+ {
+  "name": "Rewards Statement",
+  "category": "Rewards",
+  "title": "Your Rangler Rewards",
+  "body": "Hi {{first_name}},\n\nHere's your Rangler Rewards summary for account {{account}} as of {{today}}.\n\n## How to earn stars\n- Pay your bill on time\n- Turn on AutoPay and paperless billing\n- Refer a friend\n\nRedeem stars in My Account for gift cards and bill credits."
+ }
+]
