@@ -113,6 +113,8 @@ public class EmailTestSend
     public string? Target { get; set; }
     public string? Subject { get; set; }
     public string? Note { get; set; }
+    /// <summary>JSON: the options it was sent with, for Send Again.</summary>
+    public string? Params { get; set; }
     /// <summary>JSON: [{email, name?, account?, status, error?}].</summary>
     public string Recipients { get; set; } = "[]";
     /// <summary>sent, logged, failed or partial.</summary>

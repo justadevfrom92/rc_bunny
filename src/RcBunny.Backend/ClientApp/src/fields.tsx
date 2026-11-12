@@ -25,7 +25,7 @@ const PW_CSS =
   '.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;margin:0;border:0;border-radius:6px;background:transparent;color:#5b6b80;cursor:pointer}' +
   '.pw-eye:hover,.pw-eye:focus-visible{color:#102247;background:rgba(16,34,71,.07)}.pw-eye::after,.pw-eye::before{display:none!important}';
 
-function useCss(id: string, css: string) {
+export function useCss(id: string, css: string) {
   useEffect(() => {
     if (document.getElementById(id)) return;
     const s = document.createElement('style');

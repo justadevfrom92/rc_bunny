@@ -40,6 +40,7 @@ public class RecordsController(AppDbContext db) : ControllerBase
         ["audit_entry"] = (typeof(AuditEntry), "Timeline Entry", "sheriff"),
         ["site_visit"] = (typeof(SiteVisit), "Site Visit", "lando"),
         ["history_item"] = (typeof(HistoryEntry), "History Entry", "lando"),
+        ["email_test"] = (typeof(EmailTestSend), "Email Test", "rodeo"),
     };
 
     private static readonly HashSet<string> NotEditable = ["Id", "CustomerId", "CreatedAt", "UpdatedAt", "PasswordHash", "Changes"];

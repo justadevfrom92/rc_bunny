@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAppDatabase(builder.Configuration);
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
+builder.Services.AddSingleton<RcBunny.Services.Mailer>(); // email (SMTP, or storage/mail-log until it is set up)
 builder.Services.AddHostedService<RcBunny.Jobs.Scheduler>(); // Sheriff → Crons
 
 // Employees sign in with a cookie. The API answers 401/403 instead of redirecting.

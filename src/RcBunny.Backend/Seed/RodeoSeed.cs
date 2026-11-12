@@ -187,7 +187,7 @@ public static partial class Seeder
         await db.SaveChangesAsync();
 
         // ---- Email tracking on the other emails: most are opened, some clicked ----
-        foreach (var log in await db.ContactLogs.Where(l => l.Channel == "Email" && l.CampaignId == null && l.OpenedAt == null && l.Status == "sent").ToListAsync())
+        foreach (var log in await db.ContactLogs.Where(l => l.Channel == "Email" && l.CampaignId == null && l.OpenedAt == null && l.Status == "sent" && !l.Template.StartsWith("Survey")).ToListAsync())
         {
             var at = log.SentAt ?? log.CreatedAt;
             if (random.Next(3) > 0) log.OpenedAt = at.AddHours(random.Next(1, 41));
