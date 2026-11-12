@@ -10,6 +10,8 @@ namespace RcBunny.Services;
 public sealed class SimplePdf
 {
     private readonly List<StringBuilder> pages = [new()];
+    // The same drawing as SVG, one per page, for previews on screen (like ebunny's Pdf::svgs)
+    private readonly List<StringBuilder> svgs = [new()];
     private int current;
     private StringBuilder Page => pages[current];
     public const double Width = 612, Height = 792;
@@ -34,6 +36,7 @@ public sealed class SimplePdf
         var (r, g, b) = Rgb(color);
         if (right) x -= Measure(text, size, bold);
         Page.Append($"BT /{(bold ? "F2" : "F1")} {N(size)} Tf {N(r)} {N(g)} {N(b)} rg {N(x)} {N(Height - y - size)} Td ({Esc(text)}) Tj ET\n");
+        svgs[current].Append($"<text x=\"{N(x)}\" y=\"{N(y + size)}\" font-size=\"{N(size)}\"{(bold ? " font-weight=\"bold\"" : "")} fill=\"{color}\">{System.Net.WebUtility.HtmlEncode(text)}</text>");
         return this;
     }
 
@@ -66,6 +69,7 @@ public sealed class SimplePdf
     {
         var (r, g, b) = Rgb(color);
         Page.Append($"{N(r)} {N(g)} {N(b)} rg {N(x)} {N(Height - y - h)} {N(w)} {N(h)} re f\n");
+        svgs[current].Append($"<rect x=\"{N(x)}\" y=\"{N(y)}\" width=\"{N(w)}\" height=\"{N(h)}\" fill=\"{color}\"/>");
         return this;
     }
 
@@ -73,10 +77,14 @@ public sealed class SimplePdf
     {
         var (r, g, b) = Rgb(color);
         Page.Append($"{N(r)} {N(g)} {N(b)} RG 0.75 w {N(x1)} {N(Height - y1)} m {N(x2)} {N(Height - y2)} l S\n");
+        svgs[current].Append($"<line x1=\"{N(x1)}\" y1=\"{N(y1)}\" x2=\"{N(x2)}\" y2=\"{N(y2)}\" stroke=\"{color}\" stroke-width=\"0.75\"/>");
         return this;
     }
 
-    public SimplePdf NewPage() { pages.Add(new StringBuilder()); current = pages.Count - 1; return this; }
+    public SimplePdf NewPage() { pages.Add(new StringBuilder()); svgs.Add(new StringBuilder()); current = pages.Count - 1; return this; }
+
+    /// <summary>Every page as SVG, to show on screen.</summary>
+    public List<string> Svgs() => svgs.Select(s => $"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {N(Width)} {N(Height)}\" font-family=\"Helvetica, Arial, sans-serif\" role=\"img\"><rect width=\"{N(Width)}\" height=\"{N(Height)}\" fill=\"#fff\"/>{s}</svg>").ToList();
 
     /// <summary>Draw on an earlier page (e.g. page numbers once the page count is known).</summary>
     public SimplePdf OnPage(int index) { current = index; return this; }
