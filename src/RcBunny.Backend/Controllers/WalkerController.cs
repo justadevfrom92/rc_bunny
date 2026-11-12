@@ -364,6 +364,10 @@ public class WalkerController(AppDbContext db, IServiceScopeFactory scopes, ICon
         await Store(u, file);
         db.ReportUploads.Add(u);
         await db.SaveChangesAsync();
+        var me = await Me();
+        AdminNotification.Notify(db, (await AdminNotification.AppUsersAsync(db, "walker")).Where(x => x.Id != me.Id), "file",
+            $"New file in {u.Category}: {u.Title}", $"Added by {me.Name}", $"/admin/walker/uploads/{u.Id}");
+        await db.SaveChangesAsync();
         return Ok(new { u.Id, message = $"{u.Title} uploaded" });
     }
 

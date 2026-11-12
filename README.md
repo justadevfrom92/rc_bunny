@@ -100,6 +100,7 @@ Both migrate commands finish by printing the `db:show` list. Every sample passwo
   - Run a Report: the report library (orders, notes, phonecalls, contacts, exceptions, payments, bills, receivables, ERCOT, stars). Reports run in the background and save Excel, CSV, tab-separated or JSON files under storage/reports. Each report's Export Columns pick the file's columns by model key (customer.name), or as a key array.
   - Saved Reports (a report's settings, kept to run again; yours and shared ones), and Orders, Notes and Phonecalls (the customer service reports with your own runs).
   - Files: upload and preview Excel, CSV, PDF, text and zip files in folders (ETL, Legal Documents, Customer Templates, Finance, Utility / ERCOT, Vendor…). ETL Feeds: the scheduled files in and out, with every run and its errors.
+- Your Account (the menu under your name, top right): Notifications (the number on your avatar: new tickets, customers writing back, website emails, reports and files ready, system health), My Files (every report you ran, with its file; a popup says when one is ready) and Settings (which notifications you get; Switch User when testing).
 - Caboose (finance):
   - Dashboard: money in over the last 30 days, what's waiting for approval, deposits, aging.
   - Payments: everything paid, by date, status or account. Record a payment taken by check, money order, cash or card; a "Deposit" payment goes toward the deposit instead of the balance.
@@ -138,7 +139,7 @@ src/RcBunny.Backend/
   Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords, Rewards (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
   Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
-                          Ranger's: Ranger, Messages; Lando; Astro; Walker; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
+                          Account (notifications, My Files, settings); Ranger's: Ranger, Messages; Lando; Astro; Walker; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
   Walker/Reports.cs       Walker's reports: their filters, queries and columns, and the background run that writes the file
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)

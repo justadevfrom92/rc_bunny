@@ -349,8 +349,17 @@ public static class Reports
         {
             (run.Status, run.FinishedAt, run.Error) = ("failed", DateTime.UtcNow, e.Message.Length > 2000 ? e.Message[..2000] : e.Message);
         }
+        // Walker reports are "reports done"; exports from other apps are "files finished"
+        var kind = run.App == "walker" ? "report" : "file";
+        var owner = run.UserId == null ? null : await db.Users.FindAsync(run.UserId);
+        if (run.Status == "done")
+            AdminNotification.Notify(db, [owner], kind, $"{(run.App == "walker" ? "Report ready: " : "Export ready: ")}{run.Label}", $"{run.Rows:N0} rows · {FormatLabel(run.Format)}", $"/admin/files/{run.Id}");
+        else
+            AdminNotification.Notify(db, [owner], kind, $"Report failed: {run.Label}", run.Error is { Length: > 200 } ? run.Error[..200] : run.Error, $"/admin/files/{run.Id}");
         await db.SaveChangesAsync();
     }
+
+    public static string FormatLabel(string format) => Formats.TryGetValue(format, out var f) ? f.Label : format.ToUpperInvariant();
 
     /// <summary>Every row: the report's own columns, or its export columns (model keys with titles) when it has them.</summary>
     private static async Task<(string[], List<object?[]>)> DetailAsync(AppDbContext db, Report report, List<Dictionary<string, object?>> records)

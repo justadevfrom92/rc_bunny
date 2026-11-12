@@ -32,6 +32,19 @@ public class AuthController(AppDbContext db, IWebHostEnvironment env) : Controll
         return Ok(await Permissions.CurrentAsync(HttpContext));
     }
 
+    /// <summary>Settings → Switch User (Development only): sign in as another sample user.</summary>
+    [HttpPost("login/test/{id:int}")]
+    public async Task<IActionResult> LoginTest(int id)
+    {
+        if (!env.IsDevelopment() || await Permissions.CurrentAsync(HttpContext) is null) return NotFound();
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == id && u.Active);
+        if (user is null) return NotFound();
+        var identity = new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())], CookieAuthenticationDefaults.AuthenticationScheme);
+        HttpContext.User = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(HttpContext.User);
+        return Ok(await Permissions.CurrentAsync(HttpContext));
+    }
+
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {

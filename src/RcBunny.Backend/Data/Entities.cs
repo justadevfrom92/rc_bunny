@@ -29,6 +29,8 @@ public class User
     public string DeniedPermissions { get; set; } = "";
     public string? AccessNote { get; set; }
     public DateTime? LastLoginAt { get; set; }
+    /// <summary>JSON {kind: false} for the notification kinds they turned off in Settings.</summary>
+    public string? NotificationPrefs { get; set; }
 
     public List<string> ExtraList() => ExtraPermissions.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
     public List<string> DeniedList() => DeniedPermissions.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();

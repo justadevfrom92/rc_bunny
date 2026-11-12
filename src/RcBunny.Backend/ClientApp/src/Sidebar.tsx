@@ -19,6 +19,9 @@ export const apps: Record<string, { name: string; desc: string; icon: string; ho
   sheriff: { name: 'Sheriff', icon: 'star', home: '/sheriff/users', desc: 'Settings: the staff directory (profiles, permissions, log in as), roles, markets, API integrations, scheduled jobs, cron automations and the timeline of everything that ran.' },
 };
 
+/** Your Account area (the user menu's pages): Notifications, My Files and Settings, like ebunny's. */
+export const account = { name: 'Account', home: '/my/notifications' };
+
 /** The public website (it runs on its own address): set VITE_WEBSITE_URL when building for another server. */
 export const websiteUrl: string = import.meta.env.VITE_WEBSITE_URL || 'http://localhost:5100/';
 
@@ -39,7 +42,9 @@ export const Brand = () => (
 export default function AppShell({ app, menu, children }: { app: string; menu: Menu; children: ReactNode }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
-  const info = apps[app];
+  const info = app === 'account' ? account : apps[app];
+  // The Account area's pages aren't under one folder (/my/notifications, /files, /my/settings)
+  const base = app === 'account' ? '' : `/${app}`;
   useEffect(() => setOpen(false), [pathname]);
   // The counts next to menu links, fresh on every page like ebunny's
   const [badges, setBadges] = useState<Record<string, number>>({});
@@ -47,7 +52,7 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
 
   // The menu item for this page: the longest link the address starts with
   // (a link can also own other paths, e.g. Caboose's promos/ pages belong to MSIDs & Promo Codes)
-  const links = menu.flatMap((g) => g.links.map(([label, to, o]) => ({ label, url: `/${app}/${to}`.replace(/\/$/, ''), also: (o?.also ?? []).map((a) => `/${app}/${a}`) })));
+  const links = menu.flatMap((g) => g.links.map(([label, to, o]) => ({ label, url: `${base}/${to}`.replace(/\/$/, ''), also: (o?.also ?? []).map((a) => `${base}/${a}`) })));
   const under = (pathname: string, url: string) => pathname === url || pathname.startsWith(url + '/');
   const active = links.filter((l) => under(pathname, l.url) || l.also.some((a) => under(pathname, a))).sort((a, b) => b.url.length - a.url.length)[0];
   const exact = active && pathname === active.url;
@@ -66,7 +71,7 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
             <Fragment key={i}>
               {group.heading ? <h4>{group.heading}</h4> : i > 0 && <div className="menu-gap" />}
               {group.links.map(([label, to, o]) => {
-                const url = `/${app}/${to}`.replace(/\/$/, '');
+                const url = `${base}/${to}`.replace(/\/$/, '');
                 const on = active?.url === url;
                 const n = o?.badge ? badges[o.badge] : 0;
                 return <NavLink key={to} to={url} className={on ? 'on' : ''} aria-current={on ? 'page' : undefined} end>{label}{n ? <span className="count hot">{n}</span> : null}</NavLink>;
@@ -94,31 +99,98 @@ export default function AppShell({ app, menu, children }: { app: string; menu: M
   );
 }
 
-/** Top right: your initials, name and role. Clicking opens your email and Logout. */
+/**
+ * Top right (ebunny's partials/user-menu): your avatar (with the number of unread notifications on its corner) and name.
+ * Clicking your name opens your latest 5 notifications, My Files, Settings and Logout.
+ */
 export function UserMenu() {
   const { me, setMe } = useAuth();
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState<{ unread: number; files: number; latest: { id: number; title: string; body?: string; icon: string; readAt?: string; createdAt: string }[] } | null>(null);
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const close = (e: MouseEvent) => { if (!box.current?.contains(e.target as Node)) setOpen(false); };
     document.addEventListener('click', close);
     return () => document.removeEventListener('click', close);
   }, []);
+  const load = () => api.get<typeof data>('/api/account/menu').then(setData, () => {});
+  useEffect(() => { load(); setOpen(false); }, [pathname]);
+
+  // Background reports: a popup says when each one is ready; checks more often while something of yours is running
+  const [count, setCount] = useState<number | null>(null);
+  const [bump, setBump] = useState(0);
+  const [pops, setPops] = useState<Ready[]>([]);
+  useEffect(() => {
+    let t = 0;
+    const check = () => api.get<{ count: number; running: number; items: Ready[] }>('/api/notifications').then((d) => {
+      setCount((before) => { if (before != null && d.count > before) setBump((b) => b + 1); return d.count; });
+      const seen = notified(), fresh = d.items.filter((it) => !seen.includes(it.id));
+      if (fresh.length) {
+        remember([...seen, ...fresh.map((it) => it.id)]);
+        setPops((p) => [...p, ...fresh.slice(0, 3)]);
+        fresh.slice(0, 3).forEach((it) => setTimeout(() => setPops((p) => p.filter((x) => x !== it)), 15000));
+      }
+      t = window.setTimeout(check, d.running ? 5000 : 20000);
+    }, () => { t = window.setTimeout(check, 60000); });
+    check();
+    return () => clearTimeout(t);
+  }, []);
   if (!me) return null;
+  const unread = count ?? data?.unread ?? 0;
+  const close = () => setOpen(false);
   return (
     <div className="user-menu" ref={box}>
       <button type="button" className="user-chip" aria-haspopup="true" aria-expanded={open} onClick={() => setOpen(!open)}>
-        <span className="avatar-wrap"><span className="avatar">{initials(me.name)}</span></span>
+        <span className="avatar-wrap"><span className="avatar">{initials(me.name)}</span>
+          <span key={bump} className={`files-badge${bump ? ' bump' : ''}`} hidden={!unread} aria-label={`${unread} unread ${unread === 1 ? 'notification' : 'notifications'}`}>{unread}</span></span>
         <span><span>{me.name}</span><small>{me.role}</small></span>
         <svg className="caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
       </button>
       <div className="user-pop" hidden={!open}>
         <div className="up-head"><b>{me.name}</b><span>{me.email}</span></div>
-        <Link className="up-item" to="/" onClick={() => setOpen(false)}><span>All Apps</span></Link>
+        <div className="up-label up-label-first"><span>Notifications</span>{unread > 0 && <><span className="up-new">{unread} new</span>
+          {/* Clear: marks them all read (they stay in All Notifications) */}
+          <form className="up-clear" onSubmit={(e) => { e.preventDefault(); api.post('/api/my/notifications/read-all').then(load); }}><button type="submit">Clear</button></form></>}</div>
+        <div className="up-notes">
+          {(data?.latest ?? []).map((n) => (
+            <Link key={n.id} className={`up-note ${n.readAt ? '' : 'unread'}`} to={`/my/notifications/${n.id}`} onClick={close}><span className="up-ico" aria-hidden="true">{n.icon}</span>
+              <span><b>{n.title}</b>{n.body && <small>{n.body.length > 70 ? n.body.slice(0, 67) + '...' : n.body}</small>}<small>{ago(n.createdAt)}</small></span></Link>
+          ))}
+          {data && data.latest.length === 0 && <p className="up-empty">Nothing yet.</p>}
+        </div>
+        <Link className="up-item" to="/my/notifications" onClick={close}><span>All Notifications</span></Link>
+        <Link className="up-item" to="/files" onClick={close}><span>My Files</span><span className="up-count">{data?.files ?? ''}</span></Link>
+        <Link className="up-item" to="/my/settings" onClick={close}><span>Settings</span></Link>
         <button className="up-item up-logout" onClick={() => api.post('/api/logout').then(() => setMe(null))}>Logout</button>
       </div>
+      {pops.length > 0 && (
+        <div className="notices" aria-live="polite">
+          {pops.map((it) => (
+            <div key={it.id} className={`notice-pop${it.ok ? '' : ' bad'}`}>
+              <div className="np-body"><b>{it.ok ? 'Report ready' : 'Report failed'}</b><div className="np-sub">{it.title}{it.ok && ` · ${it.rows.toLocaleString()} rows · ${it.format}`}</div>
+                <div className="np-links">{it.ok && it.download && <a className="btn sm cyan" href={it.download}>Download</a>}<Link className="btn sm ghost" to={it.url}>View</Link></div></div>
+              <button type="button" className="np-x" aria-label="Close" onClick={() => setPops((p) => p.filter((x) => x !== it))}>&times;</button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
+}
+
+type Ready = { id: number; title: string; ok: boolean; rows: number; format: string; url: string; download: string | null };
+// The runs this browser already popped up for (ebunny keeps them in localStorage too)
+const KEY = 'admin.notified';
+const notified = (): number[] => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } };
+const remember = (ids: number[]) => { try { localStorage.setItem(KEY, JSON.stringify(ids.slice(-100))); } catch { /* private window */ } };
+
+/** "3 hours ago", like Laravel's diffForHumans. */
+export function ago(at: string) {
+  const s = Math.max(1, (Date.now() - new Date(at).getTime()) / 1000);
+  const units: [number, string][] = [[31536000, 'year'], [2592000, 'month'], [604800, 'week'], [86400, 'day'], [3600, 'hour'], [60, 'minute'], [1, 'second']];
+  for (const [n, u] of units) if (s >= n) { const k = Math.floor(s / n); return `${k} ${u}${k === 1 ? '' : 's'} ago`; }
+  return 'just now';
 }
 
 export const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('');

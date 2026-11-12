@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router';
 import { api, useLoad } from '../../api';
 import { EmptyRow, PageHead, toast, useRun } from '../../ui';
 import { DateInput } from '../../fields';
-import { RowActions, StatePill, rerunRun, when } from './shared';
+import { ReportActions, StatePill, when } from './shared';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -42,7 +42,7 @@ export default function Activity({ report }: { report: 'orders' | 'notes' | 'pho
     for (const k of ['statuses', 'priorities']) if (report === (k === 'statuses' ? 'orders' : 'notes') && !f.has(k)) params[k] = [];
     run(api.post(`/api/walker/reports/${report}`, { params, format: f.get('format'), summary: f.get('summary') === 'on' }));
   };
-  const rerun = (id: number) => rerunRun(id).then((x) => { toast(x.message); reload(); }, (e) => toast(e.message));
+  const rerun = (id: number) => api.post<{ id: number; message: string }>(`/api/files/${id}/rerun`).then((x) => { toast(x.message); navigate(`/files/${x.id}`); }, (e) => toast(e.message));
   const dates = <><div className="field"><label htmlFor="start">Start</label><DateInput id="start" name="start" defaultValue={d.start ?? ''} /></div>
     <div className="field"><label htmlFor="end">End</label><DateInput id="end" name="end" defaultValue={d.end ?? ''} /></div></>;
   return (
@@ -91,19 +91,20 @@ export default function Activity({ report }: { report: 'orders' | 'notes' | 'pho
         </aside>
         <div className="search-main">
           <div className="panel" id="report-runs">
-            <div className="panel-head"><h2>{data.def.title} — Your Runs</h2></div>
+            <div className="panel-head"><h2>{data.def.title} — Your Runs</h2><Link className="btn sm ghost" to="/files">All My Files</Link></div>
             <div className="table-wrap"><table>
               <thead><tr><th>ID</th><th>Requested</th><th>Settings</th><th>Format</th><th className="num">Rows</th><th>Status</th><th></th></tr></thead>
               <tbody>
                 {data.recent.map((r: any) => (
-                  <tr key={r.id} className="click" onClick={() => navigate(`/walker/runs/${r.id}`)}>
-                    <td style={{ whiteSpace: 'nowrap' }}><Link to={`/walker/runs/${r.id}`}><b>#{r.id}</b></Link><div className="help">{r.summary ? 'Summary' : 'Every row'}</div></td>
+                  <tr key={r.id} className="click" onClick={() => navigate(`/files/${r.id}`)}>
+                    <td style={{ whiteSpace: 'nowrap' }}><Link to={`/files/${r.id}`}><b>#{r.id}</b></Link><div className="help">{r.summary ? 'Summary' : 'Every row'}</div></td>
                     <td className="nowrap">{when(r.createdAt)}</td>
                     <td className="help wrap" style={{ minWidth: 160 }}>{Object.entries(r.params ?? {}).map(([k, v]: [string, any]) => `${headline(k)}: ${Array.isArray(v) ? v.join(', ') : v}`).join(' · ')}</td>
                     <td className="nowrap">{r.format}</td>
                     <td className="num">{r.status === 'done' ? r.rows.toLocaleString() : '…'}</td>
                     <td style={{ whiteSpace: 'nowrap' }}><StatePill state={r.state} /></td>
-                    <td className="actions"><RowActions run={r} onRerun={rerun} /></td></tr>
+                    <td className="actions"><ReportActions download={r.file ? `/api/files/${r.id}/download` : null} label={`Download ${r.format}`}
+                      why={['queued', 'running'].includes(r.status) ? 'still running' : 'no file'} rerun={() => rerun(r.id)} /></td></tr>
                 ))}
                 {data.recent.length === 0 && <EmptyRow cols={7}>You haven't run this report yet. Pick the settings on the left and Run Report.</EmptyRow>}
               </tbody>

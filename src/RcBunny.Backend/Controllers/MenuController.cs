@@ -16,12 +16,13 @@ public class MenuController(AppDbContext db) : ControllerBase
     [HttpGet("badges")]
     public async Task<IActionResult> Badges()
     {
-        if (await Permissions.CurrentAsync(HttpContext) is null) return Unauthorized();
+        if (await Permissions.CurrentAsync(HttpContext) is not { } me) return Unauthorized();
         var today = DateOnly.FromDateTime(DateTime.Today);
         var counts = new Dictionary<string, int>();
         foreach (var q in await db.WorkItems.Where(w => w.ResolvedAt == null).GroupBy(w => w.Queue).Select(g => new { g.Key, n = g.Count() }).ToListAsync())
             counts["queue:" + q.Key] = q.n;
         counts["queues"] = counts.Values.Sum();
+        counts["unread_notifications"] = await db.AdminNotifications.CountAsync(n => n.UserId == me.Id && n.ReadAt == null);
 
         // Texts whose latest message on the account came in from the customer
         var latestTexts = db.ContactLogs.Where(l => l.Channel == "SMS").GroupBy(l => l.CustomerId).Select(g => g.Max(l => l.Id));

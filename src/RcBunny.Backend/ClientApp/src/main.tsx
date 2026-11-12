@@ -12,6 +12,7 @@ import Sheriff from './pages/sheriff/Sheriff';
 import Caboose from './pages/caboose/Caboose';
 import Bounty from './pages/bounty/Bounty';
 import Walker from './pages/walker/Walker';
+import { AccountShell, File, Files, Notifications, OpenNotification, Settings } from './pages/account/Account';
 import './admin.css';
 import './styles.css';
 import { enhancePages } from './enhance';
@@ -36,6 +37,12 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Navigate to={new URLSearchParams(location.search).get('to') ?? '/'} replace />} />
+      {/* Your Account area (the user menu): Notifications, My Files and Settings */}
+      <Route path="/my/notifications" element={<AccountShell><Notifications /></AccountShell>} />
+      <Route path="/my/notifications/:id" element={<AccountShell><OpenNotification /></AccountShell>} />
+      <Route path="/my/settings" element={<AccountShell><Settings /></AccountShell>} />
+      <Route path="/files" element={<AccountShell><Files /></AccountShell>} />
+      <Route path="/files/:id" element={<AccountShell><File /></AccountShell>} />
       <Route path="/corral/*" element={<RequirePermission permission="corral"><Corral /></RequirePermission>} />
       <Route path="/lando/*" element={<RequirePermission permission="lando"><Lando /></RequirePermission>} />
       <Route path="/astro/*" element={<RequirePermission permission="plans"><Astro /></RequirePermission>} />

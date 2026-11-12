@@ -71,6 +71,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     // Walker
     public DbSet<ReportRun> ReportRuns => Set<ReportRun>();
+    public DbSet<AdminNotification> AdminNotifications => Set<AdminNotification>();
     public DbSet<SavedReport> SavedReports => Set<SavedReport>();
     public DbSet<ReportColumn> ReportColumns => Set<ReportColumn>();
     public DbSet<ReportUpload> ReportUploads => Set<ReportUpload>();
@@ -128,6 +129,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         m.Entity<Page>().HasIndex(p => new { p.SiteId, p.Path }).IsUnique();
         m.Entity<ReportColumn>().HasIndex(c => c.Report).IsUnique();
         m.Entity<ReportRun>().HasIndex(r => r.Report);
+        m.Entity<AdminNotification>().HasIndex(n => new { n.UserId, n.ReadAt });
         m.Entity<ContentBlock>().HasIndex(b => b.Slug).IsUnique();
         m.Entity<PageComponent>().HasOne(c => c.Block).WithMany().HasForeignKey(c => c.ContentBlockId);
         m.Entity<SiteVisit>().HasIndex(v => v.CreatedAt);

@@ -48,6 +48,10 @@ public class SupportModel(AppDbContext db, IConfiguration config, IWebHostEnviro
         db.SupportTickets.Add(ticket);
         await db.SaveChangesAsync();
         await PostAsync(ticket, message, files);
+        var team = await db.Users.Where(u => db.RangerAgents.Any(a => a.UserId == u.Id && a.Active)).ToListAsync();
+        AdminNotification.Notify(db, team, "ticket_new", $"New ticket {ticket.Number}: {ticket.Subject}",
+            $"{customer.Name} · {Ranger.Topics.GetValueOrDefault(ticket.Topic)}", $"/admin/ranger/tickets/{ticket.Id}");
+        await db.SaveChangesAsync();
         return Redirect($"/myaccount/support/{ticket.Id}");
     }
 
@@ -56,7 +60,16 @@ public class SupportModel(AppDbContext db, IConfiguration config, IWebHostEnviro
         var ticket = await db.SupportTickets.FirstOrDefaultAsync(t => t.Id == id && t.CustomerId == CustomerId);
         if (ticket is null) return NotFound();
         if (BadFiles(files) is { } bad) { Error = bad; return await OnGetAsync(id); }
-        if (!string.IsNullOrWhiteSpace(message)) await PostAsync(ticket, message, files);
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            await PostAsync(ticket, message, files);
+            // Whoever has the ticket, and anyone who joined it, hears that the customer wrote back
+            var ids = db.TicketWatchers.Where(w => w.TicketId == id).Select(w => w.UserId).ToList();
+            if (ticket.AssignedToId is { } a) ids.Add(a);
+            AdminNotification.Notify(db, await db.Users.Where(u => ids.Contains(u.Id)).ToListAsync(), "ticket_reply",
+                $"{ticket.Name} wrote back on {ticket.Number}", message.Trim().Length > 140 ? message.Trim()[..140] : message.Trim(), $"/admin/ranger/tickets/{id}");
+            await db.SaveChangesAsync();
+        }
         return Redirect($"/myaccount/support/{id}");
     }
 

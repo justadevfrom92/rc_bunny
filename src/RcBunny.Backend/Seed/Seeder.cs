@@ -163,6 +163,7 @@ public static partial class Seeder
 
         // Walker: report runs (run last, so the sample reports see everything), files, ETL feed runs and saved reports (Seed/WalkerSeed.cs)
         await SeedWalkerAsync(db, await db.Users.FirstAsync(u => u.Email == "admin@example.com"), storageRoot);
+        await SeedNotificationsAsync(db);   // last: points at tickets, reports, files and emails
     }
 
     /// <summary>

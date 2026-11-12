@@ -35,6 +35,14 @@ public class ReportRun
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? StartedAt { get; set; }
     public DateTime? FinishedAt { get; set; }
+    /// <summary>When its owner opened it (My Files); finished runs they haven't seen add to the number on their avatar.</summary>
+    public DateTime? SeenAt { get; set; }
+
+    /// <summary>"Notes Report summary"</summary>
+    public string Label => (Title ?? Report) + (Summary ? " summary" : "");
+
+    /// <summary>"12.4 KB"</summary>
+    public string? SizeLabel => FileSize == null ? null : FileSize >= 1048576 ? $"{FileSize / 1048576.0:0.0} MB" : $"{Math.Max(0.1, FileSize.Value / 1024.0):0.0} KB";
 
     /// <summary>A run still queued or running after this long shows as "Did not finish".</summary>
     public const int TimeoutMinutes = 60;

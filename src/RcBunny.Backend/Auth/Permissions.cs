@@ -50,8 +50,8 @@ public static class Permissions
     public static string CacheKey(int userId) => $"user:{userId}";
 }
 
-/// <summary>[RequirePermission("customers")] on a controller or action: 401 if signed out, 403 without the permission.</summary>
-public class RequirePermissionAttribute(string permission) : Attribute, IAsyncAuthorizationFilter
+/// <summary>[RequirePermission("customers")] on a controller or action: 401 if signed out, 403 without the permission. [RequirePermission]: anyone signed in.</summary>
+public class RequirePermissionAttribute(string? permission = null) : Attribute, IAsyncAuthorizationFilter
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
@@ -63,6 +63,6 @@ public class RequirePermissionAttribute(string permission) : Attribute, IAsyncAu
             (db.ActorName, db.ActorId) = (me.Name, me.Id);
         }
         if (me is null) context.Result = new UnauthorizedResult();
-        else if (!me.Permissions.Contains(permission)) context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
+        else if (permission != null && !me.Permissions.Contains(permission)) context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
     }
 }

@@ -153,12 +153,15 @@ public static class SiteEndpoints
             if (string.IsNullOrWhiteSpace(input.First) || string.IsNullOrWhiteSpace(input.Last) || string.IsNullOrWhiteSpace(input.Email)
                 || !input.Email.Contains('@') || string.IsNullOrWhiteSpace(input.Topic) || string.IsNullOrWhiteSpace(input.Message))
                 return Results.Json(new { message = "Fill in every required field." }, statusCode: 422);
-            db.ContactMessages.Add(new ContactMessage
+            var msg = db.ContactMessages.Add(new ContactMessage
             {
                 Name = $"{input.First.Trim()} {input.Last.Trim()}", Email = input.Email.Trim(), Phone = input.Phone?.Trim(),
                 Topic = input.Topic.Trim(), Message = input.Message.Trim()[..Math.Min(5000, input.Message.Trim().Length)],
                 Ip = http.Connection.RemoteIpAddress?.ToString(),
-            });
+            }).Entity;
+            await db.SaveChangesAsync();
+            AdminNotification.Notify(db, await AdminNotification.AppUsersAsync(db, "ranger"), "email", $"New email from {msg.Name}",
+                $"{msg.Topic}: {(msg.Message.Length > 140 ? msg.Message[..140] : msg.Message)}", $"/admin/ranger/messages/{msg.Id}");
             await db.SaveChangesAsync();
             return Results.Json(new { ok = true }, statusCode: 201);
         });

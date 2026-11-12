@@ -19,7 +19,7 @@ public static partial class Seeder
         ReportRun Make(string key, User by, object? @params, string status, DateTime at)
         {
             var def = Reports.Find(key)!;
-            var run = new ReportRun { UserId = by.Id, Report = key, Title = def.Title, Model = def.Model, Params = @params == null ? null : JsonSerializer.Serialize(@params), Status = status, CreatedAt = at };
+            var run = new ReportRun { UserId = by.Id, Report = key, Title = def.Title, Model = def.Model, Params = JsonSerializer.Serialize(Reports.With(def, @params == null ? null : JsonSerializer.Serialize(@params)).Values), Status = status, CreatedAt = at };
             db.ReportRuns.Add(run);
             return run;
         }
@@ -31,6 +31,7 @@ public static partial class Seeder
             await db.SaveChangesAsync();
             await Reports.RunAsync(db, run.Id, storage);
             (run.StartedAt, run.FinishedAt, run.DurationMs) = (now.AddHours(-hours), now.AddHours(-hours).AddSeconds(4), 4000);
+            run.SeenAt = hours > 2 ? now.AddHours(1 - hours) : null;
         }
         // An error, one running now, and one that never finished
         var failed = Make("ercot", admin, new { type = "867_03" }, "failed", now.AddHours(-3));

@@ -27,9 +27,16 @@ public static class Heartbeat
         var failed = await db.JobRuns.Where(r => r.StartedAt > DateTime.UtcNow.AddDays(-1) && !r.Ok).CountAsync();
         results.Add(new HealthCheck { Name = "Jobs", Ok = failed == 0, Detail = failed == 0 ? "No failed runs today" : $"{failed} failed runs today" });
 
-        db.HealthChecks.AddRange(results);
-        await db.SaveChangesAsync();
+        // Sheriff hears when a check goes bad, and when everything is healthy again
+        var before = (await db.HealthChecks.ToListAsync()).GroupBy(h => h.Name).Where(g => g.Any()).Select(g => g.MaxBy(h => h.Id)!).ToList();
+        var wasBad = before.Where(h => !h.Ok).Select(h => h.Name).ToHashSet();
         var bad = results.Where(r => !r.Ok).Select(r => r.Name).ToList();
+        db.HealthChecks.AddRange(results);
+        var newlyBad = bad.Where(n => !wasBad.Contains(n)).ToList();
+        var sheriff = newlyBad.Count > 0 || (bad.Count == 0 && wasBad.Count > 0) ? await AdminNotification.AppUsersAsync(db, "sheriff") : [];
+        if (newlyBad.Count > 0) AdminNotification.Notify(db, sheriff, "health", $"Heartbeat: {string.Join(", ", newlyBad)} needs attention", null, "/admin/sheriff/heartbeat");
+        else if (bad.Count == 0 && wasBad.Count > 0) AdminNotification.Notify(db, sheriff, "health", "Heartbeat: back to healthy", null, "/admin/sheriff/heartbeat");
+        await db.SaveChangesAsync();
         return bad.Count == 0 ? "All checks passed." : $"Problems: {string.Join(", ", bad)}.";
     }
 }
