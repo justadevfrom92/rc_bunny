@@ -202,7 +202,8 @@ public static partial class Seeder
         var defaults = (header: partsById.Values.FirstOrDefault(p => p.Kind == "header" && p.IsDefault), footer: partsById.Values.FirstOrDefault(p => p.Kind == "footer" && p.IsDefault));
         var campaignTemplates = await db.Campaigns.ToDictionaryAsync(c => c.Id, c => c.EmailTemplateId);
         string[] devices = ["Phone", "Phone", "Phone", "Desktop", "Desktop", "Tablet"];
-        foreach (var log in await db.ContactLogs.Where(l => (l.Channel == "Email" || l.Channel == "SMS") && (l.OpenedAt != null || l.ClickedAt != null || l.CampaignId != null)).ToListAsync())
+        // (a bounced email gets no clicks; a clicked email was opened first)
+        foreach (var log in await db.ContactLogs.Where(l => (l.Channel == "Email" || l.Channel == "SMS") && l.DroppedAt == null && (l.OpenedAt != null || l.ClickedAt != null || l.CampaignId != null)).ToListAsync())
         {
             var t = log.CampaignId is { } cid ? (campaignTemplates[cid] is { } tid ? all.FirstOrDefault(x => x.Id == tid) : null) : byName.GetValueOrDefault(log.Template);
             List<(string Key, string Label, string Url)> links = log.Channel == "SMS" ? [("body-1", "Link in the text", "")]
@@ -228,6 +229,7 @@ public static partial class Seeder
                 });
             }
             if (n > 0 && log.ClickedAt == null) log.ClickedAt = (log.OpenedAt ?? log.CreatedAt).AddMinutes(random.Next(1, 61));
+            if (log.ClickedAt != null && log.Channel == "Email") log.OpenedAt ??= log.ClickedAt.Value.AddMinutes(-random.Next(1, 10));
         }
         await db.SaveChangesAsync();
 

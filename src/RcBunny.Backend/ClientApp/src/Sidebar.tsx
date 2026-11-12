@@ -16,6 +16,7 @@ export const apps: Record<string, { name: string; desc: string; icon: string; ho
   walker: { name: 'Walker', icon: 'file', home: '/walker', desc: 'Files & reporting: ETL feeds, legal documents, customer templates, and reports with their status.' },
   caboose: { name: 'Caboose', icon: 'train', home: '/caboose', desc: 'Finance: payments, credits and debits approval, refunds, deposits, receivables aging, the journal export, MSIDs and promo codes.' },
   bounty: { name: 'Bounty', icon: 'gift', home: '/bounty', desc: 'Rewards: offers, how stars are earned, redemptions to fulfil, member balances and the monthly drawing.' },
+  rodeo: { name: 'Rodeo', icon: 'megaphone', home: '/rodeo', desc: 'Marketing: email and SMS campaigns, email templates, PDF templates (letters and notices made into PDFs), and customer surveys.' },
   deputy: { name: 'Deputy', icon: 'bolt', home: '/deputy', desc: 'AI agents on open-weight models (Qwen, Kimi, DeepSeek, Llama…): texts and the My Account chat with take-over by a person, models and testing.' },
   sheriff: { name: 'Sheriff', icon: 'star', home: '/sheriff/users', desc: 'Settings: the staff directory (profiles, permissions, log in as), roles, markets, API integrations, scheduled jobs, cron automations and the timeline of everything that ran.' },
 };

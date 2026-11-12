@@ -13,6 +13,7 @@ import Caboose from './pages/caboose/Caboose';
 import Bounty from './pages/bounty/Bounty';
 import Walker from './pages/walker/Walker';
 import Deputy from './pages/deputy/Deputy';
+import Rodeo from './pages/rodeo/Rodeo';
 import { AccountShell, File, Files, Notifications, OpenNotification, Settings } from './pages/account/Account';
 import './admin.css';
 import './styles.css';
@@ -51,6 +52,7 @@ function App() {
       <Route path="/walker/*" element={<RequirePermission permission="walker"><Walker /></RequirePermission>} />
       <Route path="/caboose/*" element={<RequirePermission permission="caboose"><Caboose /></RequirePermission>} />
       <Route path="/bounty/*" element={<RequirePermission permission="bounty"><Bounty /></RequirePermission>} />
+      <Route path="/rodeo/*" element={<RequirePermission permission="rodeo"><Rodeo /></RequirePermission>} />
       <Route path="/deputy/*" element={<RequirePermission permission="deputy"><Deputy /></RequirePermission>} />
       <Route path="/sheriff/*" element={<RequirePermission permission="sheriff"><Sheriff /></RequirePermission>} />
       <Route path="*" element={<div className="launcher"><main className="launcher-main"><div className="panel empty">Page not found. <a href="/admin">Back to the apps</a></div></main></div>} />
