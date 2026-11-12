@@ -51,8 +51,10 @@ Sample employees:
 Run these from the repo root, with both apps stopped:
 
 ```bash
-dotnet run --project src/RcBunny.Backend -- migrate:fresh
+./artisan migrate:fresh
 ```
+
+On Windows: `artisan migrate:fresh`. Both scripts just run `dotnet run --project src/RcBunny.Backend -- migrate:fresh`.
 
 | Command | What it does |
 | --- | --- |

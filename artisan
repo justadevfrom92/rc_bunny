@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Database commands, like php artisan: ./artisan migrate | migrate:fresh | db:show
+# Stop the admin and the website first.
+cd "$(dirname "$0")" && exec dotnet run --project src/RcBunny.Backend -- "$@"

@@ -21,8 +21,9 @@ public static class Commands
             case "migrate:fresh":
                 Console.WriteLine("Dropping the database…");
                 await db.Database.EnsureDeletedAsync();
-                var ranger = Path.Combine(storageRoot, "ranger");
-                if (Directory.Exists(ranger)) Directory.Delete(ranger, recursive: true); // the seeded ticket attachments
+                // The files the sample data made: ticket attachments, report files and uploaded files
+                foreach (var folder in new[] { "ranger", "reports", "report-uploads" })
+                    if (Directory.Exists(Path.Combine(storageRoot, folder))) Directory.Delete(Path.Combine(storageRoot, folder), recursive: true);
                 goto case "migrate";
             case "migrate":
                 Console.WriteLine("Creating the tables and adding the sample data…");
