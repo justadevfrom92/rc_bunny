@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using RcBunny.Data;
@@ -147,6 +148,29 @@ public static class SiteEndpoints
             return File.Exists(file) ? Results.File(file, "application/xml") : Results.NotFound();
         });
 
+        // The My Account chat bubble (bottom right): the Deputy chat bot answers until a person takes over
+        var chat = app.MapGroup("/myaccount/chat");
+        chat.MapGet("", async (HttpContext http, AppDbContext db) =>
+            await CustomerAsync(http, db) is { } c ? ChatState(await Deputy.ChatForAsync(db, c)) : Results.Unauthorized());
+        chat.MapPost("", async (HttpContext http, AppDbContext db, IConfiguration config, ChatInput input) =>
+        {
+            if (await CustomerAsync(http, db) is not { } c) return Results.Unauthorized();
+            if (string.IsNullOrWhiteSpace(input.Message) || input.Message.Length > 1000) return Results.Json(new { message = "Type a message (up to 1,000 characters)." }, statusCode: 422);
+            if (await Deputy.ChatForAsync(db, c, true) is not { } conv) return Results.Json(new { message = "Chat isn't available right now." }, statusCode: 503);
+            await Deputy.CustomerSaysAsync(db, config, conv, input.Message);
+            await db.SaveChangesAsync();
+            return ChatState(conv);
+        });
+        // "Talk to a person": the bot hands the chat to Deputy → Conversations → Needs a Person
+        chat.MapPost("/person", async (HttpContext http, AppDbContext db) =>
+        {
+            if (await CustomerAsync(http, db) is not { } c) return Results.Unauthorized();
+            if (await Deputy.ChatForAsync(db, c, true) is not { } conv) return Results.Json(new { message = "Chat isn't available right now." }, statusCode: 503);
+            if (conv.Status == "bot") await Deputy.HandOffAsync(db, conv, "I am getting a person for you now. They will see everything we covered.");
+            await db.SaveChangesAsync();
+            return ChatState(conv);
+        });
+
         // Contact Us form → Ranger → Web Messages
         app.MapPost("/contact", async (ContactInput input, AppDbContext db, HttpContext http) =>
         {
@@ -168,6 +192,25 @@ public static class SiteEndpoints
 
         // /admin is the admin, like on ebunny; here the admin runs as its own app, so /admin/... goes to the same page there
         app.MapMethods("/admin/{**rest}", ["GET", "POST"], (string? rest) => Results.Redirect($"{Site.AdminUrl}/admin{(string.IsNullOrEmpty(rest) ? "" : "/" + rest)}"));
+    }
+
+    public record ChatInput(string? Message);
+
+    private static async Task<Customer?> CustomerAsync(HttpContext http, AppDbContext db) =>
+        int.TryParse(http.User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? await db.Customers.FindAsync(id) : null;
+
+    /// <summary>What the bubble shows: who is answering and the messages (system notes reworded for the customer).</summary>
+    private static IResult ChatState(AiConversation? conv)
+    {
+        if (conv == null) return Results.Json(new { status = "new", messages = Array.Empty<object>() });
+        var messages = conv.Lines().Select(l =>
+        {
+            if (l.Who == "System")
+                return Regex.Match(l.Text, @"^(.+) took over\.$") is { Success: true } m ? new { from = "note", name = (string?)null, text = $"{m.Groups[1].Value.Split(' ')[0]} from our team joined the chat." } : null;
+            var person = l.Who.EndsWith("(agent)");
+            return l.Who == "Customer" ? new { from = "me", name = (string?)null, text = l.Text } : new { from = person ? "person" : "bot", name = (string?)(person ? l.Who.Split(' ')[0] : "Assistant"), text = l.Text };
+        }).Where(m => m != null);
+        return Results.Json(new { status = conv.Status, messages });
     }
 
     public record ConsentInput(string? Choice, bool Analytics, bool Marketing, string? Page);

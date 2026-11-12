@@ -21,6 +21,8 @@ public static class Permissions
         ["ranger"] = "Ranger: support tickets and website messages",
         ["walker"] = "Walker: reports, saved reports, files and the ETL feeds",
         ["lando"] = "Lando: the website's pages, content blocks, visitors, blocking and cookie choices",
+        ["rodeo"] = "Rodeo: email and SMS campaigns, email and PDF templates, and customer surveys",
+        ["deputy"] = "Deputy: AI agents and models, and the text and My Account chat conversations",
         ["sheriff"] = "Sheriff: staff, roles, heartbeat, crons, markets and integrations",
     };
 

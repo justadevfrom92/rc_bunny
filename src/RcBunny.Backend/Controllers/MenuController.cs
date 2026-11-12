@@ -22,6 +22,7 @@ public class MenuController(AppDbContext db) : ControllerBase
         foreach (var q in await db.WorkItems.Where(w => w.ResolvedAt == null).GroupBy(w => w.Queue).Select(g => new { g.Key, n = g.Count() }).ToListAsync())
             counts["queue:" + q.Key] = q.n;
         counts["queues"] = counts.Values.Sum();
+        counts["ai_waiting"] = await db.AiConversations.CountAsync(c => c.Status == "waiting");
         counts["unread_notifications"] = await db.AdminNotifications.CountAsync(n => n.UserId == me.Id && n.ReadAt == null);
 
         // Texts whose latest message on the account came in from the customer

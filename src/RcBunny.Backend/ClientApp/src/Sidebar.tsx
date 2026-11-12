@@ -16,6 +16,7 @@ export const apps: Record<string, { name: string; desc: string; icon: string; ho
   walker: { name: 'Walker', icon: 'file', home: '/walker', desc: 'Files & reporting: ETL feeds, legal documents, customer templates, and reports with their status.' },
   caboose: { name: 'Caboose', icon: 'train', home: '/caboose', desc: 'Finance: payments, credits and debits approval, refunds, deposits, receivables aging, the journal export, MSIDs and promo codes.' },
   bounty: { name: 'Bounty', icon: 'gift', home: '/bounty', desc: 'Rewards: offers, how stars are earned, redemptions to fulfil, member balances and the monthly drawing.' },
+  deputy: { name: 'Deputy', icon: 'bolt', home: '/deputy', desc: 'AI agents on open-weight models (Qwen, Kimi, DeepSeek, Llama…): texts and the My Account chat with take-over by a person, models and testing.' },
   sheriff: { name: 'Sheriff', icon: 'star', home: '/sheriff/users', desc: 'Settings: the staff directory (profiles, permissions, log in as), roles, markets, API integrations, scheduled jobs, cron automations and the timeline of everything that ran.' },
 };
 
@@ -202,6 +203,8 @@ export function Icon({ name }: { name: string }) {
     case 'ticket': return <svg {...p} strokeLinejoin="round"><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v3a2 2 0 000 4v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a2 2 0 000-4z" /><path d="M14 5v14" strokeDasharray="2 2" /></svg>;
     case 'users': return <svg {...p} strokeLinecap="round"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0113 0M16 4.5a3.5 3.5 0 010 7M18 14a5.5 5.5 0 013.5 6" /></svg>;
     case 'file': return <svg {...p} strokeLinejoin="round"><path d="M6 2h8l5 5v15H6z" /><path d="M14 2v5h5M9 13h6M9 17h6" /></svg>;
+    case 'bolt': return <svg {...p} strokeLinejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg>;
+    case 'megaphone': return <svg {...p} strokeLinejoin="round"><path d="M3 10v4h4l9 5V5L7 10z" /><path d="M7 14l1.5 6h3L10 15.5M19 9a4 4 0 010 6" /></svg>;
     case 'layout': return <svg {...p} strokeLinecap="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9h18M8 13h8M8 16h5" /></svg>;
     case 'chart': return <svg {...p} strokeLinecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg>;
     case 'star': return <svg {...p} strokeLinejoin="round"><path d="M12 2l2.4 5 5.6.6-4.2 3.8 1.2 5.5L12 14l-5 2.9 1.2-5.5L4 7.6 9.6 7z" /><path d="M12 14v8" /></svg>;

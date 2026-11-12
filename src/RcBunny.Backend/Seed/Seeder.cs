@@ -17,7 +17,7 @@ public static partial class Seeder
         var password = Passwords.Hash("password");
 
         // Staff and what each role can do: ebunny's roles and staff (Seed/data/roles.json, users.json). ebunny's Astro is
-        // our "plans" permission; its apps we don't have yet (Rodeo, Deputy) are left out.
+        // our "plans" permission.
         string Perms(JsonNode? list) => string.Join(",", (list?.AsArray() ?? []).Select(p => p!.ToString() == "astro" ? "plans" : p!.ToString())
             .Where(Permissions.All.ContainsKey).Distinct());
         var roles = Load("roles").Select(r => new Role { Name = S(r, "name"), Permissions = Perms(r["perms"]) }).ToDictionary(r => r.Name);
@@ -163,6 +163,7 @@ public static partial class Seeder
 
         // Walker: report runs (run last, so the sample reports see everything), files, ETL feed runs and saved reports (Seed/WalkerSeed.cs)
         await SeedWalkerAsync(db, await db.Users.FirstAsync(u => u.Email == "admin@example.com"), storageRoot);
+        await SeedDeputyAsync(db);
         await SeedNotificationsAsync(db);   // last: points at tickets, reports, files and emails
     }
 

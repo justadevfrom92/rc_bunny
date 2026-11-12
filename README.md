@@ -101,6 +101,11 @@ Both migrate commands finish by printing the `db:show` list. Every sample passwo
   - Saved Reports (a report's settings, kept to run again; yours and shared ones), and Orders, Notes and Phonecalls (the customer service reports with your own runs).
   - Files: upload and preview Excel, CSV, PDF, text and zip files in folders (ETL, Legal Documents, Customer Templates, Finance, Utility / ERCOT, Vendor…). ETL Feeds: the scheduled files in and out, with every run and its errors.
 - Your Account (the menu under your name, top right): Notifications (the number on your avatar: new tickets, customers writing back, website emails, reports and files ready, system health), My Files (every report you ran, with its file; a popup says when one is ready) and Settings (which notifications you get; Switch User when testing).
+- Deputy (AI agents on open-weight models):
+  - Dashboard (agents, their models, 30-day results), Conversations (texts and the My Account chat: Needs a Person and Live Now on top, then every conversation), and each conversation's transcript, live: Take Over, reply, Hand Back to Bot, Call, Close, and the resolution.
+  - Agents (which model and fallback each runs on, its instructions; Test sends a real message to the model) and Models (downloaded or hosted; Check asks the server if it's there).
+  - Models answer through Ollama (`Integrations:LocalModels:Url`, e.g. http://localhost:11434) or any OpenAI-compatible API (`Integrations:OpenModels:Url`, e.g. https://host/v1, and `Integrations:OpenModels:ApiKey`). Set them in appsettings or as environment variables (`Integrations__OpenModels__Url`) for both apps, since the website's chat bubble asks the bot too.
+  - On the website, My Account has the chat bubble: the bot answers, "Talk to a person" (or asking for one) puts it in Needs a Person, and a person's replies show in the bubble.
 - Caboose (finance):
   - Dashboard: money in over the last 30 days, what's waiting for approval, deposits, aging.
   - Payments: everything paid, by date, status or account. Record a payment taken by check, money order, cash or card; a "Deposit" payment goes toward the deposit instead of the balance.
@@ -139,14 +144,14 @@ src/RcBunny.Backend/
   Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords, Rewards (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
   Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
-                          Account (notifications, My Files, settings); Ranger's: Ranger, Messages; Lando; Astro; Walker; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
+                          Account (notifications, My Files, settings); Deputy; Ranger's: Ranger, Messages; Lando; Astro; Walker; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
   Walker/Reports.cs       Walker's reports: their filters, queries and columns, and the background run that writes the file
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
   ClientApp/src/          main.tsx (routes), api.ts, auth.tsx, pages/*.tsx; admin.css is ebunny's admin.css unchanged,
                           styles.css gives our pages' own class names the same look
-                          pages/corral, pages/ranger, pages/lando, pages/astro, pages/walker, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes
-                          (Corral.tsx, Ranger.tsx, Lando.tsx, Astro.tsx, Walker.tsx, Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
+                          pages/corral, pages/ranger, pages/lando, pages/astro, pages/walker, pages/deputy, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes
+                          (Corral.tsx, Ranger.tsx, Lando.tsx, Astro.tsx, Walker.tsx, Deputy.tsx, Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
 src/RcBunny.Frontend/
   Program.cs              customer sign-in, the site's pages and My Account
   Services/SiteEndpoints.cs  what main.js asks the server for: /shared/config/brand.js and catalog.js (plans, rates,

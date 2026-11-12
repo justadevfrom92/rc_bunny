@@ -223,6 +223,9 @@ public class CorralController(AppDbContext db, IConfiguration config) : Controll
         {
             case "call" when await db.PhoneCalls.FindAsync(id) is { } call: (call.Resolution, call.ResolvedBy) = (input.Resolution, who); break;
             case "contact" when await db.ContactLogs.FindAsync(id) is { } log: (log.Resolution, log.ResolvedBy) = (input.Resolution, who); break;
+            case "chat" when await db.AiConversations.FindAsync(id) is { } chat:
+                (chat.Resolution, chat.ResolvedById, chat.ResolvedAt) = (input.Resolution, (await Me()).Id, DateTime.UtcNow);
+                break;
             case "message" when await db.ContactMessages.FindAsync(id) is { } msg:
                 var me = await Me();
                 (msg.Resolution, msg.ResolvedById, msg.ResolvedAt) = (input.Resolution, me.Id, DateTime.UtcNow);

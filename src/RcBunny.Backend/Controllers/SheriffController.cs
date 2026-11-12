@@ -226,6 +226,8 @@ public class SheriffController(AppDbContext db, IMemoryCache cache, IConfigurati
         Integration("ERCOT", "Switch and move-in requests (Corral → ERCOT)", "Integrations:Ercot:Certificate"),
         Integration("Experian", "Credit checks on new orders", "Integrations:Experian:ApiKey"),
         Integration("SMTP", "Emails to customers", "Integrations:Smtp:Host"),
+        Integration("Open Models API", "Hosted open-weight models for Deputy (Qwen, Kimi, DeepSeek…) through an OpenAI-compatible endpoint", "Integrations:OpenModels:Url"),
+        Integration("Local Models", "Downloaded open-weight models for Deputy, served by Ollama on your own server", "Integrations:LocalModels:Url"),
     };
 
     private object Integration(string name, string usedFor, string setting) =>

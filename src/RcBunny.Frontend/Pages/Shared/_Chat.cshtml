@@ -1,0 +1,77 @@
+@* My Account chat bubble, bottom right (ebunny's x-frontend.chat). The bot answers; "Talk to a person" (or asking for one) hands the chat to an agent in Deputy. *@
+<div class="chatw" id="chatw" data-url="/myaccount/chat" data-send="/myaccount/chat" data-person="/myaccount/chat/person">
+  <button type="button" class="chatw-open" aria-expanded="false" aria-controls="chatw-panel"><span aria-hidden="true">💬</span> Chat with us</button>
+  <section class="chatw-panel" id="chatw-panel" hidden aria-label="Chat">
+    <header><b>Chat with us</b><span class="chatw-status" aria-live="polite">Our assistant can help with most questions.</span>
+      <button type="button" class="chatw-close" aria-label="Close chat">×</button></header>
+    <div class="chatw-msgs" role="log" aria-live="polite"><p class="chatw-bot">Hi! Ask about your bill, payments, your plan or moving.</p></div>
+    <form class="chatw-form">
+      <label for="chatw-input" class="sr-only">Message</label>
+      <input id="chatw-input" name="message" maxlength="1000" autocomplete="off" placeholder="Type a message…" required>
+      <button class="btn">Send</button>
+    </form>
+    <button type="button" class="chatw-person">Talk to a person</button>
+  </section>
+</div>
+<style>
+.chatw { position: fixed; right: 20px; bottom: calc(20px + var(--cookie-h, 0px)); z-index: 900; font-size: .95rem; }
+.chatw-open { background: var(--cyan, #00AEEF); color: #fff; border: 0; border-radius: 999px; padding: 12px 18px; font: inherit; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.2); cursor: pointer; }
+.chatw-panel { width: min(360px, calc(100vw - 32px)); height: min(500px, calc(100vh - 100px)); background: #fff; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); display: flex; flex-direction: column; overflow: hidden; }
+.chatw-panel[hidden] { display: none; }
+.chatw-panel header { background: var(--navy, #102247); color: #fff; padding: 12px 40px 12px 16px; position: relative; display: grid; gap: 2px; }
+.chatw-status { font-size: .78rem; opacity: .8; }
+.chatw-close { position: absolute; right: 8px; top: 8px; background: none; border: 0; color: #fff; font-size: 1.4rem; cursor: pointer; line-height: 1; }
+.chatw-msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #f6f8fb; }
+.chatw-msgs p { margin: 0; padding: 8px 12px; border-radius: 12px; max-width: 85%; line-height: 1.4; }
+.chatw-msgs small { display: block; font-size: .7rem; opacity: .7; margin-bottom: 2px; }
+.chatw-bot { background: #fff; border: 1px solid #e3e8ef; align-self: flex-start; }
+.chatw-person-msg { background: #e7f6ec; align-self: flex-start; }
+.chatw-me { background: var(--cyan, #00AEEF); color: #fff; align-self: flex-end; }
+.chatw-note { align-self: center; background: none !important; font-size: .78rem; color: #6b7280; }
+.chatw-form { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #e3e8ef; }
+.chatw-form .btn { padding: 8px 14px; font-size: .8rem; min-height: 0; }
+.chatw-form .btn::after { display: none; }
+.chatw-form input { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid #cfd6e0; border-radius: 8px; font: inherit; }
+.chatw-person { background: none; border: 0; border-top: 1px solid #e3e8ef; padding: 8px; color: var(--cyan, #00AEEF); font: inherit; font-weight: 700; cursor: pointer; }
+.chatw-person[hidden] { display: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@@media (max-width: 600px) { .chatw { right: 12px; bottom: calc(12px + var(--cookie-h, 0px)); } }
+</style>
+<script>
+(function () {
+  var w = document.getElementById('chatw'); if (!w) return;
+  var panel = w.querySelector('.chatw-panel'), open = w.querySelector('.chatw-open'), msgs = w.querySelector('.chatw-msgs'),
+      form = w.querySelector('.chatw-form'), input = form.querySelector('input'), status = w.querySelector('.chatw-status'), person = w.querySelector('.chatw-person'),
+      timer = null, shown = 0;
+  var words = { bot: 'Our assistant can help with most questions.', waiting: 'Getting a person from our team…', agent: 'You are chatting with our team.', closed: 'This chat has ended. Send a message to start a new one.', 'new': 'Our assistant can help with most questions.' };
+  function render(s) {
+    status.textContent = words[s.status] || '';
+    person.hidden = s.status === 'waiting' || s.status === 'agent';
+    if (s.messages.length === shown) return;
+    if (!shown) msgs.innerHTML = '';
+    s.messages.slice(shown).forEach(function (m) {
+      var p = document.createElement('p');
+      p.className = m.from === 'me' ? 'chatw-me' : m.from === 'note' ? 'chatw-note' : m.from === 'person' ? 'chatw-person-msg' : 'chatw-bot';
+      if (m.name) { var n = document.createElement('small'); n.textContent = m.name; p.appendChild(n); }
+      p.appendChild(document.createTextNode(m.text)); msgs.appendChild(p);
+    });
+    shown = s.messages.length; msgs.scrollTop = msgs.scrollHeight;
+  }
+  function call(url, body) {
+    return fetch(url, { method: body ? 'POST' : 'GET', credentials: 'same-origin', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r); }).then(render);
+  }
+  function poll() { if (!panel.hidden && !document.hidden) call(w.dataset.url).catch(function () {}); }
+  open.addEventListener('click', function () { panel.hidden = false; open.hidden = true; open.setAttribute('aria-expanded', 'true'); input.focus(); poll(); timer = setInterval(poll, 4000); });
+  w.querySelector('.chatw-close').addEventListener('click', function () { panel.hidden = true; open.hidden = false; open.setAttribute('aria-expanded', 'false'); clearInterval(timer); open.focus(); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); var text = input.value.trim(); if (!text) return;
+    input.value = ''; var p = document.createElement('p'); p.className = 'chatw-me'; p.textContent = text; msgs.appendChild(p); msgs.scrollTop = msgs.scrollHeight;
+    // Shown straight away; counted as shown so the server's copy isn't added twice (the first send re-renders everything)
+    if (shown) shown++;
+    status.textContent = 'Sending…';
+    call(w.dataset.send, { message: text }).catch(function () { status.textContent = 'That didn\'t send. Please try again.'; });
+  });
+  person.addEventListener('click', function () { call(w.dataset.person, {}).catch(function () {}); });
+})();
+</script>
