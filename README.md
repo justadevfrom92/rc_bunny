@@ -44,6 +44,7 @@ Sample employees:
 | admin@example.com | Administrator (ticket team manager) | everything |
 | csr@example.com | Customer Service (on the ticket team) | Corral, Ranger, Bounty |
 | pricing@example.com | Pricing | Astro (plans and rates), Lando (the website) |
+| marketing@example.com | Content Editor | Lando, Rodeo (campaigns, emails, PDFs, surveys) |
 | finance@example.com | Finance | Corral, Caboose, Walker (reports and files), and approving refunds, credits and debits |
 
 ## Database commands (like `php artisan migrate`)
@@ -101,6 +102,12 @@ Both migrate commands finish by printing the `db:show` list. Every sample passwo
   - Saved Reports (a report's settings, kept to run again; yours and shared ones), and Orders, Notes and Phonecalls (the customer service reports with your own runs).
   - Files: upload and preview Excel, CSV, PDF, text and zip files in folders (ETL, Legal Documents, Customer Templates, Finance, Utility / ERCOT, Vendor…). ETL Feeds: the scheduled files in and out, with every run and its errors.
 - Your Account (the menu under your name, top right): Notifications (the number on your avatar: new tickets, customers writing back, website emails, reports and files ready, system health), My Files (every report you ran, with its file; a popup says when one is ready) and Settings (which notifications you get; Switch User when testing).
+- Rodeo (marketing):
+  - Dashboard, and Campaigns: email or text campaigns with a goal, a live audience count (opted-in customers only; suppressed and recently contacted ones are skipped), a preview, Send Now or a schedule (the Scheduled campaigns job sends it), and results: the funnel, opens by day, recipients and who converted. Click heat maps for campaigns and templates.
+  - Emails: the overview by template and category, every email sent (as the customer got it), templates with a live preview and Send Test (to you, addresses, accounts, bookmarks, a team or a customer category; with history and Send Again), headers and footers, categories, and the suppression list.
+  - PDFs: PDF templates (simple markup with fill-ins) previewed page by page for any account, Make PDF for an account, test PDFs by email, PDFs made, and PDF headers and footers.
+  - Surveys: the builder (questions from the question bank, by category), results (NPS, scales, charts, written answers, CSV export), responses, the question bank, answer sets, categories, and Survey Emails (the 90-day check-in and farewell survey, sent daily). Customers answer on the website at /survey/{slug}; links in emails are signed, so the answer is tied to that customer.
+  - Email goes out by SMTP when `Integrations:Smtp:Host` (and Port, User, Password, From) is set; until then emails are written to storage/mail-log. Campaign and survey emails are logged on each account.
 - Deputy (AI agents on open-weight models):
   - Dashboard (agents, their models, 30-day results), Conversations (texts and the My Account chat: Needs a Person and Live Now on top, then every conversation), and each conversation's transcript, live: Take Over, reply, Hand Back to Bot, Call, Close, and the resolution.
   - Agents (which model and fallback each runs on, its instructions; Test sends a real message to the model) and Models (downloaded or hosted; Check asks the server if it's there).
@@ -144,14 +151,14 @@ src/RcBunny.Backend/
   Data/                   Entities.cs (every table), AppDbContext, Pricing, Passwords, Rewards (the website uses these files too)
   Auth/Permissions.cs     the permission list and [RequirePermission]
   Controllers/            Auth, Plans; Corral's: Customers, Orders, Communications (SMS, calls), Crm, Products, Ercot, Queues;
-                          Account (notifications, My Files, settings); Deputy; Ranger's: Ranger, Messages; Lando; Astro; Walker; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
+                          Account (notifications, My Files, settings); Rodeo's: Rodeo, RodeoEmails, RodeoPdfs, RodeoSurveys; Deputy; Ranger's: Ranger, Messages; Lando; Astro; Walker; Caboose; Bounty; Sheriff's: Staff, Sheriff; Menu (the sidebar counts)
   Walker/Reports.cs       Walker's reports: their filters, queries and columns, and the background run that writes the file
   Jobs/                   Scheduler (runs the crons) and Heartbeat (the checks)
   Seed/                   Seeder.cs and ebunny's sample data (JSON)
   ClientApp/src/          main.tsx (routes), api.ts, auth.tsx, pages/*.tsx; admin.css is ebunny's admin.css unchanged,
                           styles.css gives our pages' own class names the same look
-                          pages/corral, pages/ranger, pages/lando, pages/astro, pages/walker, pages/deputy, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes
-                          (Corral.tsx, Ranger.tsx, Lando.tsx, Astro.tsx, Walker.tsx, Deputy.tsx, Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
+                          pages/corral, pages/ranger, pages/lando, pages/astro, pages/walker, pages/rodeo, pages/deputy, pages/caboose, pages/bounty, pages/sheriff: each app's menu and routes
+                          (Corral.tsx, Ranger.tsx, Lando.tsx, Astro.tsx, Walker.tsx, Rodeo.tsx, Deputy.tsx, Caboose.tsx, Bounty.tsx, Sheriff.tsx) with its pages next to it; Sidebar.tsx is ebunny's shell (sidebar, top bar, user menu)
 src/RcBunny.Frontend/
   Program.cs              customer sign-in, the site's pages and My Account
   Services/SiteEndpoints.cs  what main.js asks the server for: /shared/config/brand.js and catalog.js (plans, rates,

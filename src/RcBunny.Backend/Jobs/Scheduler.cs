@@ -19,7 +19,24 @@ public class Scheduler(IServiceScopeFactory scopes, ILogger<Scheduler> log) : Ba
         new("AutoPay", "Every day", TimeSpan.FromDays(1), AutoPayAsync),
         new("Close solved tickets", "Every day", TimeSpan.FromDays(1), CloseSolvedTicketsAsync),
         new("Reward stars", "Every day", TimeSpan.FromDays(1), RewardStarsAsync),
+        new("Scheduled campaigns", "Every 5 minutes", TimeSpan.FromMinutes(5), ScheduledCampaignsAsync),
+        new("Survey emails", "Every day", TimeSpan.FromDays(1), (s, db) => Services.SurveyEmails.SendAllAsync(db, Website(s))),
     ];
+
+    private static string Website(IServiceProvider s) => s.GetRequiredService<IConfiguration>()["Website:Url"] ?? "http://localhost:5100";
+
+    /// <summary>Rodeo: sends the campaigns whose scheduled time has come.</summary>
+    private static async Task<string> ScheduledCampaignsAsync(IServiceProvider s, AppDbContext db)
+    {
+        var due = await db.Campaigns.Where(c => c.Status == "scheduled" && c.ScheduledAt <= DateTime.UtcNow).ToListAsync();
+        var sent = new List<string>();
+        foreach (var c in due)
+        {
+            var (n, skipped) = await Services.Campaigns.SendAsync(db, c, Website(s));
+            sent.Add($"{c.Name}: {n} sent, {skipped} skipped");
+        }
+        return due.Count == 0 ? "No campaigns due." : string.Join(" · ", sent);
+    }
 
     protected override async Task ExecuteAsync(CancellationToken stop)
     {

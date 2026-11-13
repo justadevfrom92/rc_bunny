@@ -3,6 +3,7 @@ import Record from '../Record';
 import AppShell, { type Menu } from '../../Sidebar';
 import { Campaign, Campaigns, Dashboard, Heatmap } from './Campaigns';
 import { PdfMade, PdfPartForm, PdfParts, PdfTemplateForm, PdfTemplates, PdfsMade } from './Pdfs';
+import { AnswerSetForm, AnswerSets, Bank, BankForm, Response, Responses, Results, SurveyBuilder, SurveyCategories, SurveyCategoryForm, SurveyEmails, Surveys } from './Surveys';
 import { Categories, CategoryForm, Email, Overview, PartForm, Parts, Sent, SuppressionForm, Suppressions, TemplateForm, TemplateTest, Templates } from './Emails';
 
 // ebunny's config/admin.php → rodeo menu
@@ -11,6 +12,8 @@ const menu: Menu = [
   { heading: 'Emails', links: [['Overview', 'emails'], ['Sent Emails', 'emails/sent'], ['Templates', 'templates'], ['New Template', 'templates/new'], ['Headers & Footers', 'headers-footers'],
     ['Categories', 'emails/categories'], ['Suppression List', 'emails/suppressions']] },
   { heading: 'PDFs', links: [['PDF Templates', 'pdfs'], ['New PDF Template', 'pdfs/new'], ['PDF Headers & Footers', 'pdf-headers-footers'], ['PDFs Made', 'pdfs/made']] },
+  { heading: 'Surveys', links: [['All Surveys', 'surveys'], ['Survey Emails', 'survey-emails'], ['New Survey', 'surveys/new'], ['Responses', 'surveys/responses'],
+    ['Question Bank', 'surveys/bank'], ['Answer Sets', 'surveys/answer-sets'], ['Categories', 'surveys/categories']] },
 ];
 
 export default function Rodeo() {
@@ -46,6 +49,22 @@ export default function Rodeo() {
         <Route path="pdf-headers-footers" element={<PdfParts />} />
         <Route path="pdf-headers-footers/new" element={<PdfPartForm key="new" />} />
         <Route path="pdf-headers-footers/:id" element={<PdfPartForm />} />
+        <Route path="surveys" element={<Surveys />} />
+        <Route path="surveys/new" element={<SurveyBuilder key="new" />} />
+        <Route path="surveys/responses" element={<Responses />} />
+        <Route path="surveys/responses/:id" element={<Response />} />
+        <Route path="surveys/bank" element={<Bank />} />
+        <Route path="surveys/bank/new" element={<BankForm key="new" />} />
+        <Route path="surveys/bank/:id/edit" element={<BankForm />} />
+        <Route path="surveys/answer-sets" element={<AnswerSets />} />
+        <Route path="surveys/answer-sets/new" element={<AnswerSetForm key="new" />} />
+        <Route path="surveys/answer-sets/:id/edit" element={<AnswerSetForm />} />
+        <Route path="surveys/categories" element={<SurveyCategories />} />
+        <Route path="surveys/categories/new" element={<SurveyCategoryForm key="new" />} />
+        <Route path="surveys/categories/:id/edit" element={<SurveyCategoryForm />} />
+        <Route path="surveys/:id" element={<SurveyBuilder />} />
+        <Route path="surveys/:id/results" element={<Results />} />
+        <Route path="survey-emails" element={<SurveyEmails />} />
         <Route path="records/:type/:id" element={<Record />} />
       </Routes>
     </AppShell>

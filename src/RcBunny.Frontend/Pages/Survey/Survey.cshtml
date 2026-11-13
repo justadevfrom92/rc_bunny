@@ -1,0 +1,61 @@
+@page "/survey/{slug}"
+@model RcBunny.Frontend.Pages.Survey.SurveyModel
+@{
+    var s = Model.Survey;
+    ViewData["Title"] = s.Title; ViewData["Heading"] = s.Title; ViewData["ShowTitle"] = true; ViewData["Banner"] = s.Intro;
+    var n = 0;
+}
+<section class="section"><div class="wrap narrow">
+  <div class="co-card">
+  @if (Model.Thanks)
+  {
+    <div class="site-alert ok" role="status">@(s.ThankYou ?? "Thank you — your answers were received.")</div>
+    <p><a class="btn btn-outline btn-back" href="/">Back to the homepage</a></p>
+  }
+  else if (s.State != "open")
+  {
+    <p>@(s.State == "scheduled" ? $"This survey opens {s.OpensOn:MMMM d}. Please come back then." : "This survey is closed. Thank you for your interest.")</p>
+  }
+  else
+  {
+    @if (Model.Error is { } error) { <div class="site-alert error" role="alert">@error</div> }
+    @* The signed link's query string is kept so the answer stays tied to the customer the email was sent to *@
+    <form method="post" action="/survey/@(s.Slug)@(Request.QueryString)" class="sv-form">@Html.AntiForgeryToken()
+      @if (Model.Customer is { } c) { <p class="muted-text">Answering as @c.FirstName (account ending @c.Account[^4..]).</p> }
+      @if (s.Questions.Any(q => q.Required)) { <p class="muted-text"><span class="sv-req">*</span> Required</p> }
+      @foreach (var qs in Model.Groups)
+      {
+        var cat = qs[0].Category;
+        if (Model.Groups.Count > 1 || cat != null) { <h3 class="sv-section" style="--dot:@(cat?.Color ?? "#96999d")">@(cat?.Name ?? "A few more questions")</h3> }
+        foreach (var q in qs)
+        {
+          n++;
+          var name = $"a[{q.Id}]";
+          var old = Model.Old.GetValueOrDefault(q.Id) ?? [];
+          <fieldset class="field sv-field">
+            <legend>@n. @q.Question@if (q.Required) { <text> </text><span class="sv-req" aria-label="required">*</span> }</legend>
+            @if (q.Help != null) { <p class="sv-help">@q.Help</p> }
+            @switch (q.Type)
+            {
+              case "rating":
+                <div class="rating-row">@for (var v = 0; v <= 10; v++) { <label class="radio"><input type="radio" name="@name" value="@v" checked="@old.Contains(v.ToString())" required="@q.Required"> @v</label> }</div>
+                <p class="muted-text" style="display:flex;justify-content:space-between;margin:0"><span>Not likely</span><span>Very likely</span></p>
+                break;
+              case "multi":
+                foreach (var opt in q.Choices()) { <label class="check"><input type="checkbox" name="@name" value="@opt" checked="@old.Contains(opt)"> @opt</label> }
+                break;
+              case "text":
+                <textarea name="@name" aria-label="@q.Question" required="@q.Required" maxlength="2000">@old.FirstOrDefault()</textarea>
+                break;
+              default:
+                <div class="@(q.Type == "scale" ? "sv-scale" : q.Type == "yes_no" ? "sv-yesno" : null)">@foreach (var opt in q.Choices()) { <label class="radio"><input type="radio" name="@name" value="@opt" checked="@old.Contains(opt)" required="@q.Required"> @opt</label> }</div>
+                break;
+            }
+          </fieldset>
+        }
+      }
+      <button class="btn" style="margin-top:24px">Submit</button>
+    </form>
+  }
+  </div>
+</div></section>

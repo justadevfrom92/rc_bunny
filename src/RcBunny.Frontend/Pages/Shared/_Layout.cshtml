@@ -24,6 +24,7 @@
       <div class="page-title"><div class="wrap">
         @if (ViewData["Eyebrow"] is string eyebrow) { <p class="eyebrow">@eyebrow</p> }
         <h1>@(ViewData["Heading"] ?? ViewData["Title"])</h1>
+        @if (ViewData["Banner"] is string banner) { <p>@banner</p> }
       </div></div>
     }
     else if (ViewData["NoHeading"] is not true)
