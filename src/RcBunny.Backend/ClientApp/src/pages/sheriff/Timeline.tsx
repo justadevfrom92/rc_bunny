@@ -6,8 +6,8 @@ import { PageHead, PagerBar, Panel, secondsTime } from '../../ui';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const kinds: Record<string, string> = { job: 'Cron Jobs', user: 'People' };
-const kindLabel: Record<string, string> = { job: 'Cron Job', user: 'Person' };
+const kinds: Record<string, string> = { job: 'Cron Jobs', automation: 'Automations', user: 'People' };
+const kindLabel: Record<string, string> = { job: 'Cron Job', automation: 'Automation', user: 'Person' };
 const statuses: Record<string, string> = { ok: 'Worked', warn: 'Warnings', bad: 'Errors' };
 const tone: Record<string, string> = { ok: 'ok', warn: 'warn', bad: 'bad', running: 'info' };
 
@@ -29,7 +29,7 @@ export default function Timeline() {
   const person = data.person;
   const max = Math.max(1, ...data.days.map((d: any) => d.n));
   const all = Object.values(data.counts as Record<string, number>).reduce((a, b) => a + b, 0);
-  const link = (e: any) => (e.src === 'history_entry' ? `/sheriff/records/history_entry/${e.seq}` : e.src === 'job_run' ? '/sheriff/jobs' : null);
+  const link = (e: any) => (e.src === 'history_entry' ? `/sheriff/records/history_entry/${e.seq}` : e.src === 'job_run' ? '/sheriff/jobs' : e.src === 'automation_run' ? `/sheriff/records/automation_run/${e.seq}` : null);
 
   return (
     <>

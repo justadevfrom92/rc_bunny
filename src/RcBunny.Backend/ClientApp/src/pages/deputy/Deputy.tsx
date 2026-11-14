@@ -38,7 +38,7 @@ const statusTones: Record<string, string> = { bot: 'info', waiting: 'warn', agen
 /** ebunny's deputy/_outcome */
 const Outcome = ({ c }: { c: any }) => <Pill tone={outcomeTones[c.outcome] ?? ''}>{c.outcomeLabel}</Pill>;
 /** ebunny's deputy/_model: a model name with its provider. */
-const ModelName = ({ m }: { m: any }) => m ? <span className={`dp-model ${m.local ? 'local' : 'hosted'}`}><b>{m.name}</b><small className="mono">{m.modelId}</small></span> : <span className="muted">—</span>;
+export const ModelName = ({ m }: { m: any }) => m ? <span className={`dp-model ${m.local ? 'local' : 'hosted'}`}><b>{m.name}</b><small className="mono">{m.modelId}</small></span> : <span className="muted">—</span>;
 const mmss = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
 const temp = (t: number) => String(Number(t.toFixed(2)));
 const short = (s: string) => new Date(s).toLocaleString('en-US', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' }).replace(',', '');

@@ -11,11 +11,12 @@ import Markets, { MarketForm } from './Markets';
 import ControlLog from './ControlLog';
 import Integrations from './Integrations';
 import Record from '../Record';
+import Automations, { Automation, AutomationForm } from './Automations';
 
 const menu: Menu = [
   { heading: 'Heartbeat', links: [['Overview', 'heartbeat', { badge: 'health_problems' }], ['Checks', 'heartbeat/checks'], ['Control Log', 'heartbeat/log']] },
   { heading: 'Access', links: [['Staff Directory', 'users'], ['Roles', 'roles']] },
-  { heading: 'Config', links: [['Timeline', 'timeline'], ['Crons', 'jobs', { badge: 'failed_jobs' }], ['Cached Tables', 'cached-tables']] },
+  { heading: 'Config', links: [['Timeline', 'timeline'], ['Crons', 'jobs', { badge: 'failed_jobs' }], ['Cron Automations', 'automations'], ['Cached Tables', 'cached-tables']] },
   { heading: 'Markets', links: [['View Markets', 'markets'], ['Add a Market', 'markets/create']] },
   { heading: 'APIs', links: [['All APIs', 'integrations']] },
 ];
@@ -36,6 +37,10 @@ export default function Sheriff() {
           <Route path="roles" element={<Roles />} />
           <Route path="timeline" element={<Timeline />} />
           <Route path="jobs" element={<Crons />} />
+          <Route path="automations" element={<Automations />} />
+          <Route path="automations/new" element={<AutomationForm key="new" />} />
+          <Route path="automations/:id" element={<Automation />} />
+          <Route path="automations/:id/edit" element={<AutomationForm />} />
           <Route path="cached-tables" element={<Caches />} />
           <Route path="markets" element={<Markets />} />
           <Route path="markets/create" element={<MarketForm />} />

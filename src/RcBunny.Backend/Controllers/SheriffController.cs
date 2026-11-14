@@ -93,6 +93,8 @@ public class SheriffController(AppDbContext db, IMemoryCache cache, IConfigurati
             .Concat((await db.AuditEntries.ToListAsync()).Select(a => new TimelineEvent("audit_entry", a.Id, a.CreatedAt, a.Category == "heartbeat" ? "job" : "user", "ok",
                 a.Category switch { "sign-in" => "Signed in", "access" => "Access", "heartbeat" => "Heartbeat control", "market" => "Markets", _ => a.Category }, a.What,
                 users.TryGetValue(a.Who, out var id) ? id : null, a.Who)))
+            .Concat((await db.AiAutomationRuns.Include(r => r.Agent).ToListAsync()).Select(r => new TimelineEvent("automation_run", r.Id, r.StartedAt, "automation", r.Status == "ok" ? "ok" : "bad",
+                r.Agent?.Name ?? "Automation", r.Summary, null, null)))
             .Concat((await db.History.ToListAsync()).Select(h => new TimelineEvent("history_entry", h.Id, h.CreatedAt, "user", "ok", h.Model, h.Summary, h.UserId, h.Who)))
             .ToList();
         var person = user == null ? null : await db.Users.Where(u => u.Id == user).Select(u => new { u.Id, u.Name }).FirstOrDefaultAsync();

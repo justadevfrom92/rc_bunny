@@ -130,6 +130,7 @@ Both migrate commands finish by printing the `db:show` list. Every sample passwo
   - Staff Directory (add people, change roles, turn sign-ins off, set passwords) and Roles (tick what each role can do, add roles).
   - Timeline of sign-ins, access changes, heartbeat switches and job runs.
   - Crons: the scheduled jobs (heartbeat checks, AutoPay, closing solved tickets, reward stars) with "Run now", and their runs.
+  - Cron Automations: AI agents that run on a schedule (cron times shown in plain words, with the next run), Pause/Resume, add and edit, and each one's runs (also in the Timeline).
   - Caches, Markets (delivery charges and zip codes), and Integrations (which outside services have settings; none is connected yet).
 
 ## How access works
