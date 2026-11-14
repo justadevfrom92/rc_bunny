@@ -47,20 +47,20 @@ Sample employees:
 | marketing@example.com | Content Editor | Lando, Rodeo (campaigns, emails, PDFs, surveys) |
 | finance@example.com | Finance | Corral, Caboose, Walker (reports and files), and approving refunds, credits and debits |
 
-## Database commands (like `php artisan migrate`)
+## Database commands
 
 Run these from the repo root, with both apps stopped:
 
 ```bash
-./artisan migrate:fresh
+dotnet run --project src/RcBunny.Backend -- migrate:fresh
 ```
 
-On Windows: `artisan migrate:fresh`. Both scripts just run `dotnet run --project src/RcBunny.Backend -- migrate:fresh`.
+Or from `src/RcBunny.Backend`: `dotnet run -- migrate:fresh`.
 
 | Command | What it does |
 | --- | --- |
 | `migrate` | Creates the database and fills it with the sample data, if it's empty. Starting the admin does this too. |
-| `migrate:fresh` | Drops the database, creates it again and fills it: every plan and rate, customers with bills, payments, notes, calls and texts, tickets, CRM, shop, rewards and finance data. Like `php artisan migrate:fresh --seed`. Run it after pulling changes that add tables. |
+| `migrate:fresh` | Drops the database, creates it again and fills it: every plan and rate, customers with bills, payments, notes, calls and texts, tickets, CRM, shop, rewards and finance data. Run it after pulling changes that add tables. |
 | `db:show` | Lists every plan with today's rate in each market, how many rows each table has, and the admin and My Account sign-ins. |
 
 Both migrate commands finish by printing the `db:show` list. Every sample password is `password`. Admin: `admin@example.com` and the others listed. My Account: `demo.customer`, `test.business`, `test.pastdue`, `test.deposit` and `test.moved`, or use the Test Sign-Ins on each sign-in page.

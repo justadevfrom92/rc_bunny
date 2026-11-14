@@ -27,7 +27,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var app = builder.Build();
 var storage = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, app.Configuration["Storage:Root"] ?? "../../storage"));
 
-// Database commands, like artisan: dotnet run -- migrate | migrate:fresh | db:show (see Seed/Commands.cs)
+// Database commands: dotnet run -- migrate | migrate:fresh | db:show (see Seed/Commands.cs)
 if (args.FirstOrDefault(a => Commands.Names.Contains(a)) is { } command)
 {
     using var scope = app.Services.CreateScope();

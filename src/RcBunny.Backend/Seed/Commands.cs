@@ -4,9 +4,9 @@ using RcBunny.Data;
 namespace RcBunny.Seed;
 
 /// <summary>
-/// Database commands, like Laravel's artisan. Run them from src/RcBunny.Backend:
+/// Database commands. Run them from src/RcBunny.Backend:
 ///   dotnet run -- migrate          create the database and fill it with the sample data (if it's empty)
-///   dotnet run -- migrate:fresh    drop the database, create it again and fill it (like php artisan migrate:fresh --seed)
+///   dotnet run -- migrate:fresh    drop the database, create it again and fill it
 ///   dotnet run -- db:show          list the plans and rates, how many rows each table has, and the sample sign-ins
 /// Both migrate commands finish by showing the same list as db:show.
 /// </summary>
